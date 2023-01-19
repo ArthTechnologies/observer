@@ -4,6 +4,7 @@ import { goto } from "$app/navigation";
 export const apiurl = "https://api.arthmc.xyz/";
 export const pburl = "https://pb.arthmc.xyz/api/";
 export const lrurl = "https://api.modrinth.com/v2/";
+let lock = false;
 //set email from local storage to variable
 if (browser) {
   accountEmail.set(window.localStorage.getItem("accountEmail"));
@@ -67,14 +68,19 @@ export function searchPlugins(
     '"]]' +
     "&limit=10";
 
-  return fetch(url, GET)
+if (!lock) {
+	  return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
       console.log("Response Recieved: " + input);
 
+if(input.indexOf("ck_block") > -1 | input == undefined) {
+				lock = true;
+			}
       return JSON.parse(input);
     })
     .catch((err) => console.error(err));
+}
 }
 
 export function getSettings() {
@@ -266,6 +272,7 @@ export function getPlayers(address: string) {
 
     .then((text: string) => {
       console.log("Response Recieved: " + text);
+			
       //return whats after ""online":" and before ","max"
 
       console.log(

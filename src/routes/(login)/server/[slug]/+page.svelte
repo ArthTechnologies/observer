@@ -15,6 +15,7 @@
   import PluginResult from "$lib/components/ui/PluginResult.svelte";
   import {searchPlugins} from "$lib/scripts/req.js";
   import AddPlugin from "$lib/components/ui/AddPlugin.svelte";
+	import HowToJoin from "$lib/components/ui/HowToJoin.svelte"
   let name: string = "-";
   let tname: string;
   let url: string;
@@ -358,7 +359,7 @@
           <div class="stat-value">arthmc.xyz:{port}</div>
           <div class="stat-desc">
             {$t("server.howtojoin")}
-            <a class="link link-accent">{$t("server.howtojoin2")}</a>.
+            <HowToJoin address="arthmc.xyz:{port}"/>.
           </div>
         </div>
         

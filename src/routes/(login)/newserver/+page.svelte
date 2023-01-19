@@ -177,22 +177,27 @@
               <img
                 class="mask mask-hexagon"
                 src="/images/terralith.webp"
-                width="100ch"
+                width="80ch"
               />
 
               <img
                 class="mask mask-hexagon"
                 src="/images/nullscape.webp"
-                width="100ch"
+                width="80ch"
               />
               <img
                 class="mask mask-hexagon"
                 src="/images/incendium.webp"
-                width="100ch"
+                width="80ch"
+              />
+							              <img
+                class="mask mask-hexagon"
+                src="/images/structory.png"
+                width="80ch"
               />
             </div>
             <div class="p-2" />
-            <div class="flex justify-center space-x-20">
+            <div class="flex justify-center space-x-14">
               <input
                 id="terralith"
                 type="checkbox"
@@ -205,6 +210,11 @@
               />
               <input
                 id="nullscape"
+                type="checkbox"
+                class="checkbox checkbox-secondary"
+              />
+							              <input
+                id="structory"
                 type="checkbox"
                 class="checkbox checkbox-secondary"
               />
