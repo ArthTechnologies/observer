@@ -38,6 +38,9 @@
     if (document.getElementById("nullscape").checked) {
       addons.push("nullscape");
     }
+		    if (document.getElementById("structory").checked) {
+      addons.push("structory");
+    }
 
     cmd.push("defaultgamemode " + sGamemode);
     cmd.push("op " + sAdmin);
