@@ -12,9 +12,9 @@
         <h1 class="text-5xl font-bold">404 Not Found</h1>
         <p class="py-6">
           This page doesn't exist! If you think this is an error, open an issue
-          on our <a
-            href="https://github.com/diamonc/observer/issues"
-            class="link link-primary">github.</a
+          at <a
+            href="https://codeberg.org/diamonc/observer/issues/new"
+            class="link link-primary">codeberg.</a
           >
         </p>
         <button class="btn btn-primary"

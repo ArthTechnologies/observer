@@ -15,6 +15,7 @@
   import PluginResult from "$lib/components/ui/PluginResult.svelte";
   import {searchPlugins} from "$lib/scripts/req.js";
 	import HowTo from "$lib/components/ui/HowTo.svelte"
+		import Add from "$lib/components/ui/Add.svelte"
   let name: string = "-";
   let tname: string;
   let url: string;
@@ -365,6 +366,7 @@
       <div class="text-sm pl-6">
 				{$t("server.howtojoin")}<HowTo address="arthmc.xyz:{port}"/>
 			</div>
+			<Add/>
       
     </div>
   </div>
