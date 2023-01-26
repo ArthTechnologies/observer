@@ -192,7 +192,7 @@
               />
 							              <img
                 class="mask mask-hexagon"
-                src="/images/structory.png"
+                src="/images/structory.webp"
                 width="80ch"
               />
             </div>
