@@ -14,8 +14,7 @@
   import { t, locale, locales } from "$lib/scripts/i18n";
   import PluginResult from "$lib/components/ui/PluginResult.svelte";
   import {searchPlugins} from "$lib/scripts/req.js";
-  import AddPlugin from "$lib/components/ui/AddPlugin.svelte";
-	import HowToJoin from "$lib/components/ui/HowToJoin.svelte"
+	import HowTo from "$lib/components/ui/HowTo.svelte"
   let name: string = "-";
   let tname: string;
   let url: string;
@@ -195,7 +194,7 @@
     <!-- TODO: these should be on the right, add an if for not reaching the backend -->
     <div class="space-x-2">
       {#if state == "true"}
-        <a on:click={start} class="btn btn-success"
+        <button on:click={start} class="btn btn-success"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -212,9 +211,9 @@
             /><polyline points="7 23 3 19 7 15" /><path
               d="M21 13v2a4 4 0 0 1-4 4H3"
             /></svg
-          >{$t("button.restart2")}</a
+          >{$t("button.restart2")}</button
         >
-        <a on:click={stop} class="btn btn-error"
+        <button on:click={stop} class="btn btn-error"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -232,10 +231,10 @@
               width="6"
               height="6"
             /></svg
-          >{$t("button.stop2")}</a
+          >{$t("button.stop2")}</button
         >
       {:else if state == "false"}
-        <a on:click={start} class="btn btn-success"
+        <button on:click={start} class="btn btn-success"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -250,10 +249,9 @@
             ><circle cx="12" cy="12" r="10" /><polygon
               points="10 8 16 12 10 16 10 8"
             /></svg
-          >{$t("button.start2")}</a
+          >{$t("button.start2")}</button
         >
-        <a href="/" class="btn btn-disabled "
-          ><svg
+        <a href="/" class="btn btn-disabled"><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -273,7 +271,7 @@
           >{$t("button.stop2")}</a
         >
       {:else}
-        <a href="" class="btn btn-success"
+        <button class="btn btn-success"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -307,9 +305,9 @@
               y2="4.93"
             /></svg
           >
-          {$t("button.starting2")}</a
+          {$t("button.starting2")}</button
         >
-        <a on:click={stop} class="btn btn-error"
+        <button on:click={stop} class="btn btn-error"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -327,7 +325,7 @@
               width="6"
               height="6"
             /></svg
-          >{$t("button.stop2")}</a
+          >{$t("button.stop2")}</button
         >
       {/if}
     </div>
@@ -358,15 +356,19 @@
           <div class="stat-title">{$t("server.ip")}</div>
           <div class="stat-value">arthmc.xyz:{port}</div>
           <div class="stat-desc">
-            {$t("server.howtojoin")}
-            <HowToJoin address="arthmc.xyz:{port}"/>.
+
           </div>
+					
         </div>
         
       </div>
+      <div class="text-sm pl-6">
+				{$t("server.howtojoin")}<HowTo address="arthmc.xyz:{port}"/>
+			</div>
       
-
-      <AddPlugin/>
     </div>
   </div>
 </div>
+            
+
+			 

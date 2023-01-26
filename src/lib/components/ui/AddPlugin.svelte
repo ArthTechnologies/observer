@@ -41,10 +41,10 @@ if (browser) {
 
 </script>
 
-<label for="my-modal-5" class="btn" on:click={search}>{$t("button.addplugin")}</label>
+<label for="AddPlugin" class="btn">test2</label>
 
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id="my-modal-5" class="modal-toggle" />
+<input type="checkbox" id="AddPlugin" class="modal-toggle" />
 <div class="modal">
   
   <div class="modal-box w-11/12 max-w-5xl space-y-5 ">
@@ -52,7 +52,7 @@ if (browser) {
     <div class="flex justify-between modal-action">
         <h3 class="font-bold text-lg">{$t("server.pluginsFromModrinth")}</h3>
 
-        <label for="my-modal-5" class="btn btn-circle btn-sm btn-ghost "><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></label>
+        <label for="AddPlugin" class="btn btn-circle btn-sm btn-ghost "><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></label>
  
     </div>
 

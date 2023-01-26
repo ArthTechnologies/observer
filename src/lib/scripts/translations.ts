@@ -81,7 +81,7 @@ export default {
     "button.delete": "  Delete",
     "server.ip": "IP Address:",
     "server.howtojoin": "Confused? Learn ",
-    "server.howtojoin2": "how to join servers",
+    "server.howtojoin2": "how to join servers.",
     "button.newsubscribe": "New Subscription",
     "newserver.l.setadmin": "Enter Admin",
     "newserver.l.gamemode": "Gamemode",

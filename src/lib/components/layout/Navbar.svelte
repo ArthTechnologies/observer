@@ -12,10 +12,12 @@
   import { url } from "inspector";
   import { setDefaultResultOrder } from "dns";
   let enablePay = true;
+	let enableAuth = true;
   //sends user to /signin if localstorage token is ""
   if (browser) {
-    enablePay = localStorage.getItem("payEnabled");
-    if (localStorage.getItem("token") == "") {
+    enablePay = localStorage.getItem("enablePay");
+		enableAuth = localStorage.getItem("enableAuth");
+    if (localStorage.getItem("token") == "" && enableAuth == "true") {
       goto("/signin");
     }
   }
