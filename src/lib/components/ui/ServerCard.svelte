@@ -35,6 +35,7 @@
   export let software: string;
   export let state: string;
   export let id: number;
+
   function uppercaseFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }

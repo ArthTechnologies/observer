@@ -1,12 +1,17 @@
 <script lang="ts">
   import ServerCard from "$lib/components/ui/ServerCard.svelte";
+	import ServerSkele from "$lib/components/ui/ServerSkele.svelte";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { getServers } from "$lib/scripts/req";
   import { browser, dev } from "$app/environment";
   import { goto } from "$app/navigation";
 
   // NOTE: the element that is using one of the theme attributes must be in the DOM on mount
-	let servers = [];
+	let servers = [{				name: "hi",
+      software: "paper",
+      version: "latest",
+      id: 1,
+      state:  "true"}];
   //Example
   let name = "world";
 
@@ -20,11 +25,11 @@
   let email: string = "";
   if (browser) {
     email = localStorage.getItem("accountEmail");
-    console.log("hey" + localStorage.getItem("accountEmail"));
+
   }
   console.log("yo" + email);
   // getServers and store "amount" given in the response in a variable
-  getServers(email).then((response) => {
+  let promise = getServers(email).then((response) => {
     if (browser) {
       console.log(response);
       if (response.amount != "undefined") {
@@ -73,9 +78,14 @@
     {/if}
     <div class="flex flex-wrap justify-center" id="serverList">
       <!-- <ServerCard name="Server Name" loader="Loader" version="Version" /> -->
-			{#each servers as server}
+{#await promise}
+	<ServerSkele/>
+{:then}
+	
+				{#each servers as server}
 	<ServerCard {...server}/>
 {/each}
+{/await}
     </div>
   </div>
 </div>
