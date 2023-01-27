@@ -6,7 +6,7 @@
   import { goto } from "$app/navigation";
 
   // NOTE: the element that is using one of the theme attributes must be in the DOM on mount
-
+	let servers = [];
   //Example
   let name = "world";
 
@@ -33,29 +33,19 @@
       DOM(response);
     }
   });
-  function DOM(res2: string) {
+  function DOM(res2) {
     for (var i = 0; i < id; i++) {
-      let serverName = res2.names[i];
-      let serverLoader = res2.softwares[i];
-      let serverVersion = res2.versions[i];
-      let serverID = res2.ids[i];
-      let serverState = res2.states[i];
+      servers.push({
+				name: res2.names[i],
+      software: res2.softwares[i],
+      version: res2.versions[i],
+      id: res2.ids[i],
+      state:  res2.states[i],
+			});
 
       // run code if its on the browser
 
-      if (browser) {
-        // add a new server card to the div with the id "serverList"
-        new ServerCard({
-          target: document.getElementById("serverList"),
-          props: {
-            name: serverName,
-            version: serverVersion,
-            software: serverLoader,
-            state: serverState,
-            id: serverID,
-          },
-        });
-      }
+      
     }
   }
 
@@ -64,6 +54,7 @@
   if (id == 0) {
     showmsg = false;
   }
+
 </script>
 
 <div class="flex flex-col items-center space-y-20 mb-12">
@@ -82,6 +73,9 @@
     {/if}
     <div class="flex flex-wrap justify-center" id="serverList">
       <!-- <ServerCard name="Server Name" loader="Loader" version="Version" /> -->
+			{#each servers as server}
+	<ServerCard {...server}/>
+{/each}
     </div>
   </div>
 </div>

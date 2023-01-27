@@ -23,7 +23,10 @@ export default {
     "settings.desc.trusted":
       "To protect your machine from users uploading malware posing as plugins/mods, you can limit URLs to download from sites such as modrinth. Please seperate domains with commas!",
     "button.save": "Save",
-    "site.footer": ", licensed under ",
+    "site.footer": `, licensed under <a
+          href="https://github.com/DiamonC/observer/blob/master/LICENSE"
+          class="link link-primary">GPLv3</a
+        >,`,
     "settings.t.webport":
       "This is the port that this panel will run on (3000 by default). If you're not using a reverse proxy, you will see :port after the hostname in the URL.",
     "bill.title": "Billing",
@@ -125,7 +128,10 @@ export default {
     "settings.desc.trusted":
       "Para proteger su máquina de los usuarios que cargan malware que se hacen pasar por complementos / mods, puede limitar las URL para descargar desde sitios como modrinth. ¡Por favor, separe los dominios con comas!",
     "button.save": "Salvar",
-    "site.footer": ", licenciado bajo ",
+    "site.footer": `, licenciado bajo <a
+          href="https://github.com/DiamonC/observer/blob/master/LICENSE"
+          class="link link-primary">GPLv3</a
+        >,`,
     "settings.t.webport":
       "Este es el puerto en el que se ejecutará este panel (3000 de forma predeterminada). Si no está utilizando un proxy inverso, verá :[puerto] después del nombre de host en la URL.",
     "bill.title": "Facturación",

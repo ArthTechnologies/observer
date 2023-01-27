@@ -10,7 +10,10 @@
   let startcolor = "info";
   let starttext = "Start";
   let online = true;
-  let email = localStorage.getItem("accountEmail");
+  let email = "noemail";
+	if (browser) {
+		localStorage.getItem("accountEmail")
+	}
   let po = "?";
   let apo = 0;
   let lock = false;
@@ -38,14 +41,16 @@
 
   software = uppercaseFirstLetter(software);
 
-  let tname: string;
+  
 
-  tname = name.toLowerCase().replace(/ /g, "-");
+  let tname = name.toLowerCase().replace(/ /g, "-");
   function setName() {
-    localStorage.setItem("serverName", name);
+    if(browser) {
+	localStorage.setItem("serverName", name);
     localStorage.setItem("serverID", id);
     localStorage.setItem("serverSoftware", software);
     localStorage.setItem("serverVersion", version);
+		}
   }
   function status() {
     if (state == "true") {
@@ -78,10 +83,7 @@
     changeServerState("stop", id, email);
   }
 
-  let v = version;
-  if (version == "latest" || version == "Latest") {
-    v = "";
-  }
+  
   function getStatus() {
     getServer(id).then((data) => {
       if (data.state != state) {
@@ -110,7 +112,7 @@
         arthmc.xyz:{10000 + parseInt(id)}
       </p>
       <!-- <div class="card-actions justify-beginning" /> -->
-      <div class="card-actions justify-end pt-4">
+      <div class="card-actions justify-end ">
         <!-- placeholder for now? -->
         <div class="grow space-x-1.5 flex">
           <a href="/server/{tname}"
@@ -130,7 +132,7 @@
           >
         </div>
         <div class="self-center">
-          <div class="badge badge-outline">{software} {v}</div>
+          <div class="badge badge-outline">{software} {version === "latest" ? "" : version}</div>
         </div>
       </div>
     </div>
