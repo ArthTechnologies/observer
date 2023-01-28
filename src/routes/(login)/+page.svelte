@@ -79,7 +79,7 @@
 {#await promise}
 	<ServerSkele/>
 {:then}
-<ServerCard name="Server Name" software="paper" version="latest" id=0 state=true/>
+<ServerCard name="Server Name" software="paper" version="latest"  state=true/>
 				{#each servers as server}
 	<ServerCard {...server}/>
 {/each}

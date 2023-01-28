@@ -22,6 +22,8 @@ if (browser) {
     software = localStorage.getItem("serverSoftware");
     version = localStorage.getItem("serverVersion");
 }
+
+
 </script>
 
 <div class="bg-base-200 rounded-lg p-3">

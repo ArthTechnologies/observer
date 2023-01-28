@@ -63,8 +63,6 @@ export function searchPlugins(
 		query +
 		'&facets=[["categories:' +
 		software +
-		'"],["versions:' +
-		version +
 		'"]]' +
 		"&limit=10";
 
