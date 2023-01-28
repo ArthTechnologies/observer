@@ -7,11 +7,7 @@
   import { goto } from "$app/navigation";
 
   // NOTE: the element that is using one of the theme attributes must be in the DOM on mount
-	let servers = [{				name: "hi",
-      software: "paper",
-      version: "latest",
-      id: 1,
-      state:  "true"}];
+	let servers = [];
   //Example
   let name = "world";
 
@@ -20,6 +16,7 @@
   let names = [];
   let softwares = [];
   let versions = [];
+		let noserverlock = false;
   function newserver() {}
   let res2 = {};
   let email: string = "";
@@ -27,10 +24,11 @@
     email = localStorage.getItem("accountEmail");
 
   }
-  console.log("yo" + email);
+
   // getServers and store "amount" given in the response in a variable
   let promise = getServers(email).then((response) => {
     if (browser) {
+			noserverlock = true;
       console.log(response);
       if (response.amount != "undefined") {
         id = response.amount;
@@ -48,34 +46,37 @@
       state:  res2.states[i],
 			});
 
-      // run code if its on the browser
+
 
       
     }
   }
 
-  // if amount is 0, set showmsg to true
-  let showmsg = true;
-  if (id == 0) {
-    showmsg = false;
+
+  let noserver = false;
+
+   if (id == 0 && noserverlock) {
+    noserver = true;
   }
 
 </script>
 
 <div class="flex flex-col items-center space-y-20 mb-12">
   <div>
-    <div class="text-center px-10 text-3xl font-semibold">
-      {$t("homepage.title")}
-    </div>
-    {#if showmsg}
-      <div class="divider" />
+    <div class="text-center px-10 text-3xl font-semibold divider object-top">
+      {#if noserver}
+				      <div class="divider" />
       Looks like you dont have any servers. Click<a
         class="link link-primary"
         href="/newserver"
       >
         here</a
       > to make one.
-    {/if}
+			{:else}
+				{$t("homepage.title")}
+			{/if}
+    </div>
+
     <div class="flex flex-wrap justify-center" id="serverList">
       <!-- <ServerCard name="Server Name" loader="Loader" version="Version" /> -->
 {#await promise}

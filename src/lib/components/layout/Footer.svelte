@@ -19,11 +19,8 @@
   <div class="footer footer-center fixed text-xs bottom-0 p-2">
     <div>
       <p>
-        {Webname}{$t("site.footer")}
-        <a
-          href="https://github.com/DiamonC/observer/blob/master/LICENSE"
-          class="link link-primary">GPLv3</a
-        >, {new Date().getFullYear()}.
+        {Webname}{@html $t("site.footer")}
+ {new Date().getFullYear()}.
       </p>
     </div>
   </div>
