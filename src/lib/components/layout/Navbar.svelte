@@ -17,7 +17,8 @@
   if (browser) {
     enablePay = localStorage.getItem("enablePay");
 		enableAuth = localStorage.getItem("enableAuth");
-    if (localStorage.getItem("token") == "" && enableAuth == "true") {
+    console.log("auth is enbled: " + enableAuth)
+    if (localStorage.getItem("token") == "" && enableAuth == true) {
       goto("/signin");
     }
   }

@@ -9,15 +9,12 @@
   // NOTE: the element that is using one of the theme attributes must be in the DOM on mount
 	let servers = [];
   //Example
-  let name = "world";
+
 
   var id = 0;
-  var servercreate = false;
-  let names = [];
-  let softwares = [];
-  let versions = [];
+
 		let noserverlock = false;
-  function newserver() {}
+
   let res2 = {};
   let email: string = "";
   if (browser) {
@@ -61,9 +58,9 @@
 
 </script>
 
-<div class="flex flex-col items-center space-y-20 mb-12">
+<div class="flex flex-col items-center space-y-20 mb-96">
   <div>
-    <div class="text-center px-10 text-3xl font-semibold divider object-top">
+    <div class="text-center px-5 text-3xl font-semibold divider">
       {#if noserver}
 				      <div class="divider" />
       Looks like you dont have any servers. Click<a
@@ -82,7 +79,7 @@
 {#await promise}
 	<ServerSkele/>
 {:then}
-	
+<ServerCard name="Server Name" software="paper" version="latest" id=0 state=true/>
 				{#each servers as server}
 	<ServerCard {...server}/>
 {/each}

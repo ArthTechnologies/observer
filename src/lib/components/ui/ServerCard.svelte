@@ -106,7 +106,7 @@
 </script>
 
 <div class="m-3">
-  <div class="card w-96 bg-base-100 shadow-xl image-full">
+  <div class="card w-50 bg-base-100 shadow-xl image-full">
     <div class="card-body">
       <h2 class="card-title">{name}</h2>
       <p>
@@ -133,7 +133,7 @@
           >
         </div>
         <div class="self-center">
-          <div class="badge badge-outline">{software} {version === "latest" ? "" : version}</div>
+          <div class="badge badge-outline right-4 top-4 absolute">{software} {version === "latest" ? "" : version}</div>
         </div>
       </div>
     </div>

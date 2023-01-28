@@ -10,12 +10,7 @@
     window.location.href = "/signin";
   }
 
-  //send user to /signin page if token == ""
-  if (typeof window !== "undefined") {
-    if (localStorage.getItem("token") === "") {
-      window.location.href = "/signin";
-    }
-  }
+
   let accountEmailChopped = "noemail";
   //if accountEmail is longer than 20 characters
   if ($accountEmail.length > 20) {
