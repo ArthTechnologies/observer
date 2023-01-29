@@ -98,7 +98,7 @@
     getStatus();
   });
 
-  function writeCmd() {
+  function writeCmd(event) {
     //take input value
     let input = document.getElementById("input").value;
     //if key pressed is enter, send alert
