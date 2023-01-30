@@ -93,7 +93,7 @@
 
     <div id="serverForm">
       <form>
-        <div class="flex flex-col w-[22rem]">
+        <div class="flex flex-col w-[22rem] xl:w-[30rem]">
           <!-- svelte-ignore a11y-label-has-associated-control -->
           <label class="label" for="softwareDropdown">Server Software</label>
           <select
