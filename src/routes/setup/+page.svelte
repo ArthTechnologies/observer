@@ -54,7 +54,7 @@
     <p class="p-3">
       {$t("setup.desc2")}
     </p>
-    <a target="_blank" href="{apiurl}panel-key" download
+    <a target="_blank" rel="norefferrer" href="{apiurl}keys" download filename="panel-key.crt"
       ><button id="dld" class="btn btn-secondary" on:click={step}
         >{$t("button.download")}</button
       ></a
