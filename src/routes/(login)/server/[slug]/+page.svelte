@@ -13,9 +13,9 @@
   import Banned from "$lib/components/icons/banned.svelte";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import PluginResult from "$lib/components/ui/PluginResult.svelte";
-  import {searchPlugins} from "$lib/scripts/req.js";
-	import HowTo from "$lib/components/ui/HowTo.svelte"
-		import Add from "$lib/components/ui/Add.svelte"
+  import { searchPlugins } from "$lib/scripts/req.js";
+  import HowTo from "$lib/components/ui/HowTo.svelte";
+  import Add from "$lib/components/ui/Add.svelte";
   let name: string = "-";
   let tname: string;
   let url: string;
@@ -118,11 +118,13 @@
       rt = response;
       if (browser) {
         //todo: fix everything being on one line
-        console.log(rt)
-
+        console.log(rt);
 
         //set terminal's text to rt
-        document.getElementById("terminal").innerHTML = rt.replace(/\n/g, "<p>");
+        document.getElementById("terminal").innerHTML = rt.replace(
+          /\n/g,
+          "<p>"
+        );
       }
     });
     //set terminal's text to rt
@@ -140,12 +142,7 @@
       }
     }, 5000);
   }
-
- 
-
 </script>
-
-
 
 <div class="h-[75vh] h-screen ">
   <div class=" flex justify-between">
@@ -252,7 +249,8 @@
             /></svg
           >{$t("button.start2")}</button
         >
-        <a href="/" class="btn btn-disabled"><svg
+        <a href="/" class="btn btn-disabled"
+          ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -335,8 +333,9 @@
     <div class="text-5xl font-bold divider ">{name}</div>
   </div>
 
-  <div class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10">
-
+  <div
+    class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10"
+  >
     <div>
       <div
         class="bg-base-300 h-96 lg:h-[30rem] rounded-xl shadow-xl overflow-auto lg:w-[30rem] xl:w-[50rem] "
@@ -351,26 +350,27 @@
         class="input input-secondary bg-base-200 lg:w-[30rem] xl:w-[50rem] "
       />
     </div>
-    <div class="m-3 space-y-5 flex flex-col">
-      <div class="stats bg-base-200 shadow-xl image-full">
-        <div class="stat">
-          <div class="stat-title">{$t("server.ip")}</div>
-          <div class="stat-value text-sm sm:text-lg md:text-4xl">arthmc.xyz:{port}</div>
-          <div class="stat-desc">
-
+    <div class="m-3 flex flex-col">
+      <div class="space-y-5 mb-4">
+        <div class="stats bg-base-200 shadow-xl image-full">
+          <div class="stat">
+            <div class="stat-title">{$t("server.ip")}</div>
+            <div class="stat-value text-sm sm:text-lg md:text-4xl">
+              arthmc.xyz:{port}
+            </div>
+            <div class="stat-desc" />
           </div>
-					
         </div>
-        
+        <div class="text-sm pl-6 ">
+          {$t("server.howtojoin")}<a
+            target="_blank"
+            href="https://www.digminecraft.com/getting_started/how_to_connect_to_server.php"
+            class="link link-primary">{$t("server.howtojoin2")}</a
+          >
+        </div>
       </div>
-      <div class="text-sm pl-6">
-				{$t("server.howtojoin")}<a target="_blank" href="https://www.digminecraft.com/getting_started/how_to_connect_to_server.php" class="link link-primary">{$t("server.howtojoin2")}</a>
-			</div>
-			<Add/>
-      
+
+      <Add />
     </div>
   </div>
 </div>
-            
-
-			 
