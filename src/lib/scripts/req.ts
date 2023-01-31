@@ -1,7 +1,7 @@
 import accountEmail from "$lib/stores/accountEmail";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
-export const apiurl = "https://api.arthmc.xyz/";
+export const apiurl = "http://localhost:4000/";
 export const pburl = "https://pb.arthmc.xyz/api/";
 export const lrurl = "https://api.modrinth.com/v2/";
 let lock = false;
@@ -88,7 +88,8 @@ export function getSettings() {
 		.then((input: string) => {
 			console.log("Response Recieved: " + input);
 			if (browser) {
-				window.localStorage.setItem("payEnabled", JSON.parse(input).enablePay);
+				window.localStorage.setItem("enablePay", JSON.parse(input).enablePay);
+				window.localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
 			}
 
 			return JSON.parse(input);
@@ -215,8 +216,7 @@ export function createServer(
 			cmds: c,
 		}),
 	};
-
-	console.log("Request Sent: " + url);
+	console.log("Request Sent: " + JSON.parse(req.body))
 	//if response is 409, send an alert, otherwise do nothing
 	const response = fetch(url, req)
 		.then((res) => res.text())

@@ -17,8 +17,8 @@
   if (browser) {
     enablePay = localStorage.getItem("enablePay");
 		enableAuth = localStorage.getItem("enableAuth");
-    console.log("auth is enbled: " + enableAuth)
-    if (localStorage.getItem("token") == "" && enableAuth == true) {
+
+    if (localStorage.getItem("token") == "" && enableAuth == "true") {
       goto("/signin");
     }
   }
@@ -28,6 +28,7 @@
   type NavType = "default" | "welcome";
   if (typeof navigator !== "undefined") {
     console.log(navigator.language);
+
 
     //set locale to the browser's language
     locale.set(navigator.language);
@@ -125,7 +126,7 @@
 
       <Home />
 
-      {#if enablePay === true}
+      {#if enablePay == "true"}
         <Billing />
       {/if}
       <NewServer />

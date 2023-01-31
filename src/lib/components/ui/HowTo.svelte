@@ -41,18 +41,7 @@
 
 </div>
 {#if edition == "je"}
-	<div class="flex justify-around mt-3">
-	<img src="https://www.wikihow.com/images/thumb/a/ad/Join-a-Minecraft-Server-Step-5-Version-3.jpg/aid3784657-v4-728px-Join-a-Minecraft-Server-Step-5-Version-3.jpg.webp" width="300" height="175">
-		<img src="https://www.wikihow.com/images/thumb/a/ad/Join-a-Minecraft-Server-Step-5-Version-3.jpg/aid3784657-v4-728px-Join-a-Minecraft-Server-Step-5-Version-3.jpg.webp" width="300" height="175">
-		<img src="https://www.wikihow.com/images/thumb/a/ad/Join-a-Minecraft-Server-Step-5-Version-3.jpg/aid3784657-v4-728px-Join-a-Minecraft-Server-Step-5-Version-3.jpg.webp" width="300" height="175">
-	
-</div>
-			 <div class="flex justify-around mt-3">
-	<img src="https://www.wikihow.com/images/thumb/a/ad/Join-a-Minecraft-Server-Step-5-Version-3.jpg/aid3784657-v4-728px-Join-a-Minecraft-Server-Step-5-Version-3.jpg.webp" width="300" height="175">
-		<img src="https://www.wikihow.com/images/thumb/a/ad/Join-a-Minecraft-Server-Step-5-Version-3.jpg/aid3784657-v4-728px-Join-a-Minecraft-Server-Step-5-Version-3.jpg.webp" width="300" height="175">
-		<img src="https://www.wikihow.com/images/thumb/a/ad/Join-a-Minecraft-Server-Step-5-Version-3.jpg/aid3784657-v4-728px-Join-a-Minecraft-Server-Step-5-Version-3.jpg.webp" width="300" height="175">
-	
-</div>
+	<p></p>
 {:else if edition == "bm"}
 	<div class="flex justify-around mt-3">
 	<img src="https://www.wikihow.com/images/thumb/a/ad/Join-a-Minecraft-Server-Step-5-Version-3.jpg/aid3784657-v4-728px-Join-a-Minecraft-Server-Step-5-Version-3.jpg.webp" width="300" height="175">

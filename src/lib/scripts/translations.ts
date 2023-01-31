@@ -87,7 +87,7 @@ export default {
 		"button.newsubscribe": "New Subscription",
 		"newserver.l.setadmin": "Enter Admin",
 		"newserver.l.gamemode": "Gamemode",
-		"newserver.enteruname": "Enter Minecraft Ussername",
+		"newserver.enteruname": "Enter Minecraft Username",
 		"button.starting": "Starting",
 		"button.stop2": "  Stop",
 		"button.starting2": "  Starting",

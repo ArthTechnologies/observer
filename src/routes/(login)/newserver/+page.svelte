@@ -7,27 +7,30 @@
   let version = "Latest";
   let software = "Paper (Reccomended)";
   let snapshot = false;
+  let name = "";
+  let gamemode:string;
+  let admin = "";
 
   function send() {
-    let sVersion = document.getElementById("versionDropdown").value;
-    let sName = document.getElementById("nameInput").value;
-    let sSoftware = document.getElementById("softwareDropdown").value;
-    let sGamemode = document.getElementById("gamemodeDropdown").value;
-    let sAdmin = document.getElementById("adminInput").value;
+   
     let addons = [];
     let cmd = [];
 
-    switch (sSoftware) {
+    switch (software) {
       case "Paper (Reccomended)":
-        sSoftware = "paper";
+        software = "paper";
         break;
       case "Latest Snapshot":
-        sSoftware = "snapshot";
+        software = "snapshot";
         break;
-      case "Latest":
-        sSoftware = "latest";
-        break;
+
+  
     }
+    
+    software = software.charAt(0).toLowerCase() + software.slice(1);
+    version = version.charAt(0).toLowerCase() + version.slice(1);
+
+
     //for all 3 checkboxes, if checked, add their ids to the addons array
     if (document.getElementById("terralith").checked) {
       addons.push("terralith");
@@ -42,12 +45,13 @@
       addons.push("structory");
     }
 
-    cmd.push("defaultgamemode " + sGamemode);
-    cmd.push("op " + sAdmin);
+    cmd.push("op " + admin);
+    cmd.push("defaultgamemode " + gamemode);
 
-    console.log(cmd);
+    console.log("cmd = " + cmd);
 
-    createServer(sName, sSoftware, sVersion, addons, cmd);
+    createServer(name, software, version, addons, cmd);
+if (browser) {
 
     //wait 5 seconds
     setTimeout(function () {
@@ -62,6 +66,7 @@
         localStorage.setItem("x", "false");
       }
     }, 1000);
+}
   }
   let worldgen = true;
   function checkV() {
@@ -147,6 +152,7 @@
             >{$t("newserver.l.gamemode")}</label
           >
           <select
+          bind:value={gamemode}
             id="gamemodeDropdown"
             name="gamemodeDropdown"
             tabindex="0"
@@ -158,6 +164,7 @@
           </select>
           <label class="label" for="1">{$t("newserver.l.name")}</label>
           <input
+          bind:value={name}
             id="nameInput"
             class="input-bordered input-primary input w-full bg-base-300"
             type="text"
@@ -166,6 +173,7 @@
 
           <label class="label" for="3">{$t("newserver.l.setadmin")}</label>
           <input
+          bind:value={admin}
             id="adminInput"
             class="input-bordered input-primary input w-full bg-base-300"
             type="text"
