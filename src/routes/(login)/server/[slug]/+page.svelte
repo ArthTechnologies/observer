@@ -118,9 +118,11 @@
       rt = response;
       if (browser) {
         //todo: fix everything being on one line
+        console.log(rt)
+
 
         //set terminal's text to rt
-        document.getElementById("terminal").innerHTML = rt;
+        document.getElementById("terminal").innerHTML = rt.replace(/\n/g, "<p>");
       }
     });
     //set terminal's text to rt
@@ -337,7 +339,7 @@
 
     <div>
       <div
-        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto lg:w-[30rem] xl:w-[50rem] "
+        class="bg-base-300 h-96 lg:h-[30rem] rounded-xl shadow-xl overflow-auto lg:w-[30rem] xl:w-[50rem] "
       >
         <p class="p-5 sm:text-xs xl:text-lg font-mono" id="terminal" />
       </div>

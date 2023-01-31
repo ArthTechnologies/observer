@@ -13,9 +13,9 @@
 
   let accountEmailChopped = "noemail";
   //if accountEmail is longer than 20 characters
-  if ($accountEmail.length > 20) {
+  if ($accountEmail.length > 18) {
     //slice it to 20 characters
-    accountEmailChopped = $accountEmail.slice(0, 20);
+    accountEmailChopped = $accountEmail.slice(0, 18);
     accountEmailChopped += "...";
   } else {
     //else, just use accountEmail
@@ -54,7 +54,7 @@
         tabindex="0"
         class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-52"
       >
-        <li>
+        <li class="w-0">
           <p class="justify-between">
             {accountEmailChopped}
           </p>
