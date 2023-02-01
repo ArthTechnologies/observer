@@ -5,25 +5,29 @@
   import { t } from "$lib/scripts/i18n";
   let promise;
   let results = [];
+  let query = "";
   function search() {
+    console.log("searching" + query);
     results = [];
     if (browser) {
-      document.getElementById("plugins").innerHTML = "";
-      let query = document.getElementById("search").value;
       let software = localStorage.getItem("serverSoftware");
       let version = localStorage.getItem("serverVersion");
-      promise = searchPlugins(software, version, query).then((response) => {
-        response.hits.forEach((item) => {
-          results.push({
-            name: item.title,
-            desc: item.description,
-            icon: item.icon_url,
-            author: item.author,
-            id: item.project_id,
+
+      setTimeout(function () {
+        promise = searchPlugins(software, version, query).then((response) => {
+          response.hits.forEach((item) => {
+            results.push({
+              name: item.title,
+              desc: item.description,
+              icon: item.icon_url,
+              author: item.author,
+              id: item.project_id,
+            });
+            console.log(results);
           });
-          console.log(results);
         });
-      });
+      }, 1);
+      document.getElementById("plugins").innerHTML = "";
     }
   }
 </script>
@@ -35,7 +39,7 @@
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="my-modal-5" class="modal-toggle" />
 <div class="modal">
-  <div class="modal-box relative w-11/12 max-w-5xl space-y-5 ">
+  <div class="modal-box relative w-11/12 max-w-5xl space-y-5 h-[50rem]">
     <div class="flex justify-between">
       <label
         for="my-modal-5"
@@ -46,6 +50,7 @@
 
     <div>
       <input
+        bind:value={query}
         on:keypress={search}
         type="text"
         placeholder={$t("search")}

@@ -114,14 +114,8 @@
   function readCmd() {
     let rt;
     readTerminal(id).then((response) => {
-      //set rt to response
-      rt = response;
       if (browser) {
-        //todo: fix everything being on one line
-        console.log(rt);
-
-        //set terminal's text to rt
-        document.getElementById("terminal").innerHTML = rt.replace(
+        document.getElementById("terminal").innerHTML = response.replace(
           /\n/g,
           "<p>"
         );
