@@ -141,20 +141,7 @@
               <option>1.8.8</option>
             </select>
           {/if}
-          <label class="label" for="softwareDropdown"
-            >{$t("newserver.l.gamemode")}</label
-          >
-          <select
-            bind:value={gamemode}
-            id="gamemodeDropdown"
-            name="gamemodeDropdown"
-            tabindex="0"
-            class="select select-primary p-2 bg-base-100"
-          >
-            <option>Survival</option>
-            <option>Creative</option>
-            <option>Adventure</option>
-          </select>
+
           <label class="label" for="1">{$t("newserver.l.name")}</label>
           <input
             bind:value={name}
@@ -164,14 +151,6 @@
             placeholder="{$t('general.ex')} My Minecraft Server"
           />
 
-          <label class="label" for="3">{$t("newserver.l.setadmin")}</label>
-          <input
-            bind:value={admin}
-            id="adminInput"
-            class="input-bordered input-primary input w-full bg-base-300"
-            type="text"
-            placeholder={$t("newserver.enteruname")}
-          />
           {#if worldgen}
             <div class="p-2" />
             <div class="justify-center flex">
