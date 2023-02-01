@@ -12,23 +12,21 @@
   import { url } from "inspector";
   import { setDefaultResultOrder } from "dns";
   let enablePay = true;
-	let enableAuth = true;
+  let enableAuth = true;
   //sends user to /signin if localstorage token is ""
   if (browser) {
     enablePay = localStorage.getItem("enablePay");
-		enableAuth = localStorage.getItem("enableAuth");
+    enableAuth = localStorage.getItem("enableAuth");
 
     if (localStorage.getItem("token") == "" && enableAuth == "true") {
       goto("/signin");
     }
   }
 
-  
   let login = false;
   type NavType = "default" | "welcome";
   if (typeof navigator !== "undefined") {
     console.log(navigator.language);
-
 
     //set locale to the browser's language
     locale.set(navigator.language);

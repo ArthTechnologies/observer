@@ -8,11 +8,10 @@
   let software = "Paper (Reccomended)";
   let snapshot = false;
   let name = "";
-  let gamemode:string;
+  let gamemode: string;
   let admin = "";
 
   function send() {
-   
     let addons = [];
     let cmd = [];
 
@@ -23,13 +22,10 @@
       case "Latest Snapshot":
         software = "snapshot";
         break;
-
-  
     }
-    
+
     software = software.charAt(0).toLowerCase() + software.slice(1);
     version = version.charAt(0).toLowerCase() + version.slice(1);
-
 
     //for all 3 checkboxes, if checked, add their ids to the addons array
     if (document.getElementById("terralith").checked) {
@@ -41,7 +37,7 @@
     if (document.getElementById("nullscape").checked) {
       addons.push("nullscape");
     }
-		    if (document.getElementById("structory").checked) {
+    if (document.getElementById("structory").checked) {
       addons.push("structory");
     }
 
@@ -51,22 +47,21 @@
     console.log("cmd = " + cmd);
 
     createServer(name, software, version, addons, cmd);
-if (browser) {
-
-    //wait 5 seconds
-    setTimeout(function () {
-      //if x in localstorage is false, run code
-      if (localStorage.getItem("x") == "false") {
-        //set localStorage z to true
-        localStorage.setItem("z", "true");
-        //go to the servers page
-        goto("/");
-      } else {
-        //set it to false
-        localStorage.setItem("x", "false");
-      }
-    }, 1000);
-}
+    if (browser) {
+      //wait 5 seconds
+      setTimeout(function () {
+        //if x in localstorage is false, run code
+        if (localStorage.getItem("x") == "false") {
+          //set localStorage z to true
+          localStorage.setItem("z", "true");
+          //go to the servers page
+          goto("/");
+        } else {
+          //set it to false
+          localStorage.setItem("x", "false");
+        }
+      }, 1000);
+    }
   }
   let worldgen = true;
   function checkV() {
@@ -86,8 +81,6 @@ if (browser) {
       snapshot = false;
     }
   }
-
-	
 </script>
 
 <div class="flex place-content-center">
@@ -152,7 +145,7 @@ if (browser) {
             >{$t("newserver.l.gamemode")}</label
           >
           <select
-          bind:value={gamemode}
+            bind:value={gamemode}
             id="gamemodeDropdown"
             name="gamemodeDropdown"
             tabindex="0"
@@ -164,7 +157,7 @@ if (browser) {
           </select>
           <label class="label" for="1">{$t("newserver.l.name")}</label>
           <input
-          bind:value={name}
+            bind:value={name}
             id="nameInput"
             class="input-bordered input-primary input w-full bg-base-300"
             type="text"
@@ -173,7 +166,7 @@ if (browser) {
 
           <label class="label" for="3">{$t("newserver.l.setadmin")}</label>
           <input
-          bind:value={admin}
+            bind:value={admin}
             id="adminInput"
             class="input-bordered input-primary input w-full bg-base-300"
             type="text"
@@ -203,7 +196,7 @@ if (browser) {
                 src="/images/incendium.webp"
                 width="80ch"
               />
-							              <img
+              <img
                 class="mask mask-hexagon"
                 src="/images/structory.webp"
                 width="80ch"
@@ -226,7 +219,7 @@ if (browser) {
                 type="checkbox"
                 class="checkbox checkbox-secondary"
               />
-							              <input
+              <input
                 id="structory"
                 type="checkbox"
                 class="checkbox checkbox-secondary"

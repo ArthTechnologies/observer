@@ -106,7 +106,7 @@
   }
 </script>
 
-<div class="m-3 w-[20rem]">
+<div class="m-3 w-[21rem]">
   <div class="card w-50 bg-base-100 shadow-xl image-full">
     <div class="card-body">
       <h2 class="card-title">{name}</h2>
@@ -133,7 +133,7 @@
             <div
               on:click={start}
               id="start"
-              class="flex w-25 bg-success rounded-lg font-semibold uppercase text-base-100 text-[.79rem] tracking-wider  px-3  items-center"
+              class="flex w-[7.5rem] bg-success rounded-lg font-semibold uppercase text-base-100 text-[.79rem] tracking-wider  px-3  items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

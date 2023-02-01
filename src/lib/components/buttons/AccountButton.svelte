@@ -10,7 +10,6 @@
     window.location.href = "/signin";
   }
 
-
   let accountEmailChopped = "noemail";
   //if accountEmail is longer than 20 characters
   if ($accountEmail.length > 18) {

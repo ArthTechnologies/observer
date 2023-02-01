@@ -11,7 +11,7 @@
     <div>
       <p>
         {Webname}{@html $t("site.footer")}
-         {new Date().getFullYear()}.
+        {new Date().getFullYear()}.
       </p>
     </div>
   </footer>
@@ -20,7 +20,7 @@
     <div>
       <p>
         {Webname}{@html $t("site.footer")}
- {new Date().getFullYear()}.
+        {new Date().getFullYear()}.
       </p>
     </div>
   </div>
