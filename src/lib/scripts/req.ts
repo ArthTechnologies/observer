@@ -216,7 +216,7 @@ export function createServer(
 			cmds: c,
 		}),
 	};
-	console.log("Request Sent: " + JSON.parse(req.body))
+	console.log("Request Sent: " + JSON.stringify(req.body))
 	//if response is 409, send an alert, otherwise do nothing
 	const response = fetch(url, req)
 		.then((res) => res.text())
