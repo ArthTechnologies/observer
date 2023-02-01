@@ -103,6 +103,8 @@ export default {
 		"settings.stripeOff":
 			"Payments via Stripe are disabled. Add a stripe key on the backend to enable it.",
 		"settings.requireAuth": "Require Authentication",
+		"featured": "Featured",
+		"by": "by",
 	},
 	"es-ES": {
 		"homepage.title": "Sus servidores",
@@ -210,5 +212,7 @@ export default {
 		"settings.stripeOff":
 			"Los pagos a través de Stripe están desactivados. Agregue una tecla de banda en el backend para habilitar themeChange.",
 		"settings.requireAuth": "Requiere autenticación",
+		"featured": "Presentado",
+		"by": "de",
 	},
 };

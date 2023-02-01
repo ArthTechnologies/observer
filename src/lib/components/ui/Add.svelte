@@ -3,6 +3,7 @@
   import { searchPlugins } from "$lib/scripts/req";
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
+  import FeaturedPlugin from "./FeaturedPlugin.svelte";
   let promise;
   let results = [];
   let query = "";
@@ -30,6 +31,21 @@
       document.getElementById("plugins").innerHTML = "";
     }
   }
+  let tab = "ft";
+  function ft() {
+    if (browser) {
+      tab = "ft";
+      document.getElementById("ft").classList.add("tab-active");
+      document.getElementById("mr").classList.remove("tab-active");
+    }
+  }
+  function mr() {
+    if (browser) {
+      tab = "mr";
+      document.getElementById("mr").classList.add("tab-active");
+      document.getElementById("ft").classList.remove("tab-active");
+    }
+  }
 </script>
 
 <label for="my-modal-5" class="btn" on:click={search}
@@ -45,25 +61,64 @@
         for="my-modal-5"
         class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
       >
-      <h3 class="font-bold text-lg">{$t("server.pluginsFromModrinth")}</h3>
-    </div>
 
-    <div>
-      <input
-        bind:value={query}
-        on:keypress={search}
-        type="text"
-        placeholder={$t("search")}
-        class="searchBar input input-bordered input-sm"
-        id="search"
-      />
+      <div class="tabs tabs-boxed">
+        <button id="ft" on:click={ft} class="tab tab-active "
+          >{$t("featured")}</button
+        >
+        <button id="mr" on:click={mr} class="tab ">{$t("search")}</button>
+      </div>
     </div>
-    <div id="plugins" class="space-y-2">
-      {#await promise then}
-        {#each results as result}
-          <PluginResult {...result} />
-        {/each}
-      {/await}
-    </div>
+    {#if tab == "mr"}
+      <div>
+        <input
+          bind:value={query}
+          on:keypress={search}
+          type="text"
+          placeholder="{$t('search')} Modrinth"
+          class="searchBar input input-bordered input-sm"
+          id="search"
+        />
+      </div>
+      <div id="plugins" class="space-y-2">
+        {#await promise then}
+          {#each results as result}
+            <PluginResult {...result} />
+          {/each}
+        {/await}
+      </div>
+    {:else if tab == "ft"}
+      <div class="space-y-2">
+        <FeaturedPlugin
+          icon="https://www.spigotmc.org/data/resource_icons/34/34315.jpg?1483592228"
+          name="Vault"
+          desc="Vault is a Permissions, Chat, & Economy API required by many plugins."
+          author="milkbowl"
+          authorLink="https://github.com/MilkBowl"
+          nameLink="https://github.com/MilkBowl/Vault/#readme"
+          link="https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar"
+          disclaimer="This plugin has not been tested on minecraft versions before 1.13."
+        />
+        <FeaturedPlugin
+          icon="https://media.forgecdn.net/avatars/thumbnails/493/419/64/64/637803056128514812.png"
+          name="Squaremap"
+          desc="
+
+          A minimalistic and lightweight world map viewer for Minecraft servers, using the vanilla map rendering style "
+          author="jpenilla"
+          authorLink="https://github.com/jpenilla"
+          nameLink="https://github.com/jpenilla/squaremap/#readme"
+          link="https://github.com/jpenilla/squaremap/releases/download/v1.1.9/squaremap-paper-mc1.19.3-1.1.9.jar"
+          disclaimer="This plugin only supports the latest minecraft version."
+        />
+        <PluginResult
+          name="WorldEdit (FAWE)"
+          author="NotMyFault"
+          desc="Blazingly fast world manipulation for artists, builders and everyone else."
+          icon="https://cdn.modrinth.com/data/z4HZZnLr/1dab3e5596f37ade9a65f3587254ff61a9cf3c43.svg"
+          id="z4HZZnLr"
+        />
+      </div>
+    {/if}
   </div>
 </div>

@@ -3,7 +3,7 @@
 
   import ChooseVersion from "$lib/components/ui/ChooseVersion.svelte";
   import { browser } from "$app/environment";
-
+  import { t } from "$lib/scripts/i18n";
   export let name: string;
   export let author: string;
   export let desc: string;
@@ -26,20 +26,26 @@
 <div class="bg-base-200 rounded-lg p-3">
   <div class="flex justify-between place-items-center">
     <div class="flex space-x-3">
-      <img
-        src={icon}
-        alt="noicon"
-        class="w-14 h-14 bg-base-300 rounded-lg text-sm"
-      />
+      <a href="https://modrinth.com/plugin/{id}" target="_blank">
+        <img
+          src={icon}
+          alt="noicon"
+          class="w-14 h-14 bg-base-300 rounded-lg text-sm"
+        />
+      </a>
       <div>
         <div class="flex space-x-1">
-          <p class="text-xl font-bold">{name}</p>
+          <a
+            href="https://modrinth.com/plugin/{id}"
+            target="_blank"
+            class="link link-hover text-xl font-bold">{name}</a
+          >
           <div class="flex space-x-1 place-items-end">
-            <p>by</p>
+            <p>{$t("by")}</p>
             <a
               href="https://modrinth.com/user/{author}"
               target="_blank"
-              class="link">{author}</a
+              class="link link-hover">{author}</a
             >
           </div>
         </div>
