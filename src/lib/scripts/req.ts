@@ -319,7 +319,8 @@ export function writeTerminal(id: number, cmd: string) {
 				return "error";
 			} else {
 				//return input as json
-				return JSON.parse(input);
+				console.log(JSON.stringify(input))
+				return "success";
 			}
 		});
 }

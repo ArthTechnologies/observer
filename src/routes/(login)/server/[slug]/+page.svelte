@@ -108,6 +108,8 @@
       writeTerminal(id, input);
       //clear input
       document.getElementById("input").value = "";
+
+      readCmd();
     }
   }
 
@@ -134,7 +136,7 @@
           let terminal = document.getElementById("terminal");
         }
       }
-    }, 5000);
+    }, 3000);
   }
 </script>
 
