@@ -49,7 +49,7 @@
             >
           </div>
         </div>
-        <p>{desc}</p>
+        <p class="break-words w-[50rem]">{desc}</p>
       </div>
     </div>
     <ChooseVersion {id} />
