@@ -426,7 +426,7 @@
         <div class="text-sm pl-6 ">
           {$t("server.howtojoin")}<a
             target="_blank"
-            href="https://www.digminecraft.com/getting_started/how_to_connect_to_server.php"
+            href="https://arthmc.xyz/docs/how-to-join-servers"
             class="link link-primary">{$t("server.howtojoin2")}</a
           >
         </div>
