@@ -90,6 +90,7 @@ export function getSettings() {
 			if (browser) {
 				window.localStorage.setItem("enablePay", JSON.parse(input).enablePay);
 				window.localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
+				window.localStorage.setItem("address", JSON.parse(input).address);
 			}
 
 			return JSON.parse(input);

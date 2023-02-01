@@ -17,6 +17,7 @@
   import HowTo from "$lib/components/ui/HowTo.svelte";
   import Add from "$lib/components/ui/Add.svelte";
   let name: string = "-";
+  let address: string;
   let tname: string;
   let url: string;
   let apo = 0;
@@ -31,6 +32,7 @@
   let state = "false";
   if (browser) {
     email = localStorage.getItem("accountEmail");
+    address = localStorage.getItem("address");
     //hide horizontal scrollbar
     document.body.style.overflowX = "hidden";
   }
@@ -352,7 +354,7 @@
           <div class="stat">
             <div class="stat-title">{$t("server.ip")}</div>
             <div class="stat-value text-sm sm:text-lg md:text-4xl">
-              arthmc.xyz:{port}
+              {address}:{port}
             </div>
             <div class="stat-desc" />
           </div>

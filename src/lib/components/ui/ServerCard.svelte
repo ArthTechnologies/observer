@@ -102,7 +102,7 @@
       if (window.location.pathname == "/") {
         getStatus();
       }
-    }, 5000);
+    }, 3000);
   }
 </script>
 
