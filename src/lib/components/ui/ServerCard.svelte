@@ -133,7 +133,7 @@
             <div
               on:click={start}
               id="start"
-              class="flex w-[7.5rem] bg-success rounded-lg font-semibold uppercase text-base-100 text-[.73rem] tracking-wider  px-3  items-center"
+              class="flex w-[7.5rem] bg-success rounded-lg font-semibold uppercase text-base-100 text-[.83rem] tracking-wider  px-3  items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +168,7 @@
                   y2="4.93"
                 /></svg
               >
-              {$t("button.starting2")}
+              {$t("button.starting3")}
             </div>
           {/if}
           <button
