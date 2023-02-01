@@ -270,7 +270,7 @@
               y2="4.93"
             /></svg
           >
-          restarting</button
+          {$t("button.restarting2")}</button
         >
         
         <button  class="btn btn-disabled"
@@ -291,7 +291,7 @@
             width="6"
             height="6"
           /></svg
-        >stop</button
+        >{$t("button.stop2")}</button
       >
       {:else if state == "false"}
         <button on:click={start} class="btn btn-success"
