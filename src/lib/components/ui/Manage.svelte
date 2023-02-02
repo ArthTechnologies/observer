@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { browser } from "$app/environment";
   import { getPlugins } from "$lib/scripts/req";
   import PluginResult from "./PluginResult.svelte";
@@ -7,7 +7,15 @@
   let promise;
   let res = { names: [], ids: [], platforms: [] };
   let query = "";
-  function search() {
+  if (browser) {
+    //run search upon the "refresh" event
+    document.addEventListener("refresh", function () {
+      setTimeout(function () {
+        search();
+      }, 10);
+    });
+  }
+  export function search() {
     console.log("searching" + query);
 
     if (browser) {
@@ -38,8 +46,17 @@
       >
     </div>
 
-    <div id="plugins" class="space-y-2">
-      {#await promise then}
+    <div class="space-y-2">
+      {#await promise}
+        <div class="bg-base-200 rounded-lg w-full h-[5rem] p-2">
+          <div
+            class="bg-slate-700 rounded-lg w-[7rem] h-[1rem] animate-pulse mb-2"
+          />
+          <div
+            class="bg-slate-700 rounded-lg w-[30rem] h-[1rem] animate-pulse mt-3"
+          />
+        </div>
+      {:then}
         {#each res.names as name, i}
           <ManagePlugin {name} id={res.ids[i]} platform={res.platforms[i]} />
         {/each}

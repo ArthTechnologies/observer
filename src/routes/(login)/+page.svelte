@@ -67,7 +67,6 @@
     </div>
 
     <div class="flex flex-wrap justify-center" id="serverList">
-      <!-- <ServerCard name="Server Name" loader="Loader" version="Version" /> -->
       {#await promise}
         <ServerSkele />
       {:then}
