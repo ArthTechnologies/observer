@@ -14,18 +14,19 @@
   function send() {
     let addons = [];
     let cmd = [];
-
-    switch (software) {
+    let sSoftware = software;
+    let sVersion: string;
+    switch (sSoftware) {
       case "Paper (Reccomended)":
-        software = "paper";
+        sSoftware = "paper";
         break;
       case "Latest Snapshot":
-        software = "snapshot";
+        sSoftware = "snapshot";
         break;
     }
 
-    software = software.charAt(0).toLowerCase() + software.slice(1);
-    version = version.charAt(0).toLowerCase() + version.slice(1);
+    sSoftware = sSoftware.charAt(0).toLowerCase() + sSoftware.slice(1);
+    sVersion = version.charAt(0).toLowerCase() + version.slice(1);
 
     //for all 3 checkboxes, if checked, add their ids to the addons array
     if (document.getElementById("terralith").checked) {
@@ -46,8 +47,9 @@
 
     console.log("cmd = " + cmd);
 
-    createServer(name, software, version, addons, cmd);
-    if (browser) {
+    console.log(sSoftware + software)
+    if (browser && name != "") {
+      createServer(name, sSoftware, sVersion, addons, cmd);
       //wait 5 seconds
       setTimeout(function () {
         //if x in localstorage is false, run code
