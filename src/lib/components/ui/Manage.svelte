@@ -23,7 +23,9 @@
   search();
 </script>
 
-<label for="manage" class="btn btn-block btn-primary">Manage Plugins</label>
+<label for="manage" on:click={search} class="btn btn-block btn-primary"
+  >Manage Plugins</label
+>
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="manage" class="modal-toggle" />
