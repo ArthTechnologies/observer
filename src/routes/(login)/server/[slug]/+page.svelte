@@ -9,12 +9,10 @@
     readTerminal,
   } from "$lib/scripts/req";
   import { getServer } from "$lib/scripts/req.js";
-  import Admin from "$lib/components/icons/admin.svelte";
-  import Banned from "$lib/components/icons/banned.svelte";
+
   import { t, locale, locales } from "$lib/scripts/i18n";
-  import PluginResult from "$lib/components/ui/PluginResult.svelte";
-  import { searchPlugins } from "$lib/scripts/req.js";
-  import HowTo from "$lib/components/ui/HowTo.svelte";
+
+  import Manage from "$lib/components/ui/Manage.svelte";
   import Add from "$lib/components/ui/Add.svelte";
   let name: string = "-";
   let address: string;
@@ -432,7 +430,9 @@
         </div>
       </div>
 
-      <Add />
+      <div class="flex w-[10.6rem] space-x-2">
+        <Add /><Manage/>
+      </div>
     </div>
   </div>
 </div>

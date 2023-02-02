@@ -48,7 +48,7 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn" on:click={search}
+<label for="my-modal-5" class="btn btn-block" on:click={search}
   >{$t("button.addplugin")}</label
 >
 
@@ -95,7 +95,7 @@
           desc="Vault is a Permissions, Chat, & Economy API required by many plugins."
           author="milkbowl"
           authorLink="https://github.com/MilkBowl"
-          nameLink="https://github.com/MilkBowl/Vault/#readme"
+          pluginId="MilkBowl/Vault"
           link="https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar"
           disclaimer="This plugin has not been tested on minecraft versions before 1.13."
         />
@@ -107,7 +107,7 @@
           A minimalistic and lightweight world map viewer for Minecraft servers, using the vanilla map rendering style "
           author="jpenilla"
           authorLink="https://github.com/jpenilla"
-          nameLink="https://github.com/jpenilla/squaremap/#readme"
+          pluginId="jpenilla/squaremap"
           link="https://github.com/jpenilla/squaremap/releases/download/v1.1.9/squaremap-paper-mc1.19.3-1.1.9.jar"
           disclaimer="This plugin only supports the latest minecraft version."
         />

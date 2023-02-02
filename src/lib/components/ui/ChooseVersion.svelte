@@ -4,6 +4,7 @@
     import { browser } from "$app/environment";
 
     export let id: string;
+    export let pluginName: string;
     var software = "";
     var sVersion = "";
     if (browser) {
@@ -39,6 +40,8 @@
                             date: version.date_published,
                             type: version.version_type,
                             url: version.files[0].url,
+                            pluginId: id,
+                            pluginName: pluginName,
                         },
                     });
                 }

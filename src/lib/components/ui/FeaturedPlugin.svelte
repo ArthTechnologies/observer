@@ -11,7 +11,7 @@
     export let disclaimer: string;
     export let link: string;
     export let authorLink: string;
-    export let nameLink: string;
+    export let pluginId: string;
 
     function get() {
         getVersions(id).then((data) => {
@@ -30,14 +30,17 @@
         if (browser) {
             id = localStorage.getItem("serverID");
         }
-        sendVersion(link, id);
+
+        let plId = pluginId.replace(/\//g, "_");
+
+        sendVersion(link, id, "gh_"+plId, name);
     }
 </script>
 
 <div class="bg-base-200 rounded-lg p-3">
     <div class="flex justify-between place-items-center">
         <div class="flex space-x-3">
-            <a href={nameLink} target="_blank">
+            <a href="https://github.com/{pluginId}/#readme" target="_blank">
                 <img
                     src={icon}
                     alt="noicon"
@@ -47,7 +50,7 @@
             <div>
                 <div class="flex space-x-1">
                     <a
-                        href={nameLink}
+                    href="https://github.com/{pluginId}/#readme"
                         target="_blank"
                         class="flex link link-hover text-xl font-bold"
                         >{name}

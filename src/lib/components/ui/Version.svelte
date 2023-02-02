@@ -8,6 +8,8 @@
     export let date: string;
     export let type: string;
     export let url: string;
+    export let pluginId: string;
+    export let pluginName: string;
 
     if (type == "release") {
         type = "";
@@ -23,7 +25,12 @@
         if (browser) {
             id = localStorage.getItem("serverID");
         }
-        sendVersion(url, id);
+
+        //replace ()s with nothing, spaces and underscores with -s
+        pluginName = pluginName.replace(/[\(\)]/g, "");
+        pluginName = pluginName.replace(/[\s_]/g, "-");
+        
+        sendVersion(url, id, "lr_"+pluginId, pluginName);
     }
 </script>
 
