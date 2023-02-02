@@ -66,4 +66,27 @@
       </div>
     </div>
   </div>
+{:else if platform == "cx"}
+  <div class="bg-base-200 rounded-lg p-3">
+    <div class="flex justify-between place-items-center">
+      <div class="flex space-x-3">
+        <div>
+          <div class="flex space-x-1">
+            <a
+              href={id}
+              target="_blank"
+              class="link link-hover text-xl font-bold">{name}</a
+            >
+            <div class="flex space-x-1.5 place-items-end">
+              <img
+                src="https://arthmc.xyz/favicon.png"
+                width="24"
+                class="ml-0.5 mb-0.5"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {/if}
