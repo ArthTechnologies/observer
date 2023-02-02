@@ -152,10 +152,12 @@
           />
 
           {#if worldgen}
-            <div class="p-2" />
-            <div class="justify-center flex">
+
+            <div class="justify-center flex mt-2 mb-1">
               <p class="label ">Worldgen Mods</p>
-              <Helper tooltipText={$t("newserver.t.worldgen")} />
+
+                <Helper tooltipText={$t("newserver.t.worldgen")} />
+
             </div>
 
             <div class="flex justify-center">

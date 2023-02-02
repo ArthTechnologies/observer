@@ -12,12 +12,12 @@
   import { url } from "inspector";
   import { setDefaultResultOrder } from "dns";
   let enablePay = true;
-  let enableAuth = true;
+  let enableAuth = "true";
   //sends user to /signin if localstorage token is ""
   if (browser) {
     enablePay = localStorage.getItem("enablePay");
     enableAuth = localStorage.getItem("enableAuth");
-
+    console.log(enableAuth + "auth")
     if (localStorage.getItem("token") == "" && enableAuth == "true") {
       goto("/signin");
     }
@@ -46,9 +46,16 @@
   export let navType: NavType;
 
   onMount(async () => {
-    if (browser) {
-      //check();
+
+    setTimeout(function () {
+      if (browser) {
+        enableAuth = localStorage.getItem("enableAuth");
+      console.log(enableAuth + "authd")
+      if (localStorage.getItem("token") == "" && enableAuth == "true") {
+      goto("/signin");
     }
+    }
+    }, 100);
   });
 
   function check() {
