@@ -3,20 +3,39 @@
   export let id;
   export let platform;
   let author;
+  let desc;
   if (platform == "lr") {
     //GET https://api.modrinth.com/v2/project/Lu3KuzdV, store author
     fetch("https://api.modrinth.com/v2/project/" + id)
       .then((response) => response.json())
       .then((data) => {
-        author = data.author;
+        desc = data.description;
       });
   } else if (platform == "gh") {
     author = id.split("/")[0];
+    fetch("https://api.github.com/repos/" + id)
+      .then((response) => response.json())
+      .then((data) => {
+        desc = data.description;
+      });
+  } else if (platform == "cx") {
+    switch (name) {
+      case "Geyser":
+        desc =
+          "A bridge/proxy allowing you to connect to Minecraft: Java Edition servers with Minecraft: Bedrock Edition. ";
+        break;
+      case "Floodgate":
+        desc =
+          "An addon to Geyser that removes the need for Bedrock players to log in with a Java Edition account.";
+        break;
+    }
   }
+
+  console.log(platform + name);
 </script>
 
-{#if platform == "lr"}
-  <div class="bg-base-200 rounded-lg p-3">
+<div class="bg-base-200 rounded-lg p-3">
+  {#if platform == "lr"}
     <div class="flex justify-between place-items-center">
       <div class="flex space-x-3">
         <div>
@@ -38,9 +57,7 @@
         </div>
       </div>
     </div>
-  </div>
-{:else if platform == "gh"}
-  <div class="bg-base-200 rounded-lg p-3">
+  {:else if platform == "gh"}
     <div class="flex justify-between place-items-center">
       <div class="flex space-x-3">
         <div>
@@ -65,18 +82,25 @@
         </div>
       </div>
     </div>
-  </div>
-{:else if platform == "cx"}
-  <div class="bg-base-200 rounded-lg p-3">
+  {:else if platform == "cx"}
     <div class="flex justify-between place-items-center">
       <div class="flex space-x-3">
         <div>
           <div class="flex space-x-1">
-            <a
-              href={id}
-              target="_blank"
-              class="link link-hover text-xl font-bold">{name}</a
-            >
+            {#if name == "Geyser" || name == "Floodgate"}
+              <p class="text-xl font-bold">{name}</p>
+              <div class=" flex space-x-1 place-items-end">
+                <p>by</p>
+                <a
+                  href="https://geysermc.org"
+                  target="_blank"
+                  class="link link-hover">GeyserMC</a
+                >
+              </div>
+            {:else}
+              <p class="text-xl font-bold">{name}</p>
+              <div class=" flex space-x-1 place-items-end" />
+            {/if}
             <div class="flex space-x-1.5 place-items-end">
               <img
                 src="https://arthmc.xyz/favicon.png"
@@ -88,5 +112,6 @@
         </div>
       </div>
     </div>
-  </div>
-{/if}
+  {/if}
+  {desc}
+</div>

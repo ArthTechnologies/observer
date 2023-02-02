@@ -39,8 +39,6 @@
     </div>
 
     <div id="plugins" class="space-y-2">
-      <ManagePlugin name="Geyser" id="https://geysermc.org" platform="cx" />
-
       {#await promise then}
         {#each res.names as name, i}
           <ManagePlugin {name} id={res.ids[i]} platform={res.platforms[i]} />
