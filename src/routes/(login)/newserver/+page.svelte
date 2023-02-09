@@ -47,7 +47,7 @@
 
     console.log("cmd = " + cmd);
 
-    console.log(sSoftware + software)
+    console.log(sSoftware + software);
     if (browser && name != "") {
       createServer(name, sSoftware, sVersion, addons, cmd);
       //wait 5 seconds
@@ -63,6 +63,8 @@
           localStorage.setItem("x", "false");
         }
       }, 1000);
+    } else if (browser) {
+      alert("Please give your server a name");
     }
   }
   let worldgen = true;
@@ -154,12 +156,10 @@
           />
 
           {#if worldgen}
-
             <div class="justify-center flex mt-2 mb-1">
               <p class="label ">Worldgen Mods</p>
 
-                <Helper tooltipText={$t("newserver.t.worldgen")} />
-
+              <Helper tooltipText={$t("newserver.t.worldgen")} />
             </div>
 
             <div class="flex justify-center">

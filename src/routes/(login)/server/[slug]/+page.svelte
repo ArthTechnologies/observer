@@ -28,6 +28,7 @@
   let restarting = false;
   let email: string = "";
   let state = "false";
+  let icon = "/images/structory.webp";
   if (browser) {
     email = localStorage.getItem("accountEmail");
     address = localStorage.getItem("address");
@@ -107,6 +108,10 @@
   function writeCmd(event) {
     //take input value
     let input = document.getElementById("input").value;
+    //if theres a / at the beginning, remove it
+    if (input.startsWith("/")) {
+      input = input.substring(1);
+    }
     //if key pressed is enter, send alert
     if (event.keyCode == 13) {
       getStatus();
@@ -233,7 +238,7 @@
             /></svg
           >{$t("button.stop2")}</button
         >
-        {:else if restarting}
+      {:else if restarting}
         <button class="btn btn-success"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
@@ -270,27 +275,27 @@
           >
           {$t("button.restarting2")}</button
         >
-        
-        <button  class="btn btn-disabled"
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-stop-circle"
-          ><circle cx="12" cy="12" r="10" /><rect
-            x="9"
-            y="9"
-            width="6"
-            height="6"
-          /></svg
-        >{$t("button.stop2")}</button
-      >
+
+        <button class="btn btn-disabled"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-stop-circle"
+            ><circle cx="12" cy="12" r="10" /><rect
+              x="9"
+              y="9"
+              width="6"
+              height="6"
+            /></svg
+          >{$t("button.stop2")}</button
+        >
       {:else if state == "false"}
         <button on:click={start} class="btn btn-success"
           ><svg
@@ -410,15 +415,35 @@
         class="input input-secondary bg-base-200 lg:w-[30rem] xl:w-[50rem] "
       />
     </div>
-    <div class="m-3 flex flex-col">
+    <div class=" flex flex-col">
       <div class="space-y-5 mb-4">
         <div class="stats bg-base-200 shadow-xl image-full">
-          <div class="stat">
-            <div class="stat-title">{$t("server.ip")}</div>
-            <div class="stat-value text-sm sm:text-lg md:text-4xl">
-              {address}:{port}
+          <div class="stat flex">
+            <img src={icon} class="w-[4rem] h-[4rem] rounded-md" />
+
+            <div>
+              <div class="stat-title">{$t("server.ip")}</div>
+              <div class="stat-value text-sm sm:text-lg md:text-3xl">
+                {address}:{port}
+              </div>
             </div>
-            <div class="stat-desc" />
+            <div class="btn btn-sm btn-circle">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-edit-2"
+                ><path
+                  d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
+                /></svg
+              >
+            </div>
           </div>
         </div>
         <div class="text-sm pl-6 ">
@@ -431,7 +456,7 @@
       </div>
 
       <div class="flex w-[10.6rem] space-x-2">
-        <Add /><Manage/>
+        <Add /><Manage />
       </div>
     </div>
   </div>
