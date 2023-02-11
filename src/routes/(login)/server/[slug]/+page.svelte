@@ -14,6 +14,7 @@
 
   import Manage from "$lib/components/ui/Manage.svelte";
   import Add from "$lib/components/ui/Add.svelte";
+  import EditInfo from "$lib/components/ui/EditInfo.svelte";
   let name: string = "-";
   let address: string;
   let tname: string;
@@ -23,8 +24,7 @@
   let port = 10000;
   let id = 0;
   let lock = false;
-  let s = "Paper";
-  let v = "latest";
+  let desc: string = "";
   let restarting = false;
   let email: string = "";
   let state = "false";
@@ -417,33 +417,22 @@
     </div>
     <div class=" flex flex-col">
       <div class="space-y-5 mb-4">
-        <div class="stats bg-base-200 shadow-xl image-full">
-          <div class="stat flex">
-            <img src={icon} class="w-[4rem] h-[4rem] rounded-md" />
+        <div class="rounded-xl bg-base-200 shadow-xl image-full">
+          <div class="flex">
+            <div class="p-4 space-x-4 flex">
+              <img src={icon} class="w-[4rem] h-[4rem] rounded-md" />
 
-            <div>
-              <div class="stat-title">{$t("server.ip")}</div>
-              <div class="stat-value text-sm sm:text-lg md:text-3xl">
-                {address}:{port}
+              <div>
+                <div class="stat-title">{$t("server.ip")}</div>
+                <div class="stat-value text-sm sm:text-lg md:text-3xl">
+                  {address}:{port}
+                </div>
+                <div class="stat-desc ">
+                  {desc}
+                </div>
               </div>
             </div>
-            <div class="btn btn-sm btn-circle">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-edit-2"
-                ><path
-                  d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
-                /></svg
-              >
-            </div>
+            <EditInfo />
           </div>
         </div>
         <div class="text-sm pl-6 ">
