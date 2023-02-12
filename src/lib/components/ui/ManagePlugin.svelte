@@ -4,6 +4,7 @@
   import { browser } from "$app/environment";
   import { getHeapSpaceStatistics } from "v8";
   import { space } from "svelte/internal";
+  import ChooseVersionAlt from "./ChooseVersionAlt.svelte";
 
   export let name;
   export let id;
@@ -47,7 +48,7 @@
     }
   }
 
-  function del() {
+  export function del() {
     //tell upstream component to refresh
     const event = new CustomEvent("refresh");
     document.dispatchEvent(event);
@@ -74,8 +75,8 @@
   }
 </script>
 
-<div class="bg-base-200 rounded-lg px-3 pt-2.5 pb-2.5 ">
-  <div>
+<div class="bg-base-200 rounded-lg px-1.5 pt-2.5 pb-2.5 space-x-1">
+  <div class="px-1.5">
     {#if platform == "lr"}
       <div class="flex justify-between place-items-center">
         <div class="flex space-x-3">
@@ -168,4 +169,7 @@
     </div>
   </div>
   <button on:click={del} class="btn btn-xs btn-error mt-0.5"> Delete</button>
+  {#if platform == "lr"}
+    <!-- <ChooseVersionAlt pluginName={name} {id} /> this currently doesnt delete the old plugin, so its not enabled-->
+  {/if}
 </div>
