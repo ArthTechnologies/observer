@@ -8,6 +8,9 @@ let lock = false;
 //set email from local storage to variable
 if (browser) {
   accountEmail.set(window.localStorage.getItem("accountEmail"));
+if (localStorage.getItem("x") == undefined) {
+  localStorage.setItem("x", "false");
+} 
 }
 
 const GET = { method: "GET" };
@@ -150,6 +153,11 @@ export function getSettings() {
         window.localStorage.setItem("enablePay", JSON.parse(input).enablePay);
         window.localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
         window.localStorage.setItem("address", JSON.parse(input).address);
+
+        if (JSON.parse(input).enableAuth == false) {
+          window.localStorage.setItem("accountEmail", "guest");
+          accountEmail.set("guest");
+        }
       }
 
       return JSON.parse(input);

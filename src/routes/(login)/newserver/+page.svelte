@@ -57,6 +57,7 @@
           //set localStorage z to true
           localStorage.setItem("z", "true");
           //go to the servers page
+          console.log("redricting...");
           goto("/");
         } else {
           //set it to false
