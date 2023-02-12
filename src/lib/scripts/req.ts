@@ -14,6 +14,44 @@ const GET = { method: "GET" };
 const POST = { method: "POST" };
 const DELETE = { method: "DELETE" };
 
+export function setInfo(id, icon, desc) {
+  console.log(id);
+  const url = apiurl + "server/" + id + "/setInfo";
+  const req = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      desc: desc,
+      icon: icon,
+    }),
+  };
+
+ //if image isnt taller than it is wide, run code. keep in mind icon is just a url
+ let img = new Image();
+  img.src = icon;
+  img.onload = function() {
+    if (img.height <= img.width) {
+
+  return fetch(url, req)
+  .then((res) => res.text())
+  .then((input: string) => {
+    console.log("Response Recieved: " + input);
+
+    if (input.indexOf("400") > -1) {
+      return "error"; 
+    } else {
+      return "success";
+    }
+  })
+  .catch((err) => console.error(err));
+  } else {
+    alert("Image can't be taller than it is wide" + img.height + " " + img.width)
+  }
+}
+}
+
 export function getPlugins(id) {
   const url = apiurl + "server/" + id + "/plugins";
   return fetch(url, GET)

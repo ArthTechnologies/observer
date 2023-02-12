@@ -7,6 +7,7 @@
     deleteServer,
     writeTerminal,
     readTerminal,
+    apiurl,
   } from "$lib/scripts/req";
   import { getServer } from "$lib/scripts/req.js";
 
@@ -28,7 +29,7 @@
   let restarting = false;
   let email: string = "";
   let state = "false";
-  let icon = "/images/structory.webp";
+  let icon = "";
   if (browser) {
     email = localStorage.getItem("accountEmail");
     address = localStorage.getItem("address");
@@ -41,6 +42,20 @@
     id = localStorage.getItem("serverID");
 
     port += parseInt(id);
+
+    //GET apiurl/server/id/getInfo
+    fetch(apiurl + "server/" + id + "/getInfo", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        desc = data.desc;
+        icon = data.iconUrl;
+      });
 
     //wait half a second
     setTimeout(() => {
@@ -76,13 +91,14 @@
       state = response.state;
       if (restarting && state == "starting") {
         restarting = false;
+        console.log("unlocking");
         lock = false;
       }
-      console.log(id + "'s state is " + state);
     });
   }
 
   function start() {
+    console.log(lock);
     if (!lock) {
       if (state == "true") {
         changeServerState("restart", id, email);
@@ -99,6 +115,7 @@
   }
   function stop() {
     changeServerState("stop", id, email);
+    lock = false;
   }
 
   onMount(() => {
@@ -120,7 +137,10 @@
       //clear input
       document.getElementById("input").value = "";
 
-      readCmd();
+      //wait 200 ms then read terminal
+      setTimeout(() => {
+        readCmd();
+      }, 200);
     }
   }
 
@@ -420,14 +440,14 @@
         <div class="rounded-xl bg-base-200 shadow-xl image-full">
           <div class="flex">
             <div class="p-4 space-x-4 flex">
-              <img src={icon} class="w-[4rem] h-[4rem] rounded-md" />
+              <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md" />
 
               <div>
                 <div class="stat-title">{$t("server.ip")}</div>
                 <div class="stat-value text-sm sm:text-lg md:text-3xl">
                   {address}:{port}
                 </div>
-                <div class="stat-desc ">
+                <div id="xDesc" class="stat-desc ">
                   {desc}
                 </div>
               </div>

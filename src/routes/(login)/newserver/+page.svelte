@@ -50,7 +50,7 @@
     console.log(sSoftware + software);
     if (browser && name != "") {
       createServer(name, sSoftware, sVersion, addons, cmd);
-      //wait 5 seconds
+      //wait 1 second
       setTimeout(function () {
         //if x in localstorage is false, run code
         if (localStorage.getItem("x") == "false") {

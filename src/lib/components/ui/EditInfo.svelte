@@ -1,3 +1,26 @@
+<script>
+  import { browser } from "$app/environment";
+  import { setInfo } from "$lib/scripts/req";
+  let id;
+  let icon = "";
+  let desc = "";
+  if (browser) {
+    id = localStorage.getItem("serverID");
+
+    setTimeout(() => {
+      icon = document.getElementById("xIcon").src;
+      desc = document.getElementById("xDesc").value;
+    }, 1000);
+  }
+  function set() {
+    //download the file from the input with id="icon"
+
+    if (browser) {
+      setInfo(id, icon, desc);
+    }
+  }
+</script>
+
 <label for="editInfo"
   ><div class="btn btn-sm btn-circle mr-2 mt-2">
     <svg
@@ -27,18 +50,28 @@
       Players will see this information on their server list in Minecraft.
     </p>
     <label for="serverDescription" class="block font-bold mb-2"
-      >Description</label
-    >
-    <input type="text" id="serverDescription" class="input input-bordered" />
-    <label for="serverIcon" class="block font-bold mb-2 mt-2">Icon</label>
+      >Description
+    </label>
     <input
-      type="file"
+      bind:value={desc}
+      type="text"
       id="serverDescription"
-      class="file-input input-bordered"
+      class="input input-bordered"
+    />
+    <label for="serverIcon" class="block font-bold my-2"
+      >Icon
+      <p class="font-light">Image can't be taller than it is wide.</p></label
+    >
+    <input
+      bind:value={icon}
+      type="text"
+      id="serverIcon"
+      class="input input-bordered"
+      placeholder="Enter URL"
     />
 
     <div class="flex justify-end mt-4">
-      <label for="editInfo" class="btn btn-primary">Save</label>
+      <label on:click={set} for="editInfo" class="btn btn-primary">Save</label>
     </div>
   </div>
 </div>
