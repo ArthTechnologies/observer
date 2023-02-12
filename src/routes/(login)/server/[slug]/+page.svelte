@@ -54,7 +54,14 @@
       .then((data) => {
         console.log(data);
         desc = data.desc;
-        icon = data.iconUrl;
+        console.log(data.iconUrl + "icon");
+        if (data.iconUrl != undefined) {
+          console.log("icon is " + data.iconUrl);
+          icon = data.iconUrl;
+        } else {
+          console.log("setting placeholder");
+          icon = "/images/placeholder.webp";
+        }
       });
 
     //wait half a second

@@ -11,13 +11,21 @@
   let sendName = name;
   let author;
   let desc;
+  let slug = id;
   if (platform == "lr") {
     name = name.replace(/-/g, " ");
 
-    fetch("https://api.modrinth.com/v2/project/" + id)
+    fetch(lrurl + "project/" + id)
       .then((response) => response.json())
       .then((data) => {
         desc = data.description;
+        slug = data.slug;
+      });
+
+    fetch(lrurl + "project/" + id + "/members")
+      .then((response) => response.json())
+      .then((data) => {
+        author = data[0].user.username;
       });
   } else if (platform == "gh") {
     author = id.split("/")[0];
@@ -75,11 +83,19 @@
             <div class="flex space-x-1">
               <div class="flex space-x-1.5 place-items-end ">
                 <a
-                  href="https://modrinth.com/plugin/{id}"
+                  href="https://modrinth.com/plugin/{slug}"
                   target="_blank"
                   class="link link-hover text-xl font-bold">{name}</a
                 >
 
+                <div class="flex space-x-1">
+                  <p>by</p>
+                  <a
+                    href="https://modrinth.com/user/{author}"
+                    target="_blank"
+                    class="link link-hover">{author}</a
+                  >
+                </div>
                 <img
                   src="https://github.com/modrinth/art/blob/main/Branding/Mark/mark-dark__32x32.png?raw=true"
                   width="24"
