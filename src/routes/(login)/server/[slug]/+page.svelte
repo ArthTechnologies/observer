@@ -30,6 +30,66 @@
   let email: string = "";
   let state = "false";
   let icon = "";
+function alwaysDay(event) {
+
+    let input = document.getElementById("alwaysDay").checked;
+	if (input) {
+		 if (event.keyCode == 13) {
+      getStatus();
+
+      writeTerminal(id, "time set day");
+			  writeTerminal(id, "gamerule doDaylightCycle false");
+   
+      document.getElementById("alwaysDay").checked = false;
+
+      //wait 200 ms then read terminal
+      setTimeout(() => {
+        readCmd();
+      }, 200);
+}
+	}
+    
+  
+}
+
+function gamemode(event) {
+	    let input = document.getElementById("gamemode").value;
+
+		 if (event.keyCode == 13) {
+      getStatus();
+
+      writeTerminal(id, "defaultgamemode " + input);
+
+   
+      document.getElementById("gamemode").value = "";
+
+      //wait 200 ms then read terminal
+      setTimeout(() => {
+        readCmd();
+      }, 200);
+}
+	
+}
+
+function OpPlayer(event) {
+	    let input = document.getElementById("username").value;
+
+		 if (event.keyCode == 13) {
+      getStatus();
+
+      writeTerminal(id, "op " + input);
+			 
+   
+      document.getElementById("username").value = "";
+
+      //wait 200 ms then read terminal
+      setTimeout(() => {
+        readCmd();
+      }, 200);
+}
+	}
+
+	
   if (browser) {
     email = localStorage.getItem("accountEmail");
     address = localStorage.getItem("address");
@@ -150,6 +210,7 @@
       }, 200);
     }
   }
+
 
   function readCmd() {
     let rt;
@@ -447,7 +508,7 @@
         <div class="rounded-xl bg-base-200 shadow-xl image-full">
           <div class="flex">
             <div class="p-4 space-x-4 flex">
-              <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md" />
+              <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md " />
 
               <div>
                 <div class="stat-title">{$t("server.ip")}</div>
@@ -474,6 +535,28 @@
       <div class="flex w-[10.6rem] space-x-2">
         <Add /><Manage />
       </div>
+			<div class="bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl">
+				<p class="text-xl font-bold">
+					Command Shortcuts</p>
+				<div class="space-x-1.5">
+				<label class="label" for="username">Give a player cheats</label>
+				
+					<input id="username" class="input input-sm input-bordered" placeholder="Enter Minecraft Username" type="text" />
+					<button on:click={OpPlayer} class="btn btn-secondary btn-sm">send</button>
+				</div>
+								<div class="space-x-1.5">
+				<label class="label" for="gamemode">Set the default gamemode</label>
+				
+					<input id="gamemode" class="input input-sm input-bordered" placeholder="Creative/Survival/Adventure" type="text" />
+					<button on:click={gamemode} class="btn btn-secondary btn-sm">send</button>
+				</div>
+								
+				<label class="label" for="alwaysDay">Enable Always Day</label>
+				<div class="flex items-center space-x-2 ml-2">
+					<input on:change={alwaysDay} id="alwaysDay" type="checkbox" class="toggle" />
+					<button class="btn btn-secondary btn-sm">send</button>
+				</div>
+			</div>
     </div>
   </div>
 </div>
