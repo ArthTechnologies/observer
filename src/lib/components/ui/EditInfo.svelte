@@ -9,7 +9,7 @@
 
     setTimeout(() => {
       icon = document.getElementById("xIcon").src;
-      desc = document.getElementById("xDesc").value;
+      desc = document.getElementById("xDesc")?.innerText;
     }, 1000);
   }
   function set() {
