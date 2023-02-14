@@ -56,7 +56,9 @@
   />
 </div>
 
-<p class="text p-2">{#if stripe}{$t("settings.stripeOn")}{:else}{$t("settings.stripeOff")}{/if}</p>
+<p class="text p-2">
+  {#if stripe}{$t("settings.stripeOn")}{:else}{$t("settings.stripeOff")}{/if}
+</p>
 
 <div class="cursor-pointer label">
   <p class="label-text">{$t("settings.requireAuth")}</p>

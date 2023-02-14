@@ -23,7 +23,9 @@ export default {
     "settings.desc.trusted":
       "To protect your machine from users uploading malware posing as plugins/mods, you can limit URLs to download from sites such as modrinth. Please seperate domains with commas!",
     "button.save": "Save",
-    "site.footer": ", licensed under ",
+    "site.footer": `, licensed under <a
+          href="https://github.com/DiamonC/observer/blob/master/LICENSE"
+          class="link link-primary">GPLv3</a>,`,
     "settings.t.webport":
       "This is the port that this panel will run on (3000 by default). If you're not using a reverse proxy, you will see :port after the hostname in the URL.",
     "bill.title": "Billing",
@@ -79,16 +81,21 @@ export default {
     version: "Version",
     "button.back": "  Back",
     "button.delete": "  Delete",
+    "button.back2": "Back",
+    "button.delete2": "Delete",
     "server.ip": "IP Address:",
     "server.howtojoin": "Confused? Learn ",
-    "server.howtojoin2": "how to join servers",
+    "server.howtojoin2": "how to join servers.",
     "button.newsubscribe": "New Subscription",
     "newserver.l.setadmin": "Enter Admin",
     "newserver.l.gamemode": "Gamemode",
-    "newserver.enteruname": "Enter Minecraft Ussername",
+    "newserver.enteruname": "Enter Minecraft Username",
     "button.starting": "Starting",
     "button.stop2": "  Stop",
     "button.starting2": "  Starting",
+    "button.starting3": " Starting",
+    "button.restarting2": "  Restarting",
+    "button.restarting3": " Restarting",
     "button.restart2": "  Restart",
     "button.start2": "  Start",
     "button.addplugin": "  Add Plugin",
@@ -100,6 +107,16 @@ export default {
     "settings.stripeOff":
       "Payments via Stripe are disabled. Add a stripe key on the backend to enable it.",
     "settings.requireAuth": "Require Authentication",
+    featured: "Featured",
+    by: "by",
+    "button.manageplugins": "Manage Plugins",
+    "shortcuts.title": "Command Shortcuts",
+    "shortcuts.l.cheats": "Give a player cheats",
+    "shortcuts.l.gamemode": "Set Default Gamemode",
+    "shortcuts.l.alwaysDay": "Enable Always Day",
+    "shortcuts.p.cheats": "Enter Minecraft Username",
+    "shortcuts.p.gamemode": "Creative/Survival/Adventure",
+    "button.send": "Send",
   },
   "es-ES": {
     "homepage.title": "Sus servidores",
@@ -125,7 +142,9 @@ export default {
     "settings.desc.trusted":
       "Para proteger su máquina de los usuarios que cargan malware que se hacen pasar por complementos / mods, puede limitar las URL para descargar desde sitios como modrinth. ¡Por favor, separe los dominios con comas!",
     "button.save": "Salvar",
-    "site.footer": ", licenciado bajo ",
+    "site.footer": `, licenciado bajo <a
+          href="https://github.com/DiamonC/observer/blob/master/LICENSE"
+          class="link link-primary">GPLv3</a>,`,
     "settings.t.webport":
       "Este es el puerto en el que se ejecutará este panel (3000 de forma predeterminada). Si no está utilizando un proxy inverso, verá :[puerto] después del nombre de host en la URL.",
     "bill.title": "Facturación",
@@ -181,6 +200,8 @@ export default {
       "Para acceder a algunas partes de este panel solo para administradores, como la configuración, necesita una clave privada. Manténgalo seguro, solo puede descargarlo una vez.",
     "button.download": "Descargar clave",
     version: "Versión",
+    "button.back2": "Atrás",
+    "button.delete2": "Eliminar",
     "button.back": "  Atrás",
     "button.delete": "  Eliminar",
     "server.ip": "Dirección IP:",
@@ -193,7 +214,10 @@ export default {
     "button.starting": "Iniciando",
     "button.stop2": "  Parar",
     "button.starting2": "  Iniciando",
+    "button.starting3": " Iniciando",
     "button.restart2": "  Reiniciar",
+    "button.restarting2": "  Reiniciando",
+    "button.restarting3": " Reiniciando",
     "button.start2": "  Encender",
     "button.addplugin": "  Añadir Plugin",
     "p.enterCommand": "Ingrese el comando",
@@ -204,5 +228,15 @@ export default {
     "settings.stripeOff":
       "Los pagos a través de Stripe están desactivados. Agregue una tecla de banda en el backend para habilitar themeChange.",
     "settings.requireAuth": "Requiere autenticación",
+    featured: "Presentado",
+    by: "de",
+    "button.manageplugins": "Administrar plugins",
+    "shortcuts.title": "Atajos de teclado",
+    "shortcuts.l.cheats": "Dar trucos a un jugador",
+    "shortcuts.l.gamemode": "Establecer el modo de juego predeterminado",
+    "shortcuts.l.alwaysDay": "Establecer siempre día",
+    "shortcuts.p.cheats": "Ingrese el nombre de usuario",
+    "shortcuts.p.gamemode": "Creative/Survival/Adventure",
+    "button.send": "Enviar",
   },
 };
