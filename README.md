@@ -6,14 +6,15 @@
 
 # About Observer
 
-Observer is a frontend for Arth Panel, a lightweight self-hosted Minecraft server panel. Observer is meant to be run as a docker container, and is made with HTML/CSS/JS, Node, SvelteKit, TailwindCSS, and DaisyUI. For testing purposes, there is an instance of observer running at https://servers.arthmc.xyz/
+Observer is a frontend for Arth Panel, a lightweight self-hosted Minecraft server panel. Observer is made with HTML/CSS/JS, Node, SvelteKit, TailwindCSS, and DaisyUI. For testing purposes, there is an instance of observer running at https://servers.arthmc.xyz/
 
-## How to Run
+## How to Run with Docker
 
 1. Download the image from docker hub with the command `sudo docker pull arthmc/observer:latest`
 2. Run the image with `sudo docker run -p 3000:3000 arthmc/observer:latest`. To change the port, replace the first 3000 with the port number you want.
 
 ## Other Requirements
+
 
 - By default, observer will connect to Arth's quartz backend. To create your own functioning service you will need to set up a [quartz](https://github.com/arthmc/quartz) backend.
 - Arth Panel also uses a pocketbase backend to more securely manage accounts. By default it'll point to our pocketbase, but to start your own service you need to [setup](https://github.com/pocketbase/pocketbase) your own.
@@ -29,7 +30,7 @@ Observer is a frontend for Arth Panel, a lightweight self-hosted Minecraft serve
 
 ## How to run a dev server
 
-- Make sure you install the pagackes by running `npm i`
+- Make sure you install the packages by running `npm i`
 - To run a dev server, enter the command `npm run dev`
 - If you need to mimic a production environment for something like working with Service Workers, enter `npm run preview` instead.
 
@@ -48,6 +49,7 @@ The main difference between Arth Panel and an alternative like pufferpanel or pt
 
 ```
 /servers (Where all servers you have access too are listed)
+/server/[slug] (Where you can access a server's terminal, edit information, and more.)
 /settings (Configure things like site URL)
 /newserver (Page to create a new server)
 /setup (Page for the panel owner to set everything up)
@@ -66,5 +68,4 @@ The main difference between Arth Panel and an alternative like pufferpanel or pt
 ✅ Subscriptions with stripe  
 ✅ Basic UI and function for terminal on the frontend  
 ❌ Signin via discord  
-❓ Subscriptions with paypal  
-❓ Decentralized options for accounts and/or paynments
+❓ Decentralized options for accounts
