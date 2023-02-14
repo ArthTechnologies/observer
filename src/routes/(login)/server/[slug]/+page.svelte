@@ -184,6 +184,17 @@
   }
 
   onMount(() => {
+    if (browser) {
+      setInterval(function () {
+        if (
+          decodeURIComponent(window.location.pathname) ==
+          "/server/" + tname
+        ) {
+          getStatus();
+          readCmd();
+        }
+      }, 3000);
+    }
     getStatus();
   });
 
@@ -222,18 +233,6 @@
     //set terminal's text to rt
   }
   readCmd();
-  //Run status function every 5 seconds if theyre still on this page
-  if (browser) {
-    setInterval(function () {
-      if (window.location.pathname == "/server/" + tname) {
-        getStatus();
-        readCmd();
-        if (browser) {
-          let terminal = document.getElementById("terminal");
-        }
-      }
-    }, 3000);
-  }
 </script>
 
 <div class="h-[75vh] h-screen ">
