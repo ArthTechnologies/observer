@@ -3,7 +3,7 @@
   import { lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
   import { getHeapSpaceStatistics } from "v8";
-  import { space } from "svelte/internal";
+  import { t } from "$lib/scripts/i18n";
   import ChooseVersionAlt from "./ChooseVersionAlt.svelte";
 
   export let name;
@@ -168,7 +168,9 @@
       {desc}
     </div>
   </div>
-  <button on:click={del} class="btn btn-xs btn-error mt-0.5"> Delete</button>
+  <button on:click={del} class="btn btn-xs btn-error mt-0.5">
+    {$t("button.delete2")}</button
+  >
   {#if platform == "lr"}
     <!-- <ChooseVersionAlt pluginName={name} {id} /> this currently doesnt delete the old plugin, so its not enabled-->
   {/if}

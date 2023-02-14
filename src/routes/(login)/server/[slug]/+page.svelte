@@ -536,39 +536,43 @@
         <Add /><Manage />
       </div>
       <div class="bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl">
-        <p class="text-xl font-bold">Command Shortcuts</p>
+        <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
         <div class="space-x-1.5">
-          <label class="label" for="username">Give a player cheats</label>
+          <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
 
           <input
             id="username"
             class="input input-sm input-bordered"
-            placeholder="Enter Minecraft Username"
+            placeholder={$t("shortcuts.p.cheats")}
             type="text"
           />
           <button on:click={OpPlayer} class="btn btn-secondary btn-sm"
-            >send</button
+            >{$t("button.send")}</button
           >
         </div>
         <div class="space-x-1.5">
-          <label class="label" for="gamemode">Set the default gamemode</label>
+          <label class="label" for="gamemode"
+            >{$t("shortcuts.l.gamemode")}</label
+          >
 
           <input
             id="gamemode"
             class="input input-sm input-bordered"
-            placeholder="Creative/Survival/Adventure"
+            placeholder={$t("shortcuts.p.gamemode")}
             type="text"
           />
           <button on:click={gamemode} class="btn btn-secondary btn-sm"
-            >send</button
+            >{$t("button.send")}</button
           >
         </div>
 
-        <label class="label" for="alwaysDay">Enable Always Day</label>
+        <label class="label" for="alwaysDay"
+          >{$t("shortcuts.l.alwaysDay")}</label
+        >
         <div class="flex items-center space-x-2 ml-2">
           <input id="alwaysDay" type="checkbox" class="toggle" />
           <button on:click={alwaysDay} class="btn btn-secondary btn-sm"
-            >send</button
+            >{$t("button.send")}</button
           >
         </div>
       </div>
