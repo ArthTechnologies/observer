@@ -1,35 +1,89 @@
-
+import accountEmail from "$lib/stores/accountEmail";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 export const apiurl = "https://api.arthmc.xyz/";
 export const pburl = "https://pb.arthmc.xyz/api/";
 export const lrurl = "https://api.modrinth.com/v2/";
-let em = "noemail"
-
-
-
+let lock = false;
 //set email from local storage to variable
 if (browser) {
-  if(window.localStorage.getItem("enableAuth") == "false") {
-    em = "guest"
-    window.localStorage.setItem("accountEmail", "guest")
-  } else {
-  em = (window.localStorage.getItem("accountEmail"));
-  }
+  accountEmail.set(window.localStorage.getItem("accountEmail"));
+if (localStorage.getItem("x") == undefined) {
+  localStorage.setItem("x", "false");
+} 
 }
 
 const GET = { method: "GET" };
 const POST = { method: "POST" };
 const DELETE = { method: "DELETE" };
 
-export function sendVersion(link: string, id: string) {
+export function setInfo(id, icon, desc) {
+  console.log(id);
+  const url = apiurl + "server/" + id + "/setInfo";
+  const req = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      desc: desc,
+      icon: icon,
+    }),
+  };
+
+ //if image isnt taller than it is wide, run code. keep in mind icon is just a url
+ let img = new Image();
+  img.src = icon;
+  img.onload = function() {
+    if (img.height <= img.width) {
+
+  return fetch(url, req)
+  .then((res) => res.text())
+  .then((input: string) => {
+    console.log("Response Recieved: " + input);
+
+    if (input.indexOf("400") > -1) {
+      return "error"; 
+    } else {
+      return "success";
+    }
+  })
+  .catch((err) => console.error(err));
+  } else {
+    alert("Image can't be taller than it is wide" + img.height + " " + img.width)
+  }
+}
+}
+
+export function getPlugins(id) {
+  const url = apiurl + "server/" + id + "/plugins";
+  return fetch(url, GET)
+    .then((res) => res.text())
+    .then((input: string) => {
+      console.log("Response Recieved: " + input);
+
+      return JSON.parse(input);
+    })
+    .catch((err) => console.error(err));
+}
+
+export function sendVersion(
+  link: string,
+  id: string,
+  pluginId: string,
+  pluginName: string
+) {
   const url =
     apiurl +
     "server/" +
     id +
     "/addplugin" +
     "?pluginUrl=" +
-    encodeURIComponent(link);
+    encodeURIComponent(link) +
+    "&id=" +
+    encodeURIComponent(pluginId) +
+    "&name=" +
+    encodeURIComponent(pluginName);
   console.log(url);
   return fetch(url, POST)
     .then((res) => res.text())
@@ -71,19 +125,22 @@ export function searchPlugins(
     query +
     '&facets=[["categories:' +
     software +
-    '"],["versions:' +
-    version +
     '"]]' +
     "&limit=10";
 
-  return fetch(url, GET)
-    .then((res) => res.text())
-    .then((input: string) => {
-      console.log("Response Recieved: " + input);
+  if (!lock) {
+    return fetch(url, GET)
+      .then((res) => res.text())
+      .then((input: string) => {
+        console.log("Response Recieved: " + input);
 
-      return JSON.parse(input);
-    })
-    .catch((err) => console.error(err));
+        if ((input.indexOf("ck_block") > -1) | (input == undefined)) {
+          lock = true;
+        }
+        return JSON.parse(input);
+      })
+      .catch((err) => console.error(err));
+  }
 }
 
 export function getSettings() {
@@ -95,6 +152,12 @@ export function getSettings() {
       if (browser) {
         window.localStorage.setItem("enablePay", JSON.parse(input).enablePay);
         window.localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
+        window.localStorage.setItem("address", JSON.parse(input).address);
+
+        if (JSON.parse(input).enableAuth == false) {
+          window.localStorage.setItem("accountEmail", "guest");
+          accountEmail.set("guest");
+        }
       }
 
       return JSON.parse(input);
@@ -102,7 +165,7 @@ export function getSettings() {
     .catch((err) => console.error(err));
 }
 
-export function getServers() {
+export function getServers(em: string) {
   const url = apiurl + "servers/" + "?email=" + em;
   console.log("Request Sent: Get Servers");
   return fetch(url, GET)
@@ -118,7 +181,7 @@ export function getServers() {
     })
     .catch((err) => console.error(err));
 }
-export function createUser( pwd: string) {
+export function createUser(em: string, pwd: string) {
   const req = {
     method: "POST",
     headers: {
@@ -146,7 +209,7 @@ export function createUser( pwd: string) {
     .catch((err) => console.error(err));
 }
 
-export function loginEmail( pwd: string) {
+export function loginEmail(em: string, pwd: string) {
   const req = {
     method: "POST",
     headers: {
@@ -158,7 +221,7 @@ export function loginEmail( pwd: string) {
     }),
   };
   console.log("Request Sent: " + req.body);
-
+  
   return fetch(pburl + "users/auth-via-email", req)
     .then((res) => res.text())
     .then((input: string) => {
@@ -170,16 +233,12 @@ export function loginEmail( pwd: string) {
         input.indexOf("token") + 163
       );
 
-      //set the token in local storage
-      if (browser) {
-        window.localStorage.setItem("token", token);
-        window.localStorage.setItem("accountEmail", em);
-      }
-
       if (input.indexOf("400") > -1) {
         return "error";
       } else {
         if (browser) {
+          window.localStorage.setItem("token", token);
+          window.localStorage.setItem("accountEmail", em);
           window.localStorage.setItem("loggedIn", "true");
         }
         return "success";
@@ -188,7 +247,7 @@ export function loginEmail( pwd: string) {
     .catch((err) => console.error(err));
 }
 
-export function changeServerState(reqstate: string, id: number) {
+export function changeServerState(reqstate: string, id: number, em: string) {
   const url = apiurl + "server/" + id + "/state/" + reqstate + "?email=" + em;
   const response = fetch(url, POST)
     .then((res) => res.text())
@@ -224,8 +283,7 @@ export function createServer(
       cmds: c,
     }),
   };
-
-  console.log("Request Sent: " + url);
+  console.log("Request Sent: " + JSON.stringify(req.body));
   //if response is 409, send an alert, otherwise do nothing
   const response = fetch(url, req)
     .then((res) => res.text())
@@ -276,6 +334,7 @@ export function getPlayers(address: string) {
 
     .then((text: string) => {
       console.log("Response Recieved: " + text);
+
       //return whats after ""online":" and before ","max"
 
       console.log(
@@ -327,7 +386,8 @@ export function writeTerminal(id: number, cmd: string) {
         return "error";
       } else {
         //return input as json
-        return JSON.parse(input);
+        console.log(JSON.stringify(input));
+        return "success";
       }
     });
 }
