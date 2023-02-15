@@ -1,9 +1,10 @@
 <script>
   import { onMount } from "svelte";
-  import { createUser } from "$lib/scripts/req";
+  import { signupEmail } from "$lib/scripts/req";
   import { loginEmail } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
+  import { goto } from "$app/navigation";
   let goodPwd = true;
   let matchPwd = true;
   let networkerror = false;
@@ -66,24 +67,12 @@
     if (sign == "up") {
       checkPwd();
       if (goodPwd) {
-        const res = createUser(
+        const res = signupEmail(
           document.getElementById("email").value,
           document.getElementById("pwd").value
         ).then((x) => {
-          console.log("response: " + x);
-          if (x == "success") {
-            //redirect user to dashboard
-            const res = loginEmail(
-              document.getElementById("email").value,
-              document.getElementById("pwd").value
-            ).then((x) => {
-              console.log("response: " + x);
-              window.location.href = "/pay";
-            });
-          } else {
-            if (x == undefined) {
-              networkerror = true;
-            }
+          if (x) {
+            goto("/");
           }
         });
       }
@@ -92,15 +81,8 @@
         document.getElementById("email").value,
         document.getElementById("pwd").value
       ).then((x) => {
-        console.log("response: " + x);
-        if (x == "success") {
-          //redirect user to dashboard
-          window.location.href = "/";
-        } else {
-          //if the console says "error" then set networkerror to true
-          if (x == undefined) {
-            networkerror = true;
-          }
+        if (x) {
+          goto("/");
         }
       });
     }
@@ -134,7 +116,7 @@
                 d="M6 18L18 6M6 6l12 12"
               /></svg
             >
-            Your password must be 8 characters long.
+            Your password must be 6 or more characters.
           </div>
         {/if}
         {#if networkerror === true}

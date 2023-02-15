@@ -1,8 +1,8 @@
 import accountEmail from "$lib/stores/accountEmail";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
-export const apiurl = "https://api.arthmc.xyz/";
-export const pburl = "https://pb.arthmc.xyz/api/";
+export const apiurl = "http://localhost:4000/";
+
 export const lrurl = "https://api.modrinth.com/v2/";
 let lock = false;
 //set email from local storage to variable
@@ -181,67 +181,63 @@ export function getServers(em: string) {
     })
     .catch((err) => console.error(err));
 }
-export function createUser(em: string, pwd: string) {
-  const req = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: em,
-      password: pwd,
-      passwordConfirm: pwd,
-    }),
-  };
-  console.log("Request Sent: " + req.body);
+export function signupEmail(em: string, pwd: string) {
 
-  return fetch(pburl + "users", req)
-    .then((res) => res.text())
-    .then((input: string) => {
-      console.log("Response Recieved: " + input);
-      if (input.indexOf("400") > -1) {
-        return "error";
-      } else {
-        loginEmail(em, pwd);
-        return "success";
-      }
-    })
-    .catch((err) => console.error(err));
+  console.log("Request Sent");
+
+  return fetch(apiurl + "accounts/email/signup?" + new URLSearchParams({
+    email: em,
+    password: pwd,
+    confirmPassword: pwd
+}), POST)
+    .then((res) => res.text()).then((input: string) => {
+    
+        console.log(input)
+      
+  
+          localStorage.setItem("accountEmail", em);
+          localStorage.setItem("token", JSON.parse(input).token);
+          localStorage.setItem("uuid", JSON.parse(input).uuid);
+          if (JSON.parse(input).token == -1) {
+            alert(JSON.parse(input).reason)
+            return false;
+          }
+          return true;
+        
+      })
+      .catch((err) => console.error(err));
+     
 }
 
+
 export function loginEmail(em: string, pwd: string) {
-  const req = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: em,
-      password: pwd,
-    }),
-  };
-  console.log("Request Sent: " + req.body);
+
+
   
-  return fetch(pburl + "users/auth-via-email", req)
+  return fetch(apiurl + "accounts/email/signin?" + new URLSearchParams(
+    {
+      email: em,
+      password: pwd
+    }
+  ), POST)
     .then((res) => res.text())
     .then((input: string) => {
-      console.log("Response Recieved: " + input);
+      
 
-      //grabs token from response
-      const token = input.substring(
-        input.indexOf("token") + 8,
-        input.indexOf("token") + 163
-      );
 
-      if (input.indexOf("400") > -1) {
-        return "error";
+
+      if (JSON.parse(input).token == -1) {
+        console.log(JSON.parse(input))
+        return false;
       } else {
         if (browser) {
-          window.localStorage.setItem("token", token);
+          console.log(JSON.parse(input))
+          window.localStorage.setItem("token", JSON.parse(input).uuid);
           window.localStorage.setItem("accountEmail", em);
           window.localStorage.setItem("loggedIn", "true");
+
         }
-        return "success";
+        return true;
       }
     })
     .catch((err) => console.error(err));
