@@ -2,6 +2,8 @@
   import accountEmail from "$lib/stores/accountEmail";
   type loginStatus = true | false;
   import { t, locale, locales } from "$lib/scripts/i18n";
+    import { onMount } from "svelte";
+    import { browser } from "$app/environment";
   export let loginStatus: boolean;
 
   function signOut() {
@@ -11,8 +13,12 @@
   }
 
   let accountEmailChopped = "noemail";
-  //if accountEmail is longer than 20 characters
-  if ($accountEmail.length > 18) {
+ onMount(() => {
+if (browser) {
+  console.log("checking if youre logged in or not" + localStorage.getItem("loggedIn"));
+  if(localStorage.getItem("loggedIn") == "true"){
+     //if accountEmail is longer than 20 characters
+ if ($accountEmail.length > 18) {
     //slice it to 20 characters
     accountEmailChopped = $accountEmail.slice(0, 18);
     accountEmailChopped += "...";
@@ -20,6 +26,13 @@
     //else, just use accountEmail
     accountEmailChopped = $accountEmail;
   }
+
+  }
+
+}
+ 
+  
+ })
 </script>
 
 {#if loginStatus === true}

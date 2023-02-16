@@ -10,6 +10,7 @@ if (browser) {
   accountEmail.set(window.localStorage.getItem("accountEmail"));
 if (localStorage.getItem("x") == undefined) {
   localStorage.setItem("x", "false");
+  localStorage.setItem("loggedIn", "false");
 } 
 }
 
@@ -184,7 +185,7 @@ export function getServers(em: string) {
 export function signupEmail(em: string, pwd: string) {
 
   console.log("Request Sent");
-
+  localStorage.setItem("accountEmail", em);
   return fetch(apiurl + "accounts/email/signup?" + new URLSearchParams({
     email: em,
     password: pwd,
@@ -195,7 +196,7 @@ export function signupEmail(em: string, pwd: string) {
         console.log(input)
       
   
-          localStorage.setItem("accountEmail", em);
+        window.localStorage.setItem("loggedIn", "true");
           localStorage.setItem("token", JSON.parse(input).token);
           localStorage.setItem("uuid", JSON.parse(input).uuid);
           if (JSON.parse(input).token == -1) {

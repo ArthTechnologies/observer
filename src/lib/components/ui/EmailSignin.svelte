@@ -116,7 +116,7 @@
                 d="M6 18L18 6M6 6l12 12"
               /></svg
             >
-            Your password must be 6 or more characters.
+            Your password must be at least 6 characters long.
           </div>
         {/if}
         {#if networkerror === true}
@@ -177,7 +177,7 @@
                 d="M6 18L18 6M6 6l12 12"
               /></svg
             >
-            Your password must be 8 characters long.
+            Your password must be at least 6 characters long.
           </div>
         {/if}
         {#if networkerror === true}
