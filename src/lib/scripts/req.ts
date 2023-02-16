@@ -5,6 +5,10 @@ export const apiurl = "http://localhost:4000/";
 
 export const lrurl = "https://api.modrinth.com/v2/";
 let lock = false;
+
+let GET = {};
+let POST = {};
+let DELETE = {};
 //set email from local storage to variable
 if (browser) {
   accountEmail.set(localStorage.getItem("accountEmail"));
@@ -12,11 +16,25 @@ if (localStorage.getItem("x") == undefined) {
   localStorage.setItem("x", "false");
   localStorage.setItem("loggedIn", "false");
 } 
+ GET = { method: "GET",
+headers: {
+  "token": localStorage.getItem("token"),
+  "email": localStorage.getItem("accountEmail"),
+}
+};
+ POST = { method: "POST",
+headers: {
+  "token": localStorage.getItem("token"),
+  "email": localStorage.getItem("accountEmail"),
+} };
+ DELETE = { method: "DELETE",
+headers: {
+  "token": localStorage.getItem("token"),
+  "email": localStorage.getItem("accountEmail"),
+} };
 }
 
-const GET = { method: "GET" };
-const POST = { method: "POST" };
-const DELETE = { method: "DELETE" };
+
 
 export function setInfo(id, icon, desc) {
   console.log(id);
@@ -198,7 +216,7 @@ export function signupEmail(em: string, pwd: string) {
   
         localStorage.setItem("loggedIn", "true");
           localStorage.setItem("token", JSON.parse(input).token);
-          localStorage.setItem("uuid", JSON.parse(input).uuid);
+          localStorage.setItem("accountId", JSON.parse(input).accountId);
           if (JSON.parse(input).token == -1) {
 
 
@@ -235,7 +253,7 @@ export function loginEmail(em: string, pwd: string) {
       } else {
         if (browser) {
           console.log(JSON.parse(input))
-          window.localStorage.setItem("token", JSON.parse(input).uuid);
+          window.localStorage.setItem("token", JSON.parse(input).token);
           window.localStorage.setItem("accountEmail", em);
           window.localStorage.setItem("loggedIn", "true");
 
