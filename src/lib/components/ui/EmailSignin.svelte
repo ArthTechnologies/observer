@@ -5,6 +5,9 @@
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
+  import Alert from "$lib/components/ui/Alert.svelte";
+  let visible = false;
+  let msg = ""
   let goodPwd = true;
   let matchPwd = true;
   let networkerror = false;
@@ -24,7 +27,7 @@
   }
   //set goodPwd to false if length of the element with id="pwd" is less than 8
   function checkPwd() {
-    if (document.getElementById("pwd").value.length < 8) {
+    if (document.getElementById("pwd").value.length < 7) {
       goodPwd = false;
     } else {
       goodPwd = true;
@@ -66,13 +69,22 @@
   function submit() {
     if (sign == "up") {
       checkPwd();
-      if (goodPwd) {
+      if (goodPwd && matchPwd) {
         const res = signupEmail(
           document.getElementById("email").value,
           document.getElementById("pwd").value
         ).then((x) => {
-          if (x) {
+          console.log("x: " + x);
+          if (x === true) {
+            console.log("redricting...");
             goto("/");
+          } else {
+            visible = true;
+            msg = x;
+
+            setTimeout(() => {
+              visible = false;
+            }, 3500);
           }
         });
       }
@@ -83,10 +95,37 @@
       ).then((x) => {
         if (x) {
           goto("/");
+        } else {
+          visible = true;
+          msg = "Incorrect email or password.";
+          setTimeout(() => {
+            visible = false;
+          }, 3500);
         }
       });
     }
   }
+  $: if (!matchPwd) {
+    msg = "Passwords do not match";
+    visible = true;
+    setTimeout(() => {
+      visible = false;
+      matchPwd = true;
+    }, 3500);
+  } else if (!goodPwd) {
+    msg = "Password must be at least 7 characters long";
+    visible = true;
+    setTimeout(() => {
+      visible = false;
+      goodPwd = true;
+    }, 3500);
+  }
+
+  
+
+ 
+
+
 </script>
 
 <div class="divider" />
@@ -102,23 +141,7 @@
   >
     <div class="hero-content text-center">
       <div class="max-w-md space-y-5">
-        {#if goodPwd === false}
-          <div class="badge badge-error gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block w-4 h-4 stroke-current"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              /></svg
-            >
-            Your password must be at least 6 characters long.
-          </div>
-        {/if}
+        
         {#if networkerror === true}
           <div class="badge badge-error gap-2">
             <svg
@@ -163,23 +186,7 @@
   >
     <div class="hero-content text-center">
       <div class="max-w-md space-y-5">
-        {#if goodPwd === false}
-          <div class="badge badge-error gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block w-4 h-4 stroke-current"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              /></svg
-            >
-            Your password must be at least 6 characters long.
-          </div>
-        {/if}
+
         {#if networkerror === true}
           <div class="badge badge-error gap-2">
             <svg
@@ -197,23 +204,7 @@
             You encountered a network error.
           </div>
         {/if}
-        {#if matchPwd === false}
-          <div class="badge badge-error gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block w-4 h-4 stroke-current"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              /></svg
-            >
-            Your passwords do not match.
-          </div>
-        {/if}
+
         <p class="text-xl">Sign up via Email:</p>
         <input
           id="email"
@@ -243,3 +234,4 @@
     </div>
   </div>
 {/if}
+<Alert detail="{msg}" visible={visible}/>

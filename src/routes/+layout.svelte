@@ -6,7 +6,7 @@
 
   import { onMount } from "svelte";
   import { themeChange } from "theme-change";
-  import Footer from "$lib/components/layout/Footer.svelte";
+  import Alert from "$lib/components/ui/Alert.svelte";
 
   onMount(() => {
     themeChange(false);

@@ -7,7 +7,7 @@ export const lrurl = "https://api.modrinth.com/v2/";
 let lock = false;
 //set email from local storage to variable
 if (browser) {
-  accountEmail.set(window.localStorage.getItem("accountEmail"));
+  accountEmail.set(localStorage.getItem("accountEmail"));
 if (localStorage.getItem("x") == undefined) {
   localStorage.setItem("x", "false");
   localStorage.setItem("loggedIn", "false");
@@ -196,12 +196,14 @@ export function signupEmail(em: string, pwd: string) {
         console.log(input)
       
   
-        window.localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("loggedIn", "true");
           localStorage.setItem("token", JSON.parse(input).token);
           localStorage.setItem("uuid", JSON.parse(input).uuid);
           if (JSON.parse(input).token == -1) {
-            alert(JSON.parse(input).reason)
-            return false;
+
+
+            return(JSON.parse(input).reason)
+           
           }
           return true;
         
@@ -311,7 +313,7 @@ export function createServer(
           //increase localstorage servers by 1
           window.localStorage.setItem(
             "servers",
-            (parseInt(window.localStorage.getItem("servers")) + 1).toString()
+            (parseInt(localStorage.getItem("servers")) + 1).toString()
           );
         }
       }
