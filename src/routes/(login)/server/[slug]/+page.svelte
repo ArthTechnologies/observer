@@ -106,6 +106,8 @@
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())

@@ -43,6 +43,8 @@ export function setInfo(id, icon, desc) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "token": localStorage.getItem("token"),
+      "email": localStorage.getItem("accountEmail"),
     },
     body: JSON.stringify({
       desc: desc,
