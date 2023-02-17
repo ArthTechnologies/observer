@@ -1,8 +1,8 @@
 <script lang="ts">
   import { src_url_equal } from "svelte/internal";
-  import { changeServerState } from "$lib/scripts/req.js";
+  import { changeServerState } from "$lib/scripts/req";
 
-  import { getServer } from "$lib/scripts/req.js";
+  import { getServer } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   //Status variables

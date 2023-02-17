@@ -9,7 +9,7 @@
     readTerminal,
     apiurl,
   } from "$lib/scripts/req";
-  import { getServer } from "$lib/scripts/req.js";
+  import { getServer } from "$lib/scripts/req";
 
   import { t, locale, locales } from "$lib/scripts/i18n";
 

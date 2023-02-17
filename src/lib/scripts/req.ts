@@ -191,7 +191,8 @@ export function getServers(em: string) {
     .then((res) => res.text())
     .then((input: string) => {
       console.log("Response Recieved: " + input);
-      if (input.indexOf("400") > -1) {
+      if (input.indexOf("Invalid credentials.") > -1) {
+        alert("Invalid credentials. Please sign out and sign back in.");
         return "error";
       } else {
         //return input as json
@@ -291,6 +292,8 @@ export function createServer(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "token": window.localStorage.getItem("token"),
+      "email": window.localStorage.getItem("accountEmail"),
     },
     body: JSON.stringify({
       name: n,
