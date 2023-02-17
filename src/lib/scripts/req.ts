@@ -192,7 +192,7 @@ export function getServers(em: string) {
     .then((input: string) => {
       console.log("Response Recieved: " + input);
       if (input.indexOf("Invalid credentials.") > -1) {
-        alert("Invalid credentials. Please sign out and sign back in.");
+       
         return "error";
       } else {
         //return input as json
