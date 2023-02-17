@@ -42,7 +42,7 @@
 <input type="checkbox" id="editInfo" class="modal-toggle" />
 <div class="modal">
   <div class="modal-box relative">
-    <label for="editInfo" class="btn btn-sm btn-circle absolute right-2 top-2"
+    <label for="editInfo" class="btn btn-sm btn-circle fixed right-2 top-2"
       >✕</label
     >
     <h3 class="text-lg font-bold">Edit Server Info</h3>

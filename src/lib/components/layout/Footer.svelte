@@ -7,7 +7,9 @@
 </script>
 
 {#if navType === "default"}
-  <footer class="footer footer-center p-4 md:bg-base-300 text-base-content">
+  <footer
+    class="mt-96 md:mt-0 footer footer-center p-4 md:bg-base-300 text-base-content"
+  >
     <div>
       <p>
         {Webname}{@html $t("site.footer")}
