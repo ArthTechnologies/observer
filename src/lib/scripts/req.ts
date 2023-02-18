@@ -189,6 +189,8 @@ export function getSettings() {
 export function getServers(em: string) {
   const url = apiurl + "servers/" + "?email=" + em;
   console.log("Request Sent: Get Servers");
+
+
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
@@ -220,6 +222,22 @@ export function signupEmail(em: string, pwd: string) {
         localStorage.setItem("loggedIn", "true");
           localStorage.setItem("token", JSON.parse(input).token);
           localStorage.setItem("accountId", JSON.parse(input).accountId);
+          GET = { method: "GET",
+          headers: {
+            "token": localStorage.getItem("token"),
+            "email": localStorage.getItem("accountEmail"),
+          }
+          };
+           POST = { method: "POST",
+          headers: {
+            "token": localStorage.getItem("token"),
+            "email": localStorage.getItem("accountEmail"),
+          } };
+           DELETE = { method: "DELETE",
+          headers: {
+            "token": localStorage.getItem("token"),
+            "email": localStorage.getItem("accountEmail"),
+          } };
           if (JSON.parse(input).token == -1) {
 
 
@@ -259,6 +277,22 @@ export function loginEmail(em: string, pwd: string) {
           window.localStorage.setItem("token", JSON.parse(input).token);
           window.localStorage.setItem("accountEmail", em);
           window.localStorage.setItem("loggedIn", "true");
+          GET = { method: "GET",
+          headers: {
+            "token": localStorage.getItem("token"),
+            "email": localStorage.getItem("accountEmail"),
+          }
+          };
+           POST = { method: "POST",
+          headers: {
+            "token": localStorage.getItem("token"),
+            "email": localStorage.getItem("accountEmail"),
+          } };
+           DELETE = { method: "DELETE",
+          headers: {
+            "token": localStorage.getItem("token"),
+            "email": localStorage.getItem("accountEmail"),
+          } };
 
         }
         return true;

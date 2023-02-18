@@ -1,38 +1,33 @@
 <script lang="ts">
-
   type loginStatus = true | false;
   import { t, locale, locales } from "$lib/scripts/i18n";
-    import { onMount } from "svelte";
-    import { browser } from "$app/environment";
+  import { onMount } from "svelte";
+  import { browser } from "$app/environment";
   export let loginStatus: boolean;
 
   function signOut() {
     localStorage.setItem("token", "");
+    localStorage.setItem("loggedIn", "false");
     loginStatus = false;
     window.location.href = "/signin";
   }
   let accountEmail = "noemail";
   let accountEmailChopped = "noemail";
- onMount(() => {
-if (browser) {
-  accountEmail = localStorage.getItem("accountEmail");
-  
-     //if accountEmail is longer than 20 characters
- if (accountEmail.length > 18) {
-    //slice it to 20 characters
-    accountEmailChopped = accountEmail.slice(0, 18);
-    accountEmailChopped += "...";
-  } else {
-    //else, just use accountEmail
-    accountEmailChopped = accountEmail;
-  }
+  onMount(() => {
+    if (browser) {
+      accountEmail = localStorage.getItem("accountEmail");
 
-  
-
-}
- 
-  
- })
+      //if accountEmail is longer than 20 characters
+      if (accountEmail.length > 18) {
+        //slice it to 20 characters
+        accountEmailChopped = accountEmail.slice(0, 18);
+        accountEmailChopped += "...";
+      } else {
+        //else, just use accountEmail
+        accountEmailChopped = accountEmail;
+      }
+    }
+  });
 </script>
 
 {#if loginStatus === true}
