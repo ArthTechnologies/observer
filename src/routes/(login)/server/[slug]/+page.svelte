@@ -14,8 +14,10 @@
   import { t, locale, locales } from "$lib/scripts/i18n";
 
   import Manage from "$lib/components/ui/Manage.svelte";
+  import AddMod from "$lib/components/ui/AddMod.svelte";
   import Add from "$lib/components/ui/Add.svelte";
   import EditInfo from "$lib/components/ui/EditInfo.svelte";
+  let modded = false;
   let name: string = "-";
   let address: string;
   let tname: string;
@@ -30,6 +32,11 @@
   let email: string = "";
   let state = "false";
   let icon = "";
+  if (browser) {
+    if (localStorage.getItem("serverSoftware") == "fabric" || "quilt") {
+      modded = true;
+    }
+  }
   function alwaysDay() {
     let input = document.getElementById("alwaysDay").checked;
     if (input) {
@@ -535,7 +542,10 @@
       </div>
 
       <div class="flex w-[10.6rem] space-x-2">
-        <Add /><Manage />
+        {#if modded}
+          <AddMod />{:else}
+          <Add /><Manage />
+        {/if}
       </div>
       <div class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl">
         <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
