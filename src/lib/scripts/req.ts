@@ -270,7 +270,7 @@ export function loginEmail(em: string, pwd: string) {
 
       if (JSON.parse(input).token == -1) {
         console.log(JSON.parse(input))
-        return false;
+        return(JSON.parse(input).reason)
       } else {
         if (browser) {
           console.log(JSON.parse(input))

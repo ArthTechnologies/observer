@@ -97,7 +97,7 @@
           goto("/");
         } else {
           visible = true;
-          msg = "Incorrect email or password.";
+          msg = x;
           setTimeout(() => {
             visible = false;
           }, 3500);
