@@ -128,10 +128,7 @@
             class="select select-primary p-2 bg-base-100"
           >
             <option>Paper (Reccomended)</option>
-            <option>Quilt</option>
             <option>Vanilla</option>
-            <option>Waterfall</option>
-            <option>Fabric</option>
             <option>Spigot</option>
           </select>
 
