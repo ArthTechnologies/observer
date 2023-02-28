@@ -4,13 +4,16 @@
   import Helper from "$lib/components/ui/Helper.svelte";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
+  import Modpacks from "$lib/components/ui/Modpacks.svelte";
+  import ModpackVersion from "$lib/components/ui/ModpackVersion.svelte";
   let version = "Latest";
-  let software = "Paper (Reccomended)";
-  let snapshot = false;
+  export let software = "Paper (Reccomended)";
+  export let snapshot = false;
   let name = "";
   let gamemode: string;
   let admin = "";
-
+  let modpacks = false;
+  let modpackURL = "";
   function send() {
     let addons = [];
     let cmd = [];
@@ -28,18 +31,20 @@
     sSoftware = sSoftware.charAt(0).toLowerCase() + sSoftware.slice(1);
     sVersion = version.charAt(0).toLowerCase() + version.slice(1);
 
-    //for all 3 checkboxes, if checked, add their ids to the addons array
-    if (document.getElementById("terralith").checked) {
-      addons.push("terralith");
-    }
-    if (document.getElementById("incendium").checked) {
-      addons.push("incendium");
-    }
-    if (document.getElementById("nullscape").checked) {
-      addons.push("nullscape");
-    }
-    if (document.getElementById("structory").checked) {
-      addons.push("structory");
+    if (worldgen) {
+      //for all 3 checkboxes, if checked, add their ids to the addons array
+      if (document.getElementById("terralith").checked) {
+        addons.push("terralith");
+      }
+      if (document.getElementById("incendium").checked) {
+        addons.push("incendium");
+      }
+      if (document.getElementById("nullscape").checked) {
+        addons.push("nullscape");
+      }
+      if (document.getElementById("structory").checked) {
+        addons.push("structory");
+      }
     }
 
     cmd.push("op " + admin);
@@ -47,9 +52,12 @@
 
     console.log("cmd = " + cmd);
 
-    console.log(sSoftware + software);
+    console.log(browser && name != "");
     if (browser && name != "") {
-      createServer(name, sSoftware, sVersion, addons, cmd);
+      modpackURL = localStorage.getItem("modpackURL");
+
+      console.log("creating" + sSoftware + "server...");
+      createServer(name, sSoftware, sVersion, addons, cmd, modpackURL);
       //wait 1 second
       setTimeout(function () {
         //if x in localstorage is false, run code
@@ -66,6 +74,8 @@
       }, 1000);
     } else if (browser) {
       alert("Please give your server a name");
+    } else {
+      alert("Not in browser");
     }
   }
   let worldgen = true;
@@ -81,9 +91,19 @@
     if (software == "Latest Snapshot") {
       worldgen = false;
       snapshot = true;
-    } else {
+      modpacks = false;
+    } else if (software == "Paper (Reccomended)" || software == "Spigot") {
       worldgen = true;
       snapshot = false;
+      modpacks = false;
+    } else if (software == "Quilt" || software == "Fabric") {
+      worldgen = false;
+      snapshot = false;
+      modpacks = true;
+    } else {
+      worldgen = false;
+      snapshot = false;
+      modpacks = false;
     }
   }
 </script>
@@ -108,14 +128,7 @@
             class="select select-primary p-2 bg-base-100"
           >
             <option>Paper (Reccomended)</option>
-            <option>Velocity</option>
-            <option>Quilt</option>
             <option>Vanilla</option>
-            <option>Forge</option>
-            <option>Latest Snapshot</option>
-            <option>Waterfall</option>
-            <option>Fabric</option>
-            <option>Mohist</option>
             <option>Spigot</option>
           </select>
 
@@ -210,6 +223,9 @@
               />
             </div>
           {/if}
+          {#if modpacks}
+            <Modpacks />{/if}
+
           <a on:click={send} class="btn mt-4">{$t("button.createServer")}</a>
         </div>
       </form>

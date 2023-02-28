@@ -130,6 +130,7 @@ export function getVersions(id: string) {
     })
     .catch((err) => console.error(err));
 }
+
 export function searchPlugins(
   software: string,
   version: string,
@@ -147,6 +148,40 @@ export function searchPlugins(
     '&facets=[["categories:' +
     software +
     '"]]' +
+    "&limit=10";
+
+  if (!lock) {
+    return fetch(url, GET)
+      .then((res) => res.text())
+      .then((input: string) => {
+        console.log("Response Recieved: " + input);
+
+        if ((input.indexOf("ck_block") > -1) | (input == undefined)) {
+          lock = true;
+        }
+        return JSON.parse(input);
+      })
+      .catch((err) => console.error(err));
+  }
+}
+
+export function searchMods(
+  software: string,
+  version: string,
+  query: string
+) {
+  if (version == "Latest") {
+    version = "1.19.3";
+  }
+
+  const url =
+    lrurl +
+    "search" +
+    "?query=" +
+    query +
+    '&facets=[["categories:' +
+    software +
+    '"], ["project_type:modpack"]]' +
     "&limit=10";
 
   if (!lock) {
@@ -316,7 +351,8 @@ export function createServer(
   s: string,
   v: string,
   a: any[],
-  c: any[]
+  c: any[],
+  mURL:string,
 ) {
   const url =
     apiurl +
@@ -337,6 +373,7 @@ export function createServer(
       version: v,
       addons: a,
       cmds: c,
+      modpackURL: mURL
     }),
   };
   console.log("Request Sent: " + JSON.stringify(req.body));
