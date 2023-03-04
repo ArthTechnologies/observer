@@ -17,6 +17,7 @@
   import AddMod from "$lib/components/ui/AddMod.svelte";
   import Add from "$lib/components/ui/Add.svelte";
   import EditInfo from "$lib/components/ui/EditInfo.svelte";
+  import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   let modded = false;
   let name: string = "-";
   let address: string;
@@ -184,9 +185,7 @@
       lock = true;
     }
   }
-  function del() {
-    deleteServer(id);
-  }
+
   function stop() {
     changeServerState("stop", id, email);
     lock = false;
@@ -265,29 +264,7 @@
         >
         {$t("button.back")}</a
       >
-      <a on:click={del} href="/" class="btn btn-warning "
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-trash-2"
-          ><polyline points="3 6 5 6 21 6" /><path
-            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-          /><line x1="10" y1="11" x2="10" y2="17" /><line
-            x1="14"
-            y1="11"
-            x2="14"
-            y2="17"
-          /></svg
-        >
-        {$t("button.delete")}</a
-      >
+      <DeleteServer />
     </div>
     <!-- TODO: these should be on the right, add an if for not reaching the backend -->
     <div class="space-x-2 space-y-2">
