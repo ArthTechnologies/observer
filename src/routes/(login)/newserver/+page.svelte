@@ -60,6 +60,8 @@
       createServer(name, sSoftware, sVersion, addons, cmd, modpackURL);
       //wait 1 second
       setTimeout(function () {
+        localStorage.setItem("modpackURL", "");
+        localStorage.setItem("modpackVersion", "");
         //if x in localstorage is false, run code
         if (localStorage.getItem("x") == "false") {
           //set localStorage z to true

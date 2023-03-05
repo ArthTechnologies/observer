@@ -34,7 +34,7 @@
       document.getElementById("plugins").innerHTML = "";
     }
   }
-  let tab = "ft";
+  let tab = "mr";
   function ft() {
     if (browser) {
       tab = "ft";
@@ -66,10 +66,9 @@
       >
 
       <div class="tabs tabs-boxed">
-        <button id="ft" on:click={ft} class="tab tab-active "
-          >{$t("featured")}</button
+        <button id="mr" on:click={mr} class="tab tab-active"
+          >{$t("search")}</button
         >
-        <button id="mr" on:click={mr} class="tab ">{$t("search")}</button>
       </div>
     </div>
     {#if tab == "mr"}
