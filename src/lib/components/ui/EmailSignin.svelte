@@ -7,7 +7,7 @@
   import { goto } from "$app/navigation";
   import Alert from "$lib/components/ui/Alert.svelte";
   let visible = false;
-  let msg = ""
+  let msg = "";
   let goodPwd = true;
   let matchPwd = true;
   let networkerror = false;
@@ -93,11 +93,13 @@
         document.getElementById("email").value,
         document.getElementById("pwd").value
       ).then((x) => {
+        console.log("x: " + x);
         if (x) {
+          console.log("REDIRECTING...");
           goto("/");
         } else {
           visible = true;
-          msg = x;
+          msg = "Invalid email or password";
           setTimeout(() => {
             visible = false;
           }, 3500);
@@ -120,12 +122,6 @@
       goodPwd = true;
     }, 3500);
   }
-
-  
-
- 
-
-
 </script>
 
 <div class="divider" />
@@ -141,7 +137,6 @@
   >
     <div class="hero-content text-center">
       <div class="max-w-md space-y-5">
-        
         {#if networkerror === true}
           <div class="badge badge-error gap-2">
             <svg
@@ -186,7 +181,6 @@
   >
     <div class="hero-content text-center">
       <div class="max-w-md space-y-5">
-
         {#if networkerror === true}
           <div class="badge badge-error gap-2">
             <svg
@@ -234,4 +228,4 @@
     </div>
   </div>
 {/if}
-<Alert detail="{msg}" visible={visible}/>
+<Alert detail={msg} {visible} />

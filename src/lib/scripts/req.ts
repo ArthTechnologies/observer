@@ -307,7 +307,7 @@ export function loginEmail(em: string, pwd: string) {
 
 
 
-      if (JSON.parse(input).token == -1) {
+      if (JSON.parse(input).token == -1 || JSON.parse(input).status == "ERROR") {
         console.log(JSON.parse(input))
         return(JSON.parse(input).reason)
       } else {
