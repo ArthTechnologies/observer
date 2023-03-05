@@ -96,7 +96,11 @@
       worldgen = true;
       snapshot = false;
       modpacks = false;
-    } else if (software == "Quilt" || software == "Fabric") {
+    } else if (
+      software == "Quilt" ||
+      software == "Fabric" ||
+      software == "Forge"
+    ) {
       worldgen = false;
       snapshot = false;
       modpacks = true;
@@ -130,6 +134,9 @@
             <option>Paper (Reccomended)</option>
             <option>Vanilla</option>
             <option>Spigot</option>
+            <option>Quilt</option>
+            <option>Fabric</option>
+            <option>Forge</option>
           </select>
 
           {#if snapshot == false}
@@ -149,14 +156,18 @@
               <option>1.18.2</option>
               <option>1.17.1</option>
               <option>1.16.5</option>
-              <option>1.15.2</option>
-              <option>1.14.4</option>
-              <option>1.13.2</option>
+              {#if software != "Forge"}
+                <option>1.15.2</option>
+                <option>1.14.4</option>
+                <option>1.13.2</option>
+              {/if}
               <option>1.12.2</option>
-              <option>1.11.2</option>
-              <option>1.10.2</option>
-              <option>1.9.4</option>
-              <option>1.8.8</option>
+              {#if software != "Forge"}
+                <option>1.11.2</option>
+                <option>1.10.2</option>
+                <option>1.9.4</option>
+                <option>1.8.8</option>
+              {/if}
             </select>
           {/if}
 

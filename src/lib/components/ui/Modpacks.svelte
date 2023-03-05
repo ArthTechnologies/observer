@@ -12,7 +12,9 @@
     console.log("searching" + query);
     results = [];
     if (browser) {
-      let software = "quilt";
+      let software = document
+        .getElementById("softwareDropdown")
+        .value.toLowerCase();
       let version = "1.19.3";
 
       setTimeout(function () {

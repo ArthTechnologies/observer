@@ -1,7 +1,7 @@
 <script>
   import { browser } from "$app/environment";
   import { searchPlugins } from "$lib/scripts/req";
-  import PluginResult from "./PluginResult.svelte";
+  import ModResult from "./ModResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
   let promise;
@@ -13,6 +13,9 @@
     if (browser) {
       let software = localStorage.getItem("serverSoftware");
       let version = localStorage.getItem("serverVersion");
+      if (version == "latest") {
+        version = "1.19.3";
+      }
 
       setTimeout(function () {
         promise = searchPlugins(software, version, query).then((response) => {
@@ -48,9 +51,7 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-block" on:click={search}
-  >{$t("button.addplugin")}</label
->
+<label for="my-modal-5" class="btn btn-block" on:click={search}>Add Mod</label>
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="my-modal-5" class="modal-toggle" />
@@ -83,7 +84,7 @@
       <div id="plugins" class="space-y-2">
         {#await promise then}
           {#each results as result}
-            <PluginResult {...result} />
+            <ModResult {...result} />
           {/each}
         {/await}
       </div>
@@ -110,13 +111,6 @@
           pluginId="jpenilla/squaremap"
           link="https://github.com/jpenilla/squaremap/releases/download/v1.1.9/squaremap-paper-mc1.19.3-1.1.9.jar"
           disclaimer="This plugin only supports the latest minecraft version."
-        />
-        <PluginResult
-          name="WorldEdit (FAWE)"
-          author="NotMyFault"
-          desc="Blazingly fast world manipulation for artists, builders and everyone else."
-          icon="https://cdn.modrinth.com/data/z4HZZnLr/1dab3e5596f37ade9a65f3587254ff61a9cf3c43.svg"
-          id="z4HZZnLr"
         />
       </div>
     {/if}

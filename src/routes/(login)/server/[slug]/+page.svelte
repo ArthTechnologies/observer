@@ -34,7 +34,10 @@
   let state = "false";
   let icon = "";
   if (browser) {
-    if (localStorage.getItem("serverSoftware") == "fabric" || "quilt") {
+    if (
+      localStorage.getItem("serverSoftware") == "Fabric" ||
+      localStorage.getItem("serverSoftware") == "Quilt"
+    ) {
       modded = true;
     }
   }
@@ -519,8 +522,7 @@
       </div>
 
       <div class="flex w-[10.6rem] space-x-2">
-        {#if modded}
-          <AddMod />{:else}
+        {#if modded}<AddMod />{:else}
           <Add /><Manage />
         {/if}
       </div>
