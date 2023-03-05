@@ -33,7 +33,7 @@
           version.game_versions.indexOf(sVersion) > -1
         ) {
           vname = version.name;
-          console.log(version.name + vname);
+          console.log(version);
           new Version({
             target: document.getElementById("list"),
             props: {
@@ -44,6 +44,7 @@
               pluginId: id,
               pluginName: pluginName,
               modtype: "mod",
+              dependencies: version.dependencies,
             },
           });
         }
@@ -51,7 +52,7 @@
       //if it's still blank, add a message saying that there are no versions for this plugin
       if (document.getElementById("list").innerHTML == "") {
         document.getElementById("list").innerHTML =
-          "<p class='text-center'>There are no versions for this plugin.</p>";
+          "<p class='text-center'>There are no versions for this mod.</p>";
       }
     });
   }

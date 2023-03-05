@@ -150,7 +150,7 @@ export function searchPlugins(
     query +
     '&facets=[["categories:' +
     software +
-    '"],["client_side:optional","client_side:unsupported"],["server_side:optional","server_side:required"]]' +
+    '"],["server_side:optional","server_side:required"]]' +
     "&limit=10";
 
   if (!lock) {
@@ -171,7 +171,8 @@ export function searchPlugins(
 export function searchMods(
   software: string,
   version: string,
-  query: string
+  query: string,
+  modtype: string
 ) {
   if (version == "Latest") {
     version = "1.19.3";
@@ -184,7 +185,7 @@ export function searchMods(
     query +
     '&facets=[["categories:' +
     software +
-    '"], ["project_type:modpack"], ["client_side:optional","client_side:unsupported"],["server_side:optional","server_side:required"]]' +
+    '"], ["project_type:'+modtype+'"],["server_side:optional","server_side:required"]]' +
     "&limit=10";
 
   if (!lock) {

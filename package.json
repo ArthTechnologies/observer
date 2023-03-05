@@ -31,6 +31,7 @@
 		"pocketbase": "^0.7.4",
 		"sass": "^1.54.9",
 		"theme-change": "^2.2.0",
+		"ts-num-short": "^1.0.4",
 		"websocket": "^1.0.34",
 		"ws": "^8.9.0"
 	}

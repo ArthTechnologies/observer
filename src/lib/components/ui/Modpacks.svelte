@@ -4,6 +4,7 @@
   import ModpackResult from "./ModpackResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
+  import { numShort } from "$lib/scripts/numShort";
 
   let promise;
   let results = [];
@@ -18,20 +19,23 @@
       let version = "1.19.3";
 
       setTimeout(function () {
-        promise = searchMods(software, version, query).then((response) => {
-          response.hits.forEach((item) => {
-            results.push({
-              name: item.title,
-              desc: item.description,
-              icon: item.icon_url,
-              author: item.author,
-              id: item.project_id,
+        promise = searchMods(software, version, query, "modpack").then(
+          (response) => {
+            response.hits.forEach((item) => {
+              results.push({
+                name: item.title,
+                desc: item.description,
+                icon: item.icon_url,
+                author: item.author,
+                id: item.project_id,
+                client: item.client_side,
+                downloads: numShort(item.downloads),
+              });
+              console.log(results);
             });
-            console.log(results);
-          });
-        });
+          }
+        );
       }, 1);
-      document.getElementById("plugins").innerHTML = "";
     }
   }
   let tab = "mr";
@@ -82,7 +86,7 @@
           id="search"
         />
       </div>
-      <div id="plugins" class="space-y-2">
+      <div id="modpacks" class="space-y-2">
         {#await promise then}
           {#each results as result}
             <ModpackResult {...result} />

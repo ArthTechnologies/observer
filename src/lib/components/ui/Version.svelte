@@ -10,6 +10,7 @@
   export let pluginId: string;
   export let pluginName: string;
   export let modtype: string;
+  export let dependencies: string[] = [];
 
   if (type == "release") {
     type = "";
@@ -26,11 +27,22 @@
       id = localStorage.getItem("serverID");
     }
 
-    //replace ()s with nothing, spaces and underscores with -s
+    pluginName = pluginName.replace(/["']/g, "");
     pluginName = pluginName.replace(/[\(\)]/g, "");
     pluginName = pluginName.replace(/[\s_]/g, "-");
 
     sendVersion(url, id, "lr_" + pluginId, pluginName, modtype);
+  }
+  console.log(dependencies);
+  for (let i in dependencies) {
+    //GET https://api.modrinth.com/v2/project/{depencencies[i].project_id}
+
+    fetch("https://api.modrinth.com/v2/project/" + dependencies[i].project_id)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        dependencies[i].name = data.title;
+      });
   }
 </script>
 
@@ -81,5 +93,53 @@
         ></label
       >
     </div>
+  </div>
+  <div class="flex space-x-2">
+    <div
+      class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-clock mr-1.5"
+        ><circle cx="12" cy="12" r="10" /><polyline
+          points="12 6 12 12 16 14"
+        /></svg
+      >
+      {time}
+    </div>
+
+    {#each dependencies as dependency}
+      <div
+        class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="feather feather-alert-circle mr-1.5"
+          ><circle cx="12" cy="12" r="10" /><line
+            x1="12"
+            y1="8"
+            x2="12"
+            y2="12"
+          /><line x1="12" y1="16" x2="12.01" y2="16" /></svg
+        >
+        Requires {dependency.name}
+      </div>
+    {/each}
   </div>
 </div>

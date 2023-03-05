@@ -76,7 +76,7 @@
         {#each res.ids as id, i}
           <ManagePlugin
             name={res.names[i]}
-            id={res.ids[i]}
+            {id}
             platform={res.platforms[i]}
             modtype="mod"
           />

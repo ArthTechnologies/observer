@@ -1,6 +1,7 @@
-<script>
+<script lang="ts">
   import { browser } from "$app/environment";
-  import { searchPlugins } from "$lib/scripts/req";
+  import { numShort } from "$lib/scripts/numShort";
+  import { searchMods } from "$lib/scripts/req";
   import ModResult from "./ModResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
@@ -18,20 +19,24 @@
       }
 
       setTimeout(function () {
-        promise = searchPlugins(software, version, query).then((response) => {
-          response.hits.forEach((item) => {
-            results.push({
-              name: item.title,
-              desc: item.description,
-              icon: item.icon_url,
-              author: item.author,
-              id: item.project_id,
+        promise = searchMods(software, version, query, "mod").then(
+          (response) => {
+            response.hits.forEach((item) => {
+              console.log(numShort(item.downloads));
+              results.push({
+                name: item.title,
+                desc: item.description,
+                icon: item.icon_url,
+                author: item.author,
+                id: item.project_id,
+                client: item.client_side,
+                downloads: numShort(item.downloads),
+              });
+              console.log(item);
             });
-            console.log(results);
-          });
-        });
+          }
+        );
       }, 1);
-      document.getElementById("plugins").innerHTML = "";
     }
   }
   let tab = "mr";
@@ -80,7 +85,7 @@
           id="search"
         />
       </div>
-      <div id="plugins" class="space-y-2">
+      <div id="mods" class="space-y-2">
         {#await promise then}
           {#each results as result}
             <ModResult {...result} />
