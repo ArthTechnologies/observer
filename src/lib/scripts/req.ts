@@ -76,8 +76,8 @@ export function setInfo(id, icon, desc) {
 }
 }
 
-export function getPlugins(id) {
-  const url = apiurl + "server/" + id + "/plugins";
+export function getMods(id: number, modtype: string) {
+  const url = apiurl + "server/" + id + "/" + modtype;
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
@@ -92,13 +92,14 @@ export function sendVersion(
   link: string,
   id: string,
   pluginId: string,
-  pluginName: string
+  pluginName: string,
+  modtype: string
 ) {
   const url =
     apiurl +
     "server/" +
     id +
-    "/addplugin" +
+    "/add/" + modtype + 
     "?pluginUrl=" +
     encodeURIComponent(link) +
     "&id=" +
@@ -149,7 +150,7 @@ export function searchPlugins(
     query +
     '&facets=[["categories:' +
     software +
-    '"]]' +
+    '"],["client_side:optional","client_side:unsupported"],["server_side:optional","server_side:required"]]' +
     "&limit=10";
 
   if (!lock) {
@@ -183,7 +184,7 @@ export function searchMods(
     query +
     '&facets=[["categories:' +
     software +
-    '"], ["project_type:modpack"]]' +
+    '"], ["project_type:modpack"], ["client_side:optional","client_side:unsupported"],["server_side:optional","server_side:required"]]' +
     "&limit=10";
 
   if (!lock) {

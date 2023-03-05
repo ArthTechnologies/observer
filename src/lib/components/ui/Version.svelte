@@ -9,6 +9,7 @@
   export let url: string;
   export let pluginId: string;
   export let pluginName: string;
+  export let modtype: string;
 
   if (type == "release") {
     type = "";
@@ -29,7 +30,7 @@
     pluginName = pluginName.replace(/[\(\)]/g, "");
     pluginName = pluginName.replace(/[\s_]/g, "-");
 
-    sendVersion(url, id, "lr_" + pluginId, pluginName);
+    sendVersion(url, id, "lr_" + pluginId, pluginName, modtype);
   }
 </script>
 

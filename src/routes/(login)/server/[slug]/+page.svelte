@@ -18,6 +18,7 @@
   import Add from "$lib/components/ui/Add.svelte";
   import EditInfo from "$lib/components/ui/EditInfo.svelte";
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
+  import ManageMods from "$lib/components/ui/ManageMods.svelte";
   let modded = false;
   let name: string = "-";
   let address: string;
@@ -36,7 +37,8 @@
   if (browser) {
     if (
       localStorage.getItem("serverSoftware") == "Fabric" ||
-      localStorage.getItem("serverSoftware") == "Quilt"
+      localStorage.getItem("serverSoftware") == "Quilt" ||
+      localStorage.getItem("serverSoftware") == "Forge"
     ) {
       modded = true;
     }
@@ -522,7 +524,7 @@
       </div>
 
       <div class="flex w-[10.6rem] space-x-2">
-        {#if modded}<AddMod />{:else}
+        {#if modded}<AddMod /><ManageMods />{:else}
           <Add /><Manage />
         {/if}
       </div>

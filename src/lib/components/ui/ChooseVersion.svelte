@@ -42,6 +42,7 @@
               url: version.files[0].url,
               pluginId: id,
               pluginName: pluginName,
+              modtype: "plugin",
             },
           });
         }
