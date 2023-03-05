@@ -55,7 +55,7 @@
         <div class="flex space-x-2">
           {#if client == "optional"}
             <div
-              class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[18rem]"
+              class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +103,7 @@
             </div>
           {/if}
           <div
-            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[5rem]"
+            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

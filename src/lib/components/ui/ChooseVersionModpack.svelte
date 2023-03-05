@@ -47,10 +47,10 @@
           });
         }
       });
-      //if it's still blank, add a message saying that there are no versions for this plugin
+
       if (document.getElementById("list").innerHTML == "") {
         document.getElementById("list").innerHTML =
-          "<p class='text-center'>There are no versions for this plugin.</p>";
+          "<p class='text-center'>There are no versions for this modpack.</p>";
       }
     });
   }

@@ -187,7 +187,6 @@
       } else if (state == "false") {
         changeServerState("start", id, email);
       }
-      lock = true;
     }
   }
 
