@@ -18,10 +18,6 @@
   if (browser) {
     enablePay = localStorage.getItem("enablePay");
     enableAuth = localStorage.getItem("enableAuth");
-    console.log(enableAuth + "auth");
-    if (localStorage.getItem("token") == "" && enableAuth == "true") {
-      goto("/signin");
-    }
   }
 
   let login = false;
@@ -55,7 +51,7 @@
           goto("/signin");
         }
       }
-    }, 100);
+    }, 200);
   });
 
   function check() {
