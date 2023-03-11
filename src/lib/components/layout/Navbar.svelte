@@ -51,7 +51,7 @@
           goto("/signin");
         }
       }
-    }, 200);
+    }, 500);
   });
 
   function check() {
