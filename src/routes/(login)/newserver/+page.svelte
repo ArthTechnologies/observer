@@ -154,7 +154,7 @@
             >
               <option>Latest</option>
 
-              <option>1.19.3</option>
+              <option>1.19.4</option>
               <option>1.18.2</option>
               <option>1.17.1</option>
               <option>1.16.5</option>
