@@ -20,11 +20,12 @@
       x.type = "password";
     }
   }
-  function enterPwd() {
-    if (event.keyCode == 13) {
+
+  document.addEventListener("keyup", function (event) {
+    if (event.keyCode === 13) {
       submit();
     }
-  }
+  });
   //set goodPwd to false if length of the element with id="pwd" is less than 8
   function checkPwd() {
     if (document.getElementById("pwd").value.length < 7) {
@@ -77,7 +78,7 @@
           console.log("x: " + x);
           if (x === true) {
             console.log("redricting...");
-            goto("/");
+            goto("https://buy.stripe.com/9AQ8zP0ZL1ib7L2cMN");
           } else {
             visible = true;
             msg = x;
@@ -165,7 +166,6 @@
           <input
             type="password"
             id="pwd"
-            on:keypress={enterPwd}
             placeholder={$t("signin.l.pwd")}
             class="input w-full max-w-xs"
           />
