@@ -479,7 +479,7 @@
       <div
         class="bg-base-300 h-96 lg:h-[30rem] rounded-xl shadow-xl overflow-auto lg:w-[30rem] xl:w-[50rem] "
       >
-        <p class="p-5 sm:text-xs xl:text-lg font-mono" id="terminal" />
+        <p class="p-5 sm:text-xs xl:text-base font-mono" id="terminal" />
       </div>
       <input
         on:keypress={writeCmd}

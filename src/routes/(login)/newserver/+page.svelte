@@ -136,9 +136,6 @@
             <option>Paper (Reccomended)</option>
             <option>Vanilla</option>
             <option>Spigot</option>
-            <option>Quilt</option>
-            <option>Fabric</option>
-            <option>Forge</option>
           </select>
 
           {#if snapshot == false}
