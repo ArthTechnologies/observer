@@ -6,7 +6,7 @@
   import { browser } from "$app/environment";
   import Modpacks from "$lib/components/ui/Modpacks.svelte";
   import ModpackVersion from "$lib/components/ui/ModpackVersion.svelte";
-  let version = "Latest";
+  let version = "1.19.4";
   export let software = "Paper (Reccomended)";
   export let snapshot = false;
   let name = "";
@@ -82,7 +82,7 @@
   }
   let worldgen = true;
   function checkV() {
-    if (version != "Latest" && snapshot == false) {
+    if (version != "1.19.4" && snapshot == false) {
       worldgen = false;
     } else {
       worldgen = true;
@@ -152,8 +152,6 @@
               tabindex="0"
               class="select select-primary p-2 bg-base-100"
             >
-              <option>Latest</option>
-
               <option>1.19.4</option>
               <option>1.18.2</option>
               <option>1.17.1</option>
