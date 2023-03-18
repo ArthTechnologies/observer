@@ -16,7 +16,7 @@
       let software = document
         .getElementById("softwareDropdown")
         .value.toLowerCase();
-      let version = "1.19.3";
+      let version = "1.19.4";
 
       setTimeout(function () {
         promise = searchMods(software, version, query, "modpack").then(
@@ -114,7 +114,7 @@
           author="jpenilla"
           authorLink="https://github.com/jpenilla"
           pluginId="jpenilla/squaremap"
-          link="https://github.com/jpenilla/squaremap/releases/download/v1.1.9/squaremap-paper-mc1.19.3-1.1.9.jar"
+          link="https://github.com/jpenilla/squaremap/releases/download/v1.1.12/squaremap-paper-mc1.19.4-1.1.12.jar"
           disclaimer="This plugin only supports the latest minecraft version."
         />
         <ModpackResult

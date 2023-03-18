@@ -17,7 +17,7 @@
     }
     switch (sVersion) {
       case "latest":
-        sVersion = "1.19.3";
+        sVersion = "1.19.4";
         break;
     }
   }
