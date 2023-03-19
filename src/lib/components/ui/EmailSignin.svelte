@@ -21,11 +21,13 @@
     }
   }
 
-  document.addEventListener("keyup", function (event) {
-    if (event.keyCode === 13) {
-      submit();
-    }
-  });
+  if (browser) {
+    document.addEventListener("keyup", function (event) {
+      if (event.keyCode === 13) {
+        submit();
+      }
+    });
+  }
   //set goodPwd to false if length of the element with id="pwd" is less than 8
   function checkPwd() {
     if (document.getElementById("pwd").value.length < 7) {
@@ -78,7 +80,10 @@
           console.log("x: " + x);
           if (x === true) {
             console.log("redricting...");
-            goto("https://buy.stripe.com/9AQ8zP0ZL1ib7L2cMN");
+            goto(
+              "https://buy.stripe.com/9AQ8zP0ZL1ib7L2cMN?prefilled_email=" +
+                document.getElementById("email").value
+            );
           } else {
             visible = true;
             msg = x;
