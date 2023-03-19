@@ -81,8 +81,9 @@
           if (x === true) {
             console.log("redricting...");
             goto(
-              "https://buy.stripe.com/9AQ8zP0ZL1ib7L2cMN?prefilled_email=" +
-                document.getElementById("email").value
+              "https://buy.stripe.com/dR63fv4bX3qjc1i28a?prefilled_email=" +
+                document.getElementById("email").value +
+                "&prefilled_promo_code=2023"
             );
           } else {
             visible = true;

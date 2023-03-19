@@ -50,7 +50,7 @@
 
       if (document.getElementById("list").innerHTML == "") {
         document.getElementById("list").innerHTML =
-          "<p class='text-center'>There are no versions for this modpack.</p>";
+          "<p class='text-center'>This modpack doesn't support your selected Minecraft version currently.</p>";
       }
     });
   }

@@ -226,13 +226,20 @@ export function getSettings() {
 }
 
 export function getServers(em: string) {
-  const url = apiurl + "servers/" + "?email=" + em;
+  let url = apiurl + "servers/" + "?accountId=";
+  if (browser) {
+    url = apiurl + "servers/" + "?accountId=" + localStorage.getItem("accountId");
+  }
   console.log("Request Sent: Get Servers");
 
 
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
+        if (browser) {
+          window.localStorage.setItem("servers", JSON.parse(input).amount);
+        }
+      
       console.log("Response Recieved: " + input);
       if (input.indexOf("Invalid credentials.") > -1) {
        
@@ -243,6 +250,7 @@ export function getServers(em: string) {
       }
     })
     .catch((err) => console.error(err));
+ 
 }
 export function signupEmail(em: string, pwd: string) {
 
@@ -316,6 +324,7 @@ export function loginEmail(em: string, pwd: string) {
           window.localStorage.setItem("token", JSON.parse(input).token);
           window.localStorage.setItem("accountEmail", em);
           window.localStorage.setItem("loggedIn", "true");
+          window.localStorage.setItem("accountId", JSON.parse(input).accountId);
           GET = { method: "GET",
           headers: {
             "token": localStorage.getItem("token"),
@@ -363,6 +372,13 @@ export function createServer(
     "server/new?" +
     "email=" +
     window.localStorage.getItem("accountEmail");
+    if (browser) {
+      const url =
+      apiurl +
+      "server/new?" +
+      "email=" +
+      window.localStorage.getItem("accountEmail") + "&accountId=" + window.localStorage.getItem("accountId");
+    }
 
   const req = {
     method: "POST",
@@ -392,7 +408,7 @@ export function createServer(
         //set localstorage x to true
         window.localStorage.setItem("x", "true");
       } else if (text.indexOf("Funds") > -1) {
-        alert("You don't have enough money to make a new server.");
+        alert("If you want another server, please make a new subscription.");
         window.localStorage.setItem("x", "true");
       } else if (text.indexOf("Subscribe") > -1) {
         alert("You need to subscribe first.");
@@ -460,6 +476,7 @@ export function getServer(id: number) {
 }
 
 export function deleteServer(id: number) {
+  localStorage.setItem("servers", (parseInt(localStorage.getItem("servers")) - 1).toString())
   const url = apiurl + "server/" + id;
 
   return fetch(url, DELETE)
