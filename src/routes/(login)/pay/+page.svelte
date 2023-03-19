@@ -32,7 +32,7 @@
   <div class="flex flex-col grow items-center max-w-[55rem] mb-10 space-y-6">
     <h1 class="divider px-10 text-3xl font-semibold">{$t("bill.title")}</h1>
     <div class="stat bg-base-200 text-center rounded-xl w-3/4 shadow">
-      <div class="stat-title">Servers</div>
+      <div class="stat-title">{$t("navbar.servers")}</div>
       <div class="stat-value">{servers}</div>
     </div>
     <div

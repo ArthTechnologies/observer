@@ -32,7 +32,7 @@
 </script>
 
 <label for="manage" on:click={search} class="btn btn-block btn-primary"
-  >Manage Plugins</label
+  >{$t("button.manageplugins")}</label
 >
 
 <!-- Put this part before </body> tag -->

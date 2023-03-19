@@ -124,7 +124,9 @@
       <form>
         <div class="flex flex-col w-[22rem] xl:w-[30rem]">
           <!-- svelte-ignore a11y-label-has-associated-control -->
-          <label class="label" for="softwareDropdown">Server Software</label>
+          <label class="label" for="softwareDropdown"
+            >{$t("newserver.l.software")}</label
+          >
           <select
             bind:value={software}
             on:change={checkS}
@@ -139,7 +141,8 @@
           </select>
 
           {#if snapshot == false}
-            <label class="label" for="softwareDropdown">Minecraft Version</label
+            <label class="label" for="softwareDropdown"
+              >{$t("newserver.l.version")}</label
             >
             <select
               bind:value={version}
