@@ -12,29 +12,32 @@ let DELETE = {};
 //set email from local storage to variable
 if (browser) {
   accountEmail.set(localStorage.getItem("accountEmail"));
-if (localStorage.getItem("x") == undefined) {
-  localStorage.setItem("x", "false");
-  localStorage.setItem("loggedIn", "false");
-} 
- GET = { method: "GET",
-headers: {
-  "token": localStorage.getItem("token"),
-  "email": localStorage.getItem("accountEmail"),
+  if (localStorage.getItem("x") == undefined) {
+    localStorage.setItem("x", "false");
+    localStorage.setItem("loggedIn", "false");
+  }
+  GET = {
+    method: "GET",
+    headers: {
+      token: localStorage.getItem("token"),
+      email: localStorage.getItem("accountEmail"),
+    },
+  };
+  POST = {
+    method: "POST",
+    headers: {
+      token: localStorage.getItem("token"),
+      email: localStorage.getItem("accountEmail"),
+    },
+  };
+  DELETE = {
+    method: "DELETE",
+    headers: {
+      token: localStorage.getItem("token"),
+      email: localStorage.getItem("accountEmail"),
+    },
+  };
 }
-};
- POST = { method: "POST",
-headers: {
-  "token": localStorage.getItem("token"),
-  "email": localStorage.getItem("accountEmail"),
-} };
- DELETE = { method: "DELETE",
-headers: {
-  "token": localStorage.getItem("token"),
-  "email": localStorage.getItem("accountEmail"),
-} };
-}
-
-
 
 export function setInfo(id, icon, desc) {
   console.log(id);
@@ -43,8 +46,8 @@ export function setInfo(id, icon, desc) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "token": localStorage.getItem("token"),
-      "email": localStorage.getItem("accountEmail"),
+      token: localStorage.getItem("token"),
+      email: localStorage.getItem("accountEmail"),
     },
     body: JSON.stringify({
       desc: desc,
@@ -52,28 +55,29 @@ export function setInfo(id, icon, desc) {
     }),
   };
 
- //if image isnt taller than it is wide, run code. keep in mind icon is just a url
- let img = new Image();
+  //if image isnt taller than it is wide, run code. keep in mind icon is just a url
+  let img = new Image();
   img.src = icon;
-  img.onload = function() {
+  img.onload = function () {
     if (img.height <= img.width) {
+      return fetch(url, req)
+        .then((res) => res.text())
+        .then((input: string) => {
+          console.log("Response Recieved: " + input);
 
-  return fetch(url, req)
-  .then((res) => res.text())
-  .then((input: string) => {
-    console.log("Response Recieved: " + input);
-
-    if (input.indexOf("400") > -1) {
-      return "error"; 
+          if (input.indexOf("400") > -1) {
+            return "error";
+          } else {
+            return "success";
+          }
+        })
+        .catch((err) => console.error(err));
     } else {
-      return "success";
+      alert(
+        "Image can't be taller than it is wide" + img.height + " " + img.width
+      );
     }
-  })
-  .catch((err) => console.error(err));
-  } else {
-    alert("Image can't be taller than it is wide" + img.height + " " + img.width)
-  }
-}
+  };
 }
 
 export function getMods(id: number, modtype: string) {
@@ -99,7 +103,8 @@ export function sendVersion(
     apiurl +
     "server/" +
     id +
-    "/add/" + modtype + 
+    "/add/" +
+    modtype +
     "?pluginUrl=" +
     encodeURIComponent(link) +
     "&id=" +
@@ -131,8 +136,6 @@ export function getVersions(id: string) {
     })
     .catch((err) => console.error(err));
 }
-
-
 
 export function searchPlugins(
   software: string,
@@ -185,7 +188,9 @@ export function searchMods(
     query +
     '&facets=[["categories:' +
     software +
-    '"], ["project_type:'+modtype+'"],["server_side:optional","server_side:required"]]' +
+    '"], ["project_type:' +
+    modtype +
+    '"],["server_side:optional","server_side:required"]]' +
     "&limit=10";
 
   if (!lock) {
@@ -213,6 +218,7 @@ export function getSettings() {
         window.localStorage.setItem("enablePay", JSON.parse(input).enablePay);
         window.localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
         window.localStorage.setItem("address", JSON.parse(input).address);
+        window.localStorage.setItem("webName", JSON.parse(input).webName);
 
         if (JSON.parse(input).enableAuth == false) {
           window.localStorage.setItem("accountEmail", "guest");
@@ -228,21 +234,20 @@ export function getSettings() {
 export function getServers(em: string) {
   let url = apiurl + "servers/" + "?accountId=";
   if (browser) {
-    url = apiurl + "servers/" + "?accountId=" + localStorage.getItem("accountId");
+    url =
+      apiurl + "servers/" + "?accountId=" + localStorage.getItem("accountId");
   }
   console.log("Request Sent: Get Servers");
-
 
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
-        if (browser) {
-          window.localStorage.setItem("servers", JSON.parse(input).amount);
-        }
-      
+      if (browser) {
+        window.localStorage.setItem("servers", JSON.parse(input).amount);
+      }
+
       console.log("Response Recieved: " + input);
       if (input.indexOf("Invalid credentials.") > -1) {
-       
         return "error";
       } else {
         //return input as json
@@ -250,98 +255,102 @@ export function getServers(em: string) {
       }
     })
     .catch((err) => console.error(err));
- 
 }
 export function signupEmail(em: string, pwd: string) {
-
   console.log("Request Sent");
   localStorage.setItem("accountEmail", em);
-  return fetch(apiurl + "accounts/email/signup?" + new URLSearchParams({
-    email: em,
-    password: pwd,
-    confirmPassword: pwd
-}), POST)
-    .then((res) => res.text()).then((input: string) => {
-    
-        console.log(input)
-      
-  
-        localStorage.setItem("loggedIn", "true");
-          localStorage.setItem("token", JSON.parse(input).token);
-          localStorage.setItem("accountId", JSON.parse(input).accountId);
-          GET = { method: "GET",
-          headers: {
-            "token": localStorage.getItem("token"),
-            "email": localStorage.getItem("accountEmail"),
-          }
-          };
-           POST = { method: "POST",
-          headers: {
-            "token": localStorage.getItem("token"),
-            "email": localStorage.getItem("accountEmail"),
-          } };
-           DELETE = { method: "DELETE",
-          headers: {
-            "token": localStorage.getItem("token"),
-            "email": localStorage.getItem("accountEmail"),
-          } };
-          if (JSON.parse(input).token == -1) {
-
-
-            return(JSON.parse(input).reason)
-           
-          }
-          return true;
-        
-      })
-      .catch((err) => console.error(err));
-     
-}
-
-
-export function loginEmail(em: string, pwd: string) {
-
-
-  
-  return fetch(apiurl + "accounts/email/signin?" + new URLSearchParams(
-    {
-      email: em,
-      password: pwd
-    }
-  ), POST)
+  return fetch(
+    apiurl +
+      "accounts/email/signup?" +
+      new URLSearchParams({
+        email: em,
+        password: pwd,
+        confirmPassword: pwd,
+      }),
+    POST
+  )
     .then((res) => res.text())
     .then((input: string) => {
-      
+      console.log(input);
 
+      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("token", JSON.parse(input).token);
+      localStorage.setItem("accountId", JSON.parse(input).accountId);
+      GET = {
+        method: "GET",
+        headers: {
+          token: localStorage.getItem("token"),
+          email: localStorage.getItem("accountEmail"),
+        },
+      };
+      POST = {
+        method: "POST",
+        headers: {
+          token: localStorage.getItem("token"),
+          email: localStorage.getItem("accountEmail"),
+        },
+      };
+      DELETE = {
+        method: "DELETE",
+        headers: {
+          token: localStorage.getItem("token"),
+          email: localStorage.getItem("accountEmail"),
+        },
+      };
+      if (JSON.parse(input).token == -1) {
+        return JSON.parse(input).reason;
+      }
+      return true;
+    })
+    .catch((err) => console.error(err));
+}
 
-
-      if (JSON.parse(input).token == -1 || JSON.parse(input).status == "ERROR") {
-        console.log(JSON.parse(input))
-        return(JSON.parse(input).reason)
+export function loginEmail(em: string, pwd: string) {
+  return fetch(
+    apiurl +
+      "accounts/email/signin?" +
+      new URLSearchParams({
+        email: em,
+        password: pwd,
+      }),
+    POST
+  )
+    .then((res) => res.text())
+    .then((input: string) => {
+      if (
+        JSON.parse(input).token == -1 ||
+        JSON.parse(input).status == "ERROR"
+      ) {
+        console.log(JSON.parse(input));
+        return JSON.parse(input).reason;
       } else {
         if (browser) {
-          console.log(JSON.parse(input))
+          console.log(JSON.parse(input));
           window.localStorage.setItem("token", JSON.parse(input).token);
           window.localStorage.setItem("accountEmail", em);
           window.localStorage.setItem("loggedIn", "true");
           window.localStorage.setItem("accountId", JSON.parse(input).accountId);
-          GET = { method: "GET",
-          headers: {
-            "token": localStorage.getItem("token"),
-            "email": localStorage.getItem("accountEmail"),
-          }
+          GET = {
+            method: "GET",
+            headers: {
+              token: localStorage.getItem("token"),
+              email: localStorage.getItem("accountEmail"),
+            },
           };
-           POST = { method: "POST",
-          headers: {
-            "token": localStorage.getItem("token"),
-            "email": localStorage.getItem("accountEmail"),
-          } };
-           DELETE = { method: "DELETE",
-          headers: {
-            "token": localStorage.getItem("token"),
-            "email": localStorage.getItem("accountEmail"),
-          } };
-
+          POST = {
+            method: "POST",
+            headers: {
+              token: localStorage.getItem("token"),
+              email: localStorage.getItem("accountEmail"),
+            },
+          };
+          DELETE = {
+            method: "DELETE",
+            headers: {
+              token: localStorage.getItem("token"),
+              email: localStorage.getItem("accountEmail"),
+            },
+          };
         }
         return true;
       }
@@ -365,27 +374,29 @@ export function createServer(
   v: string,
   a: any[],
   c: any[],
-  mURL:string,
+  mURL: string
 ) {
   const url =
     apiurl +
     "server/new?" +
     "email=" +
     window.localStorage.getItem("accountEmail");
-    if (browser) {
-      const url =
+  if (browser) {
+    const url =
       apiurl +
       "server/new?" +
       "email=" +
-      window.localStorage.getItem("accountEmail") + "&accountId=" + window.localStorage.getItem("accountId");
-    }
+      window.localStorage.getItem("accountEmail") +
+      "&accountId=" +
+      window.localStorage.getItem("accountId");
+  }
 
   const req = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "token": window.localStorage.getItem("token"),
-      "email": window.localStorage.getItem("accountEmail"),
+      token: window.localStorage.getItem("token"),
+      email: window.localStorage.getItem("accountEmail"),
     },
     body: JSON.stringify({
       name: n,
@@ -393,7 +404,7 @@ export function createServer(
       version: v,
       addons: a,
       cmds: c,
-      modpackURL: mURL
+      modpackURL: mURL,
     }),
   };
   console.log("Request Sent: " + JSON.stringify(req.body));
@@ -476,7 +487,10 @@ export function getServer(id: number) {
 }
 
 export function deleteServer(id: number) {
-  localStorage.setItem("servers", (parseInt(localStorage.getItem("servers")) - 1).toString())
+  localStorage.setItem(
+    "servers",
+    (parseInt(localStorage.getItem("servers")) - 1).toString()
+  );
   const url = apiurl + "server/" + id;
 
   return fetch(url, DELETE)

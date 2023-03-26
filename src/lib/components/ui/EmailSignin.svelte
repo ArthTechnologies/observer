@@ -77,7 +77,6 @@
           document.getElementById("email").value,
           document.getElementById("pwd").value
         ).then((x) => {
-          console.log("x: " + x);
           if (x === true) {
             console.log("redricting...");
             goto(
@@ -101,7 +100,7 @@
         document.getElementById("pwd").value
       ).then((x) => {
         console.log("x: " + x);
-        if (x) {
+        if (x === true) {
           console.log("REDIRECTING...");
           goto("/");
         } else {
