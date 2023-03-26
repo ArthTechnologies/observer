@@ -113,7 +113,7 @@
     id = localStorage.getItem("serverID");
 
     port += parseInt(id);
-
+    console.log(apiurl + "server/" + id + "/getInfo");
     //GET apiurl/server/id/getInfo
     fetch(apiurl + "server/" + id + "/getInfo", {
       method: "GET",
@@ -506,7 +506,7 @@
                   {address}:{port}
                 </div>
                 <div id="xDesc" class="stat-desc ">
-                  {desc}
+                  Description: {desc}
                 </div>
               </div>
             </div>

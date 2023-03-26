@@ -1,6 +1,7 @@
 <script>
   import { browser } from "$app/environment";
   import { setInfo } from "$lib/scripts/req";
+  import { src_url_equal } from "svelte/internal";
   let id;
   let icon = "";
   let desc = "";
@@ -9,8 +10,11 @@
 
     setTimeout(() => {
       icon = document.getElementById("xIcon").src;
-      desc = document.getElementById("xDesc")?.innerText;
-    }, 1000);
+      desc = document.getElementById("xDesc")?.innerText.split(": ")[1];
+      if (icon.includes("/images/placeholder.webp")) {
+        icon = "";
+      }
+    }, 800);
   }
   function set() {
     //download the file from the input with id="icon"
