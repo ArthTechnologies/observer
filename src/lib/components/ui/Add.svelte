@@ -99,18 +99,7 @@
           link="https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar"
           disclaimer="This plugin has not been tested on minecraft versions before 1.13."
         />
-        <FeaturedPlugin
-          icon="https://media.forgecdn.net/avatars/thumbnails/493/419/64/64/637803056128514812.png"
-          name="Squaremap"
-          desc="
 
-          A minimalistic and lightweight world map viewer for Minecraft servers, using the vanilla map rendering style "
-          author="jpenilla"
-          authorLink="https://github.com/jpenilla"
-          pluginId="jpenilla/squaremap"
-          link="https://github.com/jpenilla/squaremap/releases/download/v1.1.12/squaremap-paper-mc1.19.4-1.1.12.jar"
-          disclaimer="This plugin only supports the latest minecraft version."
-        />
         <PluginResult
           name="WorldEdit (FAWE)"
           author="NotMyFault"
