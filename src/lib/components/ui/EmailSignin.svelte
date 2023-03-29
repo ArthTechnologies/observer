@@ -11,7 +11,7 @@
   let goodPwd = true;
   let matchPwd = true;
   let networkerror = false;
-  let sign = "in";
+  let sign = "up";
   function pwdVisibility() {
     var x = document.getElementById("pwd");
     if (x.type === "password") {
