@@ -132,10 +132,10 @@
 
 <div class="divider" />
 <div class="tabs ">
-  <a id="sin" on:click={signIn} class="tab tab-lifted tab-active"
-    >{$t("signin")}</a
+  <a id="sin" on:click={signIn} class="tab tab-lifted">{$t("signin")}</a>
+  <a id="sup" on:click={signUp} class="tab tab-lifted tab-active"
+    >{$t("signup")}</a
   >
-  <a id="sup" on:click={signUp} class="tab tab-lifted">{$t("signup")}</a>
 </div>
 {#if sign === "in"}
   <div
