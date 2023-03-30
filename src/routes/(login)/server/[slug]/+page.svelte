@@ -20,6 +20,7 @@
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
   let modded = false;
+  let vanilla = false;
   let name: string = "-";
   let address: string;
   let tname: string;
@@ -41,6 +42,10 @@
       localStorage.getItem("serverSoftware") == "Forge"
     ) {
       modded = true;
+    }
+
+    if (localStorage.getItem("serverSoftware") == "Vanilla") {
+      vanilla = true;
     }
   }
   function alwaysDay() {
@@ -523,7 +528,7 @@
       </div>
 
       <div class="flex w-[10.6rem] space-x-2">
-        {#if modded}<AddMod /><ManageMods />{:else}
+        {#if modded}<AddMod /><ManageMods />{:else if !vanilla}
           <Add /><Manage />
         {/if}
       </div>

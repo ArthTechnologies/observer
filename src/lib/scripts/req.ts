@@ -73,9 +73,7 @@ export function setInfo(id, icon, desc) {
         })
         .catch((err) => console.error(err));
     } else {
-      alert(
-        "Image can't be taller than it is wide" + img.height + " " + img.width
-      );
+      alert("Image can't be taller than it is wide.");
     }
   };
 }
