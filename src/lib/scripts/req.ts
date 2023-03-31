@@ -407,43 +407,36 @@ export function createServer(
   };
   console.log("Request Sent: " + JSON.stringify(req.body));
   //if response is 409, send an alert, otherwise do nothing
-  const response = fetch(url, req)
-    .then((res) => res.text())
-    .then((text) => {
-      console.log("Response Recieved: " + text);
-      if (text.indexOf("exists") > -1) {
-        alert("Sorry, that name is taken.");
+  return fetch(url, req).then((res) =>
+    res
+      .json()
+      .then((res) => {
+        console.log("Response Recieved: " + JSON.stringify(res));
 
-        //set localstorage x to true
-        window.localStorage.setItem("x", "true");
-      } else if (text.indexOf("Funds") > -1) {
-        alert("If you want another server, please make a new subscription.");
-        window.localStorage.setItem("x", "true");
-      } else if (text.indexOf("Subscribe") > -1) {
-        alert("You need to subscribe first.");
-        window.localStorage.setItem("x", "true");
-      } else if (text.indexOf("Success") == -1) {
-        alert("Sorry, something went wrong.");
-        window.localStorage.setItem("x", "true");
-      } else {
-        //set text.subscription to localstorage
-        if (browser) {
-          window.localStorage.setItem("subs", JSON.parse(text).subscriptions);
-          //if localstorage servers is null, set it to 0
-          if (window.localStorage.getItem("servers") == null) {
-            window.localStorage.setItem("servers", "0");
+        //if status code starts with 4
+        if (res.success == false) {
+          if (browser) {
+            return res.msg;
           }
-          //increase localstorage servers by 1
-          window.localStorage.setItem(
-            "servers",
-            (parseInt(localStorage.getItem("servers")) + 1).toString()
-          );
+        } else {
+          //set text.subscription to localstorage
+          if (browser) {
+            window.localStorage.setItem("subs", res.subscriptions);
+            //if localstorage servers is null, set it to 0
+            if (window.localStorage.getItem("servers") == null) {
+              window.localStorage.setItem("servers", "0");
+            }
+            //increase localstorage servers by 1
+            window.localStorage.setItem(
+              "servers",
+              (parseInt(localStorage.getItem("servers")) + 1).toString()
+            );
+          }
+          return true;
         }
-      }
-    })
-    .catch((err) => console.error(err));
-
-  return "done";
+      })
+      .catch((err) => console.error(err))
+  );
 }
 
 export function getPlayers(address: string) {

@@ -5,11 +5,13 @@
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
   import Modpacks from "$lib/components/ui/Modpacks.svelte";
-  import ModpackVersion from "$lib/components/ui/ModpackVersion.svelte";
+  import Alert from "$lib/components/ui/Alert.svelte";
   let version = "1.19.4";
   export let software = "Paper (Reccomended)";
   export let snapshot = false;
   let name = "";
+  let visible = false;
+  let msg = "";
   let gamemode: string;
   let admin = "";
   let modpacks = false;
@@ -57,23 +59,21 @@
       modpackURL = localStorage.getItem("modpackURL");
 
       console.log("creating" + sSoftware + "server...");
-      createServer(name, sSoftware, sVersion, addons, cmd, modpackURL);
-      //wait 1 second
-      setTimeout(function () {
-        localStorage.setItem("modpackURL", "");
-        localStorage.setItem("modpackVersion", "");
-        //if x in localstorage is false, run code
-        if (localStorage.getItem("x") == "false") {
-          //set localStorage z to true
-          localStorage.setItem("z", "true");
-          //go to the servers page
-          console.log("redricting...");
-          goto("/");
-        } else {
-          //set it to false
-          localStorage.setItem("x", "false");
+      createServer(name, sSoftware, sVersion, addons, cmd, modpackURL).then(
+        (res) => {
+          localStorage.setItem("modpackURL", "");
+          localStorage.setItem("modpackVersion", "");
+          if (res == true) {
+            goto("/");
+          } else {
+            msg = res;
+            visible = true;
+            setTimeout(() => {
+              visible = false;
+            }, 3500);
+          }
         }
-      }, 1000);
+      );
     } else if (browser) {
       alert("Please give your server a name");
     } else {
@@ -243,3 +243,4 @@
     </div>
   </div>
 </div>
+<Alert detail={msg} {visible} />
