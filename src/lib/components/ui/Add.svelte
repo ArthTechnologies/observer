@@ -48,7 +48,7 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-block" on:click={search}
+<label for="my-modal-5" class="btn md:btn-block" on:click={search}
   >{$t("button.addplugin")}</label
 >
 

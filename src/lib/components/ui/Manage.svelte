@@ -31,7 +31,7 @@
   search();
 </script>
 
-<label for="manage" on:click={search} class="btn btn-block btn-primary"
+<label for="manage" on:click={search} class="btn md:btn-block btn-primary w-24 "
   >{$t("button.manageplugins")}</label
 >
 

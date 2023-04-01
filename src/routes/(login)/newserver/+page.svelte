@@ -175,7 +175,7 @@
           <input
             bind:value={name}
             id="nameInput"
-            class="input-bordered input-primary input w-full bg-base-300"
+            class="input-bordered input-primary input  bg-base-300"
             type="text"
             placeholder="{$t('general.ex')} My Minecraft Server"
           />

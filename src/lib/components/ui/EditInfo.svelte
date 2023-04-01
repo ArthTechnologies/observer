@@ -26,7 +26,7 @@
 </script>
 
 <label for="editInfo"
-  ><div class="btn btn-sm btn-circle mr-2 mt-2">
+  ><div class="btn btn-sm btn-circle absolute right-0 mr-2 mt-2">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="16"

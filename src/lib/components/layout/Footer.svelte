@@ -11,7 +11,7 @@
   <div class="items-center grid-flow-col" />
   <label
     for="support-modal"
-    class="btn btn-sm btn-ghost flex items-center md:justify-self-end"
+    class="btn btn-sm btn-ghost flex items-center justify-self-end"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
