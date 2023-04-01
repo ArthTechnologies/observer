@@ -116,8 +116,14 @@
 
   onMount(() => {
     name = localStorage.getItem("serverName");
-    id = localStorage.getItem("serverID");
-
+    if (localStorage.getItem("serverCardRedrict") != "true") {
+      id = parseInt(localStorage.getItem("serverID"));
+    } else {
+      if (browser) {
+        id = parseInt(window.location.href.split("/")[4]) - 10000;
+      }
+    }
+    localStorage.setItem("serverCardRedrict", "false");
     port += parseInt(id);
     console.log(apiurl + "server/" + id + "/getInfo");
     //GET apiurl/server/id/getInfo
@@ -173,6 +179,7 @@
   function getStatus() {
     //get server status
     getServer(id).then((response) => {
+      console.log(response);
       //set state to response
       state = response.state;
       if (restarting && state == "starting") {
@@ -210,7 +217,6 @@
       let count = 0;
       let interval = 500;
       setInterval(function () {
-        console.log(count);
         count++;
         if (count > 5) {
           interval = 1000;
