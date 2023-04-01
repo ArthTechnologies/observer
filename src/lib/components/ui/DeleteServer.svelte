@@ -3,10 +3,10 @@
   import { t } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   let id = -1;
+  if (browser) {
+    id = localStorage.getItem("serverID");
+  }
   function del() {
-    if (browser) {
-      id = localStorage.getItem("serverID");
-    }
     deleteServer(id);
   }
 </script>
@@ -46,10 +46,16 @@
     <p class="py-4">
       Your server will be instantly deleted. This cannot be undone.
     </p>
+
     <a href="/"
       ><button class="btn btn-error" on:click={del}
         >{$t("button.delete2")}</button
       ></a
+    >
+    <a
+      class="btn btn-primary"
+      href="https://api.arthmc.xyz/server/{id}/world"
+      download>Download World File</a
     >
   </div>
 </div>
