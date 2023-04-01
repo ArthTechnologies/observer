@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { deleteServer } from "$lib/scripts/req";
   import { t } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
@@ -8,6 +8,26 @@
   }
   function del() {
     deleteServer(id);
+  }
+  function download() {
+    return fetch("https://api.arthmc.xyz/server/" + id + "/world", {
+      method: "GET",
+      headers: {
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((res) => res.text())
+      .then((input: string) => {
+        console.log(input);
+        //download the file
+        const element = document.createElement("a");
+        const file = new Blob([input], { type: "text/plain" });
+        element.href = URL.createObjectURL(file);
+        element.download = "world.zip";
+        document.body.appendChild(element); // Required for this to work in FireFox
+        element.click();
+      });
   }
 </script>
 
@@ -46,16 +66,13 @@
     <p class="py-4">
       Your server will be instantly deleted. This cannot be undone.
     </p>
-
+    <button class="btn btn-primary" on:click={download}
+      >Download World File</button
+    >
     <a href="/"
       ><button class="btn btn-error" on:click={del}
         >{$t("button.delete2")}</button
       ></a
-    >
-    <a
-      class="btn btn-primary"
-      href="https://api.arthmc.xyz/server/{id}/world"
-      download>Download World File</a
     >
   </div>
 </div>
