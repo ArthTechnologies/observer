@@ -66,6 +66,7 @@
             {accountEmailChopped}
           </p>
         </li>
+        <li><a href="/account">Manage Account</a></li>
         <li><a on:click={signOut}>{$t("account.logout")}</a></li>
       </ul>
     </div>
