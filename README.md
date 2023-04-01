@@ -66,5 +66,4 @@ The main difference between Arth Panel and an alternative like pufferpanel or pt
 ✅ Communication with backend  
 ✅ Subscriptions with stripe  
 ✅ Basic UI and function for terminal on the frontend  
-❌ Signin via discord  
-❓ Decentralized options for accounts
+❌ Signin via discord
