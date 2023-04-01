@@ -202,8 +202,22 @@
   }
 
   onMount(() => {
+    setTimeout(() => {
+      getStatus();
+      readCmd();
+    }, 200);
     if (browser) {
+      let count = 0;
+      let interval = 500;
       setInterval(function () {
+        console.log(count);
+        count++;
+        if (count > 5) {
+          interval = 1000;
+        }
+        if (count > 20) {
+          interval = 2000;
+        }
         if (
           decodeURIComponent(window.location.pathname) ==
           "/server/" + tname
@@ -211,7 +225,7 @@
           getStatus();
           readCmd();
         }
-      }, 3000);
+      }, interval);
     }
     getStatus();
   });
