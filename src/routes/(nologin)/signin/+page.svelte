@@ -38,6 +38,7 @@
         >
       </div>
       <EmailSignin />
+      <a class="btn btn-sm mt-2" href="/reset-password">Forgot password</a>
     </div>
   </div>
 </div>

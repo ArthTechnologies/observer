@@ -15,13 +15,9 @@
         >Manage Payments</a
       >
       <a
-        href="/request-placeholder"
-        class="btn btn-primary grow md:grow sm:w-44 ml-1 md:m-0">Change Email</a
-      >
-      <a
-        href="/request-placeholder"
+        href="/reset-password"
         class="btn btn-secondary grow md:grow sm:w-44 ml-1 md:m-0"
-        >Change Password</a
+        >Reset Password</a
       >
       <DeleteAccount />
     </div>

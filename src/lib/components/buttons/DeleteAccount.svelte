@@ -4,7 +4,7 @@
   function del() {
     if (browser) {
       fetch(
-        "http://localhost:4000/accounts?email=" +
+        "https://api.arthmc.xyz/accounts/email?email=" +
           localStorage.getItem("accountEmail") +
           "&password=" +
           document.getElementById("password").value,
