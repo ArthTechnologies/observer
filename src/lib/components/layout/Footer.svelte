@@ -47,12 +47,6 @@
         target="_blank"
         rel="noreferrer">Discord</a
       >
-      <a
-        class="btn btn-sm"
-        href="mailto:support@arthmc.xyz"
-        target="_blank"
-        rel="noreferrer">email support@arthmc.xyz</a
-      >
     </div>
   </div>
 </div>
