@@ -40,7 +40,8 @@
 <Navbar navType="welcome" />
 
 <div class="hero min-h-screen ">
-  <div class="hero-content">
+  <div class="hero-content flex flex-col place-items-start">
+    <a href="/" class="btn btn-sm">Go Back</a>
     <div
       class="bg-base-200 rounded-box w-full max-w-3xl p-5 border border-dashed"
     >

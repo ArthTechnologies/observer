@@ -266,6 +266,10 @@
           /\n/g,
           "<p>"
         );
+        setTimeout(() => {
+          const terminal = document.getElementById("terminal");
+          terminal.scrollTop = terminal.scrollHeight;
+        }, 20);
       }
     });
     //set terminal's text to rt
