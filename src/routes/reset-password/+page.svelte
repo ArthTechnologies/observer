@@ -1,7 +1,13 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import Footer from "$lib/components/layout/Footer.svelte";
   import Navbar from "$lib/components/layout/Navbar.svelte";
-
+  let enablePay = true;
+  if (browser) {
+    if (localStorage.getItem("enablePay") == "false") {
+      enablePay = false;
+    }
+  }
   function reset() {
     let email = document.getElementById("email").value;
     let cc = document.getElementById("cc").value;
@@ -53,12 +59,14 @@
         <label for="email " class="font-bold">Email</label>
         <input id="email" class="input input-bordered " type="text" />
       </div>
-      <div class="flex flex-col mt-2">
-        <label for="email " class="font-bold"
-          >Last 4 digits of your Credit Card</label
-        >
-        <input id="cc" class="input input-bordered " type="text" />
-      </div>
+      {#if enablePay}
+        <div class="flex flex-col mt-2">
+          <label for="email " class="font-bold"
+            >Last 4 digits of your Credit Card</label
+          >
+          <input id="cc" class="input input-bordered " type="text" />
+        </div>
+      {/if}
       <div class="flex flex-col mt-2">
         <label for="password " class="font-bold">New Password</label>
         <input id="password" class="input input-bordered " type="password" />
