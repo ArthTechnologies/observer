@@ -8,7 +8,7 @@
   var software = "";
   var sVersion = "";
   if (browser) {
-    software = localStorage.getItem("serverSoftware");
+    software = localStorage.getItem("serverSoftware").toLowerCase();
     sVersion = localStorage.getItem("serverVersion");
     switch (software) {
       case "Paper":
@@ -26,13 +26,14 @@
     getVersions(id).then((data) => {
       document.getElementById("list").innerHTML = "";
       data.forEach((version) => {
+        console.log(software + " + " + version.loaders.indexOf(software));
         if (
           version.name != vname &&
-          version.loaders.includes(software) &&
-          version.game_versions.includes(sVersion)
+          version.loaders.indexOf(software) > -1 &&
+          version.game_versions.indexOf(sVersion) > -1
         ) {
           vname = version.name;
-          console.log(version.name + vname);
+          console.log(version);
           new Version({
             target: document.getElementById("list"),
             props: {
@@ -42,7 +43,8 @@
               url: version.files[0].url,
               pluginId: id,
               pluginName: pluginName,
-              modtype: "plugin",
+              modtype: "mod",
+              dependencies: version.dependencies,
             },
           });
         }
@@ -50,7 +52,7 @@
       //if it's still blank, add a message saying that there are no versions for this plugin
       if (document.getElementById("list").innerHTML == "") {
         document.getElementById("list").innerHTML =
-          "<p class='text-center'>This plugin doesn't support your Minecraft version currently.</p>";
+          "<p class='text-center'>This mod doesn't support your Minecraft version currently.</p>";
       }
     });
   }

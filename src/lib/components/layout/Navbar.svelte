@@ -11,6 +11,7 @@
   import { onMount } from "svelte";
   import { url } from "inspector";
   import { setDefaultResultOrder } from "dns";
+  export let navType: NavType;
 
   let enablePay = true;
   let enableAuth = "true";
@@ -18,10 +19,6 @@
   if (browser) {
     enablePay = localStorage.getItem("enablePay");
     enableAuth = localStorage.getItem("enableAuth");
-    console.log(enableAuth + "auth");
-    if (localStorage.getItem("token") == "" && enableAuth == "true") {
-      goto("/signin");
-    }
   }
 
   let login = false;
@@ -44,18 +41,21 @@
     }
   }
   console.log(login);
-  export let navType: NavType;
 
   onMount(async () => {
     setTimeout(function () {
       if (browser) {
         enableAuth = localStorage.getItem("enableAuth");
         console.log(enableAuth + "authd");
-        if (localStorage.getItem("token") == "" && enableAuth == "true") {
+        if (
+          localStorage.getItem("token") == "" &&
+          enableAuth == "true" &&
+          navType == "default"
+        ) {
           goto("/signin");
         }
       }
-    }, 100);
+    }, 500);
   });
 
   function check() {

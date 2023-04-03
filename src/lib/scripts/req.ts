@@ -2,28 +2,55 @@ import accountEmail from "$lib/stores/accountEmail";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 export const apiurl = "https://api.arthmc.xyz/";
-export const pburl = "https://pb.arthmc.xyz/api/";
+
 export const lrurl = "https://api.modrinth.com/v2/";
 let lock = false;
+
+let GET = {};
+let POST = {};
+let DELETE = {};
 //set email from local storage to variable
 if (browser) {
-  accountEmail.set(window.localStorage.getItem("accountEmail"));
-if (localStorage.getItem("x") == undefined) {
-  localStorage.setItem("x", "false");
-} 
+  accountEmail.set(localStorage.getItem("accountEmail"));
+  if (localStorage.getItem("x") == undefined) {
+    localStorage.setItem("x", "false");
+    localStorage.setItem("loggedIn", "false");
+  }
+  GET = {
+    method: "GET",
+    headers: {
+      token: localStorage.getItem("token"),
+      email: localStorage.getItem("accountEmail"),
+    },
+  };
+  POST = {
+    method: "POST",
+    headers: {
+      token: localStorage.getItem("token"),
+      email: localStorage.getItem("accountEmail"),
+    },
+  };
+  DELETE = {
+    method: "DELETE",
+    headers: {
+      token: localStorage.getItem("token"),
+      email: localStorage.getItem("accountEmail"),
+    },
+  };
 }
 
-const GET = { method: "GET" };
-const POST = { method: "POST" };
-const DELETE = { method: "DELETE" };
-
 export function setInfo(id, icon, desc) {
-  console.log(id);
+  console.log(icon);
+  if (icon == "") {
+    icon = "/images/placeholder.png";
+  }
   const url = apiurl + "server/" + id + "/setInfo";
   const req = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      token: localStorage.getItem("token"),
+      email: localStorage.getItem("accountEmail"),
     },
     body: JSON.stringify({
       desc: desc,
@@ -31,32 +58,46 @@ export function setInfo(id, icon, desc) {
     }),
   };
 
- //if image isnt taller than it is wide, run code. keep in mind icon is just a url
- let img = new Image();
+  //if image isnt taller than it is wide, run code. keep in mind icon is just a url
+  let img = new Image();
   img.src = icon;
-  img.onload = function() {
-    if (img.height <= img.width) {
+  if (icon != "") {
+    img.onload = function () {
+      if (img.height <= img.width) {
+        return fetch(url, req)
+          .then((res) => res.text())
+          .then((input: string) => {
+            console.log("Response Recieved: " + input);
 
-  return fetch(url, req)
-  .then((res) => res.text())
-  .then((input: string) => {
-    console.log("Response Recieved: " + input);
-
-    if (input.indexOf("400") > -1) {
-      return "error"; 
-    } else {
-      return "success";
-    }
-  })
-  .catch((err) => console.error(err));
+            if (input.indexOf("400") > -1) {
+              return "error";
+            } else {
+              return "success";
+            }
+          })
+          .catch((err) => console.error(err));
+      } else {
+        alert("Image can't be taller than it is wide.");
+      }
+    };
   } else {
-    alert("Image can't be taller than it is wide" + img.height + " " + img.width)
+    return fetch(url, req)
+      .then((res) => res.text())
+      .then((input: string) => {
+        console.log("Response Recieved: " + input);
+
+        if (input.indexOf("400") > -1) {
+          return "error";
+        } else {
+          return "success";
+        }
+      })
+      .catch((err) => console.error(err));
   }
 }
-}
 
-export function getPlugins(id) {
-  const url = apiurl + "server/" + id + "/plugins";
+export function getMods(id: number, modtype: string) {
+  const url = apiurl + "server/" + id + "/" + modtype;
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
@@ -71,13 +112,15 @@ export function sendVersion(
   link: string,
   id: string,
   pluginId: string,
-  pluginName: string
+  pluginName: string,
+  modtype: string
 ) {
   const url =
     apiurl +
     "server/" +
     id +
-    "/addplugin" +
+    "/add/" +
+    modtype +
     "?pluginUrl=" +
     encodeURIComponent(link) +
     "&id=" +
@@ -109,6 +152,7 @@ export function getVersions(id: string) {
     })
     .catch((err) => console.error(err));
 }
+
 export function searchPlugins(
   software: string,
   version: string,
@@ -125,7 +169,44 @@ export function searchPlugins(
     query +
     '&facets=[["categories:' +
     software +
-    '"]]' +
+    '"],["server_side:optional","server_side:required"]]' +
+    "&limit=10";
+
+  if (!lock) {
+    return fetch(url, GET)
+      .then((res) => res.text())
+      .then((input: string) => {
+        console.log("Response Recieved: " + input);
+
+        if ((input.indexOf("ck_block") > -1) | (input == undefined)) {
+          lock = true;
+        }
+        return JSON.parse(input);
+      })
+      .catch((err) => console.error(err));
+  }
+}
+
+export function searchMods(
+  software: string,
+  version: string,
+  query: string,
+  modtype: string
+) {
+  if (version == "Latest") {
+    version = "1.19.3";
+  }
+
+  const url =
+    lrurl +
+    "search" +
+    "?query=" +
+    query +
+    '&facets=[["categories:' +
+    software +
+    '"], ["project_type:' +
+    modtype +
+    '"],["server_side:optional","server_side:required"]]' +
     "&limit=10";
 
   if (!lock) {
@@ -153,6 +234,7 @@ export function getSettings() {
         window.localStorage.setItem("enablePay", JSON.parse(input).enablePay);
         window.localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
         window.localStorage.setItem("address", JSON.parse(input).address);
+        window.localStorage.setItem("webName", JSON.parse(input).webName);
 
         if (JSON.parse(input).enableAuth == false) {
           window.localStorage.setItem("accountEmail", "guest");
@@ -166,13 +248,22 @@ export function getSettings() {
 }
 
 export function getServers(em: string) {
-  const url = apiurl + "servers/" + "?email=" + em;
+  let url = apiurl + "servers/" + "?accountId=";
+  if (browser) {
+    url =
+      apiurl + "servers/" + "?accountId=" + localStorage.getItem("accountId");
+  }
   console.log("Request Sent: Get Servers");
+
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
+      if (browser) {
+        window.localStorage.setItem("servers", JSON.parse(input).amount);
+      }
+
       console.log("Response Recieved: " + input);
-      if (input.indexOf("400") > -1) {
+      if (input.indexOf("Invalid credentials.") > -1) {
         return "error";
       } else {
         //return input as json
@@ -181,67 +272,103 @@ export function getServers(em: string) {
     })
     .catch((err) => console.error(err));
 }
-export function createUser(em: string, pwd: string) {
-  const req = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: em,
-      password: pwd,
-      passwordConfirm: pwd,
-    }),
-  };
-  console.log("Request Sent: " + req.body);
-
-  return fetch(pburl + "users", req)
+export function signupEmail(em: string, pwd: string) {
+  console.log("Request Sent");
+  localStorage.setItem("accountEmail", em);
+  return fetch(
+    apiurl +
+      "accounts/email/signup?" +
+      new URLSearchParams({
+        email: em,
+        password: pwd,
+        confirmPassword: pwd,
+      }),
+    POST
+  )
     .then((res) => res.text())
     .then((input: string) => {
-      console.log("Response Recieved: " + input);
-      if (input.indexOf("400") > -1) {
-        return "error";
-      } else {
-        loginEmail(em, pwd);
-        return "success";
+      console.log(input);
+
+      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("token", JSON.parse(input).token);
+      localStorage.setItem("accountId", JSON.parse(input).accountId);
+      GET = {
+        method: "GET",
+        headers: {
+          token: localStorage.getItem("token"),
+          email: localStorage.getItem("accountEmail"),
+        },
+      };
+      POST = {
+        method: "POST",
+        headers: {
+          token: localStorage.getItem("token"),
+          email: localStorage.getItem("accountEmail"),
+        },
+      };
+      DELETE = {
+        method: "DELETE",
+        headers: {
+          token: localStorage.getItem("token"),
+          email: localStorage.getItem("accountEmail"),
+        },
+      };
+      if (JSON.parse(input).token == -1) {
+        return JSON.parse(input).reason;
       }
+      return true;
     })
     .catch((err) => console.error(err));
 }
 
 export function loginEmail(em: string, pwd: string) {
-  const req = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: em,
-      password: pwd,
-    }),
-  };
-  console.log("Request Sent: " + req.body);
-  
-  return fetch(pburl + "users/auth-via-email", req)
+  return fetch(
+    apiurl +
+      "accounts/email/signin?" +
+      new URLSearchParams({
+        email: em,
+        password: pwd,
+      }),
+    POST
+  )
     .then((res) => res.text())
     .then((input: string) => {
-      console.log("Response Recieved: " + input);
-
-      //grabs token from response
-      const token = input.substring(
-        input.indexOf("token") + 8,
-        input.indexOf("token") + 163
-      );
-
-      if (input.indexOf("400") > -1) {
-        return "error";
+      if (
+        JSON.parse(input).token == -1 ||
+        JSON.parse(input).status == "ERROR"
+      ) {
+        console.log(JSON.parse(input));
+        return JSON.parse(input).reason;
       } else {
         if (browser) {
-          window.localStorage.setItem("token", token);
+          console.log(JSON.parse(input));
+          window.localStorage.setItem("token", JSON.parse(input).token);
           window.localStorage.setItem("accountEmail", em);
           window.localStorage.setItem("loggedIn", "true");
+          window.localStorage.setItem("accountId", JSON.parse(input).accountId);
+          GET = {
+            method: "GET",
+            headers: {
+              token: localStorage.getItem("token"),
+              email: localStorage.getItem("accountEmail"),
+            },
+          };
+          POST = {
+            method: "POST",
+            headers: {
+              token: localStorage.getItem("token"),
+              email: localStorage.getItem("accountEmail"),
+            },
+          };
+          DELETE = {
+            method: "DELETE",
+            headers: {
+              token: localStorage.getItem("token"),
+              email: localStorage.getItem("accountEmail"),
+            },
+          };
         }
-        return "success";
+        return true;
       }
     })
     .catch((err) => console.error(err));
@@ -262,18 +389,30 @@ export function createServer(
   s: string,
   v: string,
   a: any[],
-  c: any[]
+  c: any[],
+  mURL: string
 ) {
   const url =
     apiurl +
     "server/new?" +
     "email=" +
     window.localStorage.getItem("accountEmail");
+  if (browser) {
+    const url =
+      apiurl +
+      "server/new?" +
+      "email=" +
+      window.localStorage.getItem("accountEmail") +
+      "&accountId=" +
+      window.localStorage.getItem("accountId");
+  }
 
   const req = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      token: window.localStorage.getItem("token"),
+      email: window.localStorage.getItem("accountEmail"),
     },
     body: JSON.stringify({
       name: n,
@@ -281,47 +420,41 @@ export function createServer(
       version: v,
       addons: a,
       cmds: c,
+      modpackURL: mURL,
     }),
   };
   console.log("Request Sent: " + JSON.stringify(req.body));
   //if response is 409, send an alert, otherwise do nothing
-  const response = fetch(url, req)
-    .then((res) => res.text())
-    .then((text) => {
-      console.log("Response Recieved: " + text);
-      if (text.indexOf("exists") > -1) {
-        alert("Sorry, that name is taken.");
+  return fetch(url, req).then((res) =>
+    res
+      .json()
+      .then((res) => {
+        console.log("Response Recieved: " + JSON.stringify(res));
 
-        //set localstorage x to true
-        window.localStorage.setItem("x", "true");
-      } else if (text.indexOf("Funds") > -1) {
-        alert("You don't have enough money to make a new server.");
-        window.localStorage.setItem("x", "true");
-      } else if (text.indexOf("Subscribe") > -1) {
-        alert("You need to subscribe first.");
-        window.localStorage.setItem("x", "true");
-      } else if (text.indexOf("Success") == -1) {
-        alert("Sorry, something went wrong.");
-        window.localStorage.setItem("x", "true");
-      } else {
-        //set text.subscription to localstorage
-        if (browser) {
-          window.localStorage.setItem("subs", JSON.parse(text).subscriptions);
-          //if localstorage servers is null, set it to 0
-          if (window.localStorage.getItem("servers") == null) {
-            window.localStorage.setItem("servers", "0");
+        //if status code starts with 4
+        if (res.success == false) {
+          if (browser) {
+            return res.msg;
           }
-          //increase localstorage servers by 1
-          window.localStorage.setItem(
-            "servers",
-            (parseInt(window.localStorage.getItem("servers")) + 1).toString()
-          );
+        } else {
+          //set text.subscription to localstorage
+          if (browser) {
+            window.localStorage.setItem("subs", res.subscriptions);
+            //if localstorage servers is null, set it to 0
+            if (window.localStorage.getItem("servers") == null) {
+              window.localStorage.setItem("servers", "0");
+            }
+            //increase localstorage servers by 1
+            window.localStorage.setItem(
+              "servers",
+              (parseInt(localStorage.getItem("servers")) + 1).toString()
+            );
+          }
+          return true;
         }
-      }
-    })
-    .catch((err) => console.error(err));
-
-  return "done";
+      })
+      .catch((err) => console.error(err))
+  );
 }
 
 export function getPlayers(address: string) {
@@ -363,6 +496,10 @@ export function getServer(id: number) {
 }
 
 export function deleteServer(id: number) {
+  localStorage.setItem(
+    "servers",
+    (parseInt(localStorage.getItem("servers")) - 1).toString()
+  );
   const url = apiurl + "server/" + id;
 
   return fetch(url, DELETE)

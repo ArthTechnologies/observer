@@ -6,5 +6,4 @@
 <div>
   <Navbar navType="welcome" />
   <slot />
-  <Footer navType="welcome" />
 </div>

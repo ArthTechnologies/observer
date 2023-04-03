@@ -1,8 +1,8 @@
 <script lang="ts">
   import { src_url_equal } from "svelte/internal";
-  import { changeServerState } from "$lib/scripts/req.js";
+  import { changeServerState } from "$lib/scripts/req";
 
-  import { getServer } from "$lib/scripts/req.js";
+  import { getServer } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   //Status variables
@@ -52,6 +52,7 @@
       localStorage.setItem("serverID", id);
       localStorage.setItem("serverSoftware", software);
       localStorage.setItem("serverVersion", version);
+      localStorage.setItem("serverCardRedrict", "true");
     }
   }
   function status() {
@@ -81,7 +82,6 @@
       } else if (state == "false") {
         changeServerState("start", id, email);
       }
-      lock = true;
     }
   }
 
@@ -124,7 +124,7 @@
       <div class="card-actions justify-end ">
         <!-- placeholder for now? -->
         <div class="grow space-x-1.5 flex">
-          <a href="/server/{tname}"
+          <a href="/server/{10000 + parseInt(id)}"
             ><button on:click={setName} class="btn btn-primary btn-sm h-9"
               >Info</button
             ></a

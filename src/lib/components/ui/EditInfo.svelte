@@ -1,6 +1,7 @@
 <script>
   import { browser } from "$app/environment";
   import { setInfo } from "$lib/scripts/req";
+  import { src_url_equal } from "svelte/internal";
   let id;
   let icon = "";
   let desc = "";
@@ -9,8 +10,11 @@
 
     setTimeout(() => {
       icon = document.getElementById("xIcon").src;
-      desc = document.getElementById("xDesc")?.innerText;
-    }, 1000);
+      desc = document.getElementById("xDesc")?.innerText.split(": ")[1];
+      if (icon.includes("/images/placeholder.webp")) {
+        icon = "";
+      }
+    }, 800);
   }
   function set() {
     //download the file from the input with id="icon"
@@ -22,7 +26,7 @@
 </script>
 
 <label for="editInfo"
-  ><div class="btn btn-sm btn-circle mr-2 mt-2">
+  ><div class="btn btn-sm btn-circle absolute right-0 mr-2 mt-2">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="16"
@@ -42,7 +46,7 @@
 <input type="checkbox" id="editInfo" class="modal-toggle" />
 <div class="modal">
   <div class="modal-box relative">
-    <label for="editInfo" class="btn btn-sm btn-circle absolute right-2 top-2"
+    <label for="editInfo" class="btn btn-sm btn-circle fixed right-2 top-2"
       >✕</label
     >
     <h3 class="text-lg font-bold">Edit Server Info</h3>

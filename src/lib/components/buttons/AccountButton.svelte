@@ -1,25 +1,33 @@
 <script lang="ts">
-  import accountEmail from "$lib/stores/accountEmail";
   type loginStatus = true | false;
   import { t, locale, locales } from "$lib/scripts/i18n";
+  import { onMount } from "svelte";
+  import { browser } from "$app/environment";
   export let loginStatus: boolean;
 
   function signOut() {
     localStorage.setItem("token", "");
+    localStorage.setItem("loggedIn", "false");
     loginStatus = false;
     window.location.href = "/signin";
   }
-
+  let accountEmail = "noemail";
   let accountEmailChopped = "noemail";
-  //if accountEmail is longer than 20 characters
-  if ($accountEmail.length > 18) {
-    //slice it to 20 characters
-    accountEmailChopped = $accountEmail.slice(0, 18);
-    accountEmailChopped += "...";
-  } else {
-    //else, just use accountEmail
-    accountEmailChopped = $accountEmail;
-  }
+  onMount(() => {
+    if (browser) {
+      accountEmail = localStorage.getItem("accountEmail");
+
+      //if accountEmail is longer than 20 characters
+      if (accountEmail.length > 18) {
+        //slice it to 20 characters
+        accountEmailChopped = accountEmail.slice(0, 18);
+        accountEmailChopped += "...";
+      } else {
+        //else, just use accountEmail
+        accountEmailChopped = accountEmail;
+      }
+    }
+  });
 </script>
 
 {#if loginStatus === true}
@@ -53,11 +61,12 @@
         tabindex="0"
         class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-52"
       >
-        <li class="w-0">
+        <li class="">
           <p class="justify-between">
             {accountEmailChopped}
           </p>
         </li>
+        <li><a href="/account">Manage Account</a></li>
         <li><a on:click={signOut}>{$t("account.logout")}</a></li>
       </ul>
     </div>

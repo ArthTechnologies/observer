@@ -4,13 +4,18 @@
   import Helper from "$lib/components/ui/Helper.svelte";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
-  let version = "Latest";
-  let software = "Paper (Reccomended)";
-  let snapshot = false;
+  import Modpacks from "$lib/components/ui/Modpacks.svelte";
+  import Alert from "$lib/components/ui/Alert.svelte";
+  let version = "1.19.4";
+  export let software = "Paper (Reccomended)";
+  export let snapshot = false;
   let name = "";
+  let visible = false;
+  let msg = "";
   let gamemode: string;
   let admin = "";
-
+  let modpacks = false;
+  let modpackURL = "";
   function send() {
     let addons = [];
     let cmd = [];
@@ -28,18 +33,20 @@
     sSoftware = sSoftware.charAt(0).toLowerCase() + sSoftware.slice(1);
     sVersion = version.charAt(0).toLowerCase() + version.slice(1);
 
-    //for all 3 checkboxes, if checked, add their ids to the addons array
-    if (document.getElementById("terralith").checked) {
-      addons.push("terralith");
-    }
-    if (document.getElementById("incendium").checked) {
-      addons.push("incendium");
-    }
-    if (document.getElementById("nullscape").checked) {
-      addons.push("nullscape");
-    }
-    if (document.getElementById("structory").checked) {
-      addons.push("structory");
+    if (worldgen) {
+      //for all 3 checkboxes, if checked, add their ids to the addons array
+      if (document.getElementById("terralith").checked) {
+        addons.push("terralith");
+      }
+      if (document.getElementById("incendium").checked) {
+        addons.push("incendium");
+      }
+      if (document.getElementById("nullscape").checked) {
+        addons.push("nullscape");
+      }
+      if (document.getElementById("structory").checked) {
+        addons.push("structory");
+      }
     }
 
     cmd.push("op " + admin);
@@ -47,30 +54,35 @@
 
     console.log("cmd = " + cmd);
 
-    console.log(sSoftware + software);
+    console.log(browser && name != "");
     if (browser && name != "") {
-      createServer(name, sSoftware, sVersion, addons, cmd);
-      //wait 1 second
-      setTimeout(function () {
-        //if x in localstorage is false, run code
-        if (localStorage.getItem("x") == "false") {
-          //set localStorage z to true
-          localStorage.setItem("z", "true");
-          //go to the servers page
-          console.log("redricting...");
-          goto("/");
-        } else {
-          //set it to false
-          localStorage.setItem("x", "false");
+      modpackURL = localStorage.getItem("modpackURL");
+
+      console.log("creating" + sSoftware + "server...");
+      createServer(name, sSoftware, sVersion, addons, cmd, modpackURL).then(
+        (res) => {
+          localStorage.setItem("modpackURL", "");
+          localStorage.setItem("modpackVersion", "");
+          if (res == true) {
+            goto("/");
+          } else {
+            msg = res;
+            visible = true;
+            setTimeout(() => {
+              visible = false;
+            }, 3500);
+          }
         }
-      }, 1000);
+      );
     } else if (browser) {
       alert("Please give your server a name");
+    } else {
+      alert("Not in browser");
     }
   }
   let worldgen = true;
   function checkV() {
-    if (version != "Latest" && snapshot == false) {
+    if (version != "1.19.4" && snapshot == false) {
       worldgen = false;
     } else {
       worldgen = true;
@@ -81,9 +93,23 @@
     if (software == "Latest Snapshot") {
       worldgen = false;
       snapshot = true;
-    } else {
+      modpacks = false;
+    } else if (software == "Paper (Reccomended)" || software == "Spigot") {
       worldgen = true;
       snapshot = false;
+      modpacks = false;
+    } else if (
+      software == "Quilt" ||
+      software == "Fabric" ||
+      software == "Forge"
+    ) {
+      worldgen = false;
+      snapshot = false;
+      modpacks = true;
+    } else {
+      worldgen = false;
+      snapshot = false;
+      modpacks = false;
     }
   }
 </script>
@@ -98,7 +124,9 @@
       <form>
         <div class="flex flex-col w-[22rem] xl:w-[30rem]">
           <!-- svelte-ignore a11y-label-has-associated-control -->
-          <label class="label" for="softwareDropdown">Server Software</label>
+          <label class="label" for="softwareDropdown"
+            >{$t("newserver.l.software")}</label
+          >
           <select
             bind:value={software}
             on:change={checkS}
@@ -108,19 +136,13 @@
             class="select select-primary p-2 bg-base-100"
           >
             <option>Paper (Reccomended)</option>
-            <option>Velocity</option>
-            <option>Quilt</option>
             <option>Vanilla</option>
-            <option>Forge</option>
-            <option>Latest Snapshot</option>
-            <option>Waterfall</option>
-            <option>Fabric</option>
-            <option>Mohist</option>
             <option>Spigot</option>
           </select>
 
           {#if snapshot == false}
-            <label class="label" for="softwareDropdown">Minecraft Version</label
+            <label class="label" for="softwareDropdown"
+              >{$t("newserver.l.version")}</label
             >
             <select
               bind:value={version}
@@ -130,20 +152,22 @@
               tabindex="0"
               class="select select-primary p-2 bg-base-100"
             >
-              <option>Latest</option>
-
-              <option>1.19.3</option>
+              <option>1.19.4</option>
               <option>1.18.2</option>
               <option>1.17.1</option>
               <option>1.16.5</option>
-              <option>1.15.2</option>
-              <option>1.14.4</option>
-              <option>1.13.2</option>
+              {#if software != "Forge"}
+                <option>1.15.2</option>
+                <option>1.14.4</option>
+                <option>1.13.2</option>
+              {/if}
               <option>1.12.2</option>
-              <option>1.11.2</option>
-              <option>1.10.2</option>
-              <option>1.9.4</option>
-              <option>1.8.8</option>
+              {#if software != "Forge"}
+                <option>1.11.2</option>
+                <option>1.10.2</option>
+                <option>1.9.4</option>
+                <option>1.8.8</option>
+              {/if}
             </select>
           {/if}
 
@@ -151,7 +175,7 @@
           <input
             bind:value={name}
             id="nameInput"
-            class="input-bordered input-primary input w-full bg-base-300"
+            class="input-bordered input-primary input  bg-base-300"
             type="text"
             placeholder="{$t('general.ex')} My Minecraft Server"
           />
@@ -210,9 +234,13 @@
               />
             </div>
           {/if}
+          {#if modpacks}
+            <Modpacks />{/if}
+
           <a on:click={send} class="btn mt-4">{$t("button.createServer")}</a>
         </div>
       </form>
     </div>
   </div>
 </div>
+<Alert detail={msg} {visible} />

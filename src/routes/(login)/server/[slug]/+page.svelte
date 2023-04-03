@@ -9,13 +9,19 @@
     readTerminal,
     apiurl,
   } from "$lib/scripts/req";
-  import { getServer } from "$lib/scripts/req.js";
+  import { getServer } from "$lib/scripts/req";
 
   import { t, locale, locales } from "$lib/scripts/i18n";
 
   import Manage from "$lib/components/ui/Manage.svelte";
+  import AddMod from "$lib/components/ui/AddMod.svelte";
   import Add from "$lib/components/ui/Add.svelte";
   import EditInfo from "$lib/components/ui/EditInfo.svelte";
+  import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
+  import ManageMods from "$lib/components/ui/ManageMods.svelte";
+
+  let modded = false;
+  let vanilla = false;
   let name: string = "-";
   let address: string;
   let tname: string;
@@ -30,6 +36,19 @@
   let email: string = "";
   let state = "false";
   let icon = "";
+  if (browser) {
+    if (
+      localStorage.getItem("serverSoftware") == "Fabric" ||
+      localStorage.getItem("serverSoftware") == "Quilt" ||
+      localStorage.getItem("serverSoftware") == "Forge"
+    ) {
+      modded = true;
+    }
+
+    if (localStorage.getItem("serverSoftware") == "Vanilla") {
+      vanilla = true;
+    }
+  }
   function alwaysDay() {
     let input = document.getElementById("alwaysDay").checked;
     if (input) {
@@ -97,15 +116,23 @@
 
   onMount(() => {
     name = localStorage.getItem("serverName");
-    id = localStorage.getItem("serverID");
-
+    if (localStorage.getItem("serverCardRedrict") != "true") {
+      id = parseInt(localStorage.getItem("serverID"));
+    } else {
+      if (browser) {
+        id = parseInt(window.location.href.split("/")[4]) - 10000;
+      }
+    }
+    localStorage.setItem("serverCardRedrict", "false");
     port += parseInt(id);
-
+    console.log(apiurl + "server/" + id + "/getInfo");
     //GET apiurl/server/id/getInfo
     fetch(apiurl + "server/" + id + "/getInfo", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
@@ -152,6 +179,7 @@
   function getStatus() {
     //get server status
     getServer(id).then((response) => {
+      console.log(response);
       //set state to response
       state = response.state;
       if (restarting && state == "starting") {
@@ -172,20 +200,30 @@
       } else if (state == "false") {
         changeServerState("start", id, email);
       }
-      lock = true;
     }
   }
-  function del() {
-    deleteServer(id);
-  }
+
   function stop() {
     changeServerState("stop", id, email);
     lock = false;
   }
 
   onMount(() => {
+    setTimeout(() => {
+      getStatus();
+      readCmd();
+    }, 200);
     if (browser) {
+      let count = 0;
+      let interval = 500;
       setInterval(function () {
+        count++;
+        if (count > 5) {
+          interval = 1000;
+        }
+        if (count > 20) {
+          interval = 2000;
+        }
         if (
           decodeURIComponent(window.location.pathname) ==
           "/server/" + tname
@@ -193,7 +231,7 @@
           getStatus();
           readCmd();
         }
-      }, 3000);
+      }, interval);
     }
     getStatus();
   });
@@ -228,6 +266,10 @@
           /\n/g,
           "<p>"
         );
+        setTimeout(() => {
+          const terminal = document.getElementById("terminal");
+          terminal.scrollTop = terminal.scrollHeight;
+        }, 20);
       }
     });
     //set terminal's text to rt
@@ -235,9 +277,9 @@
   readCmd();
 </script>
 
-<div class="h-[75vh] h-screen ">
+<div class="h-[75vh] ">
   <div class=" flex justify-between">
-    <div class="space-x-2 space-y-2 mb-2">
+    <div class="space-x-2 space-y-2 mb-2 flex flex-col items-center md:block">
       <a href="/" class="btn btn-info "
         ><svg
           xmlns="http://www.w3.org/2000/svg"
@@ -256,32 +298,10 @@
         >
         {$t("button.back")}</a
       >
-      <a on:click={del} href="/" class="btn btn-warning "
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-trash-2"
-          ><polyline points="3 6 5 6 21 6" /><path
-            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-          /><line x1="10" y1="11" x2="10" y2="17" /><line
-            x1="14"
-            y1="11"
-            x2="14"
-            y2="17"
-          /></svg
-        >
-        {$t("button.delete")}</a
-      >
+      <DeleteServer />
     </div>
     <!-- TODO: these should be on the right, add an if for not reaching the backend -->
-    <div class="space-x-2 space-y-2">
+    <div class="space-x-2 space-y-2 flex flex-col items-center md:block">
       {#if state == "true" && !restarting}
         <button on:click={start} class="btn btn-success"
           ><svg
@@ -478,31 +498,37 @@
       {/if}
     </div>
   </div>
-  <div class="flex flex-col">
+  <div class="flex flex-col mt-5 md:mt-0">
     <div class="text-5xl font-bold divider ">{name}</div>
   </div>
 
   <div
-    class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10"
+    class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10 "
   >
-    <div>
+    <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div
-        class="bg-base-300 h-96 lg:h-[30rem] rounded-xl shadow-xl overflow-auto lg:w-[30rem] xl:w-[50rem] "
+        class="bg-base-300 w-[19rem] h-96 lg:h-[30rem] rounded-xl shadow-xl overflow-auto lg:w-[30rem] xl:w-[50rem] "
       >
-        <p class="p-5 sm:text-xs xl:text-lg font-mono" id="terminal" />
+        <p class="p-5 sm:text-xs xl:text-base font-mono" id="terminal" />
       </div>
       <input
         on:keypress={writeCmd}
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 lg:w-[30rem] xl:w-[50rem] "
+        class="input input-secondary bg-base-200 w-64 lg:w-[30rem] xl:w-[50rem] "
       />
+      <div class="divider md:hidden pt-5 pb-4" />
     </div>
-    <div class=" flex flex-col">
+
+    <div
+      class="flex flex-col items-center place-content-end mb-20 pr-6 md:pl-0"
+    >
       <div class="space-y-5 mb-4">
-        <div class="rounded-xl bg-base-200 shadow-xl image-full">
-          <div class="flex">
+        <div
+          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-56 md:w-auto"
+        >
+          <div class="flex relative">
             <div class="p-4 space-x-4 flex">
               <img
                 id="xIcon"
@@ -510,39 +536,59 @@
                 class="w-[4rem] h-[4rem] rounded-md "
               />
 
-              <div>
+              <div class="">
                 <div class="stat-title">{$t("server.ip")}</div>
-                <div class="stat-value text-sm sm:text-lg md:text-3xl">
+                <div class="font-bold text-sm sm:text-lg md:text-3xl">
                   {address}:{port}
                 </div>
-                <div id="xDesc" class="stat-desc ">
-                  {desc}
+                <div id="xDesc" class="text-xs font-light flex justify-between">
+                  Description: {desc}
                 </div>
               </div>
             </div>
+            <a
+              href="https://arthmc.xyz/docs/how-to-join-servers"
+              target="_blank"
+              rel="noreferrer"
+              class="btn btn-ghost btn-xs absolute bottom-2 right-0.5 md:top-3 md:right-11 -mb-2.5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class=" feather feather-help-circle md:mr-1"
+                ><circle cx="12" cy="12" r="10" /><path
+                  d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
+                /><line x1="12" y1="17" x2="12.01" y2="17" /></svg
+              >
+              <p class="hidden md:block">How to join</p></a
+            >
             <EditInfo />
           </div>
         </div>
-        <div class="text-sm pl-6 ">
-          {$t("server.howtojoin")}<a
-            target="_blank"
-            href="https://arthmc.xyz/docs/how-to-join-servers"
-            class="link link-primary">{$t("server.howtojoin2")}</a
-          >
-        </div>
       </div>
 
-      <div class="flex w-[10.6rem] space-x-2">
-        <Add /><Manage />
+      <div class="flex place-content-center w-[10.6rem] space-x-2">
+        {#if modded}<AddMod /><ManageMods />{:else if !vanilla}
+          <Add /><Manage />
+        {/if}
       </div>
-      <div class="bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl">
+      <div
+        class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl w-64 md:w-auto"
+      >
         <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
-        <div class="space-x-1.5">
+        <div class="space-x-1.5 space-y-1.5 ">
           <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
 
           <input
             id="username"
-            class="input input-sm input-bordered"
+            class="input input-sm w-1/2 md:w-auto input-bordered"
             placeholder={$t("shortcuts.p.cheats")}
             type="text"
           />
@@ -550,14 +596,14 @@
             >{$t("button.send")}</button
           >
         </div>
-        <div class="space-x-1.5">
+        <div class="space-x-1.5 space-y-1.5">
           <label class="label" for="gamemode"
             >{$t("shortcuts.l.gamemode")}</label
           >
 
           <input
             id="gamemode"
-            class="input input-sm input-bordered"
+            class="input input-sm w-1/2 md:w-auto input-bordered"
             placeholder={$t("shortcuts.p.gamemode")}
             type="text"
           />

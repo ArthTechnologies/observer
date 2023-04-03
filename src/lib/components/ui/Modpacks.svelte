@@ -1,9 +1,11 @@
 <script>
   import { browser } from "$app/environment";
-  import { searchPlugins } from "$lib/scripts/req";
-  import PluginResult from "./PluginResult.svelte";
+  import { searchMods, searchPlugins } from "$lib/scripts/req";
+  import ModpackResult from "./ModpackResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
+  import { numShort } from "$lib/scripts/numShort";
+
   let promise;
   let results = [];
   let query = "";
@@ -11,27 +13,32 @@
     console.log("searching" + query);
     results = [];
     if (browser) {
-      let software = localStorage.getItem("serverSoftware");
-      let version = localStorage.getItem("serverVersion");
+      let software = document
+        .getElementById("softwareDropdown")
+        .value.toLowerCase();
+      let version = "1.19.4";
 
       setTimeout(function () {
-        promise = searchPlugins(software, version, query).then((response) => {
-          response.hits.forEach((item) => {
-            results.push({
-              name: item.title,
-              desc: item.description,
-              icon: item.icon_url,
-              author: item.author,
-              id: item.project_id,
+        promise = searchMods(software, version, query, "modpack").then(
+          (response) => {
+            response.hits.forEach((item) => {
+              results.push({
+                name: item.title,
+                desc: item.description,
+                icon: item.icon_url,
+                author: item.author,
+                id: item.project_id,
+                client: item.client_side,
+                downloads: numShort(item.downloads),
+              });
+              console.log(results);
             });
-            console.log(results);
-          });
-        });
+          }
+        );
       }, 1);
-      document.getElementById("plugins").innerHTML = "";
     }
   }
-  let tab = "ft";
+  let tab = "mr";
   function ft() {
     if (browser) {
       tab = "ft";
@@ -48,8 +55,8 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn md:btn-block" on:click={search}
-  >{$t("button.addplugin")}</label
+<label for="my-modal-5" class="btn btn-block mt-5" on:click={search}
+  >Use Modpack</label
 >
 
 <!-- Put this part before </body> tag -->
@@ -63,10 +70,9 @@
       >
 
       <div class="tabs tabs-boxed">
-        <button id="ft" on:click={ft} class="tab tab-active "
-          >{$t("featured")}</button
+        <button id="mr" on:click={mr} class="tab tab-active"
+          >{$t("search")}</button
         >
-        <button id="mr" on:click={mr} class="tab ">{$t("search")}</button>
       </div>
     </div>
     {#if tab == "mr"}
@@ -80,10 +86,10 @@
           id="search"
         />
       </div>
-      <div id="plugins" class="space-y-2">
+      <div id="modpacks" class="space-y-2">
         {#await promise then}
           {#each results as result}
-            <PluginResult {...result} />
+            <ModpackResult {...result} />
           {/each}
         {/await}
       </div>
@@ -99,8 +105,19 @@
           link="https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar"
           disclaimer="This plugin has not been tested on minecraft versions before 1.13."
         />
-
-        <PluginResult
+        <FeaturedPlugin
+          icon="https://media.forgecdn.net/avatars/thumbnails/493/419/64/64/637803056128514812.png"
+          name="Squaremap"
+          desc="
+  
+            A minimalistic and lightweight world map viewer for Minecraft servers, using the vanilla map rendering style "
+          author="jpenilla"
+          authorLink="https://github.com/jpenilla"
+          pluginId="jpenilla/squaremap"
+          link="https://github.com/jpenilla/squaremap/releases/download/v1.1.12/squaremap-paper-mc1.19.4-1.1.12.jar"
+          disclaimer="This plugin only supports the latest minecraft version."
+        />
+        <ModpackResult
           name="WorldEdit (FAWE)"
           author="NotMyFault"
           desc="Blazingly fast world manipulation for artists, builders and everyone else."

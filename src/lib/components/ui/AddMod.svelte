@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
   import { browser } from "$app/environment";
-  import { searchPlugins } from "$lib/scripts/req";
-  import PluginResult from "./PluginResult.svelte";
+  import { numShort } from "$lib/scripts/numShort";
+  import { searchMods } from "$lib/scripts/req";
+  import ModResult from "./ModResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
   let promise;
@@ -13,25 +14,32 @@
     if (browser) {
       let software = localStorage.getItem("serverSoftware");
       let version = localStorage.getItem("serverVersion");
+      if (version == "latest") {
+        version = "1.19.4";
+      }
 
       setTimeout(function () {
-        promise = searchPlugins(software, version, query).then((response) => {
-          response.hits.forEach((item) => {
-            results.push({
-              name: item.title,
-              desc: item.description,
-              icon: item.icon_url,
-              author: item.author,
-              id: item.project_id,
+        promise = searchMods(software, version, query, "mod").then(
+          (response) => {
+            response.hits.forEach((item) => {
+              console.log(numShort(item.downloads));
+              results.push({
+                name: item.title,
+                desc: item.description,
+                icon: item.icon_url,
+                author: item.author,
+                id: item.project_id,
+                client: item.client_side,
+                downloads: numShort(item.downloads),
+              });
+              console.log(item);
             });
-            console.log(results);
-          });
-        });
+          }
+        );
       }, 1);
-      document.getElementById("plugins").innerHTML = "";
     }
   }
-  let tab = "ft";
+  let tab = "mr";
   function ft() {
     if (browser) {
       tab = "ft";
@@ -48,9 +56,7 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn md:btn-block" on:click={search}
-  >{$t("button.addplugin")}</label
->
+<label for="my-modal-5" class="btn btn-block" on:click={search}>Add Mod</label>
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="my-modal-5" class="modal-toggle" />
@@ -63,10 +69,9 @@
       >
 
       <div class="tabs tabs-boxed">
-        <button id="ft" on:click={ft} class="tab tab-active "
-          >{$t("featured")}</button
+        <button id="mr" on:click={mr} class="tab tab-active"
+          >{$t("search")}</button
         >
-        <button id="mr" on:click={mr} class="tab ">{$t("search")}</button>
       </div>
     </div>
     {#if tab == "mr"}
@@ -80,10 +85,10 @@
           id="search"
         />
       </div>
-      <div id="plugins" class="space-y-2">
+      <div id="mods" class="space-y-2">
         {#await promise then}
           {#each results as result}
-            <PluginResult {...result} />
+            <ModResult {...result} />
           {/each}
         {/await}
       </div>
@@ -99,13 +104,17 @@
           link="https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar"
           disclaimer="This plugin has not been tested on minecraft versions before 1.13."
         />
+        <FeaturedPlugin
+          icon="https://media.forgecdn.net/avatars/thumbnails/493/419/64/64/637803056128514812.png"
+          name="Squaremap"
+          desc="
 
-        <PluginResult
-          name="WorldEdit (FAWE)"
-          author="NotMyFault"
-          desc="Blazingly fast world manipulation for artists, builders and everyone else."
-          icon="https://cdn.modrinth.com/data/z4HZZnLr/1dab3e5596f37ade9a65f3587254ff61a9cf3c43.svg"
-          id="z4HZZnLr"
+          A minimalistic and lightweight world map viewer for Minecraft servers, using the vanilla map rendering style "
+          author="jpenilla"
+          authorLink="https://github.com/jpenilla"
+          pluginId="jpenilla/squaremap"
+          link="https://github.com/jpenilla/squaremap/releases/download/v1.1.12/squaremap-paper-mc1.19.4-1.1.12.jar"
+          disclaimer="This plugin only supports the latest minecraft version."
         />
       </div>
     {/if}

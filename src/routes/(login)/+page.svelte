@@ -50,7 +50,7 @@
   }
 </script>
 
-<div class="flex flex-col items-center space-y-20 mb-96">
+<div class="flex flex-col items-center space-y-20 ">
   <div>
     <div class="text-center px-5 text-3xl font-semibold divider">
       {#if noserver}

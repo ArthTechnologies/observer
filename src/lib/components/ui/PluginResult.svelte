@@ -52,6 +52,6 @@
         <p class="break-words w-[50rem]">{desc}</p>
       </div>
     </div>
-    <ChooseVersion {id} pluginName={name}/>
+    <ChooseVersion {id} pluginName={name} />
   </div>
 </div>

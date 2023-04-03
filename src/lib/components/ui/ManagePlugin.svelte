@@ -5,10 +5,12 @@
   import { getHeapSpaceStatistics } from "v8";
   import { t } from "$lib/scripts/i18n";
   import ChooseVersionAlt from "./ChooseVersionAlt.svelte";
+  import accountEmail from "$lib/stores/accountEmail";
 
   export let name;
   export let id;
   export let platform;
+  export let modtype;
   let sendName = name;
   let author;
   let desc;
@@ -21,6 +23,7 @@
       .then((data) => {
         desc = data.description;
         slug = data.slug;
+        name = data.title;
       });
 
     fetch(lrurl + "project/" + id + "/members")
@@ -59,18 +62,40 @@
     }
 
     platform == "gh" ? (id = id.replace(/\//g, "_")) : (id = id);
+    console.log(
+      apiurl +
+        "server/" +
+        serverId +
+        "/" +
+        modtype +
+        "s" +
+        "?pluginPlatform=" +
+        platform +
+        "&pluginId=" +
+        id +
+        "&pluginName=" +
+        encodeURIComponent(sendName)
+    );
     fetch(
       apiurl +
         "server/" +
         serverId +
-        "/plugins" +
+        "/" +
+        modtype +
+        "s" +
         "?pluginPlatform=" +
         platform +
         "&pluginId=" +
         id +
         "&pluginName=" +
         encodeURIComponent(sendName),
-      { method: "DELETE" }
+      {
+        method: "DELETE",
+        headers: {
+          token: localStorage.getItem("token"),
+          email: localStorage.getItem("accountEmail"),
+        },
+      }
     );
   }
 </script>

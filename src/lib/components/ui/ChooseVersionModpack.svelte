@@ -1,29 +1,30 @@
 <script lang="ts">
-  import Version from "./Version.svelte";
+  import ModpackVersion from "./ModpackVersion.svelte";
   import { getVersions } from "$lib/scripts/req";
   import { browser } from "$app/environment";
 
   export let id: string;
-  export let pluginName: string;
+  export let modpackName: string;
   var software = "";
   var sVersion = "";
-  if (browser) {
-    software = localStorage.getItem("serverSoftware");
-    sVersion = localStorage.getItem("serverVersion");
-    switch (software) {
-      case "Paper":
-        software = "paper";
-        break;
-    }
-    switch (sVersion) {
-      case "latest":
-        sVersion = "1.19.4";
-        break;
-    }
-  }
+
   function get() {
+    if (browser) {
+      software = document.getElementById("softwareDropdown").value;
+      sVersion = document.getElementById("versionDropdown").value;
+
+      switch (sVersion) {
+        case "Latest":
+          sVersion = "1.19.4";
+          break;
+      }
+
+      software = software.toLowerCase();
+    }
+    console.log("version + software: " + sVersion + software);
     let vname = "undefined";
     getVersions(id).then((data) => {
+      console.log("version + software: " + sVersion + software);
       document.getElementById("list").innerHTML = "";
       data.forEach((version) => {
         if (
@@ -33,24 +34,23 @@
         ) {
           vname = version.name;
           console.log(version.name + vname);
-          new Version({
+          new ModpackVersion({
             target: document.getElementById("list"),
             props: {
               name: version.name,
               date: version.date_published,
               type: version.version_type,
               url: version.files[0].url,
-              pluginId: id,
-              pluginName: pluginName,
-              modtype: "plugin",
+              modpackId: id,
+              versionId: version.id,
             },
           });
         }
       });
-      //if it's still blank, add a message saying that there are no versions for this plugin
+
       if (document.getElementById("list").innerHTML == "") {
         document.getElementById("list").innerHTML =
-          "<p class='text-center'>This plugin doesn't support your Minecraft version currently.</p>";
+          "<p class='text-center'>This modpack doesn't support your selected Minecraft version currently.</p>";
       }
     });
   }
