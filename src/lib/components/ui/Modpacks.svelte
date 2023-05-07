@@ -55,7 +55,7 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-block mt-5" on:click={search}
+<label for="my-modal-5" class="btn btn-block btn-primary" on:click={search}
   >Use Modpack</label
 >
 

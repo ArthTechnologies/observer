@@ -406,7 +406,7 @@ export function createServer(
       "&accountId=" +
       window.localStorage.getItem("accountId");
   }
-
+  //get file from id worldFile
   const req = {
     method: "POST",
     headers: {
@@ -421,8 +421,10 @@ export function createServer(
       addons: a,
       cmds: c,
       modpackURL: mURL,
+      worldFile: document.getElementById("worldFile").files[0],
     }),
   };
+  console.log(document.getElementById("worldFile").files[0]);
   console.log("Request Sent: " + JSON.stringify(req.body));
   //if response is 409, send an alert, otherwise do nothing
   return fetch(url, req).then((res) =>
@@ -532,6 +534,20 @@ export function writeTerminal(id: number, cmd: string) {
 export function readTerminal(id: number) {
   const url = apiurl + "terminal/" + id;
   return fetch(url, GET)
+    .then((res) => res.text())
+    .then((input: string) => {
+      if (input.indexOf("400") > -1) {
+        return "error";
+      } else {
+        //return input as json
+        return input;
+      }
+    });
+}
+
+export function updateServer(id: number, version: string) {
+  const url = apiurl + "server/" + id + "/update?version=" + version;
+  return fetch(url, POST)
     .then((res) => res.text())
     .then((input: string) => {
       if (input.indexOf("400") > -1) {

@@ -19,6 +19,7 @@
   import EditInfo from "$lib/components/ui/EditInfo.svelte";
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
+  import Updates from "$lib/components/buttons/Updates.svelte";
 
   let modded = false;
   let vanilla = false;
@@ -179,6 +180,8 @@
   function getStatus() {
     //get server status
     getServer(id).then((response) => {
+      //convert addons array to string, save it to "serverAddons" array
+      localStorage.setItem("serverAddons", response.addons.toString());
       console.log(response);
       //set state to response
       state = response.state;
@@ -277,10 +280,10 @@
   readCmd();
 </script>
 
-<div class="h-[75vh] ">
+<div class="h-[75vh]">
   <div class=" flex justify-between">
     <div class="space-x-2 space-y-2 mb-2 flex flex-col items-center md:block">
-      <a href="/" class="btn btn-info "
+      <a href="/" class="btn btn-info"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -299,6 +302,7 @@
         {$t("button.back")}</a
       >
       <DeleteServer />
+      <Updates />
     </div>
     <!-- TODO: these should be on the right, add an if for not reaching the backend -->
     <div class="space-x-2 space-y-2 flex flex-col items-center md:block">
@@ -499,15 +503,15 @@
     </div>
   </div>
   <div class="flex flex-col mt-5 md:mt-0">
-    <div class="text-5xl font-bold divider ">{name}</div>
+    <div class="text-5xl font-bold divider">{name}</div>
   </div>
 
   <div
-    class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10 "
+    class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10"
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div
-        class="bg-base-300 w-[19rem] h-96 lg:h-[30rem] rounded-xl shadow-xl overflow-auto lg:w-[30rem] xl:w-[50rem] "
+        class="bg-base-300 w-[19rem] h-96 lg:h-[30rem] rounded-xl shadow-xl overflow-auto lg:w-[30rem] xl:w-[50rem]"
       >
         <p class="p-5 sm:text-xs xl:text-base font-mono" id="terminal" />
       </div>
@@ -516,7 +520,7 @@
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 w-64 lg:w-[30rem] xl:w-[50rem] "
+        class="input input-secondary bg-base-200 w-64 lg:w-[30rem] xl:w-[50rem]"
       />
       <div class="divider md:hidden pt-5 pb-4" />
     </div>
@@ -530,11 +534,7 @@
         >
           <div class="flex relative">
             <div class="p-4 space-x-4 flex">
-              <img
-                id="xIcon"
-                src={icon}
-                class="w-[4rem] h-[4rem] rounded-md "
-              />
+              <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md" />
 
               <div class="">
                 <div class="stat-title">{$t("server.ip")}</div>
@@ -583,7 +583,7 @@
         class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl w-64 md:w-auto"
       >
         <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
-        <div class="space-x-1.5 space-y-1.5 ">
+        <div class="space-x-1.5 space-y-1.5">
           <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
 
           <input

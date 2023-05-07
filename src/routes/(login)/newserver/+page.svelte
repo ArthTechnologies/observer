@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
   import Modpacks from "$lib/components/ui/Modpacks.svelte";
+  import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
   import Alert from "$lib/components/ui/Alert.svelte";
   let version = "1.19.4";
   export let software = "Paper (Reccomended)";
@@ -138,6 +139,9 @@
             <option>Paper (Reccomended)</option>
             <option>Vanilla</option>
             <option>Spigot</option>
+            <option>Forge</option>
+            <option>Fabric</option>
+            <option>Quilt</option>
           </select>
 
           {#if snapshot == false}
@@ -175,14 +179,14 @@
           <input
             bind:value={name}
             id="nameInput"
-            class="input-bordered input-primary input  bg-base-300"
+            class="input-bordered input-primary input bg-base-300"
             type="text"
             placeholder="{$t('general.ex')} My Minecraft Server"
           />
 
           {#if worldgen}
             <div class="justify-center flex mt-2 mb-1">
-              <p class="label ">Worldgen Mods</p>
+              <p class="label">Worldgen Mods</p>
 
               <Helper tooltipText={$t("newserver.t.worldgen")} />
             </div>
@@ -234,8 +238,11 @@
               />
             </div>
           {/if}
-          {#if modpacks}
-            <Modpacks />{/if}
+          <div class=" justify-evenly mt-5 space-y-5 rounded-xl items-center">
+            {#if modpacks}
+              <Modpacks />{/if}
+            <UploadWorld />
+          </div>
 
           <a on:click={send} class="btn mt-4">{$t("button.createServer")}</a>
         </div>
