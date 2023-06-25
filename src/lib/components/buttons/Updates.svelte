@@ -91,30 +91,14 @@
     >
     <h3 class="text-xl font-bold mb-2">{latestUpdate} Update</h3>
     <div class="flex justify-center">
-      <img
-        id="terralith"
-        class="mask mask-hexagon grayscale"
-        src="/images/terralith.webp"
-        width="80ch"
-      />
-      <img
-        id="incendium"
-        class="mask mask-hexagon grayscale"
-        src="/images/incendium.webp"
-        width="80ch"
-      />
-      <img
-        id="nullscape"
-        class="mask mask-hexagon grayscale"
-        src="/images/nullscape.webp"
-        width="80ch"
-      />
-      <img
-        id="structory"
-        class="mask mask-hexagon grayscale"
-        src="/images/structory.webp"
-        width="80ch"
-      />
+      {#each serverAddons as addon}
+        <img
+          id={addon}
+          class="mask mask-hexagon grayscale"
+          src="/images/{addon}.webp"
+          width="80ch"
+        />
+      {/each}
     </div>
     {#if updateReady}
       <p class="text-center my-3">
