@@ -16,7 +16,9 @@
   }
   if (browser) {
     serverVersion = localStorage.getItem("serverVersion");
-    serverAddons = localStorage.getItem("serverAddons").split(",");
+    if (localStorage.getItem("serverAddons") != null) {
+      serverAddons = localStorage.getItem("serverAddons").split(",");
+    }
   }
   console.log(serverAddons);
   //fetch https://launchermeta.mojang.com/mc/game/version_manifest.json
