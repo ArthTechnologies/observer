@@ -6,6 +6,7 @@
   let latestUpdate = "";
   let worldgenMods = [];
   let serverAddons = [];
+  let areWorldgenMods = true;
   let updateReady = true;
   let serverVersion = "";
 
@@ -18,6 +19,10 @@
     serverVersion = localStorage.getItem("serverVersion");
     if (localStorage.getItem("serverAddons") != null) {
       serverAddons = localStorage.getItem("serverAddons").split(",");
+    }
+
+    if (serverAddons[0] == "") {
+      areWorldgenMods = false;
     }
   }
   console.log(serverAddons);
@@ -34,25 +39,27 @@
           console.log(x);
           worldgenMods = x;
           //for each worldgen mod
-          for (var i = 0; i < worldgenMods.length; i++) {
-            //display the mod's image
-            if (browser && serverAddons.includes(worldgenMods[i])) {
-              console.log(worldgenMods[i]);
-              console.log(worldgenMods);
-              document
-                .getElementById(worldgenMods[i])
-                .classList.remove("grayscale");
-            }
-          }
-          for (var i = 0; i < serverAddons.length; i++) {
-            console.log(worldgenMods.includes(serverAddons[i]));
-            if (!worldgenMods.includes(serverAddons[i])) {
-              updateReady = false;
-              //add class disabled to id "confirmBtn"
-              if (browser) {
+          if (areWorldgenMods) {
+            for (var i = 0; i < worldgenMods.length; i++) {
+              //display the mod's image
+              if (browser && serverAddons.includes(worldgenMods[i])) {
+                console.log(worldgenMods[i]);
+                console.log(worldgenMods);
                 document
-                  .getElementById("confirmBtn")
-                  .classList.add("btn-disabled");
+                  .getElementById(worldgenMods[i])
+                  .classList.remove("grayscale");
+              }
+            }
+            for (var i = 0; i < serverAddons.length; i++) {
+              console.log(worldgenMods.includes(serverAddons[i]));
+              if (!worldgenMods.includes(serverAddons[i])) {
+                updateReady = false;
+                //add class disabled to id "confirmBtn"
+                if (browser) {
+                  document
+                    .getElementById("confirmBtn")
+                    .classList.add("btn-disabled");
+                }
               }
             }
           }
@@ -91,14 +98,16 @@
     >
     <h3 class="text-xl font-bold mb-2">{latestUpdate} Update</h3>
     <div class="flex justify-center">
-      {#each serverAddons as addon}
-        <img
-          id={addon}
-          class="mask mask-hexagon grayscale"
-          src="/images/{addon}.webp"
-          width="80ch"
-        />
-      {/each}
+      {#if areWorldgenMods}
+        {#each serverAddons as addon}
+          <img
+            id={addon}
+            class="mask mask-hexagon grayscale"
+            src="/images/{addon}.webp"
+            width="80ch"
+          />
+        {/each}
+      {/if}
     </div>
     {#if updateReady}
       <p class="text-center my-3">
