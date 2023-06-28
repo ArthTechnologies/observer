@@ -235,6 +235,10 @@ export function getSettings() {
         window.localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
         window.localStorage.setItem("address", JSON.parse(input).address);
         window.localStorage.setItem("webName", JSON.parse(input).webName);
+        window.localStorage.setItem(
+          "latestVersion",
+          JSON.parse(input).latestVersion
+        );
 
         if (JSON.parse(input).enableAuth == false) {
           window.localStorage.setItem("accountEmail", "guest");
@@ -421,10 +425,9 @@ export function createServer(
       addons: a,
       cmds: c,
       modpackURL: mURL,
-      worldFile: document.getElementById("worldFile").files[0],
     }),
   };
-  console.log(document.getElementById("worldFile").files[0]);
+
   console.log("Request Sent: " + JSON.stringify(req.body));
   //if response is 409, send an alert, otherwise do nothing
   return fetch(url, req).then((res) =>

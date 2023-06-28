@@ -17,6 +17,11 @@
   let admin = "";
   let modpacks = false;
   let modpackURL = "";
+  let latestVersion = "1.20.1";
+  if (browser) {
+    latestVersion = localStorage.getItem("latestVersion");
+    version = latestVersion;
+  }
   function send() {
     let addons = [];
     let cmd = [];
@@ -156,6 +161,7 @@
               tabindex="0"
               class="select select-primary p-2 bg-base-100"
             >
+              <option>{latestVersion}</option>
               <option>1.19.4</option>
               <option>1.18.2</option>
               <option>1.17.1</option>
@@ -241,7 +247,6 @@
           <div class=" justify-evenly mt-5 space-y-5 rounded-xl items-center">
             {#if modpacks}
               <Modpacks />{/if}
-            <UploadWorld />
           </div>
 
           <a on:click={send} class="btn mt-4">{$t("button.createServer")}</a>
