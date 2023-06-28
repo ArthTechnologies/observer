@@ -20,6 +20,7 @@
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
   import Updates from "$lib/components/buttons/Updates.svelte";
+  import World from "$lib/components/ui/World.svelte";
 
   let modded = false;
   let vanilla = false;
@@ -138,7 +139,6 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         desc = data.desc;
         console.log(data.iconUrl + "icon");
         if (data.iconUrl != undefined) {
@@ -182,7 +182,7 @@
     getServer(id).then((response) => {
       //convert addons array to string, save it to "serverAddons" array
       localStorage.setItem("serverAddons", response.addons.toString());
-      console.log(response);
+
       //set state to response
       state = response.state;
       if (restarting && state == "starting") {
@@ -303,6 +303,7 @@
       >
       <DeleteServer />
       <Updates />
+      <World />
     </div>
     <!-- TODO: these should be on the right, add an if for not reaching the backend -->
     <div class="space-x-2 space-y-2 flex flex-col items-center md:block">

@@ -20,6 +20,10 @@
     //download the file from the input with id="icon"
 
     if (browser) {
+      console.log(icon == "");
+      if (icon == "") {
+        icon = "https://servers.arthmc.xyz/images/placeholder.webp";
+      }
       setInfo(id, icon, desc);
     }
   }
