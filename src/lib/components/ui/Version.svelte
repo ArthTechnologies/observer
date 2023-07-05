@@ -30,7 +30,6 @@
     pluginName = pluginName.replace(/["']/g, "");
     pluginName = pluginName.replace(/[\(\)]/g, "");
     pluginName = pluginName.replace(/[\s_]/g, "-");
-
     sendVersion(url, id, "lr_" + pluginId, pluginName, modtype);
   }
   console.log(dependencies);

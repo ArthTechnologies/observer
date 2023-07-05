@@ -24,13 +24,17 @@
       setTimeout(function () {
         promise = getMods(id, "mods").then((response) => {
           res = response;
-          console.log(response.modpack.files.length - 1);
-          console.log(response.modpack.files[0].downloads[0].split("/")[4]);
+          if (response.modpack != undefined) {
+            console.log(response.modpack.files.length - 1);
+            console.log(response.modpack.files[0].downloads[0].split("/")[4]);
 
-          for (let i = 0; i < response.modpack.files.length - 1; i++) {
-            res.ids.push(response.modpack.files[i].downloads[0].split("/")[4]);
-            res.platforms.push("lr");
-            res.names.push("yo");
+            for (let i = 0; i < response.modpack.files.length - 1; i++) {
+              res.ids.push(
+                response.modpack.files[i].downloads[0].split("/")[4]
+              );
+              res.platforms.push("lr");
+              res.names.push("yo");
+            }
           }
           console.log(res);
         });
@@ -51,7 +55,7 @@
     <div class="flex items-center space-x-3">
       <p class="font-bold text-2xl">Mods</p>
       {#if res.modpack.name != undefined}
-        <p class=" h-15 p-2 bg-base-200  rounded-lg">
+        <p class=" h-15 p-2 bg-base-200 rounded-lg">
           Modpack: {res.modpack.name}
         </p>
       {/if}

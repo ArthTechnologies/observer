@@ -25,6 +25,7 @@
     let vname = "undefined";
     getVersions(id).then((data) => {
       document.getElementById("list").innerHTML = "";
+      console.log(data);
       data.forEach((version) => {
         console.log(software + " + " + version.loaders.indexOf(software));
         if (

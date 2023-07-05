@@ -40,7 +40,7 @@
     }
   }
   let tab = "mr";
-  function ft() {
+  /*function ft() {
     if (browser) {
       tab = "ft";
       document.getElementById("ft").classList.add("tab-active");
@@ -53,7 +53,7 @@
       document.getElementById("mr").classList.add("tab-active");
       document.getElementById("ft").classList.remove("tab-active");
     }
-  }
+  }*/
 </script>
 
 <label for="my-modal-5" class="btn btn-block" on:click={search}>Add Mod</label>

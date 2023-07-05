@@ -8,7 +8,7 @@
   import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
   import Alert from "$lib/components/ui/Alert.svelte";
   let version = "1.19.4";
-  export let software = "Paper (Reccomended)";
+  export let software = "Paper";
   export let snapshot = false;
   let name = "";
   let visible = false;
@@ -18,6 +18,16 @@
   let modpacks = false;
   let modpackURL = "";
   let latestVersion = "1.20.1";
+  let index = {};
+  let versionOptions = [latestVersion];
+  fetch("https://api.jarsmc.xyz/jars/arthHosting", {
+    method: "GET",
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      index = res;
+      index["quilt"] = index["paper"];
+    });
   if (browser) {
     latestVersion = localStorage.getItem("latestVersion");
     version = latestVersion;
@@ -88,22 +98,63 @@
   }
   let worldgen = true;
   function checkV() {
-    if (version != "1.19.4" && snapshot == false) {
-      worldgen = false;
-    } else {
-      worldgen = true;
+    if (browser) {
+      let CVS = software.toLowerCase();
+      let versionOptions = [];
+
+      index[CVS].forEach((item) => {
+        console.log(item.version);
+        let option = {
+          value: item.version,
+          label: item.version,
+        };
+        versionOptions.push(item.version);
+      });
+
+      // Append versions to dropdown
+      let versionDropdown = document.getElementById("versionDropdown");
+      versionDropdown.innerHTML = "";
+      let i = 0;
+
+      versionOptions.forEach((item) => {
+        let option = document.createElement("option");
+        option.value = item;
+        option.text = item;
+        versionDropdown.appendChild(option);
+
+        if (i === 0) {
+          version = item;
+        }
+        i++;
+      });
+
+      // Set the dropdown value to the initial version
+      versionDropdown.value = version;
+
+      console.log("v" + versionOptions);
     }
+
+    // Rest of your code...
+
+    if (version === latestVersion && !modpacks) {
+      worldgen = true;
+    } else {
+      worldgen = false;
+    }
+    console.log(software + worldgen);
   }
 
   function checkS() {
+    checkV();
+
     if (software == "Latest Snapshot") {
       worldgen = false;
       snapshot = true;
       modpacks = false;
-    } else if (software == "Paper (Reccomended)" || software == "Spigot") {
+    } else if (software == "Paper") {
       worldgen = true;
       snapshot = false;
-      modpacks = false;
+      modpacks = false; // Reset modpacks to false when switching to Paper
     } else if (
       software == "Quilt" ||
       software == "Fabric" ||
@@ -141,9 +192,7 @@
             tabindex="0"
             class="select select-primary p-2 bg-base-100"
           >
-            <option>Paper (Reccomended)</option>
-            <option>Vanilla</option>
-            <option>Spigot</option>
+            <option>Paper</option>
             <option>Forge</option>
             <option>Fabric</option>
             <option>Quilt</option>
