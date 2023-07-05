@@ -51,7 +51,7 @@
           </div>
         </div>
 
-        <p class="break-words w-[50rem] mb-1 ">{desc}</p>
+        <p class="break-words w-[50rem] mb-1">{desc}</p>
         <div class="flex space-x-2">
           {#if client == "optional"}
             <div
@@ -79,7 +79,7 @@
             </div>
           {:else if client == "required"}
             <div
-              class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[23rem]"
+              class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
