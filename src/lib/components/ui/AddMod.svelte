@@ -17,7 +17,7 @@
       if (version == "latest") {
         version = "1.19.4";
       }
-
+      promise = null;
       setTimeout(function () {
         promise = searchMods(software, version, query, "mod").then(
           (response) => {
