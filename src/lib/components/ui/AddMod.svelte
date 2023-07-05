@@ -69,9 +69,7 @@
       >
 
       <div class="tabs tabs-boxed">
-        <button id="mr" on:click={mr} class="tab tab-active"
-          >{$t("search")}</button
-        >
+        <button id="mr" class="tab tab-active">{$t("search")}</button>
       </div>
     </div>
     {#if tab == "mr"}

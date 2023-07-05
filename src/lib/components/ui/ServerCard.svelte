@@ -121,7 +121,7 @@
         {address}:{10000 + parseInt(id)}
       </p>
       <!-- <div class="card-actions justify-beginning" /> -->
-      <div class="card-actions justify-end ">
+      <div class="card-actions justify-end">
         <!-- placeholder for now? -->
         <div class="grow space-x-1.5 flex">
           <a href="/server/{10000 + parseInt(id)}"
@@ -132,7 +132,7 @@
           {#if restarting}
             <div
               id="start"
-              class="flex w-[7.5rem] bg-success rounded-lg font-semibold uppercase text-base-100 text-[.65rem] tracking-wider  px-3  items-center"
+              class="flex w-[7.5rem] bg-success rounded-lg font-semibold uppercase text-base-100 text-[.65rem] tracking-wider px-3 items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -186,7 +186,7 @@
               <div
                 on:click={start}
                 id="start"
-                class="flex w-[7.5rem] bg-success rounded-lg font-semibold uppercase text-base-100 text-[.76rem] tracking-wider  px-3  items-center"
+                class="flex w-[7.5rem] bg-success rounded-lg font-semibold uppercase text-base-100 text-[.76rem] tracking-wider px-3 items-center"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
