@@ -83,9 +83,7 @@
     </div>
     <div id="mods" class="space-y-2">
       {#await promise then}
-        jjjj
         {#each results as result}
-          fff
           <ModResult {...result} />
         {/each}
       {/await}
