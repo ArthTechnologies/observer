@@ -3,7 +3,7 @@
   import { t } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   import { apiurl } from "$lib/scripts/req";
-
+  let buttonWidthPercent = 30;
   let tab = "upload";
   let id = -1;
   let serverName = "";
@@ -14,25 +14,50 @@
   }
 
   function download() {
-    return fetch(apiurl + "server/" + id + "/world", {
-      method: "GET",
-      headers: {
-        token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
-      },
-    })
-      .then((res) => res.blob()) // Use res.blob() instead of res.text()
-      .then((blob) => {
-        // Create a new Blob object directly from the response data
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", apiurl + "server/" + id + "/world", true);
+    xhr.setRequestHeader("token", localStorage.getItem("token"));
+    xhr.setRequestHeader("email", localStorage.getItem("accountEmail"));
+    xhr.responseType = "blob";
+    let lhref = window.location.href;
+    xhr.addEventListener("progress", (event) => {
+      if (event.lengthComputable && browser) {
+        const percentComplete = (event.loaded / event.total) * 100;
+
+        // You can update a progress bar or display the percentage to the user
+        if (percentComplete < 100 && window.location.href == lhref) {
+          const downloadBtn = document.querySelector(".downloadBtn");
+
+          downloadBtn.style.width = "200px";
+          downloadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.0) ${percentComplete}%,
+  #088587 ${percentComplete}%,
+  #088587 100%
+)`;
+        }
+      }
+    });
+
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        const blob = xhr.response;
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "world.zip";
+        a.download = "server-" + id + "-world.zip";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a); // Clean up the temporary <a> element
         window.URL.revokeObjectURL(url); // Clean up the object URL
-      });
+      } else {
+        console.error("Error downloading file. Status:", xhr.status);
+        // Handle the error case
+      }
+    };
+
+    xhr.send();
   }
 
   function regenTab() {
@@ -115,12 +140,12 @@
       >✕</label
     >
     <div
-      class="h-12 w-96 bg-base-200 rounded-lg p-1 px-2 flex justify-between items-center"
+      class="h-12 w-11/12 md:w-96 bg-base-200 rounded-lg p-1 px-2 flex justify-between items-center"
     >
       <div class="flex flex-col justify-center">
-        <p class="font-bold text-lg">Current World</p>
+        <p class="font-bold md:text-lg">Current World</p>
       </div>
-      <button class="btn btn-accent btn-sm" on:click={download}
+      <button class="downloadBtn btn btn-accent btn-sm" on:click={download}
         >Download World File</button
       >
     </div>

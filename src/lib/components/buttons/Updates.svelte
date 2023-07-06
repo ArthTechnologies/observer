@@ -36,7 +36,7 @@
       fetch(apiurl + "servers/worldgenMods?version=" + latestUpdate)
         .then((x) => x.json())
         .then((x) => {
-          console.log(x);
+          console.log("x" + x);
           worldgenMods = x;
           //for each worldgen mod
           if (areWorldgenMods) {
@@ -51,7 +51,11 @@
               }
             }
             for (var i = 0; i < serverAddons.length; i++) {
-              console.log(worldgenMods.includes(serverAddons[i]));
+              console.log(
+                "worldgenb" +
+                  worldgenMods +
+                  worldgenMods.includes(serverAddons[i])
+              );
               if (!worldgenMods.includes(serverAddons[i])) {
                 updateReady = false;
                 //add class disabled to id "confirmBtn"
