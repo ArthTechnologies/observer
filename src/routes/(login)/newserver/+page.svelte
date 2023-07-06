@@ -120,7 +120,7 @@
         let option = document.createElement("option");
         option.value = item;
         option.text = item;
-        versionDropdown.appendChild(option);
+        versionDropdown.add(option);
 
         if (i === 0) {
           version = item;
