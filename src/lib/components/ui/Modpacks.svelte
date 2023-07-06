@@ -16,7 +16,7 @@
       let software = document
         .getElementById("softwareDropdown")
         .value.toLowerCase();
-      let version = "1.19.4";
+      let version = document.getElementById("versionDropdown").value;
 
       setTimeout(function () {
         promise = searchMods(software, version, query, "modpack").then(

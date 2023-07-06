@@ -169,6 +169,8 @@ export function searchPlugins(
     query +
     '&facets=[["categories:' +
     software +
+    '"],["versions:' +
+    version +
     '"],["server_side:optional","server_side:required"]]' +
     "&limit=10";
 
@@ -206,6 +208,8 @@ export function searchMods(
     software +
     '"], ["project_type:' +
     modtype +
+    '"],["versions:' +
+    version +
     '"],["server_side:optional","server_side:required"]]' +
     "&limit=10";
 
