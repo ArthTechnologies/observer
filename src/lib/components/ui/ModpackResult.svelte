@@ -84,7 +84,7 @@
             {downloads}
           </div>
           <div
-            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm "
+            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
