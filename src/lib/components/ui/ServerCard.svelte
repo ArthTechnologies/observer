@@ -71,6 +71,11 @@
       stopcolor = "error";
       startcolor = "disabled";
       starttext = "Starting";
+    } else if (state == "installing") {
+      starting = true;
+      stopcolor = "error";
+      startcolor = "accent";
+      starttext = "Installing";
     }
   }
   status();
