@@ -98,8 +98,9 @@
 
   function regen() {
     if (browser) {
+      let seed = document.getElementById("seed").value;
       //POST to https://api.arthmc.xyz/server/{id}/world  with token and email, send file in body
-      fetch(apiurl + "server/" + id + "/world", {
+      fetch(apiurl + "server/" + id + "/world" + "?seed=" + seed, {
         method: "POST",
         headers: {
           token: localStorage.getItem("token"),
@@ -179,6 +180,12 @@
       >
     </div>
     {#if tab == "regen"}
+      <input
+        id="seed"
+        type="text"
+        class="input input-bordered max-w-xs"
+        placeholder="Seed (Leave blank for random)"
+      />
       <label for="world" on:click={regen} class="btn">Regen World</label>
     {/if}
     {#if tab == "upload"}
