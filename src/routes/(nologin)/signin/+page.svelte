@@ -4,6 +4,7 @@
   import EmailSignin from "$lib/components/ui/EmailSignin.svelte";
 
   import { t, locale, locales } from "$lib/scripts/i18n";
+  import { getSettings } from "$lib/scripts/req";
   import PocketBase from "pocketbase";
   function discord() {
     console.log("discord");
@@ -17,6 +18,8 @@
       );
     }
   }
+
+  getSettings();
 </script>
 
 <div class="hero min-h-screen bg-base-200">
