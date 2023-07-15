@@ -266,10 +266,10 @@
     let rt;
     readTerminal(id).then((response) => {
       if (browser) {
-        document.getElementById("terminal").innerHTML = response.replace(
-          /\n/g,
-          "<p>"
-        );
+        //response replace newlines with <p>, remove things that start with [ and end with m
+        document.getElementById("terminal").innerHTML = response
+          .replace(/\x1B\[[0-9;]*[mG]/g, "")
+          .replace(/\n/g, "<p>");
         setTimeout(() => {
           const terminal = document.getElementById("terminal");
           terminal.scrollTop = terminal.scrollHeight;
