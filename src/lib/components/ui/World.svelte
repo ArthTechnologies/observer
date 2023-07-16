@@ -78,6 +78,7 @@
   }
 
   function upload() {
+    console.log("uploading");
     const formData = new FormData();
     formData.append("file", file, file.name);
     if (browser) {

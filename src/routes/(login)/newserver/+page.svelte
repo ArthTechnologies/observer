@@ -196,6 +196,7 @@
             <option>Forge</option>
             <option>Fabric</option>
             <option>Quilt</option>
+            <option>Velocity</option>
           </select>
 
           {#if snapshot == false}

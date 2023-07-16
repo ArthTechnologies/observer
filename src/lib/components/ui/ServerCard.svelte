@@ -12,6 +12,7 @@
   let starttext = "Start";
   let starting = false;
   let email = "noemail";
+  let softwareType = "server";
   let address;
   if (browser) {
     localStorage.getItem("accountEmail");
@@ -37,6 +38,10 @@
   export let software: string;
   export let state: string;
   export let id: number;
+
+  if (software == "velocity") {
+    softwareType = "proxy";
+  }
   let restarting = false;
 
   function uppercaseFirstLetter(string: string) {
@@ -129,7 +134,7 @@
       <div class="card-actions justify-end">
         <!-- placeholder for now? -->
         <div class="grow space-x-1.5 flex">
-          <a href="/server/{10000 + parseInt(id)}"
+          <a href="/{softwareType}/{10000 + parseInt(id)}"
             ><button on:click={setName} class="btn btn-primary btn-sm h-9"
               >Info</button
             ></a
