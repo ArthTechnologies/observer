@@ -4,7 +4,6 @@
   import {
     getPlayers,
     changeServerState,
-    deleteServer,
     writeTerminal,
     readTerminal,
     apiurl,
@@ -26,6 +25,7 @@
     { name: "hub", ip: "arthmc.xyz:10000", isMain: true },
     { name: "survival", ip: "arthmc.xyz:11000", isMain: false },
   ];
+  let fSecret = "rewdw";
   let modded = false;
   let vanilla = false;
   let name: string = "-";
@@ -103,11 +103,44 @@
     let ip = document.getElementById("serverIP").value;
 
     if (name != "" && ip != "") {
-      servers.push({ name: name, ip: ip });
+      fetch(
+        apiurl + "server/" + id + "/proxy/servers?name=" + name + "&ip=" + ip,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            token: localStorage.getItem("token"),
+            email: localStorage.getItem("accountEmail"),
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          servers = data;
+        });
+
       console.log(servers);
       document.getElementById("serverName").value = "";
       document.getElementById("serverIP").value = "";
     }
+  }
+
+  function deleteServer(name) {
+    console.log(apiurl + "server/" + id + "/proxy/servers?=" + name);
+    fetch(apiurl + "server/" + id + "/proxy/servers?name=" + name, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        servers = data;
+      });
   }
 
   if (browser) {
@@ -151,6 +184,35 @@
         }
       });
 
+    fetch(apiurl + "server/" + id + "/proxy/servers", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        servers = data;
+      });
+
+    //fetch apiurl+server/id/proxy/secret
+
+    fetch(apiurl + "server/" + id + "/proxy/secret", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        fSecret = data.secret;
+      });
     //wait half a second
     setTimeout(() => {
       //get players and store amount in a variable
@@ -705,6 +767,7 @@
               </div>
               <div
                 class="p-1 btn btn-sm btn-error rounded-lg px-2 flex justify-between items-center"
+                on:click={() => deleteServer(server.name)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -760,6 +823,35 @@
           />
           <button class="btn btn-sm"> Submit </button>
         </div>
+      </div>
+      <div
+        class="bg-primary w-[20rem] md:w-[35rem] rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-4"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="feather feather-info"
+          ><circle cx="12" cy="12" r="10" /><line
+            x1="12"
+            y1="16"
+            x2="12"
+            y2="12"
+          /><line x1="12" y1="8" x2="12.01" y2="8" /></svg
+        >
+        <span class="text-sm w-[15rem] md:w-[30rem]"
+          >Your forwarding secret is <code class="bg-gray-500 rounded p-0.5"
+            >{fSecret}</code
+          >. If you have a non-Arth Hosting server, enter this in
+          <code class="bg-gray-500 rounded p-0.5">config/paper-global.yml</code
+          ></span
+        >
       </div>
     </div>
   </div>

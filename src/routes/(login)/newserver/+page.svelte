@@ -99,39 +99,7 @@
   let worldgen = true;
   function checkV() {
     if (browser) {
-      let CVS = software.toLowerCase();
-      let versionOptions = [];
-
-      index[CVS].forEach((item) => {
-        console.log(item.version);
-        let option = {
-          value: item.version,
-          label: item.version,
-        };
-        versionOptions.push(item.version);
-      });
-
-      // Append versions to dropdown
-      let versionDropdown = document.getElementById("versionDropdown");
-      versionDropdown.innerHTML = "";
-      let i = 0;
-
-      versionOptions.forEach((item) => {
-        let option = document.createElement("option");
-        option.value = item;
-        option.text = item;
-        versionDropdown.add(option);
-
-        if (i === 0) {
-          version = item;
-        }
-        i++;
-      });
-
-      // Set the dropdown value to the initial version
-      versionDropdown.value = version;
-
-      console.log("v" + versionOptions);
+      version = document.getElementById("versionDropdown").value;
     }
 
     // Rest of your code...
@@ -144,8 +112,38 @@
     console.log(software + worldgen);
   }
 
+  function findVersions() {
+    let CVS = software.toLowerCase();
+    let versionOptions = [];
+
+    index[CVS].forEach((item) => {
+      console.log(item.version);
+      let option = {
+        value: item.version,
+        label: item.version,
+      };
+      versionOptions.push(item.version);
+    });
+
+    // Append versions to dropdown
+    let versionDropdown = document.getElementById("versionDropdown");
+    versionDropdown.innerHTML = "";
+    let i = 0;
+
+    versionOptions.forEach((item) => {
+      let option = document.createElement("option");
+      option.value = item;
+      option.text = item;
+      versionDropdown.add(option);
+
+      if (i === 0) {
+        version = item;
+      }
+      i++;
+    });
+  }
   function checkS() {
-    checkV();
+    findVersions();
 
     if (software == "Latest Snapshot") {
       worldgen = false;
@@ -204,7 +202,6 @@
               >{$t("newserver.l.version")}</label
             >
             <select
-              bind:value={version}
               on:change={checkV}
               id="versionDropdown"
               name="versionDropdown"
