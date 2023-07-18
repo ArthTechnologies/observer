@@ -13,6 +13,9 @@
     if (browser) {
       let software = localStorage.getItem("serverSoftware");
       let version = localStorage.getItem("serverVersion");
+      if (software == "Velocity") {
+        version = localStorage.getItem("latestVersion");
+      }
 
       setTimeout(function () {
         promise = searchPlugins(software, version, query).then((response) => {
@@ -63,10 +66,10 @@
       >
 
       <div class="tabs tabs-boxed">
-        <button id="ft" on:click={ft} class="tab tab-active "
+        <button id="ft" on:click={ft} class="tab tab-active"
           >{$t("featured")}</button
         >
-        <button id="mr" on:click={mr} class="tab ">{$t("search")}</button>
+        <button id="mr" on:click={mr} class="tab">{$t("search")}</button>
       </div>
     </div>
     {#if tab == "mr"}

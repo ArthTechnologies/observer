@@ -11,8 +11,10 @@
     software = localStorage.getItem("serverSoftware");
     sVersion = localStorage.getItem("serverVersion");
     switch (software) {
-      case "Paper":
-        software = "paper";
+      case "Velocity":
+        sVersion = localStorage.getItem("latestVersion");
+      default:
+        software = software.toLowerCase();
         break;
     }
     switch (sVersion) {
