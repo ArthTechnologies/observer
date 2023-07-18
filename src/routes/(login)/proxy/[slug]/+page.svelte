@@ -871,11 +871,22 @@
             y2="12"
           /><line x1="12" y1="8" x2="12.01" y2="8" /></svg
         >
-        <span class="text-sm w-[15rem] md:w-[30rem]"
-          >Your forwarding secret is <code class="bg-gray-500 rounded p-0.5"
-            >{fSecret}</code
-          >. If you have a non-Arth Hosting server, enter this in
-          <code class="bg-gray-500 rounded p-0.5">config/paper-global.yml</code>
+        <span class="text-sm w-[15rem] md:w-[30rem] flex flex-wrap"
+          >Your forwarding secret is <code
+            class="bg-gray-500 rounded p-0.5 flex ml-1"
+            ><div class="dropdown">
+              <label tabindex="0" class="">Show Secret ▼</label>
+              <div
+                tabindex="0"
+                class="dropdown-content bg-gray-600 rounded p-1"
+              >
+                {fSecret}
+              </div>
+            </div></code
+          >If you have a non-Arth Hosting server, enter this in
+          <code class="bg-gray-500 rounded p-0.5 mr-1"
+            >config/paper-global.yml</code
+          >
           and disable online mode.</span
         >
       </div>
