@@ -26,6 +26,7 @@
     { name: "survival", ip: "arthmc.xyz:11000", isMain: false },
   ];
   let fSecret = "rewdw";
+  let lobbyName = "hub";
   let modded = false;
   let vanilla = false;
   let name: string = "-";
@@ -208,7 +209,7 @@
 
     //fetch apiurl+server/id/proxy/secret
 
-    fetch(apiurl + "server/" + id + "/proxy/secret", {
+    fetch(apiurl + "server/" + id + "/proxy/info", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -220,6 +221,7 @@
       .then((data) => {
         console.log(data);
         fSecret = data.secret;
+        lobbyName = data.lobbyName;
       });
     //wait half a second
     setTimeout(() => {
@@ -265,6 +267,25 @@
     });
   }
 
+  function setLobbyName() {
+    console.log("setting lobby name");
+    lobbyName = document.getElementById("lobbyName").value;
+    console.log(lobbyName);
+    fetch(apiurl + "server/" + id + "/proxy/info?lobbyName=" + lobbyName, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        document.getElementById("lobbyName").value = "";
+      });
+  }
+
   function start() {
     console.log(lock);
     if (!lock) {
@@ -299,10 +320,7 @@
         if (count > 20) {
           interval = 2000;
         }
-        if (
-          decodeURIComponent(window.location.pathname) ==
-          "/server/" + tname
-        ) {
+        if (decodeURIComponent(window.location.pathname) == "/proxy/" + tname) {
           getStatus();
           readCmd();
         }
@@ -821,15 +839,15 @@
           </button>
         </div>
         <div class="space-x-1.5 space-y-1.5">
-          <label class="label" for="username">Send players to</label>
+          <label class="label" for="lobbyName">Send players to</label>
 
           <input
-            id="username"
+            id="lobbyName"
             class="input input-sm w-1/2 md:w-auto input-bordered"
-            placeholder="Server name (ex: hub)"
+            placeholder="Server name (currently '{lobbyName}')"
             type="text"
           />
-          <button class="btn btn-sm"> Submit </button>
+          <button class="btn btn-sm" on:click={setLobbyName}> Submit </button>
         </div>
       </div>
       <div
@@ -857,8 +875,8 @@
           >Your forwarding secret is <code class="bg-gray-500 rounded p-0.5"
             >{fSecret}</code
           >. If you have a non-Arth Hosting server, enter this in
-          <code class="bg-gray-500 rounded p-0.5">config/paper-global.yml</code
-          ></span
+          <code class="bg-gray-500 rounded p-0.5">config/paper-global.yml</code>
+          and disable online mode.</span
         >
       </div>
     </div>
