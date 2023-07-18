@@ -104,7 +104,15 @@
 
     if (name != "" && ip != "") {
       fetch(
-        apiurl + "server/" + id + "/proxy/servers?name=" + name + "&ip=" + ip,
+        apiurl +
+          "server/" +
+          id +
+          "/proxy/servers?name=" +
+          name +
+          "&ip=" +
+          ip +
+          "&secret=" +
+          fSecret,
         {
           method: "POST",
           headers: {
