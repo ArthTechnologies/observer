@@ -500,7 +500,7 @@ es6-symbol@^3.1.1, es6-symbol@^3.1.3:
     d "^1.0.1"
     ext "^1.1.2"
 
-esbuild-windows-64@0.15.16:
+esbuild-linux-64@0.15.16:
   version "0.15.16"
   resolved "https://registry.npmmirror.com/esbuild-windows-64/-/esbuild-windows-64-0.15.16.tgz"
   integrity sha512-HjW1hHRLSncnM3MBCP7iquatHVJq9l0S2xxsHHj4yzf4nm9TU4Z7k4NkeMlD/dHQ4jPlQQhwcMvwbJiOefSuZw==
