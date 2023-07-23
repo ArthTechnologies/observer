@@ -12,12 +12,12 @@
   let matchPwd = true;
   let networkerror = false;
   let sign = "up";
+  let pwdVisible = "password";
   function pwdVisibility() {
-    var x = document.getElementById("pwd");
-    if (x.type === "password") {
-      x.type = "text";
+    if (pwdVisible == "password") {
+      pwdVisible = "text";
     } else {
-      x.type = "password";
+      pwdVisible = "password";
     }
   }
 
@@ -130,18 +130,15 @@
   }
 </script>
 
-<div class="divider" />
-<div class="tabs ">
+<div class="tabs ml-2">
   <a id="sin" on:click={signIn} class="tab tab-lifted">{$t("signin")}</a>
   <a id="sup" on:click={signUp} class="tab tab-lifted tab-active"
     >{$t("signup")}</a
   >
 </div>
 {#if sign === "in"}
-  <div
-    class="hero bg-base-300 border-dashed border-2 border-accent-content rounded "
-  >
-    <div class="hero-content text-center">
+  <div class=" bg-base-300 border-4 border-base-100 rounded-xl w-96">
+    <div class=" text-center p-6">
       <div class="max-w-md space-y-5">
         {#if networkerror === true}
           <div class="badge badge-error gap-2">
@@ -160,20 +157,64 @@
             You encountered a network error.
           </div>
         {/if}
-        <p class="text-xl">{$t("signin.h.email")}</p>
-        <input
-          id="email"
-          type="text"
-          placeholder={$t("signin.l.email")}
-          class="input w-full max-w-xs"
-        />
+
         <div class="space-x-2 space-y-5">
+          <p class="text-xl">{$t("signin.h.email")}</p>
           <input
-            type="password"
-            id="pwd"
-            placeholder={$t("signin.l.pwd")}
+            id="email"
+            type="text"
+            placeholder={$t("signin.l.email")}
             class="input w-full max-w-xs"
           />
+
+          <div class="w-full flex space-x-2">
+            <div class="w-full flex space-x-2">
+              <input
+                type={pwdVisible}
+                id="pwd"
+                placeholder={$t("signin.l.pwd")}
+                class="input w-full max-w-xs"
+              />
+              <label class="btn btn-circle swap swap-rotate btn-ghost">
+                <!-- this hidden checkbox controls the state -->
+                <input type="checkbox" on:click={pwdVisibility} />
+
+                <!-- eye icon -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-eye swap-off"
+                  ><path
+                    d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                  /><circle cx="12" cy="12" r="3" /></svg
+                >
+
+                <!-- close icon -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="swap-on feather feather-eye-off"
+                  ><path
+                    d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+                  /><line x1="1" y1="1" x2="23" y2="23" /></svg
+                >
+              </label>
+            </div>
+          </div>
 
           <button on:click={submit} class="btn btn-primary">Submit</button>
         </div>
@@ -181,10 +222,8 @@
     </div>
   </div>
 {:else}
-  <div
-    class="hero bg-base-300 border-dashed border-2 border-accent-content rounded "
-  >
-    <div class="hero-content text-center">
+  <div class="hero bg-base-300 border-4 border-base-100 rounded-xl w-96">
+    <div class="p-6 text-center">
       <div class="max-w-md space-y-5">
         {#if networkerror === true}
           <div class="badge badge-error gap-2">
@@ -211,12 +250,54 @@
           placeholder={$t("signin.l.email")}
           class="input w-full max-w-xs"
         />
-        <input
-          type="password"
-          id="pwd"
-          placeholder={$t("signin.l.pwd")}
-          class="input w-full max-w-xs"
-        />
+        <div class="w-full flex space-x-2">
+          <input
+            type={pwdVisible}
+            id="pwd"
+            placeholder={$t("signin.l.pwd")}
+            class="input w-full max-w-xs"
+          />
+          <label class="btn btn-circle swap swap-rotate btn-ghost">
+            <!-- this hidden checkbox controls the state -->
+            <input type="checkbox" on:click={pwdVisibility} />
+
+            <!-- eye icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="feather feather-eye swap-off"
+              ><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle
+                cx="12"
+                cy="12"
+                r="3"
+              /></svg
+            >
+
+            <!-- close icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="swap-on feather feather-eye-off"
+              ><path
+                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+              /><line x1="1" y1="1" x2="23" y2="23" /></svg
+            >
+          </label>
+        </div>
 
         <div class="space-x-2 space-y-5">
           <input

@@ -30,7 +30,7 @@
       <div
         class="mt-1 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 justify-center"
       >
-        <button
+        <!--<button
           class="btn btn-base-content btn-icon-text text-2xs btn-disabled"
           on:click={discord}
           ><img
@@ -39,9 +39,12 @@
             src="discord.svg"
           />{$t("signin.discord")}</button
         >
+      <div class="divider" />-->
       </div>
-      <EmailSignin />
-      <a class="btn btn-sm mt-2" href="/reset-password">Forgot password</a>
+      <div class="h-96">
+        <EmailSignin />
+      </div>
+      <a class="btn btn-sm mt-3" href="/reset-password">Forgot password</a>
     </div>
   </div>
 </div>
