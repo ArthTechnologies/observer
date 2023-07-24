@@ -161,7 +161,7 @@
     </div>
     <div class="divider w-[17rem]" />
     <div
-      class="bg-warning w-86 h-12 rounded-lg text-black p-2 flex items-center mb-6 space-x-2"
+      class="bg-warning w-86 h-16 md:h-12 rounded-lg text-black p-2 flex items-center mb-6 space-x-2"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
