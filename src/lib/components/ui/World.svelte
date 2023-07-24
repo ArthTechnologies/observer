@@ -184,7 +184,7 @@
       <input
         id="seed"
         type="text"
-        class="input input-bordered max-w-xs"
+        class="input input-bordered max-w-xs mb-2"
         placeholder="Seed (Leave blank for random)"
       />
       <label for="world" on:click={regen} class="btn">Regen World</label>
