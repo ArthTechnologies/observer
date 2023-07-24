@@ -7,7 +7,7 @@
   export let navType: NavType;
 </script>
 
-<footer class="footer items-center p-4  ">
+<footer class="footer items-center p-4 fixed bottom-0 right-0 z-50">
   <div class="items-center grid-flow-col" />
   <label
     for="support-modal"
