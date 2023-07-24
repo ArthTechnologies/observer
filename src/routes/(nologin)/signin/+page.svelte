@@ -20,6 +20,12 @@
   }
 
   getSettings();
+
+  if (browser) {
+    if (localStorage.getItem("token") != "") {
+      goto("/");
+    }
+  }
 </script>
 
 <div class="hero min-h-screen bg-base-200">
