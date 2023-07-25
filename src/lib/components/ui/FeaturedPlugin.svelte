@@ -48,11 +48,11 @@
         /></a
       >
       <div>
-        <div class="flex space-x-1">
+        <div class="sm:flex space-x-1">
           <a
             href="https://github.com/{pluginId}/#readme"
             target="_blank"
-            class="flex link link-hover text-xl font-bold w-[5rem] md:w-auto"
+            class="flex link link-hover text-xl font-bold w-[2rem] sm:w-[5rem] md:w-auto break-all sm:break-works"
             >{name}
           </a>
           <div class="flex space-x-1 place-items-end">
@@ -84,10 +84,13 @@
             {/if}
           </div>
         </div>
-        <p class="w-[11rem] md:w-[50rem]">{desc}</p>
+        <p class="w-[7rem] sm:w-[11rem] md:w-[50rem]">{desc}</p>
       </div>
     </div>
-    <label on:click={submit} class="btn btn-circle btn-ghost swap swap-rotate">
+    <label
+      on:click={submit}
+      class="btn btn-circle btn-ghost swap swap-rotate -ml-5 sm:ml-0"
+    >
       <input type="checkbox" /><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"

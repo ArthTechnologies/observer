@@ -59,7 +59,10 @@
   }
 </script>
 
-<label for="versions" on:click={get} class="btn btn-circle btn-ghost"
+<label
+  for="versions"
+  on:click={get}
+  class="btn btn-circle btn-ghost mb-5 sm:mb-0 -ml-14 sm:ml-0"
   ><svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"

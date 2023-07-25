@@ -35,11 +35,11 @@
         />
       </a>
       <div>
-        <div class="flex space-x-1">
+        <div class="sm:flex space-x-1">
           <a
             href="https://modrinth.com/plugin/{id}"
             target="_blank"
-            class="link link-hover text-xl font-bold w-[4rem] md:w-auto break-words"
+            class="flex link link-hover text-xl font-bold w-[5rem] md:w-auto break-all sm:break-works"
             >{name}</a
           >
           <div class="flex space-x-1 place-items-end">
@@ -52,7 +52,7 @@
           </div>
         </div>
 
-        <p class="w-[11rem] md:w-[50rem]">{desc}</p>
+        <p class="w-[7rem] sm:w-[11rem] md:w-[50rem]">{desc}</p>
         <div
           class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-2"
         >
