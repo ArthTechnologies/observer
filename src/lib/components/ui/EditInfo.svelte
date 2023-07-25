@@ -8,8 +8,10 @@
   let desc = "";
   let fSecret = "";
   let proxiesEnabled = false;
+  let software;
   if (browser) {
     id = localStorage.getItem("serverID");
+    software = localStorage.getItem("serverSoftware");
 
     setTimeout(() => {
       if (document.getElementById("proxiesEnabled") != null) {
@@ -105,27 +107,30 @@
     </div>
     <h3 class="text-2xl font-bold mt-5">Advanced Settings</h3>
     <div class="divider mt-5 text-xl font-bold">Proxies</div>
-    <p class="mb-4">If you have a proxy set up, you can enable it here.</p>
-    <div class=" w-52">
-      <label class="cursor-pointer label">
-        <span class="label-text text-lg">Enable Proxies</span>
-        <input
-          id="proxiesEnabled"
-          type="checkbox"
-          class="toggle toggle-primary"
-        />
+    {#if software == "Paper"}
+      <p class="mb-4">If you have a proxy set up, you can enable it here.</p>
+      <div class=" w-52">
+        <label class="cursor-pointer label">
+          <span class="label-text text-lg">Enable Proxies</span>
+          <input
+            id="proxiesEnabled"
+            type="checkbox"
+            class="toggle toggle-primary"
+          />
+        </label>
+      </div>
+      <label for="serverDescription" class="block font-bold my-2"
+        >Forwarding Secret
       </label>
-    </div>
-    <label for="serverDescription" class="block font-bold my-2"
-      >Forwarding Secret
-    </label>
-    <input
-      bind:value={fSecret}
-      type="text"
-      id="fSecret"
-      class="input input-bordered"
-      placeholder={fSecret}
-    />
+      <input
+        bind:value={fSecret}
+        type="text"
+        id="fSecret"
+        class="input input-bordered"
+        placeholder={fSecret}
+      />
+    {:else}<p class="mb-4">Your server type doesn't support proxies.</p>
+    {/if}
     <div class="flex justify-end mt-4">
       <label on:click={set} for="editInfo" class="btn btn-primary">Save</label>
     </div>
