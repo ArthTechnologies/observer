@@ -39,7 +39,7 @@ if (browser) {
   };
 }
 
-export function setInfo(id, icon, desc) {
+export function setInfo(id, icon, desc, proxiesEnabled, fSecret) {
   console.log(icon);
   if (icon == "") {
     icon = "/images/placeholder.png";
@@ -55,6 +55,8 @@ export function setInfo(id, icon, desc) {
     body: JSON.stringify({
       desc: desc,
       icon: icon,
+      proxiesEnabled: proxiesEnabled,
+      fSecret: fSecret,
     }),
   };
 

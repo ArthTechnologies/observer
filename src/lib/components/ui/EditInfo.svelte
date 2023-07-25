@@ -4,15 +4,27 @@
   import { src_url_equal } from "svelte/internal";
   let id;
   let icon = "";
+  let iconPreview = "/images/palceholder.webp";
   let desc = "";
+  let fSecret = "";
+  let proxiesEnabled = false;
   if (browser) {
     id = localStorage.getItem("serverID");
 
     setTimeout(() => {
+      if (document.getElementById("proxiesEnabled") != null) {
+        if (document.getElementById("proxiesEnabled").checked) {
+          proxiesEnabled = true;
+        } else {
+          proxiesEnabled = false;
+        }
+      }
       icon = document.getElementById("xIcon").src;
+      iconPreview = icon;
       desc = document.getElementById("xDesc")?.innerText.split(": ")[1];
       if (icon.includes("/images/placeholder.webp")) {
         icon = "";
+        iconPreview = "/images/placeholder.webp";
       }
     }, 800);
   }
@@ -20,11 +32,19 @@
     //download the file from the input with id="icon"
 
     if (browser) {
+      if (document.getElementById("proxiesEnabled") != null) {
+        if (document.getElementById("proxiesEnabled").checked) {
+          proxiesEnabled = true;
+        } else {
+          proxiesEnabled = false;
+        }
+      }
       console.log(icon == "");
       if (icon == "") {
         icon = "https://servers.arthmc.xyz/images/placeholder.webp";
       }
-      setInfo(id, icon, desc);
+      console.log("PEIWHKFL:WEJRLKEWJLR" + proxiesEnabled);
+      setInfo(id, icon, desc, proxiesEnabled, fSecret);
     }
   }
 </script>
@@ -33,16 +53,18 @@
   ><div class="btn btn-sm btn-circle absolute right-0 mr-2 mt-2">
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
+      width="17"
+      height="17"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="feather feather-edit-2"
-      ><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" /></svg
+      class="feather feather-settings"
+      ><circle cx="12" cy="12" r="3" /><path
+        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+      /></svg
     >
   </div></label
 >
@@ -53,8 +75,9 @@
     <label for="editInfo" class="btn btn-sm btn-circle fixed right-2 top-2"
       >✕</label
     >
-    <h3 class="text-lg font-bold">Edit Server Info</h3>
-    <p class="py-4">
+    <h3 class="text-2xl font-bold">Settings</h3>
+    <div class="divider mt-5 text-xl font-bold">Server Info</div>
+    <p class="mb-4">
       Players will see this information on their server list in Minecraft.
     </p>
     <label for="serverDescription" class="block font-bold mb-2"
@@ -70,14 +93,39 @@
       >Icon
       <p class="font-light">Image can't be taller than it is wide.</p></label
     >
+    <div class="flex space-x-2">
+      <input
+        bind:value={icon}
+        type="text"
+        id="serverIcon"
+        class="input input-bordered"
+        placeholder="Enter URL"
+      />
+      <img src={iconPreview} class="h-[3rem] w-[3rem] rounded-lg" />
+    </div>
+    <h3 class="text-2xl font-bold mt-5">Advanced Settings</h3>
+    <div class="divider mt-5 text-xl font-bold">Proxies</div>
+    <p class="mb-4">If you have a proxy set up, you can enable it here.</p>
+    <div class=" w-52">
+      <label class="cursor-pointer label">
+        <span class="label-text text-lg">Enable Proxies</span>
+        <input
+          id="proxiesEnabled"
+          type="checkbox"
+          class="toggle toggle-primary"
+        />
+      </label>
+    </div>
+    <label for="serverDescription" class="block font-bold my-2"
+      >Forwarding Secret
+    </label>
     <input
-      bind:value={icon}
+      bind:value={fSecret}
       type="text"
-      id="serverIcon"
+      id="fSecret"
       class="input input-bordered"
-      placeholder="Enter URL"
+      placeholder={fSecret}
     />
-
     <div class="flex justify-end mt-4">
       <label on:click={set} for="editInfo" class="btn btn-primary">Save</label>
     </div>

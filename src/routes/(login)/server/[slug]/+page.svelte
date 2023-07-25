@@ -38,6 +38,8 @@
   let email: string = "";
   let state = "false";
   let icon = "";
+  let secret = "";
+
   if (browser) {
     if (
       localStorage.getItem("serverSoftware") == "Fabric" ||
@@ -140,7 +142,18 @@
       .then((response) => response.json())
       .then((data) => {
         desc = data.desc;
-        console.log(data.iconUrl + "icon");
+        console.log(data.secret + "secret");
+        secret = data.secret;
+        console.log("OREWFLJKWENRLKENRE" + data.proxiesEnabled);
+        //add checked property to toggle
+
+        if (data.proxiesEnabled) {
+          document.getElementById("proxiesEnabled").checked = true;
+        } else {
+          document.getElementById("proxiesEnabled").checked = false;
+        }
+
+        document.getElementById("fSecret").value = data.secret;
         if (data.iconUrl != undefined) {
           console.log("icon is " + data.iconUrl);
           icon = data.iconUrl;
@@ -735,6 +748,8 @@
           >
         </div>
       </div>
+      <p class="text-xl font-bold mt-4 mb-2">Advanced</p>
+      <div class="flex space-x-2" />
     </div>
   </div>
 </div>
