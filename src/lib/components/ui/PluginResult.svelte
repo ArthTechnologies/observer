@@ -25,7 +25,7 @@
 
 <div class="bg-base-200 rounded-lg p-3">
   <div class="flex justify-between place-items-center">
-    <div class="flex space-x-3">
+    <div class="flex space-x-3 flex-shrink-0">
       <a href="https://modrinth.com/plugin/{id}" target="_blank">
         <img
           src={icon}
@@ -38,7 +38,8 @@
           <a
             href="https://modrinth.com/plugin/{id}"
             target="_blank"
-            class="link link-hover text-xl font-bold">{name}</a
+            class="link link-hover text-xl font-bold w-[5rem] md:w-auto break-words"
+            >{name}</a
           >
           <div class="flex space-x-1 place-items-end">
             <p>{$t("by")}</p>
@@ -49,7 +50,7 @@
             >
           </div>
         </div>
-        <p class="break-words w-[50rem]">{desc}</p>
+        <p class="w-[11rem] md:w-[50rem]">{desc}</p>
       </div>
     </div>
     <ChooseVersion {id} pluginName={name} />

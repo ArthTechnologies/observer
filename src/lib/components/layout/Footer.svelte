@@ -52,7 +52,7 @@
       Join Servers
     </a>
     <h3 class="text-lg font-bold mt-2 mb-1">Contact</h3>
-    <div class="flex space-x-2">
+    <div class="md:flex space-x-2 space-y-2">
       <h3
         class="text-lg font-bold bg-base-200 w-[17rem] rounded-lg px-3 py-2 flex items-center"
       >
@@ -75,7 +75,7 @@
 
       <div class="flex">
         <a
-          class="btn z-50"
+          class="btn z-50 -ml-2"
           href="https://discord.gg/gCafNVA43d"
           target="_blank"
           rel="noreferrer"

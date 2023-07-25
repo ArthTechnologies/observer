@@ -26,12 +26,12 @@
 
 <div class="bg-base-200 rounded-lg p-3">
   <div class="flex justify-between place-items-center">
-    <div class="flex space-x-3">
+    <div class="flex space-x-3 flex-shrink-0 items-center">
       <a href="https://modrinth.com/plugin/{id}" target="_blank">
         <img
           src={icon}
           alt="noicon"
-          class="w-20 h-20 bg-base-300 rounded-lg text-sm"
+          class="w-[3.5rem] h-14 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm w-[5rem] md:w-auto"
         />
       </a>
       <div>
@@ -39,7 +39,8 @@
           <a
             href="https://modrinth.com/plugin/{id}"
             target="_blank"
-            class="link link-hover text-xl font-bold">{name}</a
+            class="link link-hover text-xl font-bold w-[4rem] md:w-auto break-words"
+            >{name}</a
           >
           <div class="flex space-x-1 place-items-end">
             <p>{$t("by")}</p>
@@ -51,11 +52,13 @@
           </div>
         </div>
 
-        <p class="break-words w-[50rem] mb-1">{desc}</p>
-        <div class="flex space-x-2">
+        <p class="w-[11rem] md:w-[50rem]">{desc}</p>
+        <div
+          class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-2"
+        >
           {#if client == "optional"}
             <div
-              class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm"
+              class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[10rem] md:w-auto"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +82,7 @@
             </div>
           {:else if client == "required"}
             <div
-              class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm"
+              class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[10rem] md:w-auto"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +106,7 @@
             </div>
           {/if}
           <div
-            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm"
+            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[5rem] md:w-auto"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

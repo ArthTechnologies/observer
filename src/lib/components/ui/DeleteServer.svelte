@@ -45,7 +45,7 @@
     >
     <h3 class="text-lg font-bold">Do you want to delete this server?</h3>
     <div
-      class="bg-warning w-86 h-12 rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-2"
+      class="bg-warning w-86 h-16 rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-2"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

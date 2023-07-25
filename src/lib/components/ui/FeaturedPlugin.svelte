@@ -39,7 +39,7 @@
 
 <div class="bg-base-200 rounded-lg p-3">
   <div class="flex justify-between place-items-center">
-    <div class="flex space-x-3">
+    <div class="flex space-x-3 flex-shrink-0">
       <a href="https://github.com/{pluginId}/#readme" target="_blank">
         <img
           src={icon}
@@ -52,7 +52,7 @@
           <a
             href="https://github.com/{pluginId}/#readme"
             target="_blank"
-            class="flex link link-hover text-xl font-bold"
+            class="flex link link-hover text-xl font-bold w-[5rem] md:w-auto"
             >{name}
           </a>
           <div class="flex space-x-1 place-items-end">
@@ -61,7 +61,7 @@
               >{author}
             </a>
             {#if disclaimer != ""}
-              <div class="tooltip  tooltip-right" data-tip={disclaimer}>
+              <div class="tooltip tooltip-right" data-tip={disclaimer}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -84,7 +84,7 @@
             {/if}
           </div>
         </div>
-        <p>{desc}</p>
+        <p class="w-[11rem] md:w-[50rem]">{desc}</p>
       </div>
     </div>
     <label on:click={submit} class="btn btn-circle btn-ghost swap swap-rotate">
