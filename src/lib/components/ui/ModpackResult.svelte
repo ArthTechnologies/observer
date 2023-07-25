@@ -37,7 +37,7 @@
 
 <div class="bg-base-200 rounded-lg p-3 mt-1">
   <div class="flex justify-between place-items-center">
-    <div class="flex space-x-3">
+    <div class="flex space-x-3 flex-shrink-0">
       <a href="https://modrinth.com/plugin/{id}" target="_blank">
         <img
           src={icon}
@@ -46,11 +46,12 @@
         />
       </a>
       <div>
-        <div class="flex space-x-1">
+        <div class="sm:flex gap-1">
           <a
             href="https://modrinth.com/plugin/{id}"
             target="_blank"
-            class="link link-hover text-xl font-bold">{name}</a
+            class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+            >{name}</a
           >
           <div class="flex space-x-1 place-items-end">
             <p>{$t("by")}</p>
@@ -61,8 +62,10 @@
             >
           </div>
         </div>
-        <p class="break-words w-[50rem]">{desc}</p>
-        <div class="flex space-x-2">
+        <p class="w-[10rem] sm:w-[11rem] md:w-[50rem]">{desc}</p>
+        <div
+          class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-2"
+        >
           <div
             class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm"
           >
@@ -84,7 +87,7 @@
             {downloads}
           </div>
           <div
-            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm"
+            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[10rem] md:w-auto"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

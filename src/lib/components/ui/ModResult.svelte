@@ -26,20 +26,20 @@
 
 <div class="bg-base-200 rounded-lg p-3">
   <div class="flex justify-between place-items-center">
-    <div class="flex space-x-3 flex-shrink-0 items-center">
+    <div class="flex space-x-3 flex-shrink-0">
       <a href="https://modrinth.com/plugin/{id}" target="_blank">
         <img
           src={icon}
           alt="noicon"
-          class="w-[3.5rem] h-14 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm w-[5rem] md:w-auto"
+          class="w-14 h-14 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm md:w-auto"
         />
       </a>
       <div>
-        <div class="sm:flex space-x-1">
+        <div class="sm:flex gap-1">
           <a
             href="https://modrinth.com/plugin/{id}"
             target="_blank"
-            class="flex link link-hover text-xl font-bold w-[5rem] md:w-auto break-all sm:break-works"
+            class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
             >{name}</a
           >
           <div class="flex space-x-1 place-items-end">
@@ -52,7 +52,7 @@
           </div>
         </div>
 
-        <p class="w-[7rem] sm:w-[11rem] md:w-[50rem]">{desc}</p>
+        <p class="w-[10rem] sm:w-[11rem] md:w-[50rem]">{desc}</p>
         <div
           class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-2"
         >

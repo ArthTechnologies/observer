@@ -24,8 +24,8 @@
 </script>
 
 <div class="bg-base-200 rounded-lg p-3">
-  <div class="flex justify-between place-items-center">
-    <div class="flex space-x-3 flex-shrink-0">
+  <div class="flex justify-between place-items-center max-w-full relative">
+    <div class="flex space-x-3 flex-shrink-0 w-minus-7">
       <a href="https://modrinth.com/plugin/{id}" target="_blank">
         <img
           src={icon}
@@ -33,12 +33,12 @@
           class="w-14 h-14 bg-base-300 rounded-lg text-sm"
         />
       </a>
-      <div>
-        <div class="sm:flex space-x-1">
+      <div class="max-w-full w-minus-7">
+        <div class="sm:flex gap-1 max-w-full">
           <a
             href="https://modrinth.com/plugin/{id}"
             target="_blank"
-            class="flex link link-hover text-xl font-bold w-[5rem] md:w-auto break-all sm:break-works"
+            class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
             >{name}</a
           >
           <div class="flex space-x-1 place-items-end">
@@ -50,7 +50,9 @@
             >
           </div>
         </div>
-        <p class="w-[7rem] sm:w-[11rem] md:w-[50rem]">{desc}</p>
+        <p class="w-minus-7">
+          {desc}
+        </p>
       </div>
     </div>
 

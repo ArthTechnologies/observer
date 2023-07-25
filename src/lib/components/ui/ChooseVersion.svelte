@@ -61,7 +61,7 @@
 <label
   for="versions"
   on:click={get}
-  class="btn btn-circle btn-ghost -ml-5 sm:ml-0"
+  class="btn btn-circle btn-ghost absolute right-0"
   ><svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
