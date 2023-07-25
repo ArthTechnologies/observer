@@ -43,7 +43,7 @@
       if (icon == "") {
         icon = "https://servers.arthmc.xyz/images/placeholder.webp";
       }
-      console.log("PEIWHKFL:WEJRLKEWJLR" + proxiesEnabled);
+
       setInfo(id, icon, desc, proxiesEnabled, fSecret);
     }
   }

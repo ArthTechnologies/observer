@@ -144,7 +144,7 @@
         desc = data.desc;
         console.log(data.secret + "secret");
         secret = data.secret;
-        console.log("OREWFLJKWENRLKENRE" + data.proxiesEnabled);
+
         //add checked property to toggle
 
         if (data.proxiesEnabled) {
