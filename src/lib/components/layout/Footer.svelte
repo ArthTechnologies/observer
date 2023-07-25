@@ -7,7 +7,7 @@
   export let navType: NavType;
 </script>
 
-<footer class="footer items-center p-4 fixed bottom-0 right-0 z-50">
+<footer class=" items-center p-4 fixed bottom-0 right-0 z-50">
   <div class="items-center grid-flow-col" />
   <label
     for="support-modal"
@@ -23,7 +23,7 @@
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="feather feather-help-circle mt-[0.05rem]"
+      class="feather feather-help-circle mt-[0.05rem] mr-1.5"
       ><circle cx="12" cy="12" r="10" /><path
         d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
       /><line x1="12" y1="17" x2="12.01" y2="17" /></svg
