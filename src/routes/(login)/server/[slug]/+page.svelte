@@ -656,7 +656,7 @@
     >
       <div class="space-y-5 mb-4">
         <div
-          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-56 md:w-auto"
+          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-64 md:w-auto"
         >
           <div class="flex relative">
             <div class="p-4 space-x-4 flex">
