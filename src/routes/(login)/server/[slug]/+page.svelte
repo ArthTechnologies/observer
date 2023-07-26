@@ -37,7 +37,7 @@
   let restarting = false;
   let email: string = "";
   let state = "false";
-  let icon = "";
+  let icon = "/images/placeholder.webp";
   let secret = "";
 
   if (browser) {

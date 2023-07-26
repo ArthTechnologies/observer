@@ -10,11 +10,6 @@
   export let icon: string;
   export let id: string;
 
-  function get() {
-    getVersions(id).then((data) => {
-      console.log(data);
-    });
-  }
   let software = "";
   let version = "";
   if (browser) {

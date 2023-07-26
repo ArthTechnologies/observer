@@ -6,6 +6,7 @@
   import { t } from "$lib/scripts/i18n";
   import ChooseVersionAlt from "./ChooseVersionAlt.svelte";
   import accountEmail from "$lib/stores/accountEmail";
+  import SkeleResult from "./SkeleResult.svelte";
 
   export let name;
   export let id;
@@ -107,13 +108,16 @@
         <div class="flex space-x-3">
           <div>
             <div class="flex space-x-1">
-              <div class="flex space-x-1.5 place-items-end ">
-                <a
-                  href="https://modrinth.com/plugin/{slug}"
-                  target="_blank"
-                  class="link link-hover text-xl font-bold">{name}</a
-                >
-
+              <div class="flex space-x-1.5 place-items-end">
+                {#if name == id}
+                  <div class="h-6 w-16 animate-pulse bg-slate-600 rounded-lg" />
+                {:else}
+                  <a
+                    href="https://modrinth.com/plugin/{slug}"
+                    target="_blank"
+                    class="link link-hover text-xl font-bold">{name}</a
+                  >
+                {/if}
                 <div class="flex space-x-1">
                   <p>by</p>
                   <a
