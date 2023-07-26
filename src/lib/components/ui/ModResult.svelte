@@ -25,7 +25,7 @@
 </script>
 
 <div class="bg-base-200 rounded-lg p-3">
-  <div class="flex justify-between place-items-center">
+  <div class="flex justify-between place-items-center relative">
     <div class="flex space-x-3 flex-shrink-0">
       <a href="https://modrinth.com/plugin/{id}" target="_blank">
         <img

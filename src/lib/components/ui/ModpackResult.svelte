@@ -35,18 +35,18 @@
   }
 </script>
 
-<div class="bg-base-200 rounded-lg p-3 mt-1">
-  <div class="flex justify-between place-items-center">
-    <div class="flex space-x-3 flex-shrink-0">
+<div class="bg-base-200 rounded-lg p-3">
+  <div class="flex justify-between place-items-center max-w-full relative">
+    <div class="flex space-x-3 flex-shrink-0 w-minus-7">
       <a href="https://modrinth.com/plugin/{id}" target="_blank">
         <img
           src={icon}
           alt="noicon"
-          class="w-14 h-14 bg-base-300 rounded-lg text-sm"
+          class="w-14 h-14 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm"
         />
       </a>
-      <div>
-        <div class="sm:flex gap-1">
+      <div class="max-w-full w-minus-7">
+        <div class="sm:flex gap-1 max-w-full">
           <a
             href="https://modrinth.com/plugin/{id}"
             target="_blank"
@@ -62,12 +62,14 @@
             >
           </div>
         </div>
-        <p class="w-[10rem] sm:w-[11rem] md:w-[50rem]">{desc}</p>
+        <p class="w-minus-7">
+          {desc}
+        </p>
         <div
           class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-2"
         >
           <div
-            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm"
+            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[5rem] md:w-auto"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

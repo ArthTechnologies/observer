@@ -56,7 +56,10 @@
   }
 </script>
 
-<label for="versions" on:click={get} class="btn btn-circle btn-ghost"
+<label
+  for="versions"
+  on:click={get}
+  class="btn btn-circle btn-ghost absolute right-0"
   ><svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
