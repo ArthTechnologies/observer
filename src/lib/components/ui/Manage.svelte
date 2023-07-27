@@ -5,7 +5,7 @@
   import { t } from "$lib/scripts/i18n";
   import ManagePlugin from "./ManagePlugin.svelte";
   let promise;
-  let res = { names: [], ids: [], platforms: [] };
+  let res = { mods: [] };
   let query = "";
   if (browser) {
     //run search upon the "refresh" event
@@ -24,6 +24,8 @@
       setTimeout(function () {
         promise = getMods(id, "plugins").then((response) => {
           res = response;
+
+          console.log(res);
         });
       }, 1);
     }
@@ -31,7 +33,7 @@
   search();
 </script>
 
-<label for="manage" on:click={search} class="btn md:btn-block btn-primary w-24 "
+<label for="manage" on:click={search} class="btn md:btn-block btn-primary w-24"
   >{$t("button.manageplugins")}</label
 >
 
@@ -57,11 +59,11 @@
           />
         </div>
       {:then}
-        {#each res.names as name, i}
+        {#each res.mods as mod}
           <ManagePlugin
-            {name}
-            id={res.ids[i]}
-            platform={res.platforms[i]}
+            name={mod.name}
+            id={mod.id}
+            platform={mod.platform}
             modtype="plugin"
           />
         {/each}
