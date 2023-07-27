@@ -18,8 +18,6 @@
   import EditInfo from "$lib/components/ui/EditInfo.svelte";
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
-  import Updates from "$lib/components/buttons/Updates.svelte";
-  import World from "$lib/components/ui/World.svelte";
 
   let servers = [
     { name: "hub", ip: "arthmc.xyz:10000", isMain: true },
@@ -43,7 +41,9 @@
   let email: string = "";
   let state = "false";
   let icon = "";
+  let hostName;
   if (browser) {
+    hostName = localStorage.getItem("address");
     if (
       localStorage.getItem("serverSoftware") == "Fabric" ||
       localStorage.getItem("serverSoftware") == "Quilt" ||
@@ -883,11 +883,31 @@
                 {fSecret}
               </div>
             </div></code
-          >If you have a non-Arth Hosting server, enter this in
+          >If you have a non-{hostName} server, enter this in
           <code class="bg-gray-500 rounded p-0.5 mr-1"
             >config/paper-global.yml</code
           >
           and disable online mode.</span
+        >
+      </div>
+      <p class="text-xl font-bold mt-4 mb-2">Advanced</p>
+      <div class="flex space-x-2">
+        <a class="btn mt-2" href="/server/{parseInt(id) + 10000}/files"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-folder mr-1.5"
+            ><path
+              d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
+            /></svg
+          >Explore Files</a
         >
       </div>
     </div>
