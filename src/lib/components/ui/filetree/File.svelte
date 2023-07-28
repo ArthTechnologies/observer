@@ -52,8 +52,11 @@
   }
 </script>
 
-<li class="text-xs md:text-base">
-  <a on:click={getText} class="btn-sm pointer-events-{clickable}">
+<li class="">
+  <a
+    on:click={getText}
+    class="btn-sm pointer-events-{clickable} -space-x-2 md:space-x-0"
+  >
     {#if extension == "png" || extension == "jpg" || extension == "jpeg"}
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +64,7 @@
         viewBox="0 0 24 24"
         stroke-width="1.5"
         stroke="currentColor"
-        class="w-4 h-4"
+        class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]"
         ><path
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -75,7 +78,7 @@
         viewBox="0 0 24 24"
         stroke-width="1.5"
         stroke="currentColor"
-        class="w-4 h-4"
+        class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]"
         ><path
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -89,7 +92,7 @@
         viewBox="0 0 24 24"
         stroke-width="1.5"
         stroke="currentColor"
-        class="w-4 h-4"
+        class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]"
         ><path
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -97,6 +100,6 @@
         /></svg
       >
     {/if}
-    {filename}
+    <p class="text-xs md:text-sm">{filename}</p>
   </a>
 </li>

@@ -34,6 +34,7 @@
   }
 
   function save() {
+    console.log(document.getElementById("textEditor").value);
     fetch(
       apiurl +
         "server/" +
@@ -81,8 +82,11 @@
   >
   Back</a
 >
-<div class=" h-[75vh] flex justify-between items-start space-x-5">
-  <div class="bg-base-200 rounded-xl p-2 menu menu-xs w-[20rem]" id="filetree">
+<div class=" h-[75vh] flex justify-between items-start space-x-1 md:space-x-5">
+  <div
+    class="bg-base-200 rounded-xl md:p-2 menu menu-xs w-[15rem] md:w-[20rem]"
+    id="filetree"
+  >
     {#each files as file}
       {#if typeof file == "string"}
         <File filename={file.split(":")[0]} url={file.split(":")[1]} />
@@ -92,7 +96,7 @@
     {/each}
   </div>
   <div
-    class="bg-base-200 rounded-xl p-3 w-[20rem] h-[25rem] md:w-[25rem] md:h-[30rem] lg:w-[30rem] lg:h-[35rem] xl:w-[50rem] xl:h-[45rem]"
+    class="bg-base-200 rounded-xl p-3 w-[20rem] h-[30rem] md:w-[25rem] lg:w-[30rem] lg:h-[35rem] xl:w-[50rem] xl:h-[45rem]"
   >
     <div class="flex space-x-2 mb-2">
       <div id="filepath" class="hidden" />

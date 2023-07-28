@@ -637,7 +637,7 @@
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div
-        class="bg-base-300 w-[19rem] h-96 lg:h-[30rem] rounded-xl shadow-xl overflow-auto lg:w-[30rem] xl:w-[50rem]"
+        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem]"
       >
         <p class="p-5 sm:text-xs xl:text-base font-mono" id="terminal" />
       </div>
@@ -646,7 +646,7 @@
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 w-64 lg:w-[30rem] xl:w-[50rem]"
+        class="input input-secondary bg-base-200 w-[20rem] lg:w-[30rem] xl:w-[50rem]"
       />
       <div class="divider md:hidden pt-5 pb-4" />
     </div>
@@ -656,7 +656,7 @@
     >
       <div class="space-y-5 mb-4">
         <div
-          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-64 md:w-auto"
+          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
         >
           <div class="flex relative">
             <div class="p-4 space-x-4 flex">
@@ -664,7 +664,7 @@
 
               <div class="">
                 <div class="stat-title">{$t("server.ip")}</div>
-                <div class="font-bold text-sm sm:text-lg md:text-3xl">
+                <div class="font-bold sm:text-lg md:text-3xl">
                   {address}:{port}
                 </div>
                 <div id="xDesc" class="text-xs font-light flex justify-between">
@@ -676,7 +676,7 @@
               href="https://arthmc.xyz/docs/how-to-join-servers"
               target="_blank"
               rel="noreferrer"
-              class="btn btn-ghost btn-xs absolute bottom-2 right-0.5 md:top-3 md:right-11 -mb-2.5"
+              class="btn btn-ghost btn-sm md:btn-xs absolute bottom-2 right-2.5 md:top-3 md:right-11 md:-mb-2.5"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -700,13 +700,13 @@
         </div>
       </div>
 
-      <div class="flex place-content-center w-[10.6rem] space-x-2">
+      <div class="w-[10.6rem] flex place-content-center space-x-2">
         {#if modded}<AddMod /><ManageMods />{:else if !vanilla}
           <Add /><Manage />
         {/if}
       </div>
       <div
-        class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl w-64 md:w-auto"
+        class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl w-[20rem] md:w-auto"
       >
         <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
         <div class="space-x-1.5 space-y-1.5">
