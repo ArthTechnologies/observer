@@ -18,8 +18,6 @@
   import EditInfo from "$lib/components/ui/EditInfo.svelte";
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
-  import Updates from "$lib/components/buttons/Updates.svelte";
-  import World from "$lib/components/ui/World.svelte";
 
   let servers = [
     { name: "hub", ip: "arthmc.xyz:10000", isMain: true },
@@ -43,7 +41,9 @@
   let email: string = "";
   let state = "false";
   let icon = "";
+  let hostName;
   if (browser) {
+    hostName = localStorage.getItem("address");
     if (
       localStorage.getItem("serverSoftware") == "Fabric" ||
       localStorage.getItem("serverSoftware") == "Quilt" ||
@@ -711,7 +711,7 @@
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div
-        class="bg-base-300 w-[19rem] h-96 lg:h-[30rem] rounded-xl shadow-xl overflow-auto lg:w-[30rem] xl:w-[50rem]"
+        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem]"
       >
         <p class="p-5 sm:text-xs xl:text-base font-mono" id="terminal" />
       </div>
@@ -720,7 +720,7 @@
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 w-64 lg:w-[30rem] xl:w-[50rem]"
+        class="input input-secondary bg-base-200 w-[20rem] lg:w-[30rem] xl:w-[50rem]"
       />
       <div class="divider md:hidden pt-5 pb-4" />
     </div>
@@ -730,7 +730,7 @@
     >
       <div class="space-y-5 mb-4">
         <div
-          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-56 md:w-auto"
+          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
         >
           <div class="flex relative">
             <div class="p-4 space-x-4 flex">
@@ -750,7 +750,7 @@
               href="https://arthmc.xyz/docs/how-to-join-servers"
               target="_blank"
               rel="noreferrer"
-              class="btn btn-ghost btn-xs absolute bottom-2 right-0.5 md:top-3 md:right-11 -mb-2.5"
+              class="btn btn-ghost btn-sm md:btn-xs absolute bottom-2 right-2.5 md:top-3 md:right-11 md:-mb-2.5"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -844,7 +844,7 @@
           <input
             id="lobbyName"
             class="input input-sm w-1/2 md:w-auto input-bordered"
-            placeholder="Server name (currently '{lobbyName}')"
+            placeholder="Currently '{lobbyName}'"
             type="text"
           />
           <button class="btn btn-sm" on:click={setLobbyName}> Submit </button>
@@ -883,11 +883,31 @@
                 {fSecret}
               </div>
             </div></code
-          >If you have a non-Arth Hosting server, enter this in
+          >If you have a non-{hostName} server, enter this in
           <code class="bg-gray-500 rounded p-0.5 mr-1"
             >config/paper-global.yml</code
           >
           and disable online mode.</span
+        >
+      </div>
+      <p class="text-xl font-bold mt-4 mb-2">Advanced</p>
+      <div class="flex space-x-2">
+        <a class="btn mt-2" href="/server/{parseInt(id) + 10000}/files"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-folder mr-1.5"
+            ><path
+              d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
+            /></svg
+          >Explore Files</a
         >
       </div>
     </div>
