@@ -124,7 +124,7 @@
 </script>
 
 <div class="m-3 w-[21rem]">
-  <div class="card w-50 bg-base-100 shadow-xl image-full">
+  <div class="card w-50 bg-neutral shadow-xl image-full">
     <div class="card-body">
       <h2 class="card-title">{name}</h2>
       <p>
