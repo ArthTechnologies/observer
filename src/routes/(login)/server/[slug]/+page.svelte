@@ -21,6 +21,7 @@
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
   import Updates from "$lib/components/buttons/Updates.svelte";
   import World from "$lib/components/ui/World.svelte";
+  import FullscreenTerminal from "$lib/components/buttons/FullscreenTerminal.svelte";
 
   let modded = false;
   let vanilla = false;
@@ -641,7 +642,10 @@
       <div
         class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem]"
       >
-        <p class="p-5 sm:text-xs xl:text-base font-mono" id="terminal" />
+        <div class="p-5 sm:text-xs xl:text-base font-mono relative">
+          <FullscreenTerminal />
+          <p id="terminal" />
+        </div>
       </div>
       <input
         on:keypress={writeCmd}
