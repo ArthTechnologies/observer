@@ -5,7 +5,7 @@
 
 <div class="flex flex-col justify-between">
   <Navbar navType="default" />
-  <div class="m-4 sm:m-6 md:m-8">
+  <div class="m-4 sm:m-6 md:m-8 pb-12 lg:mt-16">
     <slot />
   </div>
   <Footer navType="default" />

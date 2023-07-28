@@ -100,6 +100,6 @@
         /></svg
       >
     {/if}
-    <p class="text-xs md:text-sm">{filename}</p>
+    <p class="text-xs md:text-sm truncate w-[8rem] md:w-[14rem]">{filename}</p>
   </a>
 </li>
