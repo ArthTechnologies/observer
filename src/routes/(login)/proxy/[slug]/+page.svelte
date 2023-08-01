@@ -18,6 +18,7 @@
   import EditInfo from "$lib/components/ui/EditInfo.svelte";
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
+  import FullscreenTerminal from "$lib/components/buttons/FullscreenTerminal.svelte";
 
   let servers = [
     { name: "hub", ip: "arthmc.xyz:10000", isMain: true },
@@ -713,7 +714,10 @@
       <div
         class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem]"
       >
-        <p class="p-5 sm:text-xs xl:text-base font-mono" id="terminal" />
+        <div class="p-5 sm:text-xs xl:text-base font-mono relative">
+          <FullscreenTerminal />
+          <p id="terminal" />
+        </div>
       </div>
       <input
         on:keypress={writeCmd}

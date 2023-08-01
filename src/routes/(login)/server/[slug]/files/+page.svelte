@@ -6,8 +6,12 @@
 
   let files = ["server.properties", ["folder1", ["file1.txt", "file2.txt"]]];
   let id;
+  let backurl = "server";
 
   if (browser) {
+    if (window.location.href.includes("proxy")) {
+      backurl = "proxy";
+    }
     id = localStorage.getItem("serverID");
     fetch(apiurl + "server/" + id + "/files", {
       method: "GET",
@@ -40,15 +44,17 @@
         "server/" +
         id +
         "/file/" +
-        document.getElementById("filepath").value +
-        "?text=" +
-        encodeURI(document.getElementById("textEditor").value),
+        document.getElementById("filepath").value,
       {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           token: localStorage.getItem("token"),
           email: localStorage.getItem("accountEmail"),
         },
+        body: JSON.stringify({
+          content: document.getElementById("textEditor").value,
+        }),
       }
     )
       .then((response) => response.json())
@@ -64,7 +70,7 @@
   }
 </script>
 
-<a href="/server/{parseInt(id) + 10000}" class="btn btn-info mb-5"
+<a href="/{backurl}/{parseInt(id) + 10000}" class="btn btn-info mb-5"
   ><svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
