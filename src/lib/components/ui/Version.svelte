@@ -2,6 +2,7 @@
   import { sendVersion } from "$lib/scripts/req";
 
   import { browser } from "$app/environment";
+  import { AlertCircle, Check, Clock, Plus } from "lucide-svelte";
 
   export let name: string;
   export let date: string;
@@ -60,36 +61,9 @@
         on:click={submit}
         class="btn btn-circle btn-ghost swap swap-rotate"
       >
-        <input type="checkbox" /><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-plus swap-off"
-          ><line x1="12" y1="5" x2="12" y2="19" /><line
-            x1="5"
-            y1="12"
-            x2="19"
-            y2="12"
-          /></svg
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-check swap-on"
-          ><polyline points="20 6 9 17 4 12" /></svg
-        ></label
+        <input type="checkbox" /><Plus class="swap-off" /><Check
+          class="swap-on"
+        /></label
       >
     </div>
   </div>
@@ -97,21 +71,7 @@
     <div
       class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="feather feather-clock mr-1.5"
-        ><circle cx="12" cy="12" r="10" /><polyline
-          points="12 6 12 12 16 14"
-        /></svg
-      >
+      <Clock size="16" class="mr-1.5" />
       {time}
     </div>
 
@@ -119,24 +79,7 @@
       <div
         class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-alert-circle mr-1.5"
-          ><circle cx="12" cy="12" r="10" /><line
-            x1="12"
-            y1="8"
-            x2="12"
-            y2="12"
-          /><line x1="12" y1="16" x2="12.01" y2="16" /></svg
-        >
+        <AlertCircle class="mr-1.5" size="16" />
         Requires {dependency.name}
       </div>
     {/each}

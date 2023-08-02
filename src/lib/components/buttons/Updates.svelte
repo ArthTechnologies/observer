@@ -1,5 +1,6 @@
 <script lang="ts">
   import { browser } from "$app/environment";
+  import { ArrowDownCircle } from "lucide-svelte";
   import { apiurl } from "../../scripts/req";
   import { updateServer } from "../../scripts/req";
   import AccountButton from "./AccountButton.svelte";
@@ -75,21 +76,7 @@
 
 {#if latestUpdate != serverVersion}
   <label for="updates" class="btn btn-neutral"
-    ><svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="feather feather-arrow-down-circle mr-2.5"
-      ><circle cx="12" cy="12" r="10" /><polyline
-        points="8 12 12 16 16 12"
-      /><line x1="12" y1="8" x2="12" y2="16" /></svg
-    >
+    ><ArrowDownCircle class="mr-2.5" />
     Update</label
   >
 {/if}

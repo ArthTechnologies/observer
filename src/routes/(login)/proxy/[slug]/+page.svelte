@@ -19,6 +19,18 @@
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
   import FullscreenTerminal from "$lib/components/buttons/FullscreenTerminal.svelte";
+  import {
+    ArrowLeft,
+    FolderClosed,
+    HelpCircle,
+    Info,
+    Loader,
+    PlayCircle,
+    Repeat,
+    StopCircle,
+    Trash2,
+  } from "lucide-svelte";
+  import Folder from "$lib/components/ui/filetree/Folder.svelte";
 
   let servers = [
     { name: "hub", ip: "arthmc.xyz:10000", isMain: true },
@@ -375,21 +387,7 @@
   <div class=" flex justify-between">
     <div class="space-x-2 space-y-2 mb-2 flex flex-col items-center md:block">
       <a href="/" class="btn btn-info"
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-arrow-left mr-1.5"
-          ><line x1="19" y1="12" x2="5" y2="12" /><polyline
-            points="12 19 5 12 12 5"
-          /></svg
-        >
+        ><ArrowLeft class="mr-1.5" />
         {$t("button.back")}</a
       >
       <DeleteServer />
@@ -398,306 +396,49 @@
     <div class="space-x-2 space-y-2 flex flex-col items-center md:block">
       {#if state == "true" && !restarting}
         <button on:click={start} class="btn btn-success"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-repeat mr-1.5"
-            ><polyline points="17 1 21 5 17 9" /><path
-              d="M3 11V9a4 4 0 0 1 4-4h14"
-            /><polyline points="7 23 3 19 7 15" /><path
-              d="M21 13v2a4 4 0 0 1-4 4H3"
-            /></svg
-          >{$t("button.restart")}</button
+          ><Repeat class="mr-1.5" />{$t("button.restart")}</button
         >
         <button on:click={stop} class="btn btn-error"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-stop-circle mr-1.5"
-            ><circle cx="12" cy="12" r="10" /><rect
-              x="9"
-              y="9"
-              width="6"
-              height="6"
-            /></svg
-          >{$t("button.stop")}</button
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if restarting}
         <button class="btn btn-success"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-loader animate-spin mr-1.5"
-            ><line x1="12" y1="2" x2="12" y2="6" /><line
-              x1="12"
-              y1="18"
-              x2="12"
-              y2="22"
-            /><line x1="4.93" y1="4.93" x2="7.76" y2="7.76" /><line
-              x1="16.24"
-              y1="16.24"
-              x2="19.07"
-              y2="19.07"
-            /><line x1="2" y1="12" x2="6" y2="12" /><line
-              x1="18"
-              y1="12"
-              x2="22"
-              y2="12"
-            /><line x1="4.93" y1="19.07" x2="7.76" y2="16.24" /><line
-              x1="16.24"
-              y1="7.76"
-              x2="19.07"
-              y2="4.93"
-            /></svg
-          >
+          ><Loader class="animate-spin mr-1.5" />
           {$t("button.restarting")}</button
         >
 
         <button class="btn btn-disabled"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-stop-circle mr-1.5"
-            ><circle cx="12" cy="12" r="10" /><rect
-              x="9"
-              y="9"
-              width="6"
-              height="6"
-            /></svg
-          >{$t("button.stop")}</button
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "false"}
         <button on:click={start} class="btn btn-success"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-play-circle mr-1.5"
-            ><circle cx="12" cy="12" r="10" /><polygon
-              points="10 8 16 12 10 16 10 8"
-            /></svg
-          >{$t("button.start")}</button
+          ><PlayCircle class="mr-1.5" />{$t("button.start")}</button
         >
         <a href="/" class="btn btn-disabled"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-stop-circle mr-1.5"
-            ><circle cx="12" cy="12" r="10" /><rect
-              x="9"
-              y="9"
-              width="6"
-              height="6"
-            /></svg
-          >{$t("button.stop")}</a
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</a
         >
       {:else if state == "starting"}
         <button class="btn btn-success"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-loader animate-spin mr-1.5"
-            ><line x1="12" y1="2" x2="12" y2="6" /><line
-              x1="12"
-              y1="18"
-              x2="12"
-              y2="22"
-            /><line x1="4.93" y1="4.93" x2="7.76" y2="7.76" /><line
-              x1="16.24"
-              y1="16.24"
-              x2="19.07"
-              y2="19.07"
-            /><line x1="2" y1="12" x2="6" y2="12" /><line
-              x1="18"
-              y1="12"
-              x2="22"
-              y2="12"
-            /><line x1="4.93" y1="19.07" x2="7.76" y2="16.24" /><line
-              x1="16.24"
-              y1="7.76"
-              x2="19.07"
-              y2="4.93"
-            /></svg
-          >
+          ><Loader class="mr-1.5 animate-spin" />
           {$t("button.starting")}</button
         >
         <button on:click={stop} class="btn btn-error"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-stop-circle mr-1.5"
-            ><circle cx="12" cy="12" r="10" /><rect
-              x="9"
-              y="9"
-              width="6"
-              height="6"
-            /></svg
-          >{$t("button.stop")}</button
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "installing"}
         <button class="btn btn-accent"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-loader animate-spin mr-1.5"
-            ><line x1="12" y1="2" x2="12" y2="6" /><line
-              x1="12"
-              y1="18"
-              x2="12"
-              y2="22"
-            /><line x1="4.93" y1="4.93" x2="7.76" y2="7.76" /><line
-              x1="16.24"
-              y1="16.24"
-              x2="19.07"
-              y2="19.07"
-            /><line x1="2" y1="12" x2="6" y2="12" /><line
-              x1="18"
-              y1="12"
-              x2="22"
-              y2="12"
-            /><line x1="4.93" y1="19.07" x2="7.76" y2="16.24" /><line
-              x1="16.24"
-              y1="7.76"
-              x2="19.07"
-              y2="4.93"
-            /></svg
-          >
+          ><Loader class="mr-1.5 animate-spin" />
           Installing</button
         >
         <button on:click={stop} class="btn btn-error"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-stop-circle mr-1.5"
-            ><circle cx="12" cy="12" r="10" /><rect
-              x="9"
-              y="9"
-              width="6"
-              height="6"
-            /></svg
-          >Stop</button
+          ><StopCircle class="mr-1.5" />Stop</button
         >
       {:else if state == "stopping"}
         <button class="btn btn-disabled"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-play-circle mr-1.5"
-            ><circle cx="12" cy="12" r="10" /><polygon
-              points="10 8 16 12 10 16 10 8"
-            /></svg
-          >{$t("button.start")}</button
+          ><PlayCircle class="mr-1.5" />{$t("button.start")}</button
         >
         <button class="btn btn-error"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-loader animate-spin mr-1.5"
-            ><line x1="12" y1="2" x2="12" y2="6" /><line
-              x1="12"
-              y1="18"
-              x2="12"
-              y2="22"
-            /><line x1="4.93" y1="4.93" x2="7.76" y2="7.76" /><line
-              x1="16.24"
-              y1="16.24"
-              x2="19.07"
-              y2="19.07"
-            /><line x1="2" y1="12" x2="6" y2="12" /><line
-              x1="18"
-              y1="12"
-              x2="22"
-              y2="12"
-            /><line x1="4.93" y1="19.07" x2="7.76" y2="16.24" /><line
-              x1="16.24"
-              y1="7.76"
-              x2="19.07"
-              y2="4.93"
-            /></svg
-          >
+          ><Loader class="mr-1.5 animate-spin" />
           Stopping</button
         >
       {/if}
@@ -756,21 +497,7 @@
               rel="noreferrer"
               class="btn btn-ghost btn-sm md:btn-xs absolute bottom-2 right-2.5 md:top-3 md:right-11 md:-mb-2.5"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class=" feather feather-help-circle md:mr-1"
-                ><circle cx="12" cy="12" r="10" /><path
-                  d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
-                /><line x1="12" y1="17" x2="12.01" y2="17" /></svg
-              >
+              <HelpCircle size="18" class="md:mr-1" />
               <p class="hidden md:block">How to join</p></a
             >
             <EditInfo />
@@ -799,26 +526,7 @@
                 class="p-1 btn btn-sm btn-error rounded-lg px-2 flex justify-between items-center"
                 on:click={() => deleteServer(server.name)}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="black"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="feather feather-trash-2"
-                  ><polyline points="3 6 5 6 21 6" /><path
-                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                  /><line x1="10" y1="11" x2="10" y2="17" /><line
-                    x1="14"
-                    y1="11"
-                    x2="14"
-                    y2="17"
-                  /></svg
-                >
+                <Trash2 size="18" />
               </div>
             </div>
           {/each}
@@ -857,24 +565,7 @@
       <div
         class="bg-primary w-[20rem] md:w-[35rem] rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-4"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-info"
-          ><circle cx="12" cy="12" r="10" /><line
-            x1="12"
-            y1="16"
-            x2="12"
-            y2="12"
-          /><line x1="12" y1="8" x2="12.01" y2="8" /></svg
-        >
+        <Info />
         <span class="text-sm w-[15rem] md:w-[30rem] flex flex-wrap"
           >Your forwarding secret is <code
             class="bg-gray-500 rounded p-0.5 flex ml-1"
@@ -897,21 +588,7 @@
       <p class="text-xl font-bold mt-4 mb-2">Advanced</p>
       <div class="flex space-x-2">
         <a class="btn mt-2" href="/server/{parseInt(id) + 10000}/files"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-folder mr-1.5"
-            ><path
-              d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
-            /></svg
-          >Explore Files</a
+          ><FolderClosed class="mr-1.5" />Explore Files</a
         >
       </div>
     </div>

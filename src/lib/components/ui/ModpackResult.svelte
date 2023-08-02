@@ -4,6 +4,7 @@
   import ChooseVersionModpack from "$lib/components/ui/ChooseVersionModpack.svelte";
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
+  import { AlertCircle, Download } from "lucide-svelte";
   export let name: string;
   export let author: string;
   export let desc: string;
@@ -71,44 +72,13 @@
           <div
             class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[5rem] md:w-auto"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="feather feather-download mr-1.5"
-              ><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline
-                points="7 10 12 15 17 10"
-              /><line x1="12" y1="15" x2="12" y2="3" /></svg
-            >
+            <Download class="mr-1.5" size="16" />
             {downloads}
           </div>
           <div
             class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[10rem] md:w-auto"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="feather feather-alert-circle mr-1.5"
-              ><circle cx="12" cy="12" r="10" /><line
-                x1="12"
-                y1="8"
-                x2="12"
-                y2="12"
-              /><line x1="12" y1="16" x2="12.01" y2="16" /></svg
-            >
+            <AlertCircle class="mr-1.5" size="16" />
             {client}
           </div>
         </div>

@@ -3,6 +3,7 @@
   import File from "$lib/components/ui/filetree/File.svelte";
   import Folder from "$lib/components/ui/filetree/Folder.svelte";
   import { apiurl } from "$lib/scripts/req";
+  import { ArrowLeft } from "lucide-svelte";
 
   let files = ["server.properties", ["folder1", ["file1.txt", "file2.txt"]]];
   let id;
@@ -10,6 +11,9 @@
 
   if (browser) {
     if (window.location.href.includes("proxy")) {
+      backurl = "proxy";
+    }
+    if (localStorage.getItem("serverSoftware") == "Velocity") {
       backurl = "proxy";
     }
     id = localStorage.getItem("serverID");
@@ -71,21 +75,7 @@
 </script>
 
 <a href="/{backurl}/{parseInt(id) + 10000}" class="btn btn-info mb-5"
-  ><svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    class="feather feather-arrow-left mr-1.5"
-    ><line x1="19" y1="12" x2="5" y2="12" /><polyline
-      points="12 19 5 12 12 5"
-    /></svg
-  >
+  ><ArrowLeft class="mr-1.5" />
   Back</a
 >
 <div class=" h-[75vh] flex justify-between items-start space-x-1 md:space-x-5">

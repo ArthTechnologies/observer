@@ -3,6 +3,7 @@
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
+  import { User } from "lucide-svelte";
   export let loginStatus: boolean;
 
   function signOut() {
@@ -31,30 +32,14 @@
 </script>
 
 {#if loginStatus === true}
-  <div class="flex-none gap-2 " id="navbtn">
+  <div class="flex-none gap-2" id="navbtn">
     <div class="dropdown dropdown-end">
       <label
         tabindex="0"
         for="profileDropdown"
         class="btn btn-ghost btn-circle"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-user"
-          ><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle
-            cx="12"
-            cy="7"
-            r="4"
-          /></svg
-        >
+        <User />
       </label>
       <ul
         id="profileDropdown"

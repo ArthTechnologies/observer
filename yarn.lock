@@ -771,6 +771,11 @@ lilconfig@^2.0.5, lilconfig@^2.0.6:
   resolved "https://registry.npmmirror.com/lilconfig/-/lilconfig-2.0.6.tgz"
   integrity sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==
 
+lucide-svelte@^0.263.0:
+  version "0.263.0"
+  resolved "https://registry.npmjs.org/lucide-svelte/-/lucide-svelte-0.263.0.tgz"
+  integrity sha512-1cB+DPsX7PbHJ+aDbc2nKKRdv3DYHK81mRVUw7kNb7bVw2Dh9QsNVON918WjnSlmXEt9lUnJ7TkNymreZwnLgg==
+
 magic-string@^0.25.7:
   version "0.25.9"
   resolved "https://registry.npmmirror.com/magic-string/-/magic-string-0.25.9.tgz"
@@ -1201,7 +1206,7 @@ svelte-preprocess@^4.0.0, svelte-preprocess@^4.10.7:
     sorcery "^0.10.0"
     strip-indent "^3.0.0"
 
-svelte@^3.23.0, svelte@^3.24.0, svelte@^3.44.0, svelte@>=3.19.0:
+svelte@^3.23.0, svelte@^3.24.0, svelte@^3.44.0, "svelte@>=3 <5", svelte@>=3.19.0:
   version "3.53.1"
   resolved "https://registry.npmmirror.com/svelte/-/svelte-3.53.1.tgz"
   integrity sha512-Q4/hHkktZogGhN5iqxqSi9sjEVoe/NbIxX4hXEHoasTxj+TxEQVAq66LnDMdAZxjmsodkoI5F3slqsS68U7FNw==

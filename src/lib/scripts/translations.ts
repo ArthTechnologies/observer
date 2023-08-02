@@ -94,7 +94,7 @@ export default {
     "button.stop2": "  Stop",
     "button.starting2": "  Starting",
     "button.starting3": " Starting",
-    "button.restarting": "  Restarting",
+    "button.restarting": "Restarting",
     "button.restarting3": " Restarting",
     "button.restart2": "  Restart",
     "button.start2": "  Start",

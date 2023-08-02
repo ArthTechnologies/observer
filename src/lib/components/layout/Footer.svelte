@@ -2,6 +2,7 @@
   import { browser } from "$app/environment";
 
   import { t, locale, locales } from "$lib/scripts/i18n";
+  import { Mail } from "lucide-svelte";
   type NavType = "default" | "welcome";
 
   export let navType: NavType;
@@ -56,21 +57,7 @@
       <h3
         class="text-lg font-bold bg-base-200 w-[17rem] rounded-lg px-3 py-2 flex items-center"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-mail mr-2.5"
-          ><path
-            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-          /><polyline points="22,6 12,13 2,6" /></svg
-        > support@arthmc.xyz
+        <Mail class="mr-2.5" /> support@arthmc.xyz
       </h3>
 
       <div class="flex">
