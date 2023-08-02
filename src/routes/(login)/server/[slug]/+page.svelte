@@ -322,7 +322,7 @@
           ><Repeat class="mr-1.5" />{$t("button.restart")}</button
         >
         <button on:click={stop} class="btn btn-error"
-          ><StopCircle class="mr-1.5" />$t("button.stop")}</button
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if restarting}
         <button class="btn btn-success"
@@ -331,7 +331,7 @@
         >
 
         <button class="btn btn-disabled"
-          ><StopCircle class="mr-1.5" />$t("button.stop")}</button
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "false"}
         <button on:click={start} class="btn btn-success"
@@ -346,7 +346,7 @@
           {$t("button.starting")}</button
         >
         <button on:click={stop} class="btn btn-error"
-          ><StopCircle class="mr-1.5" />$t("button.stop")}</button
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "installing"}
         <button class="btn btn-accent"
