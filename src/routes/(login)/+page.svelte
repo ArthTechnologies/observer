@@ -7,7 +7,7 @@
   import { goto } from "$app/navigation";
 
   // NOTE: the element that is using one of the theme attributes must be in the DOM on mount
-  let servers = [];
+  let servers: any[] = [];
   //Example
 
   var id = 0;
@@ -28,20 +28,9 @@
       if (response.amount != "undefined") {
         id = response.amount;
       }
-      DOM(response);
+      servers = response;
     }
   });
-  function DOM(res2) {
-    for (var i = 0; i < id; i++) {
-      servers.push({
-        name: res2.names[i],
-        software: res2.softwares[i],
-        version: res2.versions[i],
-        id: res2.ids[i],
-        state: res2.states[i],
-      });
-    }
-  }
 
   let noserver = false;
 
@@ -50,7 +39,7 @@
   }
 </script>
 
-<div class="flex flex-col items-center space-y-20 ">
+<div class="flex flex-col items-center space-y-20">
   <div>
     <div class="text-center px-5 text-3xl font-semibold divider">
       {#if noserver}

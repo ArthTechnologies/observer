@@ -36,10 +36,6 @@
       >
     </div>
 
-    <a href="/"
-      ><button class="btn btn-error" on:click={del}
-        >{$t("button.delete")}</button
-      ></a
-    >
+    <button class="btn btn-error" on:click={del}>{$t("button.delete")}</button>
   </div>
 </div>

@@ -519,6 +519,7 @@ export function deleteServer(id: number) {
       if (input.indexOf("400") > -1) {
         return "error";
       } else {
+        goto("/");
         //return input as json
         return JSON.parse(input);
       }

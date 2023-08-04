@@ -51,6 +51,12 @@
   let secret = "";
 
   if (browser) {
+    name = localStorage.getItem("serverName");
+    if (localStorage.getItem("serverCardRedrict") != "true") {
+      id = parseInt(localStorage.getItem("serverID"));
+    } else {
+      id = parseInt(window.location.href.split("/")[4]) - 10000;
+    }
     if (
       localStorage.getItem("serverSoftware") == "Fabric" ||
       localStorage.getItem("serverSoftware") == "Quilt" ||
@@ -129,14 +135,6 @@
   }
 
   onMount(() => {
-    name = localStorage.getItem("serverName");
-    if (localStorage.getItem("serverCardRedrict") != "true") {
-      id = parseInt(localStorage.getItem("serverID"));
-    } else {
-      if (browser) {
-        id = parseInt(window.location.href.split("/")[4]) - 10000;
-      }
-    }
     localStorage.setItem("serverCardRedrict", "false");
     port += parseInt(id);
     console.log(apiurl + "server/" + id + "/getInfo");

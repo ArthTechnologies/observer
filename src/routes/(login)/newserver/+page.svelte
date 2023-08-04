@@ -80,6 +80,7 @@
           localStorage.setItem("modpackURL", "");
           localStorage.setItem("modpackVersion", "");
           if (res == true) {
+            console.log("redricting to homepage...");
             goto("/");
           } else {
             msg = res;
