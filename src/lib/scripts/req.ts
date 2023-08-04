@@ -269,7 +269,7 @@ export function getServers(em: string) {
     .then((res) => res.text())
     .then((input: string) => {
       if (browser) {
-        window.localStorage.setItem("servers", JSON.parse(input).amount);
+        window.localStorage.setItem("servers", JSON.parse(input).length);
       }
 
       console.log("Response Recieved: " + input);
