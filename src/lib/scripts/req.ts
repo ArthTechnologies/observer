@@ -546,12 +546,8 @@ export function readTerminal(id: number) {
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
-      if (input.indexOf("400") > -1) {
-        return "error";
-      } else {
-        //return input as json
-        return input;
-      }
+      //return input as json
+      return input;
     });
 }
 
