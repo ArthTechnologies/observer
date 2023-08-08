@@ -510,14 +510,14 @@
           <Add /><Manage />
         {/if}
       </div>
-      <div class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl md:w-auto">
+      <div class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl w-[22.5rem]">
         <p class="text-xl font-bold">Servers</p>
 
         <div class="p-2 flex flex-col space-y-2" id="servers">
           {#each servers as server}
             <div class="flex space-x-1">
               <div
-                class="p-1 bg-base-300 rounded-lg px-2 flex justify-between w-full space-x-4"
+                class="p-1 bg-base-300 rounded-lg px-2 flex justify-between space-x-10 w-full"
               >
                 <b>{server.name}</b>
                 <p>{server.ip}</p>
@@ -563,10 +563,10 @@
         </div>
       </div>
       <div
-        class="bg-primary w-[20rem] md:w-[35rem] rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-4"
+        class="bg-primary w-[22.5rem] rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-4"
       >
         <Info />
-        <span class="text-sm w-[15rem] md:w-[30rem] flex flex-wrap"
+        <span class="text-sm w-[22.5rem] flex flex-wrap"
           >Your forwarding secret is <code
             class="bg-gray-500 rounded p-0.5 flex ml-1"
             ><div class="dropdown">
