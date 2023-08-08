@@ -82,7 +82,7 @@
   class=" h-[75vh] md:flex justify-between items-start max-md:space-y-1 md:space-x-5"
 >
   <div
-    class="bg-base-200 rounded-xl md:p-2 menu menu-xs md:w-[20rem] max-md:h-[12rem] max-md:overflow-y-scroll"
+    class="bg-base-200 rounded-xl md:p-2 menu menu-xs md:w-[20rem]"
     id="filetree"
   >
     {#each files as file}

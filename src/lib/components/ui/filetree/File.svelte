@@ -55,6 +55,7 @@
 
 <li class="">
   <a
+    href="#textEditor"
     on:click={getText}
     class="btn-sm pointer-events-{clickable} -space-x-2 md:space-x-0"
   >
