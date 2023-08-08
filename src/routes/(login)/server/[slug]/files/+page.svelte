@@ -78,9 +78,11 @@
   ><ArrowLeft class="mr-1.5" />
   Back</a
 >
-<div class=" h-[75vh] flex justify-between items-start space-x-1 md:space-x-5">
+<div
+  class=" h-[75vh] md:flex justify-between items-start max-md:space-y-1 md:space-x-5"
+>
   <div
-    class="bg-base-200 rounded-xl md:p-2 menu menu-xs w-[15rem] md:w-[20rem]"
+    class="bg-base-200 rounded-xl md:p-2 menu menu-xs md:w-[20rem] max-md:h-[12rem] max-md:overflow-y-scroll"
     id="filetree"
   >
     {#each files as file}
@@ -92,7 +94,7 @@
     {/each}
   </div>
   <div
-    class="bg-base-200 rounded-xl p-3 w-[20rem] h-[30rem] md:w-[25rem] lg:w-[30rem] lg:h-[35rem] xl:w-[50rem] xl:h-[45rem]"
+    class="bg-base-200 rounded-xl p-3 h-[30rem] md:w-[25rem] lg:w-[30rem] lg:h-[35rem] xl:w-[50rem] xl:h-[45rem]"
   >
     <div class="flex space-x-2 mb-2">
       <div id="filepath" class="hidden" />
