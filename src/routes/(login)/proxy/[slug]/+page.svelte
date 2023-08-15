@@ -56,7 +56,12 @@
   let icon = "";
   let hostName;
   if (browser) {
-    hostName = localStorage.getItem("address");
+    name = localStorage.getItem("serverName");
+    if (localStorage.getItem("serverCardRedrict") != "true") {
+      id = parseInt(localStorage.getItem("serverID"));
+    } else {
+      id = parseInt(window.location.href.split("/")[4]) - 10000;
+    }
     if (
       localStorage.getItem("serverSoftware") == "Fabric" ||
       localStorage.getItem("serverSoftware") == "Quilt" ||
