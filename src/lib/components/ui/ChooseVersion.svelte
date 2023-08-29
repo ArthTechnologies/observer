@@ -1,11 +1,17 @@
 <script lang="ts">
   import Version from "./Version.svelte";
-  import { getVersions } from "$lib/scripts/req";
+  import { getVersions, lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
   import { Plus } from "lucide-svelte";
+  import PluginResult from "./PluginResult.svelte";
+  import { marked } from "marked";
 
   export let id: string;
   export let pluginName: string;
+  export let author: string;
+  export let desc: string;
+  export let icon: string;
+
   var software = "";
   var sVersion = "";
   if (browser) {
@@ -25,6 +31,19 @@
     }
   }
   function get() {
+    fetch(lrurl + "project/" + id, {
+      method: "GET",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+
+      .then((data) => {
+        document.getElementById("body").innerHTML = marked(data.body);
+      });
+
     let vname = "undefined";
     getVersions(id).then((data) => {
       document.getElementById("list").innerHTML = "";
@@ -69,16 +88,33 @@
 <input type="checkbox" id="versions" class="modal-toggle" />
 <div class="modal">
   <div class="modal-box w-11/12 max-w-5xl space-y-5">
-    <div class="flex justify-between">
-      <h3 class="font-bold text-lg">Versions</h3>
-      <div class="modal-action">
-        <label
-          for="versions"
-          class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
-        >
+    <div class="pt-6">
+      <PluginResult
+        name={pluginName}
+        {author}
+        {desc}
+        {icon}
+        {id}
+        recursive={true}
+      />
+      <div class="flex justify-between space-x-2 lg:space-x-5 mt-5">
+        <div class="">
+          <h3 class="font-bold text-2xl mb-4">Description</h3>
+          <article id="body" class="mb-5 prose bg-base-200 rounded-lg p-3" />
+        </div>
+
+        <div class="">
+          <h3 class="font-bold text-2xl mb-4">Versions</h3>
+          <div id="list" class="space-y-2" />
+        </div>
       </div>
     </div>
 
-    <div id="list" class="space-y-2" />
+    <div class="modal-action">
+      <label
+        for="versions"
+        class="btn btn-sm btn-circle absolute right-2 top-2 mb-5">✕</label
+      >
+    </div>
   </div>
 </div>

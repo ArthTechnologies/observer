@@ -9,6 +9,7 @@
   export let desc: string;
   export let icon: string;
   export let id: string;
+  export let recursive = false;
 
   let software = "";
   let version = "";
@@ -51,6 +52,12 @@
       </div>
     </div>
 
-    <ChooseVersion {id} pluginName={name} />
+    {#if !recursive}<ChooseVersion
+        {id}
+        pluginName={name}
+        {desc}
+        {author}
+        {icon}
+      />{/if}
   </div>
 </div>

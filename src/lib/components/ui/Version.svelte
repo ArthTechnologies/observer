@@ -47,16 +47,33 @@
 </script>
 
 <div class="bg-base-200 rounded-lg p-3">
-  <div class="flex justify-between place-items-center">
-    <div class="flex space-x-1">
-      <p class="text-xl font-bold">{name}</p>
-      <div class="flex space-x-1 place-items-end">
-        <p class="text-warning">{type}</p>
+  <div class="flex justify-between place-items-center items-center">
+    <div>
+      <div class="flex space-x-1">
+        <p class="text-xl font-bold">{name}</p>
+        <div class="flex space-x-1 place-items-end">
+          <p class="text-warning">{type}</p>
+        </div>
+      </div>
+      <div class="flex gap-2 flex-wrap mt-2">
+        <div
+          class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+        >
+          <Clock size="16" class="mr-1.5" />
+          {time}
+        </div>
+
+        {#each dependencies as dependency}
+          <div
+            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+          >
+            <AlertCircle class="mr-1.5" size="16" />
+            Requires {dependency.name}
+          </div>
+        {/each}
       </div>
     </div>
     <div class="flex place-items-center space-x-2">
-      <p>{time}</p>
-
       <label
         on:click={submit}
         class="btn btn-circle btn-ghost swap swap-rotate"
@@ -66,22 +83,5 @@
         /></label
       >
     </div>
-  </div>
-  <div class="flex space-x-2">
-    <div
-      class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
-    >
-      <Clock size="16" class="mr-1.5" />
-      {time}
-    </div>
-
-    {#each dependencies as dependency}
-      <div
-        class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
-      >
-        <AlertCircle class="mr-1.5" size="16" />
-        Requires {dependency.name}
-      </div>
-    {/each}
   </div>
 </div>
