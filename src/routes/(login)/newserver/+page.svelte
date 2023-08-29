@@ -145,7 +145,7 @@
   }
   function checkS() {
     findVersions();
-
+    console.error("software" + software);
     if (software == "Latest Snapshot") {
       worldgen = false;
       snapshot = true;

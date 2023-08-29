@@ -1,19 +1,28 @@
 <script lang="ts">
   import Version from "./Version.svelte";
-  import { getVersions } from "$lib/scripts/req";
+  import { getVersions, lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
   import { Plus } from "lucide-svelte";
+  import PluginResult from "./PluginResult.svelte";
+  import { marked } from "marked";
+  import { t } from "$lib/scripts/i18n";
 
   export let id: string;
-  export let pluginName: string;
+  export let name: string;
+  export let author: string;
+  export let desc: string;
+  export let icon: string;
   var software = "";
   var sVersion = "";
+
   if (browser) {
-    software = localStorage.getItem("serverSoftware").toLowerCase();
+    software = localStorage.getItem("serverSoftware");
     sVersion = localStorage.getItem("serverVersion");
     switch (software) {
-      case "Paper":
-        software = "paper";
+      case "Velocity":
+        sVersion = localStorage.getItem("latestVersion");
+      default:
+        software = software.toLowerCase();
         break;
     }
     switch (sVersion) {
@@ -23,19 +32,48 @@
     }
   }
   function get() {
+    fetch(lrurl + "project/" + id, {
+      method: "GET",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+
+      .then((data) => {
+        document.getElementById("body").innerHTML = marked(data.body);
+        document.getElementById("pluginTitle").innerHTML = data.title;
+
+        document.getElementById("pluginDesc").innerHTML = data.description;
+        document.getElementById("pluginIcon").src = data.icon_url;
+
+        fetch(lrurl + "team/" + data.team + "/members", {
+          method: "GET",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+
+          .then((data) => {
+            document.getElementById("pluginAuthor").innerHTML =
+              data[0].user.username;
+          });
+      });
+
     let vname = "undefined";
     getVersions(id).then((data) => {
       document.getElementById("list").innerHTML = "";
-      console.log(data);
       data.forEach((version) => {
-        console.log(software + " + " + version.loaders.indexOf(software));
         if (
           version.name != vname &&
-          version.loaders.indexOf(software) > -1 &&
-          version.game_versions.indexOf(sVersion) > -1
+          version.loaders.includes(software) &&
+          version.game_versions.includes(sVersion)
         ) {
           vname = version.name;
-          console.log(version);
+          console.log(version.name + vname);
           new Version({
             target: document.getElementById("list"),
             props: {
@@ -44,7 +82,7 @@
               type: version.version_type,
               url: version.files[0].url,
               pluginId: id,
-              pluginName: pluginName,
+              pluginName: name,
               modtype: "mod",
               dependencies: version.dependencies,
             },
@@ -63,23 +101,73 @@
 <label
   for="versions"
   on:click={get}
-  class="btn btn-circle btn-ghost mb-5 sm:mb-0 absolute right-0"><Plus /></label
+  class="btn btn-circle btn-ghost absolute right-0"><Plus /></label
 >
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="versions" class="modal-toggle" />
 <div class="modal">
   <div class="modal-box w-11/12 max-w-5xl space-y-5">
-    <div class="flex justify-between">
-      <h3 class="font-bold text-lg">Versions</h3>
-      <div class="modal-action">
-        <label
-          for="versions"
-          class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+    <div class="pt-6">
+      <!-- Plugin Result cannot be imported due to a bug where it always says 'Simple Voice Chat'-->
+      <div class="bg-base-200 rounded-lg p-3">
+        <div
+          class="flex justify-between place-items-center max-w-full relative"
         >
+          <div class="flex space-x-3 flex-shrink-0 w-minus-7">
+            <a href="https://modrinth.com/plugin/{id}" target="_blank">
+              <img
+                id="pluginIcon"
+                src={icon}
+                alt="noicon"
+                class="w-14 h-14 bg-base-300 rounded-lg text-sm"
+              />
+            </a>
+            <div class="max-w-full w-minus-7">
+              <div class="sm:flex gap-1 max-w-full">
+                <a
+                  id="pluginTitle"
+                  href="https://modrinth.com/plugin/{id}"
+                  target="_blank"
+                  class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+                  >{name}</a
+                >
+                <div class="flex space-x-1 place-items-end">
+                  <p>{$t("by")}</p>
+                  <a
+                    id="pluginAuthor"
+                    href="https://modrinth.com/user/{author}"
+                    target="_blank"
+                    class="link link-hover">{author}</a
+                  >
+                </div>
+              </div>
+              <p class="w-minus-7" id="pluginDesc">
+                {desc}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-between space-x-2 lg:space-x-5 mt-5">
+        <div class="">
+          <h3 class="font-bold text-2xl mb-4">Description</h3>
+          <article id="body" class="mb-5 prose bg-base-200 rounded-lg p-3" />
+        </div>
+
+        <div class="">
+          <h3 class="font-bold text-2xl mb-4">Versions</h3>
+          <div id="list" class="space-y-2" />
+        </div>
       </div>
     </div>
 
-    <div id="list" class="space-y-2" />
+    <div class="modal-action">
+      <label
+        for="versions"
+        class="btn btn-sm btn-circle absolute right-2 top-2 mb-5">✕</label
+      >
+    </div>
   </div>
 </div>

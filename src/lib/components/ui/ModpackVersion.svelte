@@ -2,7 +2,7 @@
   import { sendVersion } from "$lib/scripts/req";
 
   import { browser } from "$app/environment";
-  import { Check, Plus } from "lucide-svelte";
+  import { AlertCircle, Check, Clock, Plus } from "lucide-svelte";
 
   export let name: string;
   export let date: string;
@@ -22,7 +22,6 @@
 
   function submit() {
     let id = "";
-
     if (browser) {
       id = localStorage.getItem("serverID");
       localStorage.setItem("modpackURL", url);
@@ -31,16 +30,24 @@
 </script>
 
 <div class="bg-base-200 rounded-lg p-3">
-  <div class="flex justify-between place-items-center">
-    <div class="flex space-x-1">
-      <p class="text-xl font-bold">{name}</p>
-      <div class="flex space-x-1 place-items-end">
-        <p class="text-warning">{type}</p>
+  <div class="flex justify-between place-items-center items-center">
+    <div>
+      <div class="flex space-x-1">
+        <p class="text-xl font-bold">{name}</p>
+        <div class="flex space-x-1 place-items-end">
+          <p class="text-warning">{type}</p>
+        </div>
+      </div>
+      <div class="flex gap-2 flex-wrap mt-2">
+        <div
+          class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+        >
+          <Clock size="16" class="mr-1.5" />
+          {time}
+        </div>
       </div>
     </div>
     <div class="flex place-items-center space-x-2">
-      <p>{time}</p>
-
       <label
         on:click={submit}
         class="btn btn-circle btn-ghost swap swap-rotate"
