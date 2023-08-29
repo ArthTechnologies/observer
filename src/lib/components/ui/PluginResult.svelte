@@ -16,6 +16,11 @@
   if (browser) {
     software = localStorage.getItem("serverSoftware");
     version = localStorage.getItem("serverVersion");
+    console.error(author);
+    //wait until chooseversion loads
+    setTimeout(function () {
+      document.getElementById("pluginAuthor").innerHTML = author;
+    }, 100);
   }
 </script>
 
