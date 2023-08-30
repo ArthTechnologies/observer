@@ -150,7 +150,9 @@
         </div>
       </div>
 
-      <div class="flex justify-between space-x-2 lg:space-x-5 mt-5">
+      <div
+        class="flex max-md:flex-col-reverse justify-between gap-2 lg:gap-5 mt-5"
+      >
         <div class="">
           <h3 class="font-bold text-2xl mb-4">Description</h3>
           <article id="body" class="mb-5 prose bg-base-200 rounded-lg p-3" />
@@ -158,7 +160,7 @@
 
         <div class="">
           <h3 class="font-bold text-2xl mb-4">Versions</h3>
-          <div id="list" class="space-y-2" />
+          <div id="list" class="space-y-2 mb-5" />
         </div>
       </div>
     </div>
