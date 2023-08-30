@@ -458,7 +458,7 @@
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div
-        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem]"
+        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[19.5rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem]"
       >
         <div class="p-5 sm:text-xs xl:text-base font-mono relative">
           <FullscreenTerminal />
@@ -470,7 +470,7 @@
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 w-[20rem] lg:w-[30rem] xl:w-[50rem]"
+        class="input input-secondary bg-base-200 w-[19.5rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem]"
       />
       <div class="divider md:hidden pt-5 pb-4" />
     </div>
@@ -480,7 +480,7 @@
     >
       <div class="space-y-5 mb-4">
         <div
-          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
+          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-[19.5rem] lg:w-[22.5rem] md:w-auto"
         >
           <div class="flex relative">
             <div class="p-4 space-x-4 flex">
@@ -515,7 +515,9 @@
           <Add /><Manage />
         {/if}
       </div>
-      <div class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl w-[22.5rem]">
+      <div
+        class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl w-[19.5rem] lg:w-[22.5rem]"
+      >
         <p class="text-xl font-bold">Servers</p>
 
         <div class="p-2 flex flex-col space-y-2" id="servers">
@@ -568,10 +570,10 @@
         </div>
       </div>
       <div
-        class="bg-primary w-[22.5rem] rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-4"
+        class="bg-primary w-[19.5rem] lg:w-[22.5rem] rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-4"
       >
         <Info />
-        <span class="text-sm w-[22.5rem] flex flex-wrap"
+        <span class="text-sm w-[19.5rem] lg:w-[22.5rem] flex flex-wrap"
           >Your forwarding secret is <code
             class="bg-gray-500 rounded p-0.5 flex ml-1"
             ><div class="dropdown">
