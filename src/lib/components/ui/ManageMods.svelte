@@ -4,6 +4,7 @@
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import ManagePlugin from "./ManagePlugin.svelte";
+  import { ChevronDown, ChevronUp, Trash2 } from "lucide-svelte";
   let promise;
   let res = { mods: [], modpack: {} };
   let query = "";
@@ -30,10 +31,19 @@
             console.log(response.modpack.files[0].downloads[0].split("/")[4]);
 
             for (let i = 0; i < response.modpack.files.length - 1; i++) {
+              for (let k = 0; k < response.mods.length; k++) {
+                if (
+                  response.mods[k].filename ==
+                  response.modpack.files[i].path.split("\\")[1]
+                ) {
+                  res.mods.splice(k, 1);
+                }
+              }
               res.mods.push({
                 id: response.modpack.files[i].downloads[0].split("/")[4],
                 platform: "lr",
                 name: response.modpack.files[i].downloads[0].split("/")[4],
+                filename: response.modpack.files[i].path.split("\\")[1],
               });
             }
           }
@@ -43,6 +53,53 @@
     }
   }
   search();
+  function del(filename) {
+    //tell upstream component to refresh
+    const event = new CustomEvent("refresh");
+    document.dispatchEvent(event);
+
+    let serverId = "";
+    if (browser) {
+      serverId = localStorage.getItem("serverID");
+    }
+
+    platform == "gh" ? (id = id.replace(/\//g, "_")) : (id = id);
+    console.log(
+      apiurl +
+        "server/" +
+        serverId +
+        "/" +
+        modtype +
+        "s" +
+        "?pluginPlatform=" +
+        platform +
+        "&pluginId=" +
+        id +
+        "&pluginName=" +
+        encodeURIComponent(sendName)
+    );
+    fetch(
+      apiurl +
+        "server/" +
+        serverId +
+        "/" +
+        modtype +
+        "s" +
+        "?pluginPlatform=" +
+        platform +
+        "&pluginId=" +
+        id +
+        "&pluginName=" +
+        encodeURIComponent(sendName),
+      {
+        method: "DELETE",
+        headers: {
+          token: localStorage.getItem("token"),
+          email: localStorage.getItem("accountEmail"),
+        },
+      }
+    );
+  }
 </script>
 
 <label for="manage" on:click={search} class="btn btn-block btn-primary"
@@ -79,12 +136,29 @@
         </div>
       {:then}
         {#each res.mods as mod}
-          <ManagePlugin
-            name={mod.name}
-            id={mod.id}
-            platform={mod.platform}
-            modtype="mod"
-          />
+          {#if mod.id != undefined}
+            <ManagePlugin
+              name={mod.name}
+              id={mod.id}
+              platform={mod.platform}
+              filename={mod.filename}
+              modtype="mod"
+            />
+          {:else}
+            <div class="px-3 py-2 rounded-lg bg-base-300 flex justify-between">
+              <div class="flex items-center space-x-1">
+                <p>{mod.filename}</p>
+                <button
+                  on:click={() => {
+                    del(mod.filename);
+                  }}
+                  class="btn btn-xs btn-error mt-0.5 btn-square"
+                >
+                  <Trash2 size="15" /></button
+                >
+              </div>
+            </div>
+          {/if}
         {/each}
       {/await}
     </div>
