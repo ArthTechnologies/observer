@@ -1,6 +1,6 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { getMods } from "$lib/scripts/req";
+  import { apiurl, getMods } from "$lib/scripts/req";
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import ManagePlugin from "./ManagePlugin.svelte";
@@ -32,6 +32,31 @@
     }
   }
   search();
+  function del(filename) {
+    //tell upstream component to refresh
+    const event = new CustomEvent("refresh");
+    document.dispatchEvent(event);
+
+    let serverId = "";
+    if (browser) {
+      serverId = localStorage.getItem("serverID");
+    }
+
+   
+    fetch(
+      apiurl +
+        "server/" +
+        serverId +
+        "/file/plugins*" + filename,
+      {
+        method: "DELETE",
+        headers: {
+          token: localStorage.getItem("token"),
+          email: localStorage.getItem("accountEmail"),
+        },
+      }
+    );
+  }
 </script>
 
 <label for="manage" on:click={search} class="btn btn-block btn-primary"
