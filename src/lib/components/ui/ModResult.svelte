@@ -81,6 +81,6 @@
         </div>
       </div>
     </div>
-    <ChooseModVersion {id} pluginName={name} />
+    <ChooseModVersion {id} name={name} author={author} desc={desc} icon={icon}/>
   </div>
 </div>

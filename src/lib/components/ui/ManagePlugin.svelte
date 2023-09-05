@@ -56,7 +56,7 @@
     }
   }
 
-  export function del() {
+  export function del(filename) {
     //tell upstream component to refresh
     const event = new CustomEvent("refresh");
     document.dispatchEvent(event);
@@ -66,42 +66,22 @@
       serverId = localStorage.getItem("serverID");
     }
 
-    platform == "gh" ? (id = id.replace(/\//g, "_")) : (id = id);
-    console.log(
-      apiurl +
-        "server/" +
-        serverId +
-        "/" +
-        modtype +
-        "s" +
-        "?pluginPlatform=" +
-        platform +
-        "&pluginId=" +
-        id +
-        "&pluginName=" +
-        encodeURIComponent(sendName)
-    );
+
     fetch(
       apiurl +
         "server/" +
         serverId +
-        "/" +
-        modtype +
-        "s" +
-        "?pluginPlatform=" +
-        platform +
-        "&pluginId=" +
-        id +
-        "&pluginName=" +
-        encodeURIComponent(sendName),
+        "/file/"+modtype+"s*" + filename,
       {
         method: "DELETE",
         headers: {
           token: localStorage.getItem("token"),
           email: localStorage.getItem("accountEmail"),
         },
+
       }
     );
+
   }
 
   function toggleInfo() {
@@ -117,7 +97,7 @@
   <div class="px-3 py-2 rounded-t-lg bg-base-300 flex justify-between">
     <div class="flex items-center space-x-1">
       <p>{filename}</p>
-      <button on:click={del} class="btn btn-xs btn-error mt-0.5 btn-square">
+      <button on:click={()=>{del(filename)}} class="btn btn-xs btn-error mt-0.5 btn-square">
         <Trash2 size="15" /></button
       >
     </div>

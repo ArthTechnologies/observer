@@ -73,7 +73,7 @@
           version.game_versions.includes(sVersion)
         ) {
           vname = version.name;
-          console.log(version.name + vname);
+
           new Version({
             target: document.getElementById("list"),
             props: {

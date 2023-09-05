@@ -1,6 +1,6 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { getMods } from "$lib/scripts/req";
+  import { apiurl, getMods } from "$lib/scripts/req";
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import ManagePlugin from "./ManagePlugin.svelte";
@@ -26,9 +26,9 @@
         promise = getMods(id, "mods").then((response) => {
           res = response;
           console.log(res);
-          if (response.modpack != undefined) {
+          if (response.modpack != undefined && response.modpack.files.length > 0) {
             console.log(response.modpack.files.length - 1);
-            console.log(response.modpack.files[0].downloads[0].split("/")[4]);
+
 
             for (let i = 0; i < response.modpack.files.length - 1; i++) {
               for (let k = 0; k < response.mods.length; k++) {
@@ -37,14 +37,15 @@
                   response.modpack.files[i].path.split("\\")[1]
                 ) {
                   res.mods.splice(k, 1);
-                }
-              }
-              res.mods.push({
+                  res.mods.push({
                 id: response.modpack.files[i].downloads[0].split("/")[4],
                 platform: "lr",
                 name: response.modpack.files[i].downloads[0].split("/")[4],
                 filename: response.modpack.files[i].path.split("\\")[1],
               });
+                }
+              }
+
             }
           }
           console.log(res);
@@ -63,34 +64,12 @@
       serverId = localStorage.getItem("serverID");
     }
 
-    platform == "gh" ? (id = id.replace(/\//g, "_")) : (id = id);
-    console.log(
-      apiurl +
-        "server/" +
-        serverId +
-        "/" +
-        modtype +
-        "s" +
-        "?pluginPlatform=" +
-        platform +
-        "&pluginId=" +
-        id +
-        "&pluginName=" +
-        encodeURIComponent(sendName)
-    );
+   
     fetch(
       apiurl +
         "server/" +
         serverId +
-        "/" +
-        modtype +
-        "s" +
-        "?pluginPlatform=" +
-        platform +
-        "&pluginId=" +
-        id +
-        "&pluginName=" +
-        encodeURIComponent(sendName),
+        "/file/mods*" + filename,
       {
         method: "DELETE",
         headers: {

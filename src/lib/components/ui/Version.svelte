@@ -12,7 +12,6 @@
   export let pluginName: string;
   export let modtype: string;
   export let dependencies: string[] = [];
-
   if (type == "release") {
     type = "";
   } else if (type == "beta") {
