@@ -4,6 +4,7 @@
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import ManagePlugin from "./ManagePlugin.svelte";
+    import { Trash2 } from "lucide-svelte";
   let promise;
   let res = { mods: [] };
   let query = "";
@@ -60,12 +61,29 @@
         </div>
       {:then}
         {#each res.mods as mod}
-          <ManagePlugin
-            name={mod.name}
-            id={mod.id}
-            platform={mod.platform}
-            modtype="plugin"
-          />
+        {#if mod.id != undefined}
+        <ManagePlugin
+          name={mod.name}
+          id={mod.id}
+          platform={mod.platform}
+          filename={mod.filename}
+          modtype="plugin"
+        />
+      {:else}
+        <div class="px-3 py-2 rounded-lg bg-base-300 flex justify-between">
+          <div class="flex items-center space-x-1">
+            <p>{mod.filename}</p>
+            <button
+              on:click={() => {
+                del(mod.filename);
+              }}
+              class="btn btn-xs btn-error mt-0.5 btn-square"
+            >
+              <Trash2 size="15" /></button
+            >
+          </div>
+        </div>
+      {/if}
         {/each}
       {/await}
     </div>
