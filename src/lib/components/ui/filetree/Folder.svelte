@@ -1,7 +1,7 @@
 <script lang="ts">
   import File from "$lib/components/ui/filetree/File.svelte";
   import Folder from "$lib/components/ui/filetree/Folder.svelte";
-  import { FolderClosed } from "lucide-svelte";
+  import { ChevronDown, FolderClosed, ChevronRight } from "lucide-svelte";
   export let foldername;
   export let files;
   let open = false;
@@ -11,9 +11,15 @@
   function toggleOpen() {
     open = !open;
     if (open) {
-      document.getElementById("toggleIndicator" + folderId).innerHTML = "▶";
+      document.getElementById("toggleIndicator" + folderId).innerHTML = "";
+        new ChevronRight({
+          target: document.getElementById("toggleIndicator" + folderId),
+        })
     } else {
-      document.getElementById("toggleIndicator" + folderId).innerHTML = "▼";
+      document.getElementById("toggleIndicator" + folderId).innerHTML = "";
+      new ChevronDown({
+        target: document.getElementById("toggleIndicator" + folderId),
+      })
     }
   }
 
@@ -43,8 +49,8 @@
     <FolderClosed class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     <p class="text-xs md:text-sm">{foldername}</p>
 
-    {#if files.length > 1}
-      <p id="toggleIndicator{folderId}">▼</p>
+    {#if files.length >= 1}
+      <p id="toggleIndicator{folderId}"><ChevronDown/></p>
     {/if}
   </a>
 </li>
