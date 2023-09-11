@@ -4,14 +4,44 @@
   import { browser } from "$app/environment";
   import { apiurl } from "$lib/scripts/req";
   import { AlertTriangle, Map } from "lucide-svelte";
+    import Helper from "./Helper.svelte";
   let buttonWidthPercent = 30;
   let tab = "upload";
   let id = -1;
   let serverName = "";
   let file = null;
+  let worldgenFiles = [];
+  let promise;
+  let worldgenModsText = "Worldgen Mods:";
   if (browser) {
-    id = localStorage.getItem("serverID");
     serverName = localStorage.getItem("serverName");
+    id = localStorage.getItem("serverID");
+
+    promise = fetch(apiurl + "server/" + id + "/file/world*datapacks", {
+      method: "GET",
+      headers: {
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+
+        for (let i in data) {
+          if (data[i] == "terralith.zip" ||
+          data[i] == "incendium.zip" ||
+          data[i] == "nullscape.zip" ||
+          data[i] == "structory.zip") {
+
+            document.getElementById(data[i].split(".")[0]).checked = true;
+            worldgenFiles.push(data[i].split(".")[0]);
+
+          }
+        }
+
+        worldgenModsText = worldgenModsText + " " + worldgenFiles.join(", ") + "."
+      });
+  
   }
 
   function download() {
@@ -100,9 +130,22 @@
 
   function regen() {
     if (browser) {
+      let newWorldgenFiles = [];
+      if (document.getElementById("terralith").checked) {
+        newWorldgenFiles.push("terralith");
+      }
+      if (document.getElementById("incendium").checked) {
+        newWorldgenFiles.push("incendium");
+      }
+      if (document.getElementById("nullscape").checked) {
+        newWorldgenFiles.push("nullscape");
+      }
+      if (document.getElementById("structory").checked) {
+        newWorldgenFiles.push("structory");
+      }
       let seed = document.getElementById("seed").value;
       //POST to https://api.arthmc.xyz/server/{id}/world  with token and email, send file in body
-      fetch(apiurl + "server/" + id + "/world" + "?seed=" + seed, {
+      fetch(apiurl + "server/" + id + "/world" + "?seed=" + seed+"&worldgenMods="+newWorldgenFiles.join(", "), {
         method: "POST",
         headers: {
           token: localStorage.getItem("token"),
@@ -124,15 +167,21 @@
       >✕</label
     >
     <div
-      class="h-12 w-11/12 md:w-96 bg-base-200 rounded-lg p-1 px-2 flex justify-between items-center"
+      class=" w-11/12 md:w-96 bg-base-200 rounded-lg p-1 px-2 py-2 space-y-3"
     >
-      <div class="flex flex-col justify-center">
-        <p class="font-bold md:text-lg">Current World</p>
+      <div class="flex justify-between items-center">
+        <div class="flex flex-col justify-center">
+          <p class="font-bold md:text-lg">Current World</p>
+        </div>
+        <button class="downloadBtn btn btn-accent btn-sm" on:click={download}
+          >Download World File</button
+        >
       </div>
-      <button class="downloadBtn btn btn-accent btn-sm" on:click={download}
-        >Download World File</button
-      >
-    </div>
+<p class="text-sm">{worldgenModsText}</p>
+
+
+</div>
+
     <div class="tabs tabs-boxed mt-2 w-[17.1rem]">
       <button id="regenTab" on:click={regenTab} class="tab"
         >Regenerate World</button
@@ -143,7 +192,7 @@
     </div>
     <div class="divider w-[17rem]" />
     <div
-      class="bg-warning w-86 h-16 md:h-12 rounded-lg text-black p-2 flex items-center mb-6 space-x-2"
+      class="bg-warning w-86 h-16 md:h-12 rounded-lg text-black p-2 flex items-center mb-2 space-x-2"
     >
       <AlertTriangle size="32" />
       <span class="text-sm"
@@ -152,6 +201,61 @@
       >
     </div>
     {#if tab == "regen"}
+    <div class=" flex mb-1">
+      <p class="label">Worldgen Mods</p>
+
+      <Helper tooltipText={$t("newserver.t.worldgen")} />
+    </div>
+
+    <div class="flex">
+      <img
+        class="mask mask-hexagon"
+        src="/images/terralith.webp"
+        width="70ch"
+      />
+
+      <img
+        class="mask mask-hexagon"
+        src="/images/nullscape.webp"
+        width="70ch"
+      />
+      <img
+        class="mask mask-hexagon"
+        src="/images/incendium.webp"
+        width="70ch"
+      />
+      <img
+        class="mask mask-hexagon"
+        src="/images/structory.webp"
+        width="70ch"
+      />
+    </div>
+    <div class="p-2" />
+    <div class="flex space-x-[2.9rem] ml-[1.4rem]">
+      <input
+        id="terralith"
+        type="checkbox"
+        class="checkbox checkbox-secondary"
+      />
+      <input
+        id="incendium"
+        type="checkbox"
+        class="checkbox checkbox-secondary"
+      />
+      <input
+        id="nullscape"
+        type="checkbox"
+        class="checkbox checkbox-secondary"
+      />
+      <input
+        id="structory"
+        type="checkbox"
+        class="checkbox checkbox-secondary"
+      />
+    </div>
+    {/if}
+    <div class="mt-6">
+      {#if tab == "regen"}
       <input
         id="seed"
         type="text"
@@ -171,5 +275,6 @@
         <label for="world" on:click={upload} class="btn">Upload</label>
       </div>
     {/if}
+    </div>
   </div>
 </div>
