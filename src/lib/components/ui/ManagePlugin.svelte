@@ -94,7 +94,7 @@
 </script>
 
 <div>
-  <div class="px-3 py-2 rounded-t-lg bg-base-300 flex justify-between">
+  <div class="px-3 py-2 rounded-t-lg bg-base-300 flex justify-between items-center">
     <div class="flex items-center space-x-1">
       <p>{filename}</p>
       <button on:click={()=>{del(filename)}} class="btn btn-xs btn-error mt-0.5 btn-square">
