@@ -39,7 +39,12 @@
           }
         }
 
-        worldgenModsText = worldgenModsText + " " + worldgenFiles.join(", ") + "."
+        if (worldgenFiles.length == 0) {
+          worldgenModsText = worldgenModsText + " None";
+        }
+        else {
+          worldgenModsText = worldgenModsText + " " + worldgenFiles.join(", ") + "."
+        }
       });
   
   }
@@ -144,8 +149,12 @@
         newWorldgenFiles.push("structory");
       }
       let seed = document.getElementById("seed").value;
+      let worldType = document.getElementById("worldTypeDropdown").value;
+
+      worldType = worldType.toLowerCase().replace(" ", "_");
+
       //POST to https://api.arthmc.xyz/server/{id}/world  with token and email, send file in body
-      fetch(apiurl + "server/" + id + "/world" + "?seed=" + seed+"&worldgenMods="+newWorldgenFiles.join(", "), {
+      fetch(apiurl + "server/" + id + "/world" + "?seed=" + seed+"&worldgenMods="+newWorldgenFiles.join(", ")+"&worldType="+worldType, {
         method: "POST",
         headers: {
           token: localStorage.getItem("token"),
@@ -201,7 +210,9 @@
       >
     </div>
     {#if tab == "regen"}
-    <div class=" flex mb-1">
+    <div class="flex  flex-col items-start space-y-5">
+    <div>
+        <div class=" flex mb-1">
       <p class="label">Worldgen Mods</p>
 
       <Helper tooltipText={$t("newserver.t.worldgen")} />
@@ -209,51 +220,62 @@
 
     <div class="flex">
       <img
-        class="mask mask-hexagon"
-        src="/images/terralith.webp"
-        width="70ch"
-      />
+    class="mask mask-hexagon"
+    src="/images/terralith.webp"
+    width="70ch"
+  />
 
-      <img
-        class="mask mask-hexagon"
-        src="/images/nullscape.webp"
-        width="70ch"
-      />
-      <img
-        class="mask mask-hexagon"
-        src="/images/incendium.webp"
-        width="70ch"
-      />
-      <img
-        class="mask mask-hexagon"
-        src="/images/structory.webp"
-        width="70ch"
-      />
-    </div>
-    <div class="p-2" />
-    <div class="flex space-x-[2.9rem] ml-[1.4rem]">
-      <input
-        id="terralith"
-        type="checkbox"
-        class="checkbox checkbox-secondary"
-      />
-      <input
-        id="incendium"
-        type="checkbox"
-        class="checkbox checkbox-secondary"
-      />
-      <input
-        id="nullscape"
-        type="checkbox"
-        class="checkbox checkbox-secondary"
-      />
-      <input
-        id="structory"
-        type="checkbox"
-        class="checkbox checkbox-secondary"
-      />
-    </div>
-    {/if}
+  <img
+    class="mask mask-hexagon"
+    src="/images/nullscape.webp"
+    width="70ch"
+  />
+  <img
+    class="mask mask-hexagon"
+    src="/images/incendium.webp"
+    width="70ch"
+  />
+  <img
+    class="mask mask-hexagon"
+    src="/images/structory.webp"
+    width="70ch"
+  />
+</div>
+<div class="p-2" />
+<div class="flex space-x-[2.9rem] ml-[1.4rem]">
+  <input
+    id="terralith"
+    type="checkbox"
+    class="checkbox checkbox-secondary"
+  />
+  <input
+    id="incendium"
+    type="checkbox"
+    class="checkbox checkbox-secondary"
+  />
+  <input
+    id="nullscape"
+    type="checkbox"
+    class="checkbox checkbox-secondary"
+  />
+  <input
+    id="structory"
+    type="checkbox"
+    class="checkbox checkbox-secondary"
+  />
+</div>
+</div>
+
+<div class="space-y-3">
+  <p>World Type</p>
+<select class="select select-primary w-full max-w-xs" id="worldTypeDropdown">
+  <option selected>Normal</option>
+  <option>Superflat</option>
+  <option>Large Biomes</option>
+</select>
+</div>
+</div>
+      {/if}
     <div class="mt-6">
       {#if tab == "regen"}
       <input
