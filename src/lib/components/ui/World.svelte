@@ -152,6 +152,9 @@
       let worldType = document.getElementById("worldTypeDropdown").value;
 
       worldType = worldType.toLowerCase().replace(" ", "_");
+      if (worldType = "superflat") {
+        worldType = "flat";
+      }
 
       //POST to https://api.arthmc.xyz/server/{id}/world  with token and email, send file in body
       fetch(apiurl + "server/" + id + "/world" + "?seed=" + seed+"&worldgenMods="+newWorldgenFiles.join(", ")+"&worldType="+worldType, {
