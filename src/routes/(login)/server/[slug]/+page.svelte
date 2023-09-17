@@ -289,7 +289,7 @@
     readTerminal(id).then((response) => {
       if (browser) {
         //response replace newlines with <p>, remove things that start with [ and end with m
-        if (response.length < 20000){
+        if (response.length < 100000){
           document.getElementById("terminal").innerHTML = response
           .replace(/\x1B\[[0-9;]*[mG]/g, "")
           .replace(/\n/g, "<p>");
