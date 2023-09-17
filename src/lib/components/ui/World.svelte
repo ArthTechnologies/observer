@@ -152,7 +152,7 @@
       let worldType = document.getElementById("worldTypeDropdown").value;
 
       worldType = worldType.toLowerCase().replace(" ", "_");
-      if (worldType = "superflat") {
+      if (worldType == "superflat") {
         worldType = "flat";
       }
 
