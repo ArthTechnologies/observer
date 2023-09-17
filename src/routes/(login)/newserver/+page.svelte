@@ -254,12 +254,12 @@
 
               <img
                 class="mask mask-hexagon"
-                src="/images/nullscape.webp"
+                src="/images/incendium.webp"
                 width="80ch"
               />
               <img
                 class="mask mask-hexagon"
-                src="/images/incendium.webp"
+                src="/images/nullscape.webp"
                 width="80ch"
               />
               <img

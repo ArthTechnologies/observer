@@ -206,7 +206,7 @@
 
       //set state to response
       state = response.state;
-      console.log(state);
+
       if (restarting && state == "starting") {
         restarting = false;
         console.log("unlocking");
@@ -284,17 +284,21 @@
   }
 
   function readCmd() {
+
     let rt;
     readTerminal(id).then((response) => {
       if (browser) {
         //response replace newlines with <p>, remove things that start with [ and end with m
-        document.getElementById("terminal").innerHTML = response
+        if (response.length < 20000){
+          document.getElementById("terminal").innerHTML = response
           .replace(/\x1B\[[0-9;]*[mG]/g, "")
           .replace(/\n/g, "<p>");
-        setTimeout(() => {
-          const terminal = document.getElementById("terminal");
-          terminal.scrollTop = terminal.scrollHeight;
-        }, 20);
+        } else {
+          document.getElementById("terminal").innerHTML = response.split(0, 20000)
+          .replace(/\x1B\[[0-9;]*[mG]/g, "")
+          .replace(/\n/g, "<p>");
+        }
+
       }
     });
     //set terminal's text to rt

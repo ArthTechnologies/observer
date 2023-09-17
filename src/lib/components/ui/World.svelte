@@ -114,21 +114,65 @@
   }
 
   function upload() {
-    console.log("uploading");
-    const formData = new FormData();
-    formData.append("file", file, file.name);
-    if (browser) {
-      //POST to https://api.arthmc.xyz/server/{id}/world  with token and email, send file in body
-      fetch(apiurl + "server/" + id + "/world", {
-        method: "POST",
-        headers: {
-          token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
-        },
-        body: formData,
-      });
-    }
+  const formData = new FormData();
+  formData.append("file", file, file.name);
+
+  console.error("uploading");
+  if (browser) {
+    const uploadBtn = document.querySelector(".uploadBtn");
+    //we normally use fetch, but we have to use XMLHttpRequest for this because fetch doesnt give progress of uploads.
+    const xhr = new XMLHttpRequest();
+
+    xhr.upload.addEventListener("progress", (event) => {
+      if (event.lengthComputable) {
+        let percentComplete = (event.loaded / event.total) * 100;
+
+        percentComplete = percentComplete*.7;
+        console.log(`Percent complete: ${percentComplete.toFixed(2)}%`);
+                // You can update a progress bar or display the percentage to the user
+                if (percentComplete < 100) {
+
+
+          uploadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.0) ${percentComplete}%,
+  #088587 ${percentComplete}%,
+  #088587 100%
+)`;
+        }
+      }
+    });
+
+    xhr.addEventListener("load", () => {
+      // Upload complete
+      console.error("Upload complete");
+
+    });
+
+    xhr.addEventListener("error", (error) => {
+      console.error("Error:", error);
+    });
+
+    xhr.open("POST", apiurl + "server/" + id + "/world", true);
+    xhr.setRequestHeader("token", localStorage.getItem("token"));
+    xhr.setRequestHeader("email", localStorage.getItem("accountEmail"));
+    xhr.send(formData);
+
+    //when response is recieved...
+    xhr.onload = function () {
+      uploadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.0) 100%,
+  #088587 100%,
+  #088587 100%
+)`;
+    };
   }
+}
+
+
   function handleFileSelect(event) {
     file = event.target.files[0]; // Store the selected file
   }
@@ -155,9 +199,9 @@
       if (worldType == "superflat") {
         worldType = "flat";
       }
-
+      
       //POST to https://api.arthmc.xyz/server/{id}/world  with token and email, send file in body
-      fetch(apiurl + "server/" + id + "/world" + "?seed=" + seed+"&worldgenMods="+newWorldgenFiles.join(", ")+"&worldType="+worldType, {
+      fetch(apiurl + "server/" + id + "/world" + "?seed=" + seed+"&worldgenMods="+newWorldgenFiles.join(",")+"&worldType="+worldType, {
         method: "POST",
         headers: {
           token: localStorage.getItem("token"),
@@ -230,12 +274,12 @@
 
   <img
     class="mask mask-hexagon"
-    src="/images/nullscape.webp"
+    src="/images/incendium.webp"
     width="70ch"
   />
   <img
     class="mask mask-hexagon"
-    src="/images/incendium.webp"
+    src="/images/nullscape.webp"
     width="70ch"
   />
   <img
@@ -297,7 +341,7 @@
           class="file-input file-input-bordered file-input-secondary max-w-xs"
           on:change={handleFileSelect}
         />
-        <label for="world" on:click={upload} class="btn">Upload</label>
+        <button on:click={upload} class="btn uploadBtn">Upload</button>
       </div>
     {/if}
     </div>
