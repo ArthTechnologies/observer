@@ -10,6 +10,8 @@
   let areWorldgenMods = true;
   let updateReady = true;
   let serverVersion = "";
+  let serverSoftware = "";
+  let jarAvailable = false;
 
   function update() {
     if (updateReady && browser) {
@@ -18,6 +20,7 @@
   }
   if (browser) {
     serverVersion = localStorage.getItem("serverVersion");
+    serverSoftware = localStorage.getItem("serverSoftware");
     if (localStorage.getItem("serverAddons") != null) {
       serverAddons = localStorage.getItem("serverAddons").split(",");
     }
@@ -27,6 +30,15 @@
     }
   }
   console.log(serverAddons);
+
+  fetch(apiurl+"servers/jars")
+    .then((x) => x.json())
+    .then((x) => {
+      console.log(x);
+      if (x.includes(serverVersion+"-"+serverSoftware+".jar")) {
+        jarAvailable = true;
+      }
+    });
   //fetch https://launchermeta.mojang.com/mc/game/version_manifest.json
   //get latest release version
 
@@ -74,7 +86,7 @@
   //reminder to self: use the servers/worldgenMods route to get which mods are ready, display images and make non-ready mods grayscale.
 </script>
 
-{#if latestUpdate != serverVersion}
+{#if latestUpdate != serverVersion && jarAvailable}
   <label for="updates" class="btn btn-neutral"
     ><ArrowDownCircle class="mr-2.5" />
     Update</label
