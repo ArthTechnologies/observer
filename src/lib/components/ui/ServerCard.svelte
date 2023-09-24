@@ -62,6 +62,7 @@
     }
   }
   function status() {
+
     if (state == "true") {
       starting = false;
       stopcolor = "error";
@@ -82,6 +83,12 @@
       stopcolor = "error";
       startcolor = "accent";
       starttext = "Installing";
+    } else if (state == "stopping") {
+      starting = false;
+      stopcolor = "error";
+      startcolor = "disabled";
+      starttext = $t("button.start");
+
     }
   }
   status();
@@ -159,13 +166,13 @@
                 on:click={start}
                 id="start"
                 type="submit"
-                class="btn btn-success btn-sm h-9">{starttext}</button
+                class="btn btn-{startcolor} btn-sm h-9">{starttext}</button
               >
             {:else}
               <div
                 on:click={start}
                 id="start"
-                class="flex w-[7.5rem] bg-success rounded-lg font-semibold uppercase text-base-100 text-[.76rem] tracking-wider px-3 items-center"
+                class="flex w-[7.5rem] bg-{startcolor} rounded-lg font-semibold uppercase text-base-100 text-[.76rem] tracking-wider px-3 items-center"
               >
                 <Loader size="18" class="animate-spin" />
                 {$t("button.starting3")}
