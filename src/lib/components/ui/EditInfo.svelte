@@ -1,6 +1,6 @@
 <script>
   import { browser } from "$app/environment";
-  import { setInfo } from "$lib/scripts/req";
+  import { apiurl, setInfo } from "$lib/scripts/req";
   import { src_url_equal } from "svelte/internal";
   import { Settings } from "lucide-svelte";
   let id;
@@ -10,7 +10,9 @@
   let fSecret = "";
   let proxiesEnabled = false;
   let software;
+  let name;
   if (browser) {
+    name = localStorage.getItem("serverName");
     id = localStorage.getItem("serverID");
     software = localStorage.getItem("serverSoftware");
 
@@ -48,6 +50,21 @@
       }
 
       setInfo(id, icon, desc, proxiesEnabled, fSecret);
+
+      fetch(apiurl+"server/"+id+"/rename?newName="+name,
+      {
+
+        method: "POST",
+        headers: {
+          "email": localStorage.getItem("accountEmail"),
+          "token": localStorage.getItem("token"),
+        },
+      })
+        .then((x) => x.json())
+        .then((x) => {
+          console.log(x);
+        });
+
     }
   }
 </script>
@@ -64,7 +81,16 @@
     <label for="editInfo" class="btn btn-sm btn-circle fixed right-2 top-2"
       >✕</label
     >
-    <h3 class="text-2xl font-bold">Settings</h3>
+    <h3 class="text-2xl font-bold mb-3">Settings</h3>
+    <label for="serverDescription" class="block font-bold mb-2"
+      >Name
+    </label>
+    <input
+      bind:value={name}
+      type="text"
+      id="serverName"
+      class="input input-bordered"
+    />
     <div class="divider mt-5 text-xl font-bold">Server Info</div>
     <p class="mb-4">
       Players will see this information on their server list in Minecraft.
