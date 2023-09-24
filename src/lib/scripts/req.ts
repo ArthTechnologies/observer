@@ -39,7 +39,7 @@ if (browser) {
   };
 }
 
-export function setInfo(id, icon, desc, proxiesEnabled, fSecret) {
+export function setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartup) {
   console.log(icon);
   if (icon == "") {
     icon = "/images/placeholder.png";
@@ -57,6 +57,7 @@ export function setInfo(id, icon, desc, proxiesEnabled, fSecret) {
       icon: icon,
       proxiesEnabled: proxiesEnabled,
       fSecret: fSecret,
+      automaticStartup: automaticStartup
     }),
   };
 

@@ -9,6 +9,7 @@
   let desc = "";
   let fSecret = "";
   let proxiesEnabled = false;
+  let automaticStartup = false;
   let software;
   let name;
   if (browser) {
@@ -16,8 +17,47 @@
     id = localStorage.getItem("serverID");
     software = localStorage.getItem("serverSoftware");
 
-    setTimeout(() => {
-      if (document.getElementById("proxiesEnabled") != null) {
+    
+  }
+  function get() {
+    fetch(apiurl + "server/" + id + "/getInfo", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+
+        desc = data.desc;
+        fSecret = data.secret;
+
+        //add checked property to toggle
+
+        if (data.proxiesEnabled) {
+          document.getElementById("proxiesEnabled").checked = true;
+        } else {
+          document.getElementById("proxiesEnabled").checked = false;
+        }
+
+        if (data.automaticStartup) {
+          document.getElementById("automaticStartup").checked = true;
+        } else {
+          document.getElementById("automaticStartup").checked = false;
+        }
+
+        document.getElementById("fSecret").value = data.secret;
+        if (data.iconUrl != undefined) {
+          console.log("icon is " + data.iconUrl);
+          icon = data.iconUrl;
+        } else {
+          console.log("setting placeholder");
+          icon = "/images/placeholder.webp";
+        }
+
+        if (document.getElementById("proxiesEnabled") != null) {
         if (document.getElementById("proxiesEnabled").checked) {
           proxiesEnabled = true;
         } else {
@@ -31,7 +71,7 @@
         icon = "";
         iconPreview = "/images/placeholder.webp";
       }
-    }, 800);
+      });
   }
   function set() {
     //download the file from the input with id="icon"
@@ -44,12 +84,19 @@
           proxiesEnabled = false;
         }
       }
+      if (document.getElementById("automaticStartup") != null) {
+        if (document.getElementById("automaticStartup").checked) {
+          automaticStartup = true;
+        } else {
+          automaticStartup = false;
+        }
+      }
       console.log(icon == "");
       if (icon == "") {
         icon = "https://servers.arthmc.xyz/images/placeholder.webp";
       }
 
-      setInfo(id, icon, desc, proxiesEnabled, fSecret);
+      setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartup);
 
       fetch(apiurl+"server/"+id+"/rename?newName="+name,
       {
@@ -70,7 +117,7 @@
 </script>
 
 <label for="editInfo"
-  ><div class="btn btn-circle absolute right-2 top-2 md:btn-sm">
+  ><div class="btn btn-circle absolute right-2 top-2 md:btn-sm" on:click={get}>
     <Settings class="w-[1.5rem] h-[1.5rem] md:w-[1rem] md:h-[1rem]" />
   </div></label
 >
@@ -91,7 +138,17 @@
       id="serverName"
       class="input input-bordered"
     />
-    <div class="divider mt-5 text-xl font-bold">Server Info</div>
+    <div class=" w-96 mt-2">
+      <label class="cursor-pointer label">
+        <span class="label-text">Automatically start up after matinence shutdowns</span>
+        <input
+          id="automaticStartup"
+          type="checkbox"
+          class="toggle toggle-primary"
+        />
+      </label>
+    </div>
+    <div class="divider mt-3 text-xl font-bold">Server Info</div>
     <p class="mb-4">
       Players will see this information on their server list in Minecraft.
     </p>

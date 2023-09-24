@@ -31,6 +31,7 @@
     Repeat,
     StopCircle,
   } from "lucide-svelte";
+    import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
 
   let modded = false;
   let vanilla = false;
@@ -159,6 +160,12 @@
           document.getElementById("proxiesEnabled").checked = true;
         } else {
           document.getElementById("proxiesEnabled").checked = false;
+        }
+
+        if (data.automaticRestart) {
+          document.getElementById("automaticRestart").checked = true;
+        } else {
+          document.getElementById("automaticRestart").checked = false;
         }
 
         document.getElementById("fSecret").value = data.secret;
@@ -481,10 +488,11 @@
         </div>
       </div>
       <p class="text-xl font-bold mt-4 mb-2">Advanced</p>
-      <div class="flex space-x-2">
-        <a class="btn mt-2" href="/server/{parseInt(id) + 10000}/files"
+      <div class="flex space-x-2 ">
+        <a class="btn" href="/server/{parseInt(id) + 10000}/files"
           ><FolderClosed class="mr-1.5" />Explore Files</a
         >
+        <StorageLimit/>
       </div>
     </div>
   </div>
