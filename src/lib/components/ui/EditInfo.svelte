@@ -36,11 +36,7 @@
 
         //add checked property to toggle
 
-        if (data.proxiesEnabled) {
-          document.getElementById("proxiesEnabled").checked = true;
-        } else {
-          document.getElementById("proxiesEnabled").checked = false;
-        }
+
 
         if (data.automaticStartup) {
           document.getElementById("automaticStartup").checked = true;
@@ -58,6 +54,11 @@
         }
 
         if (document.getElementById("proxiesEnabled") != null) {
+          if (data.proxiesEnabled) {
+          document.getElementById("proxiesEnabled").checked = true;
+        } else {
+          document.getElementById("proxiesEnabled").checked = false;
+        }
         if (document.getElementById("proxiesEnabled").checked) {
           proxiesEnabled = true;
         } else {
