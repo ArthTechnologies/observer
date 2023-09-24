@@ -3,8 +3,9 @@
   import { t } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   import { apiurl } from "$lib/scripts/req";
-  import { AlertTriangle, Map } from "lucide-svelte";
+  import { AlertTriangle, Download, Loader, Map } from "lucide-svelte";
     import Helper from "./Helper.svelte";
+    import { downloadProgressShort, fileSizeShort } from "$lib/scripts/numShort";
   let buttonWidthPercent = 30;
   let tab = "upload";
   let id = -1;
@@ -13,6 +14,8 @@
   let worldgenFiles = [];
   let promise;
   let worldgenModsText = "Worldgen Mods:";
+  let downloading = false;
+  let downloadProgress = "0/0MB"
   if (browser) {
     serverName = localStorage.getItem("serverName");
     id = localStorage.getItem("serverID");
@@ -50,6 +53,7 @@
   }
 
   function download() {
+    downloading = true;
     const xhr = new XMLHttpRequest();
     xhr.open("GET", apiurl + "server/" + id + "/world", true);
     xhr.setRequestHeader("token", localStorage.getItem("token"));
@@ -62,9 +66,10 @@
 
         // You can update a progress bar or display the percentage to the user
         if (percentComplete < 100 && window.location.href == lhref) {
+          downloadProgress = downloadProgressShort(event.loaded, event.total);
           const downloadBtn = document.querySelector(".downloadBtn");
 
-          downloadBtn.style.width = "200px";
+          downloadBtn.style.width = "250px";
           downloadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
@@ -77,6 +82,7 @@
     });
 
     xhr.onload = function () {
+      downloading = false;
       if (xhr.status === 200) {
         const blob = xhr.response;
         const url = window.URL.createObjectURL(blob);
@@ -230,7 +236,7 @@
           <p class="font-bold md:text-lg">Current World</p>
         </div>
         <button class="downloadBtn btn btn-accent btn-sm" on:click={download}
-          >Download World File</button
+          >{#if !downloading}<Download size=18/>{:else}<div class="animate-spin"><Loader/></div>{/if}<p class="ml-1.5">{#if downloading}{downloadProgress}{:else}Download{/if}</p></button
         >
       </div>
 <p class="text-sm">{worldgenModsText}</p>
