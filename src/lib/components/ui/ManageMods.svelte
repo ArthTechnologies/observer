@@ -4,7 +4,7 @@
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import ManagePlugin from "./ManagePlugin.svelte";
-  import { ChevronDown, ChevronUp, Trash2 } from "lucide-svelte";
+  import { ChevronDown, ChevronUp, Clock, Trash2 } from "lucide-svelte";
   let promise;
   let res = { mods: [], modpack: {} };
   let query = "";
@@ -26,6 +26,9 @@
         promise = getMods(id, "mods").then((response) => {
           res = response;
           console.log(res);
+          for (let i in res.mods) {
+            res.mods[i].time = new Date(res.mods[i].date).toLocaleString();
+          }
           if (response.modpack != undefined && response.modpack.files.length > 0) {
             console.log(response.modpack.files.length - 1);
 
@@ -121,6 +124,7 @@
               id={mod.id}
               platform={mod.platform}
               filename={mod.filename}
+              date={mod.date}
               modtype="mod"
             />
           {:else}
@@ -136,6 +140,12 @@
                   <Trash2 size="15" /></button
                 >
               </div>
+              <div
+              class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+            >
+              <Clock size="16" class="mr-1.5" />
+              {mod.time}
+            </div>
             </div>
           {/if}
         {/each}

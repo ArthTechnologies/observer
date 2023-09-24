@@ -7,18 +7,20 @@
   import ChooseVersionAlt from "./ChooseVersionAlt.svelte";
   import accountEmail from "$lib/stores/accountEmail";
   import SkeleResult from "./SkeleResult.svelte";
-  import { ChevronDown, ChevronUp, Trash, Trash2 } from "lucide-svelte";
+  import { ChevronDown, ChevronUp, Clock, Trash, Trash2 } from "lucide-svelte";
 
   export let name;
   export let id;
   export let platform;
   export let modtype;
   export let filename;
+  export let date;
   let showInfo = true;
   let sendName = name;
   let author;
   let desc;
   let slug = id;
+  let time = new Date(date).toLocaleString();
 
   if (platform == "lr") {
     name = name.replace(/-/g, " ");
@@ -101,13 +103,22 @@
         <Trash2 size="15" /></button
       >
     </div>
-    <button class="btn btn-ghost btn-xs">
-      <label class="swap">
-        <input type="checkbox" on:click={toggleInfo} />
-        <div class="swap-on"><ChevronDown /></div>
-        <div class="swap-off"><ChevronUp /></div>
-      </label>
-    </button>
+    
+    <div class="flex items-center space-x-1">
+      <div
+      class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+    >
+      <Clock size="16" class="mr-1.5" />
+      {time}
+    </div>
+      <button class="btn btn-ghost btn-xs">
+        <label class="swap">
+          <input type="checkbox" on:click={toggleInfo} />
+          <div class="swap-on"><ChevronDown /></div>
+          <div class="swap-off"><ChevronUp /></div>
+        </label>
+      </button>
+    </div>
   </div>
   {#if showInfo === true}
     <div class="bg-base-200 rounded-b-lg px-1.5 pt-2.5 pb-2.5 space-x-1">
