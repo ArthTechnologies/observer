@@ -31,6 +31,7 @@
     Trash2,
   } from "lucide-svelte";
   import Folder from "$lib/components/ui/filetree/Folder.svelte";
+    import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
 
   let servers = [
     { name: "hub", ip: "arthmc.xyz:10000", isMain: true },
@@ -593,10 +594,11 @@
         >
       </div>
       <p class="text-xl font-bold mt-4 mb-2">Advanced</p>
-      <div class="flex space-x-2">
-        <a class="btn mt-2" href="/server/{parseInt(id) + 10000}/files"
+      <div class="flex space-x-2 ">
+        <a class="btn" href="/server/{parseInt(id) + 10000}/files"
           ><FolderClosed class="mr-1.5" />Explore Files</a
         >
+        <StorageLimit/>
       </div>
     </div>
   </div>
