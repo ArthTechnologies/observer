@@ -66,7 +66,7 @@
     if (state == "true") {
       starting = false;
       stopcolor = "error";
-      startcolor = "warning";
+      startcolor = "success";
       starttext = $t("button.restart");
     } else if (state == "false") {
       starting = false;
