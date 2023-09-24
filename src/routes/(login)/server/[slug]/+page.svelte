@@ -377,9 +377,7 @@
     </div>
   </div>
   <div class="flex flex-col mt-5 md:mt-0">
-    <div class="text-5xl font-bold divider">
-      {name}
-    </div>
+    <div class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold divider">{name}</div>
   </div>
 
   <div
