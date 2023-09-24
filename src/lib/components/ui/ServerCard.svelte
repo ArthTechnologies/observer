@@ -76,7 +76,7 @@
     } else if (state == "starting") {
       starting = true;
       stopcolor = "error";
-      startcolor = "disabled";
+      startcolor = "success";
       starttext = "Starting";
     } else if (state == "installing") {
       starting = true;
