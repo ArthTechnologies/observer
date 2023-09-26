@@ -395,7 +395,7 @@ readTerminal(id).then((response) => {
     if (scrollCorrected == false) {
 
 terminalContainer.scrollTop = terminalContainer.scrollHeight;
-if (terminalContainer.scrollTop >= 1216) {
+if (terminalContainer.scrollHeight - terminalContainer.scrollTop <= 384) {
 scrollCorrected = true;
 }
 }
