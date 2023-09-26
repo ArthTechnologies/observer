@@ -3,6 +3,8 @@
   import { writeTerminal } from "$lib/scripts/req";
   import { Maximize2, Minimize2 } from "lucide-svelte";
   let id;
+  let scrollCorrected = false;
+
 
   if (browser) {
     id = localStorage.getItem("serverID");
@@ -26,8 +28,17 @@
     if (browser) {
       document.getElementById("terminal2").innerHTML =
         document.getElementById("terminal").innerHTML;
+
     }
   }, 100);
+
+  function correctScroll() {
+    const terminalContainer2 = document.getElementById("terminalContainer2");
+    if (!scrollCorrected && terminalContainer2  != null) {
+          terminalContainer2.scrollTop = terminalContainer2.scrollHeight;
+          scrollCorrected = true;
+        }
+  }
 </script>
 
 <label for="fullscreenTerminal"
@@ -36,7 +47,7 @@
   </div></label
 >
 
-<input type="checkbox" id="fullscreenTerminal" class="modal-toggle" />
+<input type="checkbox" id="fullscreenTerminal" class="modal-toggle" on:click={correctScroll}/>
 <div class="modal bg-base-100 h-screen w-screen">
   <label
     for="fullscreenTerminal"
@@ -45,6 +56,7 @@
   >
   <div class="flex flex-col space-y-3 items-center m-2.5 md:m-5 w-full">
     <div
+    id="terminalContainer2"
       class="p-5 bg-base-300 rounded-xl shadow-xl overflow-auto max-sm:-mt-8 h-[78vh] rounded-xl w-full"
     >
       <div class=" sm:text-xs xl:text-base font-mono relative">
