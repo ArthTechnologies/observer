@@ -31,7 +31,7 @@
     Trash2,
   } from "lucide-svelte";
   import Folder from "$lib/components/ui/filetree/Folder.svelte";
-    import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
+  import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
 
   let servers = [
     { name: "hub", ip: "arthmc.xyz:10000", isMain: true },
@@ -373,36 +373,52 @@
   }
 
   function readCmd() {
+    let rt;
+    readTerminal(id).then((response) => {
+      if (browser) {
+        const terminalContainer = document.getElementById("terminalContainer");
+        const terminal = document.getElementById("terminal");
+        const filteredResponse = response
+          .replace(/\x1B\[[0-9;]*[mG]/g, "")
+          .replace(/\n/g, "<p>");
 
-let rt;
-readTerminal(id).then((response) => {
-  if (browser) {
-    const terminalContainer = document.getElementById("terminalContainer");
-    const terminal = document.getElementById("terminal");
-    const filteredResponse = response
-      .replace(/\x1B\[[0-9;]*[mG]/g, "")
-      .replace(/\n/g, "<p>");
-    //response replace newlines with <p>, remove things that start with [ and end with m
-    if (response.length < 100000){
-      if (filteredResponse.length - terminal.innerHTML.length != difference) {
-        difference = filteredResponse.length - terminal.innerHTML.length;
+        //scroll down the height of the new lines added
+        if (
+          terminal.innerHTML.split("<p>").length <
+          filteredResponse.split("<p>").length
+        ) {
+          terminalContainer.scrollTop +=
+            12 *
+            (filteredResponse.split("<p>").length -
+              terminal.innerHTML.split("<p>").length);
+        }
 
-      terminal.innerHTML = filteredResponse;
+        //response replace newlines with <p>, remove things that start with [ and end with m
+        if (response.length < 100000) {
+          if (
+            filteredResponse.length - terminal.innerHTML.length !=
+            difference
+          ) {
+            difference = filteredResponse.length - terminal.innerHTML.length;
+
+            terminal.innerHTML = filteredResponse;
+          }
+        } else {
+          terminal.innerHTML = filteredResponse;
+        }
+        if (scrollCorrected == false) {
+          terminalContainer.scrollTop = terminalContainer.scrollHeight;
+          if (
+            terminalContainer.scrollHeight - terminalContainer.scrollTop <=
+            384
+          ) {
+            scrollCorrected = true;
+          }
+        }
       }
-    } else {
-      terminal.innerHTML = filteredResponse;
-    }
-    if (scrollCorrected == false) {
-
-terminalContainer.scrollTop = terminalContainer.scrollHeight;
-if (terminalContainer.scrollHeight - terminalContainer.scrollTop <= 384) {
-scrollCorrected = true;
-}
-}
+    });
+    //set terminal's text to rt
   }
-});
-//set terminal's text to rt
-}
   readCmd();
 </script>
 
@@ -468,7 +484,9 @@ scrollCorrected = true;
     </div>
   </div>
   <div class="flex flex-col mt-5 md:mt-0">
-    <div class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold divider">{name}</div>
+    <div class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold divider">
+      {name}
+    </div>
   </div>
 
   <div
@@ -476,7 +494,8 @@ scrollCorrected = true;
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div
-      id="terminalContainer" class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[19.5rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem]"
+        id="terminalContainer"
+        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[19.5rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem]"
       >
         <div class="p-5 sm:text-xs xl:text-base font-mono relative">
           <FullscreenTerminal />
@@ -611,11 +630,11 @@ scrollCorrected = true;
         >
       </div>
       <p class="text-xl font-bold mt-4 mb-2">Advanced</p>
-      <div class="flex space-x-2 ">
+      <div class="flex space-x-2">
         <a class="btn" href="/server/{parseInt(id) + 10000}/files"
           ><FolderClosed class="mr-1.5" />Explore Files</a
         >
-        <StorageLimit/>
+        <StorageLimit />
       </div>
     </div>
   </div>

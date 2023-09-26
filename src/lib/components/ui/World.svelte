@@ -4,8 +4,8 @@
   import { browser } from "$app/environment";
   import { apiurl } from "$lib/scripts/req";
   import { AlertTriangle, Download, Loader, Map } from "lucide-svelte";
-    import Helper from "./Helper.svelte";
-    import { downloadProgressShort, fileSizeShort } from "$lib/scripts/numShort";
+  import Helper from "./Helper.svelte";
+  import { downloadProgressShort, fileSizeShort } from "$lib/scripts/numShort";
   let buttonWidthPercent = 30;
   let tab = "upload";
   let id = -1;
@@ -15,7 +15,7 @@
   let promise;
   let worldgenModsText = "Worldgen Mods:";
   let downloading = false;
-  let downloadProgress = "0/0MB"
+  let downloadProgress = "0/0MB";
   if (browser) {
     serverName = localStorage.getItem("serverName");
     id = localStorage.getItem("serverID");
@@ -29,27 +29,25 @@
     })
       .then((response) => response.json())
       .then((data) => {
-
         for (let i in data) {
-          if (data[i] == "terralith.zip" ||
-          data[i] == "incendium.zip" ||
-          data[i] == "nullscape.zip" ||
-          data[i] == "structory.zip") {
-
+          if (
+            data[i] == "terralith.zip" ||
+            data[i] == "incendium.zip" ||
+            data[i] == "nullscape.zip" ||
+            data[i] == "structory.zip"
+          ) {
             document.getElementById(data[i].split(".")[0]).checked = true;
             worldgenFiles.push(data[i].split(".")[0]);
-
           }
         }
 
         if (worldgenFiles.length == 0) {
           worldgenModsText = worldgenModsText + " None";
-        }
-        else {
-          worldgenModsText = worldgenModsText + " " + worldgenFiles.join(", ") + "."
+        } else {
+          worldgenModsText =
+            worldgenModsText + " " + worldgenFiles.join(", ") + ".";
         }
       });
-  
   }
 
   function download() {
@@ -120,64 +118,60 @@
   }
 
   function upload() {
-  const formData = new FormData();
-  formData.append("file", file, file.name);
+    const formData = new FormData();
+    formData.append("file", file, file.name);
 
-  console.error("uploading");
-  if (browser) {
-    const uploadBtn = document.querySelector(".uploadBtn");
-    //we normally use fetch, but we have to use XMLHttpRequest for this because fetch doesnt give progress of uploads.
-    const xhr = new XMLHttpRequest();
+    console.error("uploading");
+    if (browser) {
+      const uploadBtn = document.querySelector(".uploadBtn");
+      //we normally use fetch, but we have to use XMLHttpRequest for this because fetch doesnt give progress of uploads.
+      const xhr = new XMLHttpRequest();
 
-    xhr.upload.addEventListener("progress", (event) => {
-      if (event.lengthComputable) {
-        let percentComplete = (event.loaded / event.total) * 100;
+      xhr.upload.addEventListener("progress", (event) => {
+        if (event.lengthComputable) {
+          let percentComplete = (event.loaded / event.total) * 100;
 
-        percentComplete = percentComplete*.7;
-        console.log(`Percent complete: ${percentComplete.toFixed(2)}%`);
-                // You can update a progress bar or display the percentage to the user
-                if (percentComplete < 100) {
-
-
-          uploadBtn.style.background = `linear-gradient(
+          percentComplete = percentComplete * 0.7;
+          console.log(`Percent complete: ${percentComplete.toFixed(2)}%`);
+          // You can update a progress bar or display the percentage to the user
+          if (percentComplete < 100) {
+            uploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.0) ${percentComplete}%,
   #088587 ${percentComplete}%,
   #088587 100%
 )`;
+          }
         }
-      }
-    });
+      });
 
-    xhr.addEventListener("load", () => {
-      // Upload complete
-      console.error("Upload complete");
+      xhr.addEventListener("load", () => {
+        // Upload complete
+        console.error("Upload complete");
+      });
 
-    });
+      xhr.addEventListener("error", (error) => {
+        console.error("Error:", error);
+      });
 
-    xhr.addEventListener("error", (error) => {
-      console.error("Error:", error);
-    });
+      xhr.open("POST", apiurl + "server/" + id + "/world", true);
+      xhr.setRequestHeader("token", localStorage.getItem("token"));
+      xhr.setRequestHeader("email", localStorage.getItem("accountEmail"));
+      xhr.send(formData);
 
-    xhr.open("POST", apiurl + "server/" + id + "/world", true);
-    xhr.setRequestHeader("token", localStorage.getItem("token"));
-    xhr.setRequestHeader("email", localStorage.getItem("accountEmail"));
-    xhr.send(formData);
-
-    //when response is recieved...
-    xhr.onload = function () {
-      uploadBtn.style.background = `linear-gradient(
+      //when response is recieved...
+      xhr.onload = function () {
+        uploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.0) 100%,
   #088587 100%,
   #088587 100%
 )`;
-    };
+      };
+    }
   }
-}
-
 
   function handleFileSelect(event) {
     file = event.target.files[0]; // Store the selected file
@@ -205,15 +199,27 @@
       if (worldType == "superflat") {
         worldType = "flat";
       }
-      
+
       //POST to https://api.arthmc.xyz/server/{id}/world  with token and email, send file in body
-      fetch(apiurl + "server/" + id + "/world" + "?seed=" + seed+"&worldgenMods="+newWorldgenFiles.join(",")+"&worldType="+worldType, {
-        method: "POST",
-        headers: {
-          token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
-        },
-      });
+      fetch(
+        apiurl +
+          "server/" +
+          id +
+          "/world" +
+          "?seed=" +
+          seed +
+          "&worldgenMods=" +
+          newWorldgenFiles.join(",") +
+          "&worldType=" +
+          worldType,
+        {
+          method: "POST",
+          headers: {
+            token: localStorage.getItem("token"),
+            email: localStorage.getItem("accountEmail"),
+          },
+        }
+      );
     }
   }
 </script>
@@ -236,13 +242,18 @@
           <p class="font-bold md:text-lg">Current World</p>
         </div>
         <button class="downloadBtn btn btn-accent btn-sm" on:click={download}
-          >{#if !downloading}<Download size=18/>{:else}<div class="animate-spin"><Loader/></div>{/if}<p class="ml-1.5">{#if downloading}{downloadProgress}{:else}Download{/if}</p></button
+          >{#if !downloading}<Download size="18" />{:else}<div
+              class="animate-spin"
+            >
+              <Loader />
+            </div>{/if}
+          <p class="ml-1.5">
+            {#if downloading}{downloadProgress}{:else}Download{/if}
+          </p></button
         >
       </div>
-<p class="text-sm">{worldgenModsText}</p>
-
-
-</div>
+      <p class="text-sm">{worldgenModsText}</p>
+    </div>
 
     <div class="tabs tabs-boxed mt-2 w-[17.1rem]">
       <button id="regenTab" on:click={regenTab} class="tab"
@@ -263,93 +274,96 @@
       >
     </div>
     {#if tab == "regen"}
-    <div class="flex  flex-col items-start space-y-5">
-    <div>
-        <div class=" flex mb-1">
-      <p class="label">Worldgen Mods</p>
+      <div class="flex flex-col items-start space-y-5">
+        <div>
+          <div class=" flex mb-1">
+            <p class="label">Worldgen Mods</p>
 
-      <Helper tooltipText={$t("newserver.t.worldgen")} />
-    </div>
+            <Helper tooltipText={$t("newserver.t.worldgen")} />
+          </div>
 
-    <div class="flex">
-      <img
-    class="mask mask-hexagon"
-    src="/images/terralith.webp"
-    width="70ch"
-  />
+          <div class="flex">
+            <img
+              class="mask mask-hexagon"
+              src="/images/terralith.webp"
+              width="70ch"
+            />
 
-  <img
-    class="mask mask-hexagon"
-    src="/images/incendium.webp"
-    width="70ch"
-  />
-  <img
-    class="mask mask-hexagon"
-    src="/images/nullscape.webp"
-    width="70ch"
-  />
-  <img
-    class="mask mask-hexagon"
-    src="/images/structory.webp"
-    width="70ch"
-  />
-</div>
-<div class="p-2" />
-<div class="flex space-x-[2.9rem] ml-[1.4rem]">
-  <input
-    id="terralith"
-    type="checkbox"
-    class="checkbox checkbox-secondary"
-  />
-  <input
-    id="incendium"
-    type="checkbox"
-    class="checkbox checkbox-secondary"
-  />
-  <input
-    id="nullscape"
-    type="checkbox"
-    class="checkbox checkbox-secondary"
-  />
-  <input
-    id="structory"
-    type="checkbox"
-    class="checkbox checkbox-secondary"
-  />
-</div>
-</div>
+            <img
+              class="mask mask-hexagon"
+              src="/images/incendium.webp"
+              width="70ch"
+            />
+            <img
+              class="mask mask-hexagon"
+              src="/images/nullscape.webp"
+              width="70ch"
+            />
+            <img
+              class="mask mask-hexagon"
+              src="/images/structory.webp"
+              width="70ch"
+            />
+          </div>
+          <div class="p-2" />
+          <div class="flex space-x-[2.9rem] ml-[1.4rem]">
+            <input
+              id="terralith"
+              type="checkbox"
+              class="checkbox checkbox-secondary"
+            />
+            <input
+              id="incendium"
+              type="checkbox"
+              class="checkbox checkbox-secondary"
+            />
+            <input
+              id="nullscape"
+              type="checkbox"
+              class="checkbox checkbox-secondary"
+            />
+            <input
+              id="structory"
+              type="checkbox"
+              class="checkbox checkbox-secondary"
+            />
+          </div>
+        </div>
 
-<div class="space-y-3">
-  <p>World Type</p>
-<select class="select select-primary w-full max-w-xs" id="worldTypeDropdown">
-  <option selected>Normal</option>
-  <option>Superflat</option>
-  <option>Large Biomes</option>
-</select>
-</div>
-</div>
-      {/if}
-    <div class="mt-6">
-      {#if tab == "regen"}
-      <input
-        id="seed"
-        type="text"
-        class="input input-bordered max-w-xs mb-2"
-        placeholder="Seed (Leave blank for random)"
-      />
-      <label for="world" on:click={regen} class="btn">Regen World</label>
-    {/if}
-    {#if tab == "upload"}
-      <div class="flex space-x-2">
-        <input
-          id="worldFile"
-          type="file"
-          class="file-input file-input-bordered file-input-secondary max-w-xs"
-          on:change={handleFileSelect}
-        />
-        <button on:click={upload} class="btn uploadBtn">Upload</button>
+        <div class="space-y-3">
+          <p>World Type</p>
+          <select
+            class="select select-primary w-full max-w-xs"
+            id="worldTypeDropdown"
+          >
+            <option selected>Normal</option>
+            <option>Superflat</option>
+            <option>Large Biomes</option>
+          </select>
+        </div>
       </div>
     {/if}
+    <div class="mt-6">
+      {#if tab == "regen"}
+        <input
+          id="seed"
+          type="text"
+          class="input input-bordered max-w-xs mb-2"
+          placeholder="Seed (Leave blank for random)"
+        />
+        <label for="world" on:click={regen} class="btn">Regen World</label>
+      {/if}
+      {#if tab == "upload"}
+        <div class="flex space-x-2">
+          <input
+            id="worldFile"
+            type="file"
+            class="file-input file-input-bordered file-input-secondary max-w-xs"
+            on:change={handleFileSelect}
+          />
+          <button on:click={upload} class="btn uploadBtn">Upload</button>
+        </div>
+      {/if}
     </div>
   </div>
 </div>
