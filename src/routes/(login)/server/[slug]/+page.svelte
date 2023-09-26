@@ -32,7 +32,7 @@
     StopCircle,
   } from "lucide-svelte";
     import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
-
+  let scrollCorrected = false;
   let modded = false;
   let vanilla = false;
   let name: string = "-";
@@ -50,6 +50,7 @@
   let state = "false";
   let icon = "/images/placeholder.webp";
   let secret = "";
+  let difference = -1;
 
   if (browser) {
     name = localStorage.getItem("serverName");
@@ -69,6 +70,7 @@
     if (localStorage.getItem("serverSoftware") == "Vanilla") {
       vanilla = true;
     }
+
   }
   function alwaysDay() {
     let input = document.getElementById("alwaysDay").checked;
@@ -295,17 +297,28 @@
     let rt;
     readTerminal(id).then((response) => {
       if (browser) {
+        const terminalContainer = document.getElementById("terminalContainer");
+        const terminal = document.getElementById("terminal");
+        const filteredResponse = response
+          .replace(/\x1B\[[0-9;]*[mG]/g, "")
+          .replace(/\n/g, "<p>");
         //response replace newlines with <p>, remove things that start with [ and end with m
         if (response.length < 100000){
-          document.getElementById("terminal").innerHTML = response
-          .replace(/\x1B\[[0-9;]*[mG]/g, "")
-          .replace(/\n/g, "<p>");
-        } else {
-          document.getElementById("terminal").innerHTML = response.split(0, 20000)
-          .replace(/\x1B\[[0-9;]*[mG]/g, "")
-          .replace(/\n/g, "<p>");
-        }
+          if (filteredResponse.length - terminal.innerHTML.length != difference) {
+            difference = filteredResponse.length - terminal.innerHTML.length;
 
+          terminal.innerHTML = filteredResponse;
+          }
+        } else {
+          terminal.innerHTML = filteredResponse;
+        }
+        if (scrollCorrected == false) {
+
+terminalContainer.scrollTop = terminalContainer.scrollHeight;
+if (terminalContainer.scrollTop >= 1216) {
+scrollCorrected = true;
+}
+}
       }
     });
     //set terminal's text to rt
@@ -385,9 +398,9 @@
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div
-        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem]"
+      id="terminalContainer" class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem]"
       >
-        <div class="p-5 sm:text-xs xl:text-base font-mono relative">
+        <div class="p-5 sm:text-xs xl:text-base font-mono relative" >
           <FullscreenTerminal />
           <p id="terminal" />
         </div>

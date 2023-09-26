@@ -37,6 +37,8 @@
     { name: "hub", ip: "arthmc.xyz:10000", isMain: true },
     { name: "survival", ip: "arthmc.xyz:11000", isMain: false },
   ];
+  let scrollCorrected = false;
+  let difference = -1;
   let fSecret = "rewdw";
   let lobbyName = "hub";
   let modded = false;
@@ -371,21 +373,36 @@
   }
 
   function readCmd() {
-    let rt;
-    readTerminal(id).then((response) => {
-      if (browser) {
-        //response replace newlines with <p>, remove things that start with [ and end with m
-        document.getElementById("terminal").innerHTML = response
-          .replace(/\x1B\[[0-9;]*[mG]/g, "")
-          .replace(/\n/g, "<p>");
-        setTimeout(() => {
-          const terminal = document.getElementById("terminal");
-          terminal.scrollTop = terminal.scrollHeight;
-        }, 20);
+
+let rt;
+readTerminal(id).then((response) => {
+  if (browser) {
+    const terminalContainer = document.getElementById("terminalContainer");
+    const terminal = document.getElementById("terminal");
+    const filteredResponse = response
+      .replace(/\x1B\[[0-9;]*[mG]/g, "")
+      .replace(/\n/g, "<p>");
+    //response replace newlines with <p>, remove things that start with [ and end with m
+    if (response.length < 100000){
+      if (filteredResponse.length - terminal.innerHTML.length != difference) {
+        difference = filteredResponse.length - terminal.innerHTML.length;
+
+      terminal.innerHTML = filteredResponse;
       }
-    });
-    //set terminal's text to rt
+    } else {
+      terminal.innerHTML = filteredResponse;
+    }
+    if (scrollCorrected == false) {
+
+terminalContainer.scrollTop = terminalContainer.scrollHeight;
+if (terminalContainer.scrollTop >= 1216) {
+scrollCorrected = true;
+}
+}
   }
+});
+//set terminal's text to rt
+}
   readCmd();
 </script>
 
@@ -459,7 +476,7 @@
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div
-        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[19.5rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem]"
+      id="terminalContainer" class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[19.5rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem]"
       >
         <div class="p-5 sm:text-xs xl:text-base font-mono relative">
           <FullscreenTerminal />
