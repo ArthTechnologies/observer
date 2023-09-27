@@ -9,7 +9,7 @@
   //Status variables
 
   let stopcolor = "info";
-  let startcolor = "info";
+  let startcolor = "accent";
   let starttext = "Start";
   let starting = false;
   let email = "noemail";
@@ -62,7 +62,6 @@
     }
   }
   function status() {
-
     if (state == "true") {
       starting = false;
       stopcolor = "error";
@@ -79,6 +78,7 @@
       startcolor = "success";
       starttext = "Starting";
     } else if (state == "installing") {
+      console.error("installing");
       starting = true;
       stopcolor = "error";
       startcolor = "accent";
@@ -88,7 +88,6 @@
       stopcolor = "error";
       startcolor = "disabled";
       starttext = $t("button.start");
-
     }
   }
   status();

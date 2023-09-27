@@ -35,7 +35,14 @@
     .then((x) => x.json())
     .then((x) => {
       console.log(x);
-      if (x.includes(serverVersion + "-" + serverSoftware + ".jar")) {
+      if (
+        x.includes(
+          serverSoftware.toLowerCase() +
+            "-" +
+            serverVersion.toLowerCase() +
+            ".jar"
+        )
+      ) {
         jarAvailable = true;
       }
     });
