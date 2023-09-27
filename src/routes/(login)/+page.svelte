@@ -13,11 +13,13 @@
   var id = 0;
 
   let noserverlock = false;
+  let amountOfServersForSkeletons = 1;
 
   let res2 = {};
   let email: string = "";
   if (browser) {
     email = localStorage.getItem("accountEmail");
+    amountOfServersForSkeletons = localStorage.getItem("servers");
   }
 
   // getServers and store "amount" given in the response in a variable
@@ -57,7 +59,9 @@
 
     <div class="flex flex-wrap justify-center" id="serverList">
       {#await promise}
-        <ServerSkele />
+        {#each Array.from({ length: amountOfServersForSkeletons }) as _}
+          <ServerSkele />
+        {/each}
       {:then}
         {#each servers as server}
           <ServerCard {...server} />
