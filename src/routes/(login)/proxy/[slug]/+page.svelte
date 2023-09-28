@@ -121,16 +121,17 @@
   }
 
   function addServer() {
-    let name = document.getElementById("serverName").value;
+    let subServerName = document.getElementById("subServerName").value;
+    console.error(subServerName);
     let ip = document.getElementById("serverIP").value;
 
-    if (name != "" && ip != "") {
+    if (subServerName != "" && ip != "") {
       fetch(
         apiurl +
           "server/" +
           id +
           "/proxy/servers?name=" +
-          name +
+          subServerName +
           "&ip=" +
           ip +
           "&secret=" +
@@ -151,7 +152,7 @@
         });
 
       console.log(servers);
-      document.getElementById("serverName").value = "";
+      document.getElementById("subServerName").value = "";
       document.getElementById("serverIP").value = "";
     }
   }
@@ -579,7 +580,7 @@
           <label class="label" for="username">Add Server</label>
 
           <input
-            id="serverName"
+            id="subServerName"
             class="input input-sm input-bordered"
             placeholder="Name"
             type="text"
