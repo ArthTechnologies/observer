@@ -73,6 +73,7 @@ export function setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartu
             console.log("Response Recieved: " + input);
 
             if (input.indexOf("400") > -1) {
+              alert("wrong password.");
               return "error";
             } else {
               return "success";
@@ -507,12 +508,8 @@ export function getServer(id: number) {
     });
 }
 
-export function deleteServer(id: number) {
-  localStorage.setItem(
-    "servers",
-    (parseInt(localStorage.getItem("servers")) - 1).toString()
-  );
-  const url = apiurl + "server/" + id;
+export function deleteServer(id: number, password: string) {
+  const url = apiurl + "server/" + id + "?email=" + password;
 
   return fetch(url, DELETE)
     .then((res) => res.text())
@@ -520,6 +517,10 @@ export function deleteServer(id: number) {
       if (input.indexOf("400") > -1) {
         return "error";
       } else {
+        localStorage.setItem(
+          "servers",
+          (parseInt(localStorage.getItem("servers")) - 1).toString()
+        );
         goto("/");
         //return input as json
         return JSON.parse(input);

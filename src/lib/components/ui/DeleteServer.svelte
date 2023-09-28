@@ -9,7 +9,7 @@
     id = localStorage.getItem("serverID");
   }
   function del() {
-    deleteServer(id);
+    deleteServer(id, document.getElementById("password"));
   }
 </script>
 
@@ -35,7 +35,12 @@
         Consider downloading your world first.</span
       >
     </div>
-
+    <input
+      type="password"
+      id="password"
+      class="input input-bordered input-error mr-1"
+      placeholder="Type your password"
+    />
     <button class="btn btn-error" on:click={del}>{$t("button.delete")}</button>
   </div>
 </div>
