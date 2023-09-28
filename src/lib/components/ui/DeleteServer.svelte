@@ -9,7 +9,7 @@
     id = localStorage.getItem("serverID");
   }
   function del() {
-    deleteServer(id, document.getElementById("password"));
+    deleteServer(id, document.getElementById("password").value);
   }
 </script>
 
