@@ -509,7 +509,7 @@ export function getServer(id: number) {
 }
 
 export function deleteServer(id: number, password: string) {
-  const url = apiurl + "server/" + id + "?email=" + password;
+  const url = apiurl + "server/" + id + "?email=" + localStorage.getItem("accountEmail") + "&password=" + password;
 
   return fetch(url, DELETE)
     .then((res) => res.text())
