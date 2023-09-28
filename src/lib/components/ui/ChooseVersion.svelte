@@ -32,7 +32,6 @@
     }
   }
   function get() {
-    
     fetch(lrurl + "project/" + id, {
       method: "GET",
 
@@ -84,6 +83,7 @@
               url: version.files[0].url,
               pluginId: id,
               pluginName: name,
+              dependencies: version.dependencies,
               modtype: "plugin",
             },
           });
