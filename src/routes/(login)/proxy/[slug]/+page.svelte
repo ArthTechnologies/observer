@@ -121,16 +121,16 @@
   }
 
   function addServer() {
-    let name = document.getElementById("serverName").value;
+    let subServerName = document.getElementById("serverName").value;
     let ip = document.getElementById("serverIP").value;
 
-    if (name != "" && ip != "") {
+    if (subServerName != "" && ip != "") {
       fetch(
         apiurl +
           "server/" +
           id +
           "/proxy/servers?name=" +
-          name +
+          subServerName +
           "&ip=" +
           ip +
           "&secret=" +
