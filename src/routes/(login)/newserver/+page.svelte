@@ -9,7 +9,6 @@
   import Alert from "$lib/components/ui/Alert.svelte";
   let version = "1.19.4";
   export let software = "Paper";
-  export let snapshot = false;
   let name = "";
   let visible = false;
   let msg = "";
@@ -42,9 +41,6 @@
     switch (sSoftware) {
       case "Paper (Reccomended)":
         sSoftware = "paper";
-        break;
-      case "Latest Snapshot":
-        sSoftware = "snapshot";
         break;
     }
 
@@ -146,15 +142,11 @@
     });
   }
   function checkS() {
-    findVersions();
+    //findVersions();
     console.error("software" + software);
-    if (software == "Latest Snapshot") {
-      worldgen = false;
-      snapshot = true;
-      modpacks = false;
-    } else if (software == "Paper") {
+    if (software == "Paper") {
       worldgen = true;
-      snapshot = false;
+
       modpacks = false; // Reset modpacks to false when switching to Paper
     } else if (
       software == "Quilt" ||
@@ -162,11 +154,10 @@
       software == "Forge"
     ) {
       worldgen = false;
-      snapshot = false;
+
       modpacks = true;
     } else {
       worldgen = false;
-      snapshot = false;
       modpacks = false;
     }
   }
@@ -200,36 +191,34 @@
             <option>Velocity</option>
           </select>
 
-          {#if snapshot == false}
-            <label class="label" for="softwareDropdown"
-              >{$t("newserver.l.version")}</label
-            >
-            <select
-              on:change={checkV}
-              id="versionDropdown"
-              name="versionDropdown"
-              tabindex="0"
-              class="select select-primary p-2 bg-base-100"
-            >
-              <option>{latestVersion}</option>
-              <option>1.19.4</option>
-              <option>1.18.2</option>
-              <option>1.17.1</option>
-              <option>1.16.5</option>
-              {#if software != "Forge"}
-                <option>1.15.2</option>
-                <option>1.14.4</option>
-                <option>1.13.2</option>
-              {/if}
-              <option>1.12.2</option>
-              {#if software != "Forge"}
-                <option>1.11.2</option>
-                <option>1.10.2</option>
-                <option>1.9.4</option>
-                <option>1.8.8</option>
-              {/if}
-            </select>
-          {/if}
+          <label class="label" for="softwareDropdown"
+            >{$t("newserver.l.version")}</label
+          >
+          <select
+            on:change={checkV}
+            id="versionDropdown"
+            name="versionDropdown"
+            tabindex="0"
+            class="select select-primary p-2 bg-base-100"
+          >
+            <option>{latestVersion}</option>
+            <option>1.19.4</option>
+            <option>1.18.2</option>
+            <option>1.17.1</option>
+            <option>1.16.5</option>
+            {#if software != "Forge"}
+              <option>1.15.2</option>
+              <option>1.14.4</option>
+              <option>1.13.2</option>
+            {/if}
+            <option>1.12.2</option>
+            {#if software != "Forge"}
+              <option>1.11.2</option>
+              <option>1.10.2</option>
+              <option>1.9.4</option>
+              <option>1.8.8</option>
+            {/if}
+          </select>
 
           <label class="label" for="1">{$t("newserver.l.name")}</label>
           <input
