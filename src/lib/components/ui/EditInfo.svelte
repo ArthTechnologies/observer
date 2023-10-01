@@ -16,8 +16,6 @@
     name = localStorage.getItem("serverName");
     id = localStorage.getItem("serverID");
     software = localStorage.getItem("serverSoftware");
-
-    
   }
   function get() {
     fetch(apiurl + "server/" + id + "/getInfo", {
@@ -30,13 +28,10 @@
     })
       .then((response) => response.json())
       .then((data) => {
-
         desc = data.desc;
         fSecret = data.secret;
 
         //add checked property to toggle
-
-
 
         if (data.automaticStartup) {
           document.getElementById("automaticStartup").checked = true;
@@ -55,23 +50,23 @@
 
         if (document.getElementById("proxiesEnabled") != null) {
           if (data.proxiesEnabled) {
-          document.getElementById("proxiesEnabled").checked = true;
-        } else {
-          document.getElementById("proxiesEnabled").checked = false;
+            document.getElementById("proxiesEnabled").checked = true;
+          } else {
+            document.getElementById("proxiesEnabled").checked = false;
+          }
+          if (document.getElementById("proxiesEnabled").checked) {
+            proxiesEnabled = true;
+          } else {
+            proxiesEnabled = false;
+          }
         }
-        if (document.getElementById("proxiesEnabled").checked) {
-          proxiesEnabled = true;
-        } else {
-          proxiesEnabled = false;
+        icon = document.getElementById("xIcon").src;
+        iconPreview = icon;
+        desc = document.getElementById("xDesc")?.innerText.split(": ")[1];
+        if (icon.includes("/images/placeholder.webp")) {
+          icon = "";
+          iconPreview = "/images/placeholder.webp";
         }
-      }
-      icon = document.getElementById("xIcon").src;
-      iconPreview = icon;
-      desc = document.getElementById("xDesc")?.innerText.split(": ")[1];
-      if (icon.includes("/images/placeholder.webp")) {
-        icon = "";
-        iconPreview = "/images/placeholder.webp";
-      }
       });
   }
   function set() {
@@ -99,20 +94,19 @@
 
       setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartup);
 
-      fetch(apiurl+"server/"+id+"/rename?newName="+name,
-      {
-
-        method: "POST",
-        headers: {
-          "email": localStorage.getItem("accountEmail"),
-          "token": localStorage.getItem("token"),
-        },
-      })
-        .then((x) => x.json())
-        .then((x) => {
-          console.log(x);
-        });
-
+      if (localStorage.getItem("serverName") != name) {
+        fetch(apiurl + "server/" + id + "/rename?newName=" + name, {
+          method: "POST",
+          headers: {
+            email: localStorage.getItem("accountEmail"),
+            token: localStorage.getItem("token"),
+          },
+        })
+          .then((x) => x.json())
+          .then((x) => {
+            console.log(x);
+          });
+      }
     }
   }
 </script>
@@ -130,9 +124,7 @@
       >✕</label
     >
     <h3 class="text-2xl font-bold mb-3">Settings</h3>
-    <label for="serverDescription" class="block font-bold mb-2"
-      >Name
-    </label>
+    <label for="serverDescription" class="block font-bold mb-2">Name </label>
     <input
       bind:value={name}
       type="text"
@@ -141,7 +133,9 @@
     />
     <div class=" w-96 mt-2">
       <label class="cursor-pointer label">
-        <span class="label-text">Automatically start up after matinence shutdowns</span>
+        <span class="label-text"
+          >Automatically start up after matinence shutdowns</span
+        >
         <input
           id="automaticStartup"
           type="checkbox"
