@@ -211,7 +211,7 @@
     getServer(id).then((response) => {
       //convert addons array to string, save it to "serverAddons" array
       localStorage.setItem("serverAddons", response.addons.toString());
-
+      localStorage.setItem("serverVersion", response.version);
       //set state to response
       state = response.state;
 

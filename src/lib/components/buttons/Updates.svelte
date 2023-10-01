@@ -16,6 +16,9 @@
   function update() {
     if (updateReady && browser) {
       updateServer(localStorage.getItem("serverID"), latestUpdate);
+      setTimeout(function () {
+        serverVersion = localStorage.getItem("serverVersion");
+      }, 1000);
     }
   }
   if (browser) {
