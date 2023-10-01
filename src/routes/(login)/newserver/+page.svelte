@@ -177,21 +177,24 @@
     });
   }
   function checkS() {
+    const modpackElement = document.getElementById("modpacks");
     findVersions();
 
     if (software == "Paper") {
       worldgen.classList.remove("hidden");
-      modpacks = false; // Reset modpacks to false when switching to Paper
+      modpackElement.classList.add("hidden");
+      modpacks = false;
     } else if (
       software == "Quilt" ||
       software == "Fabric" ||
       software == "Forge"
     ) {
       worldgen.classList.add("hidden");
-
+      modpackElement.classList.remove("hidden");
       modpacks = true;
     } else {
       worldgen.classList.add("hidden");
+      modpackElement.classList.add("hidden");
       modpacks = false;
     }
   }
@@ -317,7 +320,10 @@
               />
             </div>
           </div>
-          <div class=" justify-evenly mt-5 space-y-5 rounded-xl items-center">
+          <div
+            id="modpacks"
+            class=" justify-evenly mt-5 space-y-5 rounded-xl items-center"
+          >
             {#if modpacks}
               <Modpacks />{/if}
           </div>
