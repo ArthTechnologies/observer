@@ -76,6 +76,7 @@ export function setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartu
               alert("wrong password.");
               return "error";
             } else {
+              setDescText(desc);
               return "success";
             }
           })
@@ -94,9 +95,15 @@ export function setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartu
           return "error";
         } else {
           return "success";
+          setDescText(desc);
         }
       })
       .catch((err) => console.error(err));
+  }
+  function setDescText(desc) {
+    if (document.getElementById("xDesc") != null) {
+      document.getElementById("xDesc").innerHTML = "Description: "+desc;
+    }
   }
 }
 
