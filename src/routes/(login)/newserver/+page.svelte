@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createServer } from "$lib/scripts/req";
+  import { apiurl, createServer } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import Helper from "$lib/components/ui/Helper.svelte";
   import { goto } from "$app/navigation";
@@ -19,8 +19,11 @@
   let latestVersion = "1.20.1";
   let index = {};
   let versionOptions = [latestVersion];
+  let worldgen = null;
+  let jarsList = [];
 
   if (browser) {
+    worldgen = document.getElementById("worldgen");
     latestVersion = localStorage.getItem("latestVersion");
     version = latestVersion;
     fetch("https://api.jarsmc.xyz/jars/arthHosting", {
@@ -32,7 +35,20 @@
         index["quilt"] = index["paper"];
         findVersions();
       });
+    fetch(apiurl + "servers/jars", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        jarsList = res;
+      });
   }
+
   function send() {
     let addons = [];
     let cmd = [];
@@ -47,20 +63,18 @@
     sSoftware = sSoftware.charAt(0).toLowerCase() + sSoftware.slice(1);
     sVersion = version.charAt(0).toLowerCase() + version.slice(1);
 
-    if (worldgen) {
-      //for all 3 checkboxes, if checked, add their ids to the addons array
-      if (document.getElementById("terralith").checked) {
-        addons.push("terralith");
-      }
-      if (document.getElementById("incendium").checked) {
-        addons.push("incendium");
-      }
-      if (document.getElementById("nullscape").checked) {
-        addons.push("nullscape");
-      }
-      if (document.getElementById("structory").checked) {
-        addons.push("structory");
-      }
+    //for all 3 checkboxes, if checked, add their ids to the addons array
+    if (document.getElementById("terralith").checked) {
+      addons.push("terralith");
+    }
+    if (document.getElementById("incendium").checked) {
+      addons.push("incendium");
+    }
+    if (document.getElementById("nullscape").checked) {
+      addons.push("nullscape");
+    }
+    if (document.getElementById("structory").checked) {
+      addons.push("structory");
     }
 
     cmd.push("op " + admin);
@@ -95,20 +109,34 @@
       alert("Not in browser");
     }
   }
-  let worldgen = true;
   function checkV() {
     if (browser) {
       version = document.getElementById("versionDropdown").value;
     }
 
-    // Rest of your code...
+    let worldgenModsAvailable = false;
 
-    if (version === latestVersion && !modpacks) {
-      worldgen = true;
+    if (!modpacks) {
+      let worldgenMods = ["terralith", "incendium", "nullscape", "structory"];
+      worldgenMods.forEach((item) => {
+        let checkbox = document.getElementById(item);
+        if (checkbox != null) {
+          if (jarsList.includes(item + "-" + version + ".zip")) {
+            worldgenModsAvailable = true;
+            checkbox.disabled = false;
+          } else {
+            checkbox.disabled = true;
+          }
+        }
+      });
+      if (worldgenModsAvailable) {
+        worldgen.classList.remove("hidden");
+      } else {
+        worldgen.classList.add("hidden");
+      }
     } else {
-      worldgen = false;
+      worldgen.classList.add("hidden");
     }
-    console.log(software + worldgen);
   }
 
   function findVersions() {
@@ -142,22 +170,21 @@
     });
   }
   function checkS() {
-    //findVersions();
-    console.error("software" + software);
-    if (software == "Paper") {
-      worldgen = true;
+    findVersions();
 
+    if (software == "Paper") {
+      worldgen.classList.remove("hidden");
       modpacks = false; // Reset modpacks to false when switching to Paper
     } else if (
       software == "Quilt" ||
       software == "Fabric" ||
       software == "Forge"
     ) {
-      worldgen = false;
+      worldgen.classList.add("hidden");
 
       modpacks = true;
     } else {
-      worldgen = false;
+      worldgen.classList.add("hidden");
       modpacks = false;
     }
   }
@@ -229,7 +256,7 @@
             placeholder="{$t('general.ex')} My Minecraft Server"
           />
 
-          {#if worldgen}
+          <div id="worldgen">
             <div class="justify-center flex mt-2 mb-1">
               <p class="label">Worldgen Mods</p>
 
@@ -282,7 +309,7 @@
                 class="checkbox checkbox-secondary"
               />
             </div>
-          {/if}
+          </div>
           <div class=" justify-evenly mt-5 space-y-5 rounded-xl items-center">
             {#if modpacks}
               <Modpacks />{/if}
