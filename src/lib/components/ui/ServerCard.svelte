@@ -88,6 +88,10 @@
       stopcolor = "error";
       startcolor = "disabled";
       starttext = $t("button.start");
+      const stopBtn = document.getElementById("stoppingBtn");
+      if (stopBtn != null) {
+        stopBtn.innerText = "Stopping";
+      }
     }
   }
   status();
@@ -179,6 +183,7 @@
             {/if}
             <button
               on:click={stop}
+              id="{state}Btn"
               class="btn btn-error btn-{stopcolor} btn-sm h-9 stop-btn"
               >{$t("button.stop")}</button
             >
