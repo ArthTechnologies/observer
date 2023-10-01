@@ -24,6 +24,13 @@
 
   if (browser) {
     worldgen = document.getElementById("worldgen");
+    let intervalID = setInterval(() => {
+      if (worldgen == null) {
+        worldgen = document.getElementById("worldgen");
+      } else {
+        clearInterval(intervalID);
+      }
+    }, 100);
     latestVersion = localStorage.getItem("latestVersion");
     version = latestVersion;
     fetch("https://api.jarsmc.xyz/jars/arthHosting", {
