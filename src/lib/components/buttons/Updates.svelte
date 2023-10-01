@@ -121,12 +121,20 @@
     </div>
     {#if updateReady}
       <p class="text-center my-3">
-        All of your worldgen mods are ready for {latestUpdate}.
+        {#if areWorldgenMods}
+          All of your worldgen mods are ready for {latestUpdate}.
+        {:else}
+          Your server is ready for {latestUpdate}.
+        {/if}
       </p>
     {:else}
       <p class="text-center">
-        Not all of your worldgen mods have been updated to {latestUpdate} yet. Check
-        back in a few days.
+        {#if areWorldgenMods}
+          Not all of your worldgen mods have updated to {latestUpdate} yet. Check
+          back in a few days.
+        {:else}
+          Your server can't update to {latestUpdate}.
+        {/if}
       </p>
     {/if}
     <label on:click={update} for="updates" id="confirmBtn" class="btn"
