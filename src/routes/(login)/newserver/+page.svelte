@@ -20,17 +20,19 @@
   let latestVersion = "1.20.1";
   let index = {};
   let versionOptions = [latestVersion];
-  fetch("https://api.jarsmc.xyz/jars/arthHosting", {
-    method: "GET",
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      index = res;
-      index["quilt"] = index["paper"];
-    });
+
   if (browser) {
     latestVersion = localStorage.getItem("latestVersion");
     version = latestVersion;
+    fetch("https://api.jarsmc.xyz/jars/arthHosting", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        index = res;
+        index["quilt"] = index["paper"];
+        findVersions();
+      });
   }
   function send() {
     let addons = [];

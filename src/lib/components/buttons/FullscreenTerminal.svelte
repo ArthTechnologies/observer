@@ -28,19 +28,20 @@
       const terminalContainer2 = document.getElementById("terminalContainer2");
       const terminal = document.getElementById("terminal");
       const terminal2 = document.getElementById("terminal2");
-
-      //scroll down the height of the new lines added
-      if (
-        terminal2.innerHTML.split("<p>").length <
-        terminal.innerHTML.split("<p>").length
-      ) {
-        terminalContainer2.scrollTop +=
-          12 *
-          (terminal.innerHTML.split("<p>").length -
-            terminal2.innerHTML.split("<p>").length);
+      if (terminal2 != null) {
+        //scroll down the height of the new lines added
+        if (
+          terminal2.innerHTML.split("<p>").length <
+          terminal.innerHTML.split("<p>").length
+        ) {
+          terminalContainer2.scrollTop +=
+            12 *
+            (terminal.innerHTML.split("<p>").length -
+              terminal2.innerHTML.split("<p>").length);
+        }
+        document.getElementById("terminal2").innerHTML =
+          document.getElementById("terminal").innerHTML;
       }
-      document.getElementById("terminal2").innerHTML =
-        document.getElementById("terminal").innerHTML;
     }
   }, 100);
 
