@@ -485,7 +485,10 @@
     </div>
   </div>
   <div class="flex flex-col mt-5 md:mt-0">
-    <div class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold divider">
+    <div
+      class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold divider"
+      id="serverName"
+    >
       {name}
     </div>
   </div>

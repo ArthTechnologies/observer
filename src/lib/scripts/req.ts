@@ -94,8 +94,9 @@ export function setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartu
         if (input.indexOf("400") > -1) {
           return "error";
         } else {
-          return "success";
           setDescText(desc);
+          return "success";
+          
         }
       })
       .catch((err) => console.error(err));

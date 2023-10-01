@@ -104,7 +104,12 @@
         })
           .then((x) => x.json())
           .then((x) => {
-            console.log(x);
+            //if successful
+            if (!JSON.stringify(x).includes("ERROR")) {
+              if (document.getElementById("serverName") != null) {
+                document.getElementById("serverName").innerText = name;
+              }
+            }
           });
       }
     }
