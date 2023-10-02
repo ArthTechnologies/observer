@@ -243,18 +243,7 @@
             <option>1.18.2</option>
             <option>1.17.1</option>
             <option>1.16.5</option>
-            {#if software != "Forge"}
-              <option>1.15.2</option>
-              <option>1.14.4</option>
-              <option>1.13.2</option>
-            {/if}
             <option>1.12.2</option>
-            {#if software != "Forge"}
-              <option>1.11.2</option>
-              <option>1.10.2</option>
-              <option>1.9.4</option>
-              <option>1.8.8</option>
-            {/if}
           </select>
 
           <label class="label" for="1">{$t("newserver.l.name")}</label>
