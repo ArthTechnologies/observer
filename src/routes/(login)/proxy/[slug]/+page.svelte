@@ -642,7 +642,7 @@
         <div class="flex space-x-2">
           <a class="btn btn-primary" href="/server/{parseInt(id) + 10000}/files"
             ><FolderClosed class="mr-1.5" />Explore Files</a
-          >
+          ><Versions />
         </div>
       </div>
     </div>
