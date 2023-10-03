@@ -30,8 +30,10 @@
     PlayCircle,
     Repeat,
     StopCircle,
+    Settings,
   } from "lucide-svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
+  import Versions from "$lib/components/buttons/Versions.svelte";
   let scrollCorrected = false;
   let modded = false;
   let vanilla = false;
@@ -469,7 +471,7 @@
               <HelpCircle size="18" class="md:mr-1.5" />
               <p class="hidden md:block">How to join</p></a
             >
-            <EditInfo />
+            <EditInfo type="smallBtn" />
           </div>
         </div>
       </div>
@@ -479,9 +481,7 @@
           <Add /><Manage />
         {/if}
       </div>
-      <div
-        class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl w-[20rem] md:w-auto"
-      >
+      <div class=" bg-base-200 mt-4 rounded-xl px-4 py-3 w-[20rem] md:w-auto">
         <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
         <div class="space-x-1.5 space-y-1.5">
           <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
@@ -522,12 +522,13 @@
           >
         </div>
       </div>
-      <p class="text-xl font-bold mt-4 mb-2">Advanced</p>
+      <div class="flex space-x-2 mb-2 mt-4">
+        <EditInfo type="fullBtn" /><StorageLimit />
+      </div>
       <div class="flex space-x-2">
-        <a class="btn" href="/server/{parseInt(id) + 10000}/files"
+        <a class="btn btn-primary" href="/server/{parseInt(id) + 10000}/files"
           ><FolderClosed class="mr-1.5" />Explore Files</a
-        >
-        <StorageLimit />
+        ><Versions />
       </div>
     </div>
   </div>

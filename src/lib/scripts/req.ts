@@ -562,7 +562,7 @@ export function readTerminal(id: number) {
 }
 
 export function updateServer(id: number, version: string) {
-  const url = apiurl + "server/" + id + "/update?version=" + version;
+  const url = apiurl + "server/" + id + "/version?version=" + version;
   return fetch(url, POST)
     .then((res) => res.text())
     .then((input: string) => {

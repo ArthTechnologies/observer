@@ -12,6 +12,7 @@
   let automaticStartup = false;
   let software;
   let name;
+  export let type = "smallBtn";
   if (browser) {
     name = localStorage.getItem("serverName");
     id = localStorage.getItem("serverID");
@@ -116,11 +117,22 @@
   }
 </script>
 
-<label for="editInfo"
-  ><div class="btn btn-circle absolute right-2 top-2 md:btn-sm" on:click={get}>
-    <Settings class="w-[1.5rem] h-[1.5rem] md:w-[1rem] md:h-[1rem]" />
-  </div></label
->
+{#if type == "smallBtn"}
+  <label for="editInfo"
+    ><div
+      class="btn btn-circle absolute right-2 top-2 md:btn-sm"
+      on:click={get}
+    >
+      <Settings class="w-[1.5rem] h-[1.5rem] md:w-[1rem] md:h-[1rem]" />
+    </div></label
+  >
+{:else if type == "fullBtn"}
+  <label for="editInfo"
+    ><div class="btn" on:click={get}>
+      <Settings class="mr-1.5" />Settings
+    </div></label
+  >
+{/if}
 
 <input type="checkbox" id="editInfo" class="modal-toggle" />
 <div class="modal">
