@@ -522,13 +522,15 @@
           >
         </div>
       </div>
-      <div class="flex space-x-2 mb-2 mt-4">
-        <EditInfo type="fullBtn" /><StorageLimit />
-      </div>
-      <div class="flex space-x-2">
-        <a class="btn btn-primary" href="/server/{parseInt(id) + 10000}/files"
-          ><FolderClosed class="mr-1.5" />Explore Files</a
-        ><Versions />
+      <div class="w-[20rem] flex flex-col items-center">
+        <div class="flex space-x-2 mb-2 mt-4">
+          <EditInfo type="fullBtn" /><StorageLimit />
+        </div>
+        <div class="flex space-x-2">
+          <a class="btn btn-primary" href="/server/{parseInt(id) + 10000}/files"
+            ><FolderClosed class="mr-1.5" />Explore Files</a
+          ><Versions />
+        </div>
       </div>
     </div>
   </div>

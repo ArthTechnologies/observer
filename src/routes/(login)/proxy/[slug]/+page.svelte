@@ -32,6 +32,7 @@
   } from "lucide-svelte";
   import Folder from "$lib/components/ui/filetree/Folder.svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
+  import Versions from "$lib/components/buttons/Versions.svelte";
 
   let servers = [
     { name: "hub", ip: "arthmc.xyz:10000", isMain: true },
@@ -499,7 +500,7 @@
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div
         id="terminalContainer"
-        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[19.5rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem]"
+        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[19rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem]"
       >
         <div class="p-5 sm:text-xs xl:text-base font-mono relative">
           <FullscreenTerminal />
@@ -511,7 +512,7 @@
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 w-[19.5rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem]"
+        class="input input-secondary bg-base-200 w-[19rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem]"
       />
       <div class="divider md:hidden pt-5 pb-4" />
     </div>
@@ -521,7 +522,7 @@
     >
       <div class="space-y-5 mb-4">
         <div
-          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-[19.5rem] lg:w-[22.5rem] md:w-auto"
+          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-[19rem] lg:w-[22.5rem] md:w-auto"
         >
           <div class="flex relative">
             <div class="p-4 space-x-4 flex">
@@ -557,7 +558,7 @@
         {/if}
       </div>
       <div
-        class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl w-[19.5rem] lg:w-[22.5rem]"
+        class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl w-[19rem] lg:w-[22.5rem]"
       >
         <p class="text-xl font-bold">Servers</p>
 
@@ -611,10 +612,10 @@
         </div>
       </div>
       <div
-        class="bg-primary w-[19.5rem] lg:w-[22.5rem] rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-4"
+        class="bg-primary w-[19rem] lg:w-[22.5rem] rounded-lg text-black p-2 flex items-center mb-2 space-x-2 mt-4"
       >
         <Info />
-        <span class="text-sm w-[19.5rem] lg:w-[22.5rem] flex flex-wrap"
+        <span class="text-sm w-[19rem] lg:w-[22.5rem] flex flex-wrap"
           >Your forwarding secret is <code
             class="bg-gray-500 rounded p-0.5 flex ml-1"
             ><div class="dropdown">
@@ -633,12 +634,16 @@
           and disable online mode.</span
         >
       </div>
-      <p class="text-xl font-bold mt-4 mb-2">Advanced</p>
-      <div class="flex space-x-2">
-        <a class="btn" href="/server/{parseInt(id) + 10000}/files"
-          ><FolderClosed class="mr-1.5" />Explore Files</a
-        >
-        <StorageLimit />
+
+      <div class="w-[20rem] flex flex-col items-center">
+        <div class="flex space-x-2 mb-2 mt-4">
+          <EditInfo type="fullBtn" /><StorageLimit />
+        </div>
+        <div class="flex space-x-2">
+          <a class="btn btn-primary" href="/server/{parseInt(id) + 10000}/files"
+            ><FolderClosed class="mr-1.5" />Explore Files</a
+          >
+        </div>
       </div>
     </div>
   </div>
