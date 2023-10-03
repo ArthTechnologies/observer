@@ -28,25 +28,24 @@
     if (serverAddons[0] == "") {
       areWorldgenMods = false;
     }
+
+    fetch("https://api.jarsmc.xyz/jars/arthHosting")
+      .then((x) => x.json())
+      .then((x) => {
+        jarsIndex = x;
+        let html = "";
+        if (jarsIndex[serverSoftware.toLowerCase()] != undefined) {
+          jarsIndex[serverSoftware.toLowerCase()].forEach((x) => {
+            if (x.version != serverVersion) {
+              html +=
+                "<option value=" + x.version + ">" + x.version + "</option>";
+            }
+          });
+          document.getElementById("versionDropdown").innerHTML = html;
+          checkV();
+        }
+      });
   }
-
-  fetch("https://api.jarsmc.xyz/jars/arthHosting")
-    .then((x) => x.json())
-    .then((x) => {
-      jarsIndex = x;
-      let html = "";
-      if (jarsIndex[serverSoftware.toLowerCase()] != undefined) {
-        jarsIndex[serverSoftware.toLowerCase()].forEach((x) => {
-          if (x.version != serverVersion) {
-            html +=
-              "<option value=" + x.version + ">" + x.version + "</option>";
-          }
-        });
-        document.getElementById("versionDropdown").innerHTML = html;
-        checkV();
-      }
-    });
-
   function checkV() {
     updateReady = true;
     version = document.getElementById("versionDropdown").value;
@@ -81,7 +80,7 @@
       <select
         class="select select-bordered"
         id="versionDropdown"
-        on:click={checkV}
+        on:change={checkV}
       >
         <option disabled selected>Loading...</option>
       </select>
