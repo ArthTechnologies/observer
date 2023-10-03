@@ -149,8 +149,8 @@
       class="input input-bordered"
     />
     <div class=" w-96 mt-2">
-      <label class="cursor-pointer label">
-        <span class="label-text"
+      <label class="cursor-pointer flex items-center">
+        <span class="label-text max-md:w-48 w-72"
           >Automatically start up after matinence shutdowns</span
         >
         <input
