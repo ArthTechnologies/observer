@@ -180,16 +180,16 @@
   function regen() {
     if (browser) {
       let newWorldgenFiles = [];
-      if (document.getElementById("terralith").checked) {
+      if (document.getElementById("terralithWorld").checked) {
         newWorldgenFiles.push("terralith");
       }
-      if (document.getElementById("incendium").checked) {
+      if (document.getElementById("incendiumWorld").checked) {
         newWorldgenFiles.push("incendium");
       }
-      if (document.getElementById("nullscape").checked) {
+      if (document.getElementById("nullscapeWorld").checked) {
         newWorldgenFiles.push("nullscape");
       }
-      if (document.getElementById("structory").checked) {
+      if (document.getElementById("structoryWorld").checked) {
         newWorldgenFiles.push("structory");
       }
       let seed = document.getElementById("seed").value;
@@ -199,7 +199,6 @@
       if (worldType == "superflat") {
         worldType = "flat";
       }
-
       //POST to https://api.arthmc.xyz/server/{id}/world  with token and email, send file in body
       fetch(
         apiurl +
@@ -308,22 +307,22 @@
           <div class="p-2" />
           <div class="flex space-x-[2.9rem] ml-[1.4rem]">
             <input
-              id="terralith"
+              id="terralithWorld"
               type="checkbox"
               class="checkbox checkbox-secondary"
             />
             <input
-              id="incendium"
+              id="incendiumWorld"
               type="checkbox"
               class="checkbox checkbox-secondary"
             />
             <input
-              id="nullscape"
+              id="nullscapeWorld"
               type="checkbox"
               class="checkbox checkbox-secondary"
             />
             <input
-              id="structory"
+              id="structoryWorld"
               type="checkbox"
               class="checkbox checkbox-secondary"
             />

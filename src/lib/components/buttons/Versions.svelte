@@ -23,10 +23,7 @@
     //server, where there might be a different amount of worldgen mods.
     let page = location.pathname;
     setInterval(() => {
-      if (page != location.pathname) {
-        page = location.pathname;
-        checkV();
-      }
+      checkV();
     }, 500);
 
     serverVersion = localStorage.getItem("serverVersion");
@@ -56,7 +53,7 @@
         }
       });
   }
-  function checkV() {
+  export function checkV() {
     if (localStorage.getItem("serverAddons") != null) {
       serverAddons = localStorage.getItem("serverAddons").split(",");
     }
