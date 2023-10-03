@@ -19,6 +19,16 @@
     }
   }
   if (browser) {
+    //this interval runs checkV in case the users has gone to a different
+    //server, where there might be a different amount of worldgen mods.
+    let page = location.pathname;
+    setInterval(() => {
+      if (page != location.pathname) {
+        page = location.pathname;
+        checkV();
+      }
+    }, 500);
+
     serverVersion = localStorage.getItem("serverVersion");
     serverSoftware = localStorage.getItem("serverSoftware");
     if (localStorage.getItem("serverAddons") != null) {
@@ -47,6 +57,13 @@
       });
   }
   function checkV() {
+    if (localStorage.getItem("serverAddons") != null) {
+      serverAddons = localStorage.getItem("serverAddons").split(",");
+    }
+    areWorldgenMods = true;
+    if (serverAddons[0] == "") {
+      areWorldgenMods = false;
+    }
     updateReady = true;
     version = document.getElementById("versionDropdown").value;
     serverAddons.forEach((item) => {
