@@ -21,9 +21,12 @@
   if (browser) {
     //this interval runs checkV in case the users has gone to a different
     //server, where there might be a different amount of worldgen mods.
-    let page = location.pathname;
+
     setInterval(() => {
-      checkV();
+      let page = location.pathname;
+      if (page != "/") {
+        checkV();
+      }
     }, 500);
 
     serverVersion = localStorage.getItem("serverVersion");
