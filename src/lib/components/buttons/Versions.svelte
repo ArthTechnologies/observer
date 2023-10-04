@@ -61,15 +61,20 @@
     if (serverAddons[0] == "") {
       areWorldgenMods = false;
     }
-    updateReady = true;
+    updateReady = false;
     version = document.getElementById("versionDropdown").value;
     serverAddons.forEach((item) => {
       let worldgenMod = jarsIndex[item.toLowerCase()];
-      if (!JSON.stringify(worldgenMod).includes(version)) {
-        updateReady = false;
-      } else {
-        console.error(document.getElementById(item).classList);
-      }
+      worldgenMod.forEach((x) => {
+        if (x.version == version) {
+          updateReady = true;
+          /* This doesnt work for some reason if you add the grayscale class to every image by default.
+          document
+            .getElementById(item + "Versions")
+            .classList.remove("grayscale");
+            */
+        }
+      });
     });
   }
 </script>
@@ -104,14 +109,14 @@
         {#each serverAddons as addon}
           {#if updateReady}
             <img
-              id={addon}
+              id="{addon}Versions"
               class="mask mask-hexagon"
               src="/images/{addon}.webp"
               width="80ch"
             />
           {:else}
             <img
-              id={addon}
+              id="{addon}Versions"
               class="mask mask-hexagon grayscale"
               src="/images/{addon}.webp"
               width="80ch"

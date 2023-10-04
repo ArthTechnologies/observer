@@ -69,7 +69,7 @@
                 console.log(worldgenMods[i]);
                 console.log(worldgenMods);
                 document
-                  .getElementById(worldgenMods[i])
+                  .getElementById(worldgenMods[i] + "Updates")
                   .classList.remove("grayscale");
               }
             }
@@ -114,7 +114,7 @@
       {#if areWorldgenMods}
         {#each serverAddons as addon}
           <img
-            id={addon}
+            id="{addon}Updates"
             class="mask mask-hexagon grayscale"
             src="/images/{addon}.webp"
             width="80ch"
