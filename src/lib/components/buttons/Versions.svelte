@@ -57,6 +57,7 @@
       });
   }
   export function checkV() {
+    version = document.getElementById("versionDropdown").value;
     if (localStorage.getItem("serverAddons") != null) {
       serverAddons = localStorage.getItem("serverAddons").split(",");
     }
@@ -65,20 +66,23 @@
       areWorldgenMods = false;
     }
     updateReady = false;
-    version = document.getElementById("versionDropdown").value;
-    serverAddons.forEach((item) => {
-      let worldgenMod = jarsIndex[item.toLowerCase()];
-      worldgenMod.forEach((x) => {
-        if (x.version == version) {
-          updateReady = true;
-          /* This doesnt work for some reason if you add the grayscale class to every image by default.
+    if (areWorldgenMods) {
+      serverAddons.forEach((item) => {
+        let worldgenMod = jarsIndex[item.toLowerCase()];
+        worldgenMod.forEach((x) => {
+          if (x.version == version) {
+            updateReady = true;
+            /* This doesnt work for some reason if you add the grayscale class to every image by default.
           document
             .getElementById(item + "Versions")
             .classList.remove("grayscale");
             */
-        }
+          }
+        });
       });
-    });
+    } else {
+      updateReady = true;
+    }
   }
 </script>
 
