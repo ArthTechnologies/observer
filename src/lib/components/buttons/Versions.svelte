@@ -1,6 +1,6 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { ArrowDownCircle } from "lucide-svelte";
+  import { AlertTriangle, ArrowDownCircle } from "lucide-svelte";
   import { apiurl } from "../../scripts/req";
   import { updateServer } from "../../scripts/req";
   import AccountButton from "./AccountButton.svelte";
@@ -131,6 +131,15 @@
         <option disabled selected>Loading...</option>
       </select>
     </div>
+    <div
+      class="bg-warning w-86 h-16 md:h-12 rounded-lg text-black p-2 flex items-center mb-2 space-x-2"
+    >
+      <AlertTriangle size="32" />
+      <span class="text-sm"
+        >Warning: Your world, plugins/mods and more may not work on a different
+        version. Consider downloading your world beforehand.</span
+      >
+    </div>
     <div class="flex">
       {#if areWorldgenMods}
         {#each serverAddons as addon}
@@ -152,7 +161,7 @@
         {/each}
       {/if}
     </div>
-    <div class="ml-4 mt-2 mb-4">
+    <div class="ml-4 mb-4 mt-1">
       {#if updateReady}
         Your server is ready to update to {version}.
       {:else}
