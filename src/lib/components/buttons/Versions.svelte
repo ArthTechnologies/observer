@@ -134,7 +134,7 @@
     <div
       class="bg-warning w-86 h-16 md:h-12 rounded-lg text-black p-2 flex items-center mb-2 space-x-2"
     >
-      <AlertTriangle size="32" />
+      <AlertTriangle size="48" />
       <span class="text-sm"
         >Warning: Your world, plugins/mods and more may not work on a different
         version. Consider downloading your world beforehand.</span
