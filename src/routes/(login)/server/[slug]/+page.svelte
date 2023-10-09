@@ -424,7 +424,7 @@
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div
         id="terminalContainer"
-        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem]"
+        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
       >
         <div class="p-5 sm:text-xs xl:text-base font-mono relative">
           <FullscreenTerminal />
@@ -436,7 +436,7 @@
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 w-[20rem] lg:w-[30rem] xl:w-[50rem]"
+        class="input input-secondary bg-base-200 w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
       />
       <div class="divider md:hidden pt-5 pb-4" />
     </div>
