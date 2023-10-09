@@ -6,10 +6,11 @@
   import { AlertTriangle, Download, Loader, Map } from "lucide-svelte";
   import Helper from "./Helper.svelte";
   import { downloadProgressShort, fileSizeShort } from "$lib/scripts/numShort";
-  let buttonWidthPercent = 30;
+  let areWorldgenMods = false;
   let tab = "upload";
   let id = -1;
   let serverName = "";
+  let serverVersion = "";
   let file = null;
   let worldgenFiles = [];
   let promise;
@@ -18,7 +19,25 @@
   let downloadProgress = "0/0MB";
   if (browser) {
     serverName = localStorage.getItem("serverName");
+    serverVersion = localStorage.getItem("serverVersion");
     id = localStorage.getItem("serverID");
+
+    fetch(apiurl + "servers/jars", {
+      method: "GET",
+      headers: {
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        let worldgenMods = ["terralith", "incendium", "nullscape", "structory"];
+        for (let i in worldgenMods) {
+          if (data.includes(worldgenMods[i] + "-" + serverVersion + ".zip")) {
+            areWorldgenMods = true;
+          }
+        }
+      });
 
     promise = fetch(apiurl + "server/" + id + "/file/world*datapacks", {
       method: "GET",
@@ -221,10 +240,34 @@
       );
     }
   }
+
+  function onclick() {
+    serverVersion = localStorage.getItem("serverVersion");
+    areWorldgenMods = false;
+
+    fetch(apiurl + "servers/jars", {
+      method: "GET",
+      headers: {
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        let worldgenMods = ["terralith", "incendium", "nullscape", "structory"];
+        for (let i in worldgenMods) {
+          if (data.includes(worldgenMods[i] + "-" + serverVersion + ".zip")) {
+            areWorldgenMods = true;
+          }
+        }
+      });
+  }
 </script>
 
 <!-- The button to open modal -->
-<label for="world" class="btn btn-accent"><Map class="mr-1.5" />World</label>
+<label for="world" class="btn btn-accent" on:click={onclick}
+  ><Map class="mr-1.5" />World</label
+>
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="world" class="modal-toggle" />
@@ -275,58 +318,60 @@
     {#if tab == "regen"}
       <div class="flex flex-col items-start space-y-5">
         <div>
-          <div class=" flex mb-1">
-            <p class="label">Worldgen Mods</p>
+          {#if areWorldgenMods}
+            <div class=" flex mb-1">
+              <p class="label">Worldgen Mods</p>
 
-            <Helper tooltipText={$t("newserver.t.worldgen")} />
-          </div>
+              <Helper tooltipText={$t("newserver.t.worldgen")} />
+            </div>
 
-          <div class="flex">
-            <img
-              class="mask mask-hexagon"
-              src="/images/terralith.webp"
-              width="70ch"
-            />
+            <div class="flex">
+              <img
+                class="mask mask-hexagon"
+                src="/images/terralith.webp"
+                width="70ch"
+              />
 
-            <img
-              class="mask mask-hexagon"
-              src="/images/incendium.webp"
-              width="70ch"
-            />
-            <img
-              class="mask mask-hexagon"
-              src="/images/nullscape.webp"
-              width="70ch"
-            />
-            <img
-              class="mask mask-hexagon"
-              src="/images/structory.webp"
-              width="70ch"
-            />
-          </div>
-          <div class="p-2" />
-          <div class="flex space-x-[2.9rem] ml-[1.4rem]">
-            <input
-              id="terralithWorld"
-              type="checkbox"
-              class="checkbox checkbox-secondary"
-            />
-            <input
-              id="incendiumWorld"
-              type="checkbox"
-              class="checkbox checkbox-secondary"
-            />
-            <input
-              id="nullscapeWorld"
-              type="checkbox"
-              class="checkbox checkbox-secondary"
-            />
-            <input
-              id="structoryWorld"
-              type="checkbox"
-              class="checkbox checkbox-secondary"
-            />
-          </div>
+              <img
+                class="mask mask-hexagon"
+                src="/images/incendium.webp"
+                width="70ch"
+              />
+              <img
+                class="mask mask-hexagon"
+                src="/images/nullscape.webp"
+                width="70ch"
+              />
+              <img
+                class="mask mask-hexagon"
+                src="/images/structory.webp"
+                width="70ch"
+              />
+            </div>
+            <div class="p-2" />
+            <div class="flex space-x-[2.9rem] ml-[1.4rem]">
+              <input
+                id="terralithWorld"
+                type="checkbox"
+                class="checkbox checkbox-secondary"
+              />
+              <input
+                id="incendiumWorld"
+                type="checkbox"
+                class="checkbox checkbox-secondary"
+              />
+              <input
+                id="nullscapeWorld"
+                type="checkbox"
+                class="checkbox checkbox-secondary"
+              />
+              <input
+                id="structoryWorld"
+                type="checkbox"
+                class="checkbox checkbox-secondary"
+              />
+            </div>
+          {/if}
         </div>
 
         <div class="space-y-3">

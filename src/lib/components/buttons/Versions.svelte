@@ -84,9 +84,29 @@
       updateReady = true;
     }
   }
+
+  function onclick() {
+    serverVersion = localStorage.getItem("serverVersion");
+    fetch("https://api.jarsmc.xyz/jars/arthHosting")
+      .then((x) => x.json())
+      .then((x) => {
+        jarsIndex = x;
+        let html = "";
+        if (jarsIndex[serverSoftware.toLowerCase()] != undefined) {
+          jarsIndex[serverSoftware.toLowerCase()].forEach((x) => {
+            if (x.version != serverVersion) {
+              html +=
+                "<option value=" + x.version + ">" + x.version + "</option>";
+            }
+          });
+          document.getElementById("versionDropdown").innerHTML = html;
+          checkV();
+        }
+      });
+  }
 </script>
 
-<label for="versionsModal" class="btn btn-neutral"
+<label for="versionsModal" class="btn btn-neutral" on:click={onclick}
   ><ArrowDownCircle class="mr-2.5" />
   Versions</label
 >

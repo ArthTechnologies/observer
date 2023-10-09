@@ -93,11 +93,13 @@
         });
     });
 
-  //reminder to self: use the servers/worldgenMods route to get which mods are ready, display images and make non-ready mods grayscale.
+  function onclick() {
+    serverVersion = localStorage.getItem("serverVersion");
+  }
 </script>
 
 {#if latestUpdate != serverVersion && jarAvailable}
-  <label for="updates" class="btn btn-neutral"
+  <label for="updates" class="btn btn-neutral" on:click={onclick}
     ><ArrowDownCircle class="mr-2.5" />
     Update</label
   >
