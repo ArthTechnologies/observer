@@ -199,17 +199,19 @@
   function regen() {
     if (browser) {
       let newWorldgenFiles = [];
-      if (document.getElementById("terralithWorld").checked) {
-        newWorldgenFiles.push("terralith");
-      }
-      if (document.getElementById("incendiumWorld").checked) {
-        newWorldgenFiles.push("incendium");
-      }
-      if (document.getElementById("nullscapeWorld").checked) {
-        newWorldgenFiles.push("nullscape");
-      }
-      if (document.getElementById("structoryWorld").checked) {
-        newWorldgenFiles.push("structory");
+      if (document.getElementById("terralithWorld") != null) {
+        if (document.getElementById("terralithWorld").checked) {
+          newWorldgenFiles.push("terralith");
+        }
+        if (document.getElementById("incendiumWorld").checked) {
+          newWorldgenFiles.push("incendium");
+        }
+        if (document.getElementById("nullscapeWorld").checked) {
+          newWorldgenFiles.push("nullscape");
+        }
+        if (document.getElementById("structoryWorld").checked) {
+          newWorldgenFiles.push("structory");
+        }
       }
       let seed = document.getElementById("seed").value;
       let worldType = document.getElementById("worldTypeDropdown").value;
