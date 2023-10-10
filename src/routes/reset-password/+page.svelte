@@ -2,6 +2,7 @@
   import { browser } from "$app/environment";
   import Footer from "$lib/components/layout/Footer.svelte";
   import Navbar from "$lib/components/layout/Navbar.svelte";
+  import { ArrowLeft } from "lucide-svelte";
   let enablePay = true;
   if (browser) {
     if (localStorage.getItem("enablePay") == "false") {
@@ -45,11 +46,14 @@
 
 <Navbar navType="welcome" />
 
-<div class="hero min-h-screen ">
+<div class="hero min-h-screen">
   <div class="hero-content flex flex-col place-items-start">
-    <a href="/" class="btn btn-sm">Go Back</a>
+    <a href="/signin" class="btn btn-sm btn-ghost"
+      ><ArrowLeft />
+      <p class="ml-1.5">Back</p></a
+    >
     <div
-      class="bg-base-200 rounded-box w-full max-w-3xl p-5 border border-dashed"
+      class="bg-base-200 rounded-box w-full max-w-3xl p-5 border-4 border-base-300"
     >
       <p class="font-bold">Reset Password</p>
       <p class="text-gray-500">
@@ -57,19 +61,19 @@
       </p>
       <div class="flex flex-col mt-2">
         <label for="email " class="font-bold">Email</label>
-        <input id="email" class="input input-bordered " type="text" />
+        <input id="email" class="input input-bordered" type="text" />
       </div>
       {#if enablePay}
         <div class="flex flex-col mt-2">
           <label for="email " class="font-bold"
             >Last 4 digits of your Credit Card</label
           >
-          <input id="cc" class="input input-bordered " type="text" />
+          <input id="cc" class="input input-bordered" type="text" />
         </div>
       {/if}
       <div class="flex flex-col mt-2">
         <label for="password " class="font-bold">New Password</label>
-        <input id="password" class="input input-bordered " type="password" />
+        <input id="password" class="input input-bordered" type="password" />
       </div>
       <div class="flex flex-col mt-2">
         <label for="confirmPassword " class="font-bold"
@@ -77,7 +81,7 @@
         >
         <input
           id="confirmPassword"
-          class="input input-bordered "
+          class="input input-bordered"
           type="password"
         />
       </div>

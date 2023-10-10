@@ -211,9 +211,7 @@
             placeholder={$t("signin.l.cpwd")}
             class="input w-full max-w-xs"
           />
-          <button on:click={submit} class="btn btn-primary"
-            >{$t("button.submit")}</button
-          >
+          <button on:click={submit} class="btn btn-primary">Continue</button>
         </div>
       </div>
     </div>

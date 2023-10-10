@@ -50,7 +50,9 @@
       <div class="h-96">
         <EmailSignin />
       </div>
-      <a class="btn btn-sm mt-3" href="/reset-password">Forgot password</a>
+      <a class="btn btn-sm mt-3 btn-ghost" href="/reset-password"
+        >Forgot password?</a
+      >
     </div>
   </div>
 </div>
