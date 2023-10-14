@@ -1,10 +1,10 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { apiurl, getMods } from "$lib/scripts/req";
+  import { apiurl, getMods, usingOcelot } from "$lib/scripts/req";
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import ManagePlugin from "./ManagePlugin.svelte";
-    import { Clock, Trash2 } from "lucide-svelte";
+  import { Clock, Trash2 } from "lucide-svelte";
   let promise;
   let res = { mods: [] };
   let query = "";
@@ -44,20 +44,19 @@
       serverId = localStorage.getItem("serverID");
     }
 
-   
-    fetch(
-      apiurl +
-        "server/" +
-        serverId +
-        "/file/plugins*" + filename,
-      {
-        method: "DELETE",
-        headers: {
-          token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
-        },
-      }
-    );
+    let baseurl = apiurl;
+    if (usingOcelot)
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    const url = baseurl + "server/" + serverId + "/file/plugins*" + filename;
+
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    });
   }
 </script>
 
@@ -88,37 +87,36 @@
         </div>
       {:then}
         {#each res.mods as mod}
-        {#if mod.id != undefined}
-        <ManagePlugin
-          name={mod.name}
-          id={mod.id}
-          platform={mod.platform}
-          filename={mod.filename}
-          date={mod.date}
-          modtype="plugin"
-
-        />
-      {:else}
-        <div class="px-3 py-2 rounded-lg bg-base-300 flex justify-between">
-          <div class="flex items-center space-x-1">
-            <p>{mod.filename}</p>
-            <button
-              on:click={() => {
-                del(mod.filename);
-              }}
-              class="btn btn-xs btn-error mt-0.5 btn-square"
-            >
-              <Trash2 size="15" /></button
-            >
-          </div>
-          <div
-          class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
-        >
-          <Clock size="16" class="mr-1.5" />
-          {mod.time}
-        </div>
-        </div>
-      {/if}
+          {#if mod.id != undefined}
+            <ManagePlugin
+              name={mod.name}
+              id={mod.id}
+              platform={mod.platform}
+              filename={mod.filename}
+              date={mod.date}
+              modtype="plugin"
+            />
+          {:else}
+            <div class="px-3 py-2 rounded-lg bg-base-300 flex justify-between">
+              <div class="flex items-center space-x-1">
+                <p>{mod.filename}</p>
+                <button
+                  on:click={() => {
+                    del(mod.filename);
+                  }}
+                  class="btn btn-xs btn-error mt-0.5 btn-square"
+                >
+                  <Trash2 size="15" /></button
+                >
+              </div>
+              <div
+                class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              >
+                <Clock size="16" class="mr-1.5" />
+                {mod.time}
+              </div>
+            </div>
+          {/if}
         {/each}
       {/await}
     </div>

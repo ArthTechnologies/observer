@@ -7,6 +7,7 @@
     writeTerminal,
     readTerminal,
     apiurl,
+    usingOcelot,
   } from "$lib/scripts/req";
   import { getServer } from "$lib/scripts/req";
 
@@ -193,9 +194,13 @@
     }
     localStorage.setItem("serverCardRedrict", "false");
     port += parseInt(id);
-    console.log(apiurl + "server/" + id + "/getInfo");
+    let baseurl = apiurl;
+    if (browser && usingOcelot) {
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    }
     //GET apiurl/server/id/getInfo
-    fetch(apiurl + "server/" + id + "/getInfo", {
+    fetch(baseurl + "server/" + id + "/getInfo", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

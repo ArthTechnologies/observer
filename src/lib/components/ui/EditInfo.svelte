@@ -1,6 +1,6 @@
 <script>
   import { browser } from "$app/environment";
-  import { apiurl, setInfo } from "$lib/scripts/req";
+  import { apiurl, setInfo, usingOcelot } from "$lib/scripts/req";
   import { src_url_equal } from "svelte/internal";
   import { Settings } from "lucide-svelte";
   let id;
@@ -19,7 +19,12 @@
     software = localStorage.getItem("serverSoftware");
   }
   function get() {
-    fetch(apiurl + "server/" + id + "/getInfo", {
+    let baseurl = apiurl;
+    if (usingOcelot)
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    const url = baseurl + "server/" + id + "/getInfo";
+    fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

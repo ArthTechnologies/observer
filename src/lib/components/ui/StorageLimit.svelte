@@ -4,12 +4,18 @@
         downloadProgressShort,
         fileSizeShort,
     } from "$lib/scripts/numShort";
-    import { apiurl } from "$lib/scripts/req";
+    import { apiurl, usingOcelot } from "$lib/scripts/req";
     import { HardDrive } from "lucide-svelte";
     let storageRatio = "0/0mB";
     if (browser) {
+        let baseurl = apiurl;
+        if (usingOcelot)
+            baseurl =
+                JSON.parse(localStorage.getItem("serverNodes"))[
+                    localStorage.getItem("serverID")
+                ] + "/";
         fetch(
-            apiurl +
+            baseurl +
                 "server/" +
                 localStorage.getItem("serverID") +
                 "/storageInfo",

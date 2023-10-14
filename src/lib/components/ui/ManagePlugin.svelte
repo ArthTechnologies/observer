@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { apiurl } from "$lib/scripts/req";
+  import { apiurl, usingOcelot } from "$lib/scripts/req";
   import { lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
   import { getHeapSpaceStatistics } from "v8";
@@ -68,22 +68,19 @@
       serverId = localStorage.getItem("serverID");
     }
 
-
-    fetch(
-      apiurl +
-        "server/" +
-        serverId +
-        "/file/"+modtype+"s*" + filename,
-      {
-        method: "DELETE",
-        headers: {
-          token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
-        },
-
-      }
-    );
-
+    let baseurl = apiurl;
+    if (usingOcelot)
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    const url =
+      baseurl + "server/" + serverId + "/file/" + modtype + "s*" + filename;
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    });
   }
 
   function toggleInfo() {
@@ -96,21 +93,28 @@
 </script>
 
 <div>
-  <div class="px-3 py-2 rounded-t-lg bg-base-300 flex justify-between items-center">
+  <div
+    class="px-3 py-2 rounded-t-lg bg-base-300 flex justify-between items-center"
+  >
     <div class="flex items-center space-x-1">
       <p>{filename}</p>
-      <button on:click={()=>{del(filename)}} class="btn btn-xs btn-error mt-0.5 btn-square">
+      <button
+        on:click={() => {
+          del(filename);
+        }}
+        class="btn btn-xs btn-error mt-0.5 btn-square"
+      >
         <Trash2 size="15" /></button
       >
     </div>
-    
+
     <div class="flex items-center space-x-1">
       <div
-      class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
-    >
-      <Clock size="16" class="mr-1.5" />
-      {time}
-    </div>
+        class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+      >
+        <Clock size="16" class="mr-1.5" />
+        {time}
+      </div>
       <button class="btn btn-ghost btn-xs">
         <label class="swap">
           <input type="checkbox" on:click={toggleInfo} />

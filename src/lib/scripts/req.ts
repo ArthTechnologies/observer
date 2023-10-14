@@ -2,7 +2,7 @@ import accountEmail from "$lib/stores/accountEmail";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 export const apiurl = "https://api.arthmc.xyz/";
-
+export let usingOcelot = true;
 export const lrurl = "https://api.modrinth.com/v2/";
 let lock = false;
 
@@ -44,7 +44,9 @@ export function setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartu
   if (icon == "") {
     icon = "/images/placeholder.png";
   }
-  const url = apiurl + "server/" + id + "/setInfo";
+  let baseurl = apiurl;
+  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "server/" + id + "/setInfo";
   const req = {
     method: "POST",
     headers: {
@@ -109,7 +111,9 @@ export function setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartu
 }
 
 export function getMods(id: number, modtype: string) {
-  const url = apiurl + "server/" + id + "/" + modtype;
+  let baseurl = apiurl;
+  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "server/" + id + "/" + modtype;
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
@@ -127,8 +131,10 @@ export function sendVersion(
   pluginName: string,
   modtype: string
 ) {
+  let baseurl = apiurl;
+  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
   const url =
-    apiurl +
+    baseurl +
     "server/" +
     id +
     "/add/" +
@@ -184,7 +190,7 @@ export function searchPlugins(
     '"],["versions:' +
     version +
     '"],["server_side:optional","server_side:required"]]' +
-    "&limit=10";
+    "&limit=100";
 
   if (!lock) {
     return fetch(url, GET)
@@ -247,17 +253,17 @@ export function getSettings() {
     .then((input: string) => {
       console.log("Response Recieved: " + input);
       if (browser) {
-        window.localStorage.setItem("enablePay", JSON.parse(input).enablePay);
-        window.localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
-        window.localStorage.setItem("address", JSON.parse(input).address);
-        window.localStorage.setItem("webName", JSON.parse(input).webName);
-        window.localStorage.setItem(
+        localStorage.setItem("enablePay", JSON.parse(input).enablePay);
+        localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
+        localStorage.setItem("address", JSON.parse(input).address);
+        localStorage.setItem("webName", JSON.parse(input).webName);
+        localStorage.setItem(
           "latestVersion",
           JSON.parse(input).latestVersion
         );
 
         if (JSON.parse(input).enableAuth == false) {
-          window.localStorage.setItem("accountEmail", "guest");
+          localStorage.setItem("accountEmail", "guest");
           accountEmail.set("guest");
         }
       }
@@ -279,7 +285,11 @@ export function getServers(em: string) {
     .then((res) => res.text())
     .then((input: string) => {
       if (browser) {
-        window.localStorage.setItem("servers", JSON.parse(input).length);
+       localStorage.setItem("amountOfServers", JSON.parse(input).length);
+       localStorage.setItem("servers", input);
+
+       getServerNodes();
+
       }
 
       console.log("Response Recieved: " + input);
@@ -362,10 +372,10 @@ export function loginEmail(em: string, pwd: string) {
       } else {
         if (browser) {
           console.log(JSON.parse(input));
-          window.localStorage.setItem("token", JSON.parse(input).token);
-          window.localStorage.setItem("accountEmail", em);
-          window.localStorage.setItem("loggedIn", "true");
-          window.localStorage.setItem("accountId", JSON.parse(input).accountId);
+          localStorage.setItem("token", JSON.parse(input).token);
+          localStorage.setItem("accountEmail", em);
+          localStorage.setItem("loggedIn", "true");
+          localStorage.setItem("accountId", JSON.parse(input).accountId);
           GET = {
             method: "GET",
             headers: {
@@ -395,7 +405,9 @@ export function loginEmail(em: string, pwd: string) {
 }
 
 export function changeServerState(reqstate: string, id: number, em: string) {
-  const url = apiurl + "server/" + id + "/state/" + reqstate + "?email=" + em;
+  let baseurl = apiurl;
+  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "server/" + id + "/state/" + reqstate + "?email=" + em;
   const response = fetch(url, POST)
     .then((res) => res.text())
     .then((text) => console.log("Response Recieved: " + text))
@@ -416,23 +428,23 @@ export function createServer(
     apiurl +
     "server/new?" +
     "email=" +
-    window.localStorage.getItem("accountEmail");
+    localStorage.getItem("accountEmail");
   if (browser) {
     const url =
       apiurl +
       "server/new?" +
       "email=" +
-      window.localStorage.getItem("accountEmail") +
+      localStorage.getItem("accountEmail") +
       "&accountId=" +
-      window.localStorage.getItem("accountId");
+      localStorage.getItem("accountId");
   }
   //get file from id worldFile
   const req = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      token: window.localStorage.getItem("token"),
-      email: window.localStorage.getItem("accountEmail"),
+      token: localStorage.getItem("token"),
+      email: localStorage.getItem("accountEmail"),
     },
     body: JSON.stringify({
       name: n,
@@ -460,15 +472,15 @@ export function createServer(
         } else {
           //set text.subscription to localstorage
           if (browser) {
-            window.localStorage.setItem("subs", res.subscriptions);
+            localStorage.setItem("subs", res.subscriptions);
             //if localstorage servers is null, set it to 0
-            if (window.localStorage.getItem("servers") == null) {
-              window.localStorage.setItem("servers", "0");
+            if (localStorage.getItem("amountOfServers") == null) {
+              localStorage.setItem("amountOfServers", "0");
             }
             //increase localstorage servers by 1
-            window.localStorage.setItem(
+            localStorage.setItem(
               "servers",
-              (parseInt(localStorage.getItem("servers")) + 1).toString()
+              (parseInt(localStorage.getItem("amountOfServers")) + 1).toString()
             );
           }
           return true;
@@ -503,7 +515,9 @@ export function getPlayers(address: string) {
 }
 
 export function getServer(id: number) {
-  const url = apiurl + "server/" + id;
+  let baseurl = apiurl;
+  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "server/" + id;
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
@@ -517,7 +531,9 @@ export function getServer(id: number) {
 }
 
 export function deleteServer(id: number, password: string) {
-  const url = apiurl + "server/" + id + "?email=" + localStorage.getItem("accountEmail") + "&password=" + password;
+  let baseurl = apiurl;
+  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "server/" + id + "?email=" + localStorage.getItem("accountEmail") + "&password=" + password;
 
   return fetch(url, DELETE)
     .then((res) => res.text())
@@ -527,7 +543,7 @@ export function deleteServer(id: number, password: string) {
       } else {
         localStorage.setItem(
           "servers",
-          (parseInt(localStorage.getItem("servers")) - 1).toString()
+          (parseInt(localStorage.getItem("amountOfServers")) - 1).toString()
         );
         goto("/");
         //return input as json
@@ -537,7 +553,9 @@ export function deleteServer(id: number, password: string) {
 }
 
 export function writeTerminal(id: number, cmd: string) {
-  const url = apiurl + "terminal/" + id + "?cmd=" + cmd;
+  let baseurl = apiurl;
+  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "terminal/" + id + "?cmd=" + cmd;
   return fetch(url, POST)
     .then((res) => res.text())
     .then((input: string) => {
@@ -552,7 +570,9 @@ export function writeTerminal(id: number, cmd: string) {
 }
 
 export function readTerminal(id: number) {
-  const url = apiurl + "terminal/" + id;
+  let baseurl = apiurl;
+  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "terminal/" + id;
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
@@ -562,7 +582,9 @@ export function readTerminal(id: number) {
 }
 
 export function updateServer(id: number, version: string) {
-  const url = apiurl + "server/" + id + "/version?version=" + version;
+  let baseurl = apiurl;
+  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "server/" + id + "/version?version=" + version;
   return fetch(url, POST)
     .then((res) => res.text())
     .then((input: string) => {
@@ -572,6 +594,23 @@ export function updateServer(id: number, version: string) {
         //return input as json
         return input;
       }
+    });
+}
+
+function getServerNodes() {
+  let serverIdArray = [];
+  const servers = JSON.parse(localStorage.getItem("servers"));
+  for (let i = 0; i < servers.length; i++) {
+    serverIdArray.push(servers[i].id);
+  }
+  const url = apiurl + "serverNodes?servers=" + serverIdArray.join(",");
+  return fetch(url, GET)
+    .then((res) => res.text())
+    .then((input: string) => {
+      console.log("Response Recieved: " + input);
+      localStorage.setItem("serverNodes", input);
+      //return input as json
+      return input;
     });
 }
 

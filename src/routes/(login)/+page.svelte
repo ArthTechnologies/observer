@@ -19,7 +19,7 @@
   let email: string = "";
   if (browser) {
     email = localStorage.getItem("accountEmail");
-    amountOfServersForSkeletons = localStorage.getItem("servers");
+    amountOfServersForSkeletons = localStorage.getItem("amountOfServers");
   }
 
   // getServers and store "amount" given in the response in a variable

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { apiurl, getMods } from "$lib/scripts/req";
+  import { apiurl, getMods, usingOcelot } from "$lib/scripts/req";
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import ManagePlugin from "./ManagePlugin.svelte";
@@ -29,9 +29,11 @@
           for (let i in res.mods) {
             res.mods[i].time = new Date(res.mods[i].date).toLocaleString();
           }
-          if (response.modpack != undefined && response.modpack.files.length > 0) {
+          if (
+            response.modpack != undefined &&
+            response.modpack.files.length > 0
+          ) {
             console.log(response.modpack.files.length - 1);
-
 
             for (let i = 0; i < response.modpack.files.length - 1; i++) {
               for (let k = 0; k < response.mods.length; k++) {
@@ -41,14 +43,13 @@
                 ) {
                   res.mods.splice(k, 1);
                   res.mods.push({
-                id: response.modpack.files[i].downloads[0].split("/")[4],
-                platform: "lr",
-                name: response.modpack.files[i].downloads[0].split("/")[4],
-                filename: response.modpack.files[i].path.split("\\")[1],
-              });
+                    id: response.modpack.files[i].downloads[0].split("/")[4],
+                    platform: "lr",
+                    name: response.modpack.files[i].downloads[0].split("/")[4],
+                    filename: response.modpack.files[i].path.split("\\")[1],
+                  });
                 }
               }
-
             }
           }
           console.log(res);
@@ -67,20 +68,18 @@
       serverId = localStorage.getItem("serverID");
     }
 
-   
-    fetch(
-      apiurl +
-        "server/" +
-        serverId +
-        "/file/mods*" + filename,
-      {
-        method: "DELETE",
-        headers: {
-          token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
-        },
-      }
-    );
+    let baseurl = apiurl;
+    if (usingOcelot)
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    const url = baseurl + "server/" + serverId + "/file/mods*" + filename;
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    });
   }
 </script>
 
@@ -141,11 +140,11 @@
                 >
               </div>
               <div
-              class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
-            >
-              <Clock size="16" class="mr-1.5" />
-              {mod.time}
-            </div>
+                class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              >
+                <Clock size="16" class="mr-1.5" />
+                {mod.time}
+              </div>
             </div>
           {/if}
         {/each}

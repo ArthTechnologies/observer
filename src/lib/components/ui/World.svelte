@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { deleteServer } from "$lib/scripts/req";
+  import { deleteServer, usingOcelot } from "$lib/scripts/req";
   import { t } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   import { apiurl } from "$lib/scripts/req";
@@ -220,7 +220,12 @@
       if (worldType == "superflat") {
         worldType = "flat";
       }
-      //POST to https://api.arthmc.xyz/server/{id}/world  with token and email, send file in body
+
+      let baseurl = apiurl;
+      if (usingOcelot)
+        baseurl =
+          JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      const url = baseurl + "server/" + id + "/world";
       fetch(
         apiurl +
           "server/" +

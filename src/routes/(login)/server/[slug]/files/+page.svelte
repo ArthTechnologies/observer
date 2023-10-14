@@ -2,7 +2,7 @@
   import { browser } from "$app/environment";
   import File from "$lib/components/ui/filetree/File.svelte";
   import Folder from "$lib/components/ui/filetree/Folder.svelte";
-  import { apiurl } from "$lib/scripts/req";
+  import { apiurl, usingOcelot } from "$lib/scripts/req";
   import { ArrowLeft } from "lucide-svelte";
 
   let files = ["server.properties", ["folder1", ["file1.txt", "file2.txt"]]];
@@ -17,7 +17,12 @@
       backurl = "proxy";
     }
     id = localStorage.getItem("serverID");
-    fetch(apiurl + "server/" + id + "/files", {
+    let baseurl = apiurl;
+    if (usingOcelot)
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    const url = baseurl + "server/" + id + "/files";
+    fetch(url, {
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),

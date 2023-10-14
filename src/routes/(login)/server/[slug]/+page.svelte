@@ -8,6 +8,7 @@
     writeTerminal,
     readTerminal,
     apiurl,
+    usingOcelot,
   } from "$lib/scripts/req";
   import { getServer } from "$lib/scripts/req";
 
@@ -141,9 +142,12 @@
   onMount(() => {
     localStorage.setItem("serverCardRedrict", "false");
     port += parseInt(id);
-    console.log(apiurl + "server/" + id + "/getInfo");
+    let baseurl = apiurl;
+    if (browser && usingOcelot)
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
     //GET apiurl/server/id/getInfo
-    fetch(apiurl + "server/" + id + "/getInfo", {
+    fetch(baseurl + "server/" + id + "/getInfo", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -295,8 +299,9 @@
 
   function readCmd() {
     let rt;
-    readTerminal(id).then((response) => {
-      if (browser) {
+
+    if (browser) {
+      readTerminal(id).then((response) => {
         const terminalContainer = document.getElementById("terminalContainer");
         const terminal = document.getElementById("terminal");
         const filteredResponse = response
@@ -340,13 +345,13 @@
             scrollCorrected = true;
           }
         }
-      }
-    });
+      });
+    }
   }
   readCmd();
 </script>
 
-<div class="h-[75vh]">
+<div class="h-[75vh] overflow-hidden">
   <div class=" flex justify-between">
     <div class="space-x-2 space-y-2 mb-2 flex flex-col items-center md:block">
       <a href="/" class="btn btn-info"

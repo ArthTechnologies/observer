@@ -126,6 +126,7 @@
   //Run status function every 5 seconds if theyre still on this page
   if (browser) {
     address = localStorage.getItem("address");
+    getStatus();
     setInterval(function () {
       if (window.location.pathname == "/") {
         getStatus();

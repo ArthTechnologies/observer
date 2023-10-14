@@ -2,7 +2,7 @@
   import { browser } from "$app/environment";
   export let url: string;
   export let filename: string;
-  import { apiurl } from "$lib/scripts/req";
+  import { apiurl, usingOcelot } from "$lib/scripts/req";
   import { File, FileText, Image } from "lucide-svelte";
   let id;
   let extension = filename.split(".")[filename.split(".").length - 1];
@@ -31,7 +31,11 @@
         }
       }
     }
-    fetch(apiurl + "server/" + id + "/file/" + url, {
+    let baseurl = apiurl;
+    if (usingOcelot)
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    fetch(baseurl + "server/" + id + "/file/" + url, {
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),
