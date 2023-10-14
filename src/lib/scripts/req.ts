@@ -571,7 +571,7 @@ export function writeTerminal(id: number, cmd: string) {
 
 export function readTerminal(id: number) {
   let baseurl = apiurl;
-  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  if (usingOcelot && browser) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
   const url = baseurl + "terminal/" + id;
   return fetch(url, GET)
     .then((res) => res.text())
