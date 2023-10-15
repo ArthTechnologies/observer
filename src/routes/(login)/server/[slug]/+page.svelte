@@ -351,7 +351,7 @@
   readCmd();
 </script>
 
-<div class="h-[75vh] overflow-hidden">
+<div class="h-[75vh]">
   <div class=" flex justify-between">
     <div class="space-x-2 space-y-2 mb-2 flex flex-col items-center md:block">
       <a href="/" class="btn btn-info"
