@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { deleteServer } from "$lib/scripts/req";
+  import { apiurl, deleteServer, usingOcelot } from "$lib/scripts/req";
   import { t } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   import World from "./World.svelte";
@@ -9,7 +9,13 @@
     id = localStorage.getItem("serverID");
   }
   function del() {
-    deleteServer(id, document.getElementById("password").value);
+    deleteServer(id, document.getElementById("password").value).then(() => {
+      if (usingOcelot) {
+        fetch(apiurl + "node?url="+JSON.parse(localStorage.getItem("serverNodes"))[id.toString()], {
+          method: "POST",
+        });
+      }
+    }); 
   }
 </script>
 
