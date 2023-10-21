@@ -39,13 +39,22 @@ if (browser) {
   };
 }
 
-export function setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartup) {
+export function setInfo(
+  id,
+  icon,
+  desc,
+  proxiesEnabled,
+  fSecret,
+  automaticStartup
+) {
   console.log(icon);
   if (icon == "") {
     icon = "/images/placeholder.png";
   }
   let baseurl = apiurl;
-  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
   const url = baseurl + "server/" + id + "/setInfo";
   const req = {
     method: "POST",
@@ -59,7 +68,7 @@ export function setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartu
       icon: icon,
       proxiesEnabled: proxiesEnabled,
       fSecret: fSecret,
-      automaticStartup: automaticStartup
+      automaticStartup: automaticStartup,
     }),
   };
 
@@ -98,21 +107,22 @@ export function setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartu
         } else {
           setDescText(desc);
           return "success";
-          
         }
       })
       .catch((err) => console.error(err));
   }
   function setDescText(desc) {
     if (document.getElementById("xDesc") != null) {
-      document.getElementById("xDesc").innerHTML = "Description: "+desc;
+      document.getElementById("xDesc").innerHTML = "Description: " + desc;
     }
   }
 }
 
 export function getMods(id: number, modtype: string) {
   let baseurl = apiurl;
-  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
   const url = baseurl + "server/" + id + "/" + modtype;
   return fetch(url, GET)
     .then((res) => res.text())
@@ -132,7 +142,9 @@ export function sendVersion(
   modtype: string
 ) {
   let baseurl = apiurl;
-  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
   const url =
     baseurl +
     "server/" +
@@ -190,7 +202,7 @@ export function searchPlugins(
     '"],["versions:' +
     version +
     '"],["server_side:optional","server_side:required"]]' +
-    "&limit=100";
+    "&limit=10";
 
   if (!lock) {
     return fetch(url, GET)
@@ -257,10 +269,7 @@ export function getSettings() {
         localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
         localStorage.setItem("address", JSON.parse(input).address);
         localStorage.setItem("webName", JSON.parse(input).webName);
-        localStorage.setItem(
-          "latestVersion",
-          JSON.parse(input).latestVersion
-        );
+        localStorage.setItem("latestVersion", JSON.parse(input).latestVersion);
 
         if (JSON.parse(input).enableAuth == false) {
           localStorage.setItem("accountEmail", "guest");
@@ -285,11 +294,10 @@ export function getServers(em: string) {
     .then((res) => res.text())
     .then((input: string) => {
       if (browser) {
-       localStorage.setItem("amountOfServers", JSON.parse(input).length);
-       localStorage.setItem("servers", input);
+        localStorage.setItem("amountOfServers", JSON.parse(input).length);
+        localStorage.setItem("servers", input);
 
-       getServerNodes();
-
+        getServerNodes();
       }
 
       console.log("Response Recieved: " + input);
@@ -406,7 +414,9 @@ export function loginEmail(em: string, pwd: string) {
 
 export function changeServerState(reqstate: string, id: number, em: string) {
   let baseurl = apiurl;
-  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
   const url = baseurl + "server/" + id + "/state/" + reqstate + "?email=" + em;
   const response = fetch(url, POST)
     .then((res) => res.text())
@@ -425,10 +435,7 @@ export function createServer(
   mURL: string
 ) {
   const url =
-    apiurl +
-    "server/new?" +
-    "email=" +
-    localStorage.getItem("accountEmail");
+    apiurl + "server/new?" + "email=" + localStorage.getItem("accountEmail");
   if (browser) {
     const url =
       apiurl +
@@ -516,7 +523,9 @@ export function getPlayers(address: string) {
 
 export function getServer(id: number) {
   let baseurl = apiurl;
-  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
   const url = baseurl + "server/" + id;
   return fetch(url, GET)
     .then((res) => res.text())
@@ -532,8 +541,17 @@ export function getServer(id: number) {
 
 export function deleteServer(id: number, password: string) {
   let baseurl = apiurl;
-  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
-  const url = baseurl + "server/" + id + "?email=" + localStorage.getItem("accountEmail") + "&password=" + password;
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url =
+    baseurl +
+    "server/" +
+    id +
+    "?email=" +
+    localStorage.getItem("accountEmail") +
+    "&password=" +
+    password;
 
   return fetch(url, DELETE)
     .then((res) => res.text())
@@ -554,7 +572,9 @@ export function deleteServer(id: number, password: string) {
 
 export function writeTerminal(id: number, cmd: string) {
   let baseurl = apiurl;
-  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
   const url = baseurl + "terminal/" + id + "?cmd=" + cmd;
   return fetch(url, POST)
     .then((res) => res.text())
@@ -571,7 +591,9 @@ export function writeTerminal(id: number, cmd: string) {
 
 export function readTerminal(id: number) {
   let baseurl = apiurl;
-  if (usingOcelot && browser) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  if (usingOcelot && browser)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
   const url = baseurl + "terminal/" + id;
   return fetch(url, GET)
     .then((res) => res.text())
@@ -583,7 +605,9 @@ export function readTerminal(id: number) {
 
 export function updateServer(id: number, version: string) {
   let baseurl = apiurl;
-  if (usingOcelot) baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
   const url = baseurl + "server/" + id + "/version?version=" + version;
   return fetch(url, POST)
     .then((res) => res.text())
