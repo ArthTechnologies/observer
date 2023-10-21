@@ -60,12 +60,19 @@
   let state = "false";
   let icon = "";
   let hostName;
+
+  let baseurl = apiurl;
+
   if (browser) {
     name = localStorage.getItem("serverName");
     if (localStorage.getItem("serverCardRedrict") != "true") {
       id = parseInt(localStorage.getItem("serverID"));
     } else {
       id = parseInt(window.location.href.split("/")[4]) - 10000;
+    }
+    if ( usingOcelot) {
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
     }
     if (
       localStorage.getItem("serverSoftware") == "Fabric" ||
@@ -129,7 +136,7 @@
 
     if (subServerName != "" && ip != "") {
       fetch(
-        apiurl +
+        baseurl +
           "server/" +
           id +
           "/proxy/servers?name=" +
@@ -160,8 +167,8 @@
   }
 
   function deleteServer(name) {
-    console.log(apiurl + "server/" + id + "/proxy/servers?=" + name);
-    fetch(apiurl + "server/" + id + "/proxy/servers?name=" + name, {
+    console.log(baseurl + "server/" + id + "/proxy/servers?=" + name);
+    fetch(baseurl + "server/" + id + "/proxy/servers?name=" + name, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -194,12 +201,8 @@
     }
     localStorage.setItem("serverCardRedrict", "false");
     port += parseInt(id);
-    let baseurl = apiurl;
-    if (browser && usingOcelot) {
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
-    }
-    //GET apiurl/server/id/getInfo
+
+    //GET baseurl/server/id/getInfo
     fetch(baseurl + "server/" + id + "/getInfo", {
       method: "GET",
       headers: {
@@ -221,7 +224,7 @@
         }
       });
 
-    fetch(apiurl + "server/" + id + "/proxy/servers", {
+    fetch(baseurl + "server/" + id + "/proxy/servers", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -235,9 +238,9 @@
         servers = data;
       });
 
-    //fetch apiurl+server/id/proxy/secret
+    //fetch baseurl+server/id/proxy/secret
 
-    fetch(apiurl + "server/" + id + "/proxy/info", {
+    fetch(baseurl + "server/" + id + "/proxy/info", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -286,7 +289,6 @@
 
       //set state to response
       state = response.state;
-      console.log(state);
       if (restarting && state == "starting") {
         restarting = false;
         console.log("unlocking");
@@ -299,7 +301,7 @@
     console.log("setting lobby name");
     lobbyName = document.getElementById("lobbyName").value;
     console.log(lobbyName);
-    fetch(apiurl + "server/" + id + "/proxy/info?lobbyName=" + lobbyName, {
+    fetch(baseurl + "server/" + id + "/proxy/info?lobbyName=" + lobbyName, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
