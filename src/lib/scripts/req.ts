@@ -1,8 +1,8 @@
 import accountEmail from "$lib/stores/accountEmail";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
-export const apiurl = "https://api.arthmc.xyz/";
-export let usingOcelot = false;
+export const apiurl = "https://us-dallas-1.arthmc.xyz/";
+export let usingOcelot = true;
 export const lrurl = "https://api.modrinth.com/v2/";
 let lock = false;
 
