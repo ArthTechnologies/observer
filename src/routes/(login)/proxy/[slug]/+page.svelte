@@ -567,7 +567,7 @@
       <div
         class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl w-[19rem] lg:w-[22.5rem]"
       >
-        <p class="text-xl font-bold">Servers</p>
+        <p class="text-xl font-bold">{$t("subservers.title")}</p>
 
         <div class="p-2 flex flex-col space-y-2" id="servers">
           {#each servers as server}
@@ -588,34 +588,34 @@
           {/each}
         </div>
         <div class="space-x-1.5 space-y-1.5">
-          <label class="label" for="username">Add Server</label>
+          <label class="label" for="username">{$t("subservers.h.addServer")}</label>
 
           <input
             id="subServerName"
             class="input input-sm input-bordered"
-            placeholder="Name"
+            placeholder={$t("subservers.p.name")}
             type="text"
           />
           <input
             id="serverIP"
             class="input input-sm input-bordered"
-            placeholder="IP Address"
+            placeholder="{$t("subservers.p.ip")}"
             type="text"
           />
           <button class="btn btn-sm btn-secondary" on:click={addServer}>
-            Add
+            {$t("subservers.button.add")}
           </button>
         </div>
         <div class="space-x-1.5 space-y-1.5">
-          <label class="label" for="lobbyName">Send players to</label>
+          <label class="label" for="lobbyName">{$t("subservers.h.sendPlayersTo")}</label>
 
           <input
             id="lobbyName"
             class="input input-sm w-1/2 md:w-auto input-bordered"
-            placeholder="Currently '{lobbyName}'"
+            placeholder="{$t("currently")} '{lobbyName}'"
             type="text"
           />
-          <button class="btn btn-sm" on:click={setLobbyName}> Submit </button>
+          <button class="btn btn-sm" on:click={setLobbyName}> {$t("sumbit")} </button>
         </div>
       </div>
       <div
@@ -623,10 +623,10 @@
       >
         <Info />
         <span class="text-sm w-[19rem] lg:w-[22.5rem] flex flex-wrap"
-          >Your forwarding secret is <code
+          >{$t("proxy.forwardingSecret1")} <code
             class="bg-gray-500 rounded p-0.5 flex ml-1"
             ><div class="dropdown">
-              <label tabindex="0" class="">Show Secret ▼</label>
+              <label tabindex="0" class="">{$t("proxy.showSecret")}</label>
               <div
                 tabindex="0"
                 class="dropdown-content bg-gray-600 rounded p-1"
@@ -634,11 +634,11 @@
                 {fSecret}
               </div>
             </div></code
-          >If you have a non-{hostName} server, enter this in
+          >{$t("proxy.forwardingSecret2")}{hostName}{$t("proxy.forwardingSecret3")}
           <code class="bg-gray-500 rounded p-0.5 mr-1"
             >config/paper-global.yml</code
           >
-          and disable online mode.</span
+          {$t("proxy.forwardingSecret4")}</span
         >
       </div>
 
@@ -648,7 +648,7 @@
         </div>
         <div class="flex space-x-2">
           <a class="btn btn-primary" href="/server/{parseInt(id) + 10000}/files"
-            ><FolderClosed class="mr-1.5" />Explore Files</a
+            ><FolderClosed class="mr-1.5" />{$t("button.files")}</a
           ><Versions />
         </div>
       </div>

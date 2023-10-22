@@ -1,7 +1,7 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { AlertTriangle, ArrowDownCircle } from "lucide-svelte";
-  import { apiurl } from "../../scripts/req";
+  import { t } from "$lib/scripts/i18n";
   import { updateServer } from "../../scripts/req";
   import AccountButton from "./AccountButton.svelte";
   let latestUpdate = "";
@@ -108,7 +108,7 @@
 
 <label for="versionsModal" class="btn btn-neutral" on:click={onclick}
   ><ArrowDownCircle class="mr-2.5" />
-  Versions</label
+  {$t("button.versions")}</label
 >
 
 <!-- Put this part before </body> tag -->
@@ -120,9 +120,9 @@
       class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
     >
 
-    <h3 class="text-xl font-bold mb-2">Change Version</h3>
+    <h3 class="text-xl font-bold mb-2">{$t("versions.title")}</h3>
     <div class="form-control w-full max-w-xs mb-4">
-      <label class="label"> Pick Version </label>
+      <label class="label">{$t("versions.l.pickVersion")}</label>
       <select
         class="select select-bordered"
         id="versionDropdown"
@@ -132,12 +132,11 @@
       </select>
     </div>
     <div
-      class="bg-warning w-86 h-16 md:h-12 rounded-lg text-black p-2 flex items-center mb-2 space-x-2"
+      class="bg-warning w-86 rounded-lg text-black p-2 py-0.5 flex items-center mb-2 space-x-2"
     >
       <AlertTriangle size="48" />
       <span class="text-sm"
-        >Warning: Your world, plugins/mods and more may not work on a different
-        version. Consider downloading your world beforehand.</span
+        >{$t("warning.changeVersion")}</span
       >
     </div>
     <div class="flex">
@@ -163,7 +162,7 @@
     </div>
     <div class="ml-4 mb-4 mt-1">
       {#if updateReady}
-        Your server is ready to update to {version}.
+      {$t("changeVersion.readyToUpdate")} {version}.
       {:else}
         Worldgen mods are not available on {version} yet. You can reset your world
         to one without worldgen mods in order to change to {version}.
@@ -172,14 +171,14 @@
 
     {#if updateReady}
       <label on:click={update} for="versionsModal" id="confirmBtn" class="btn"
-        >Change Version</label
+        >{$t("versions.title")}</label
       >
     {:else}
       <label
         on:click={update}
         for="versionsModal"
         id="confirmBtn"
-        class="btn btn-disabled">Change Version</label
+        class="btn btn-disabled">{$t("versions.title")}</label
       >
     {/if}
   </div>

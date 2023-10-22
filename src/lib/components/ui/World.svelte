@@ -273,7 +273,7 @@
 
 <!-- The button to open modal -->
 <label for="world" class="btn btn-accent" on:click={onclick}
-  ><Map class="mr-1.5" />World</label
+  ><Map class="mr-1.5" />{$t("button.world")}</label
 >
 
 <!-- Put this part before </body> tag -->
@@ -288,7 +288,7 @@
     >
       <div class="flex justify-between items-center">
         <div class="flex flex-col justify-center">
-          <p class="font-bold md:text-lg">Current World</p>
+          <p class="font-bold md:text-lg">{$t("currentWorld")}</p>
         </div>
         <button class="downloadBtn btn btn-accent btn-sm" on:click={download}
           >{#if !downloading}<Download size="18" />{:else}<div
@@ -297,7 +297,7 @@
               <Loader />
             </div>{/if}
           <p class="ml-1.5">
-            {#if downloading}{downloadProgress}{:else}Download{/if}
+            {#if downloading}{downloadProgress}{:else}{$t("button.download")}{/if}
           </p></button
         >
       </div>
@@ -306,10 +306,10 @@
 
     <div class="tabs tabs-boxed mt-2 w-[17.1rem]">
       <button id="regenTab" on:click={regenTab} class="tab"
-        >Regenerate World</button
+        >{$t("tab.regenerateWorld")}</button
       >
       <button id="uploadTab" on:click={uploadTab} class="tab tab-active"
-        >Upload World</button
+        >{$t("tab.uploadWorld")}</button
       >
     </div>
     <div class="divider w-[17rem]" />
@@ -318,8 +318,7 @@
     >
       <AlertTriangle size="32" />
       <span class="text-sm"
-        >Warning: Your old world will be replaced. Consider downloading your old
-        world file first.</span
+        >{$t("warning.world")}</span
       >
     </div>
     {#if tab == "regen"}
@@ -382,7 +381,7 @@
         </div>
 
         <div class="space-y-3">
-          <p>World Type</p>
+          <p>{$t("world.l.worldType")}</p>
           <select
             class="select select-primary w-full max-w-xs"
             id="worldTypeDropdown"
@@ -400,9 +399,9 @@
           id="seed"
           type="text"
           class="input input-bordered max-w-xs mb-2"
-          placeholder="Seed (Leave blank for random)"
+          placeholder={$t("world.p.seed")}
         />
-        <label for="world" on:click={regen} class="btn">Regen World</label>
+        <label for="world" on:click={regen} class="btn">{$t("button.regenerateWorld")}</label>
       {/if}
       {#if tab == "upload"}
         <div class="flex space-x-2">
@@ -412,7 +411,7 @@
             class="file-input file-input-bordered file-input-secondary max-w-xs"
             on:change={handleFileSelect}
           />
-          <button on:click={upload} class="btn uploadBtn">Upload</button>
+          <button on:click={upload} class="btn uploadBtn">{$t("button.upload")}</button>
         </div>
       {/if}
     </div>

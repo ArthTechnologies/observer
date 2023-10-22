@@ -33,7 +33,7 @@
 
 <label
   for="deleteAccount"
-  class="btn btn-error grow md:grow sm:w-44 ml-1 md:m-0">Delete Account</label
+  class="btn btn-error grow md:grow sm:w-44 ml-1 md:m-0">{$t("account.button.deleteAccount")}</label
 >
 <input type="checkbox" id="deleteAccount" class="modal-toggle" />
 <div class="modal">
@@ -42,15 +42,15 @@
       for="deleteAccount"
       class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
     >
-    <h3 class="text-lg font-bold">Are you sure?</h3>
+    <h3 class="text-lg font-bold">{$t("account.delete.title")}</h3>
     <p class="py-4">
-      Your account will be instantly deleted. This cannot be undone.
+      {$t("account.delete.desc")}
     </p>
     <input
       type="password"
       id="password"
       class="input input-bordered input-error mr-1"
-      placeholder="Type your password"
+      placeholder={$t("typeYourPassword")}
     />
 
     <button class="btn btn-error" on:click={del}>{$t("button.delete2")}</button>

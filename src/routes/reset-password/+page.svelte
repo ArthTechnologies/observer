@@ -1,9 +1,10 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import Footer from "$lib/components/layout/Footer.svelte";
+  import {t} from "$lib/scripts/i18n";
   import Navbar from "$lib/components/layout/Navbar.svelte";
   import { ArrowLeft } from "lucide-svelte";
   let enablePay = true;
+  let backurl = "/signin"
   if (browser) {
     if (localStorage.getItem("enablePay") == "false") {
       enablePay = false;
@@ -42,42 +43,51 @@
         });
     }
   }
+
+  //if url has "?backurl=...", set backurl to that
+  if (browser) {
+    if (window.location.href.includes("?backurl=")) {
+      backurl = window.location.href.split("?backurl=")[1];
+      //remove the backurl from the url
+      window.history.replaceState({}, document.title, "/reset-password");
+    }
+  }
 </script>
 
 <Navbar navType="welcome" />
 
 <div class="hero min-h-screen">
   <div class="hero-content flex flex-col place-items-start">
-    <a href="/signin" class="btn btn-sm btn-ghost"
+    <a href={backurl} class="btn btn-sm btn-ghost"
       ><ArrowLeft />
-      <p class="ml-1.5">Back</p></a
+      <p class="ml-1.5">{$t("button.back")}</p></a
     >
     <div
       class="bg-base-200 rounded-box w-full max-w-3xl p-5 border-4 border-base-300"
     >
-      <p class="font-bold">Reset Password</p>
+      <p class="font-bold">{$t("account.resetPassword.title")}</p>
       <p class="text-gray-500">
-        For your account's security, you can only attempt this 5 times.
+        {$t("account.resetPassword.desc")}
       </p>
       <div class="flex flex-col mt-2">
-        <label for="email " class="font-bold">Email</label>
+        <label for="email " class="font-bold">{$t("account.resetPassword.l.email")}</label>
         <input id="email" class="input input-bordered" type="text" />
       </div>
       {#if enablePay}
         <div class="flex flex-col mt-2">
           <label for="email " class="font-bold"
-            >Last 4 digits of your Credit Card</label
+            >{$t("account.resetPassword.l.last4")}</label
           >
           <input id="cc" class="input input-bordered" type="text" />
         </div>
       {/if}
       <div class="flex flex-col mt-2">
-        <label for="password " class="font-bold">New Password</label>
+        <label for="password " class="font-bold">{$t("account.resetPassword.l.newPassword")}</label>
         <input id="password" class="input input-bordered" type="password" />
       </div>
       <div class="flex flex-col mt-2">
         <label for="confirmPassword " class="font-bold"
-          >Confirm New Password</label
+          >{$t("account.resetPassword.l.confirmPassword")}</label
         >
         <input
           id="confirmPassword"
@@ -86,7 +96,7 @@
         />
       </div>
       <button on:click={reset} class="btn btn-secondary mt-5"
-        >Reset Password</button
+        >{$t("account.button.resetPassword")}</button
       >
     </div>
   </div>

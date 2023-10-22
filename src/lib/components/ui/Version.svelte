@@ -3,6 +3,7 @@
 
   import { browser } from "$app/environment";
   import { AlertCircle, Check, Clock, Plus } from "lucide-svelte";
+  import { t } from "$lib/scripts/i18n";
 
   export let name: string;
   export let date: string;
@@ -67,7 +68,7 @@
             class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
           >
             <AlertCircle class="mr-1.5" size="16" />
-            Requires {dependency.name}
+            {$t("requires")} {dependency.name}
           </div>
         {/each}
       </div>

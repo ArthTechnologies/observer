@@ -1,7 +1,7 @@
 <script>
   import { browser } from "$app/environment";
   import { apiurl, setInfo, usingOcelot } from "$lib/scripts/req";
-  import { src_url_equal } from "svelte/internal";
+  import { t } from "$lib/scripts/i18n";
   import { Settings } from "lucide-svelte";
   let id;
   let icon = "";
@@ -134,7 +134,7 @@
 {:else if type == "fullBtn"}
   <label for="editInfo"
     ><div class="btn" on:click={get}>
-      <Settings class="mr-1.5" />Settings
+      <Settings class="mr-1.5" />{$t("button.settings")}
     </div></label
   >
 {/if}
@@ -145,8 +145,8 @@
     <label for="editInfo" class="btn btn-sm btn-circle fixed right-2 top-2"
       >✕</label
     >
-    <h3 class="text-2xl font-bold mb-3">Settings</h3>
-    <label for="serverDescription" class="block font-bold mb-2">Name </label>
+    <h3 class="text-2xl font-bold mb-3">{$t("button.settings")}</h3>
+    <label for="serverDescription" class="block font-bold mb-2">{$t("settings.l.name")} </label>
     <input
       bind:value={name}
       type="text"
@@ -156,7 +156,7 @@
     <div class=" w-96 mt-2">
       <label class="cursor-pointer flex items-center">
         <span class="label-text max-md:w-48 w-72"
-          >Automatically start up after matinence shutdowns</span
+          >{$t("settings.l.automaticStartup")}</span
         >
         <input
           id="automaticStartup"
@@ -165,12 +165,12 @@
         />
       </label>
     </div>
-    <div class="divider mt-3 text-xl font-bold">Server Info</div>
+    <div class="divider mt-3 text-xl font-bold">{$t("settings.h.serverInfo")}</div>
     <p class="mb-4">
-      Players will see this information on their server list in Minecraft.
+      {$t("settings.desc.serverInfo")}
     </p>
     <label for="serverDescription" class="block font-bold mb-2"
-      >Description
+      >{$t("description")}
     </label>
     <input
       bind:value={desc}
@@ -179,8 +179,8 @@
       class="input input-bordered"
     />
     <label for="serverIcon" class="block font-bold my-2"
-      >Icon
-      <p class="font-light">Image can't be taller than it is wide.</p></label
+      >{$t("settings.l.icon")}
+      <p class="font-light">{$t("settings.desc.icon")}</p></label
     >
     <div class="flex space-x-2">
       <input
@@ -188,17 +188,17 @@
         type="text"
         id="serverIcon"
         class="input input-bordered"
-        placeholder="Enter URL"
+        placeholder={$t("settings.p.enterURL")}
       />
       <img src={iconPreview} class="h-[3rem] w-[3rem] rounded-lg" />
     </div>
-    <h3 class="text-2xl font-bold mt-5">Advanced Settings</h3>
-    <div class="divider mt-5 text-xl font-bold">Proxies</div>
+    <h3 class="text-2xl font-bold mt-5">{$t("settings.h.advancedSettings")}</h3>
+    <div class="divider mt-5 text-xl font-bold">{$t("settings.h.proxies")}</div>
     {#if software == "Paper"}
-      <p class="mb-4">If you have a proxy set up, you can enable it here.</p>
+      <p class="mb-4">{$t("settings.desc.proxies")}</p>
       <div class=" w-52">
         <label class="cursor-pointer label">
-          <span class="label-text text-lg">Enable Proxies</span>
+          <span class="label-text text-lg">{$t("settings.l.enableProxies")}</span>
           <input
             id="proxiesEnabled"
             type="checkbox"
@@ -216,10 +216,10 @@
         class="input input-bordered"
         placeholder={fSecret}
       />
-    {:else}<p class="mb-4">Your server type doesn't support proxies.</p>
+    {:else}<p class="mb-4">{$t("settings.l.noProxies")}</p>
     {/if}
     <div class="flex justify-end mt-4">
-      <label on:click={set} for="editInfo" class="btn btn-primary">Save</label>
+      <label on:click={set} for="editInfo" class="btn btn-primary">{$t("save")}</label>
     </div>
   </div>
 </div>

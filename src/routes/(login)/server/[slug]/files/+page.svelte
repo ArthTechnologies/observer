@@ -4,6 +4,7 @@
   import Folder from "$lib/components/ui/filetree/Folder.svelte";
   import { apiurl, usingOcelot } from "$lib/scripts/req";
   import { ArrowLeft } from "lucide-svelte";
+  import { t } from "$lib/scripts/i18n";
 
   let files = ["server.properties", ["folder1", ["file1.txt", "file2.txt"]]];
   let id;
@@ -105,7 +106,7 @@
       <div id="filepath" class="hidden" />
       <h1 class="text-xl font-bold" id="filename">File</h1>
       <button class="btn btn-sm btn-disabled" id="saveButton" on:click={save}
-        >Save</button
+        >{$t("save")}</button
       >
     </div>
     <textarea
