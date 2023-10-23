@@ -65,6 +65,7 @@
 
   if (browser) {
     name = localStorage.getItem("serverName");
+    hostName = localStorage.getItem("address");
     if (localStorage.getItem("serverCardRedrict") != "true") {
       id = parseInt(localStorage.getItem("serverID"));
     } else {
