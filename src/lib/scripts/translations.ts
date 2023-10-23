@@ -249,7 +249,7 @@ export default {
     "button.starting3": " Iniciando",
     "button.restart2": "  Reiniciar",
     "button.restarting2": "  Reiniciando",
-    "button.restarting3": " Reiniciando",
+    "button.restarting": "Reiniciando",
     "button.start2": "  Encender",
     "button.addplugin": "  Añadir Plugin",
     "p.enterCommand": "Ingrese el comando",
