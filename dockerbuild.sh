@@ -15,6 +15,7 @@ if [ $? -eq 0 ]; then
   CI= npm run build
   docker build . -t $container_name
   docker push $container_name
+  exit 0
     else
         echo "You are not logged into Docker."
     fi
