@@ -146,7 +146,9 @@
       >✕</label
     >
     <h3 class="text-2xl font-bold mb-3">{$t("button.settings")}</h3>
-    <label for="serverDescription" class="block font-bold mb-2">{$t("settings.l.name")} </label>
+    <label for="serverDescription" class="block font-bold mb-2"
+      >{$t("settings.l.name")}
+    </label>
     <input
       bind:value={name}
       type="text"
@@ -165,7 +167,9 @@
         />
       </label>
     </div>
-    <div class="divider mt-3 text-xl font-bold">{$t("settings.h.serverInfo")}</div>
+    <div class="divider mt-3 text-xl font-bold">
+      {$t("settings.h.serverInfo")}
+    </div>
     <p class="mb-4">
       {$t("settings.desc.serverInfo")}
     </p>
@@ -198,7 +202,9 @@
       <p class="mb-4">{$t("settings.desc.proxies")}</p>
       <div class=" w-52">
         <label class="cursor-pointer label">
-          <span class="label-text text-lg">{$t("settings.l.enableProxies")}</span>
+          <span class="label-text text-lg"
+            >{$t("settings.l.enableProxies")}</span
+          >
           <input
             id="proxiesEnabled"
             type="checkbox"
@@ -219,7 +225,9 @@
     {:else}<p class="mb-4">{$t("settings.l.noProxies")}</p>
     {/if}
     <div class="flex justify-end mt-4">
-      <label on:click={set} for="editInfo" class="btn btn-primary">{$t("save")}</label>
+      <label on:click={set} for="editInfo" class="btn btn-primary"
+        >{$t("save")}</label
+      >
     </div>
   </div>
 </div>

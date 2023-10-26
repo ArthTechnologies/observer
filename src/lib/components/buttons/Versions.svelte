@@ -135,9 +135,7 @@
       class="bg-warning w-86 rounded-lg text-black p-2 py-0.5 flex items-center mb-2 space-x-2"
     >
       <AlertTriangle size="48" />
-      <span class="text-sm"
-        >{$t("warning.changeVersion")}</span
-      >
+      <span class="text-sm">{$t("warning.changeVersion")}</span>
     </div>
     <div class="flex">
       {#if areWorldgenMods}
@@ -162,7 +160,7 @@
     </div>
     <div class="ml-4 mb-4 mt-1">
       {#if updateReady}
-      {$t("changeVersion.readyToUpdate")} {version}.
+        {$t("changeVersion.readyToUpdate")} {version}.
       {:else}
         Worldgen mods are not available on {version} yet. You can reset your world
         to one without worldgen mods in order to change to {version}.

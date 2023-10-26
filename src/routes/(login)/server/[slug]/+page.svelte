@@ -351,8 +351,8 @@
   readCmd();
 </script>
 
-<div class="h-[75vh]">
-  <div class=" flex justify-between">
+<div class="-mt-10">
+  <div class=" flex justify-between mb-2">
     <div class="space-x-2 space-y-2 mb-2 flex flex-col items-center md:block">
       <a href="/" class="btn btn-info"
         ><ArrowLeft class="mr-1.5" />

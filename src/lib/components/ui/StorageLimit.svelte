@@ -6,7 +6,7 @@
     } from "$lib/scripts/numShort";
     import { apiurl, usingOcelot } from "$lib/scripts/req";
     import { HardDrive } from "lucide-svelte";
-    import {t} from "$lib/scripts/i18n";
+    import { t } from "$lib/scripts/i18n";
     let storageRatio = "0/0mB";
     if (browser) {
         let baseurl = apiurl;
@@ -53,5 +53,7 @@
     id="ratioVisualizer"
     class="bg-base-200 border-base-300 border-2 rounded-lg px-4 flex items-center w-44 font-semibold text-sm uppercase text-white gap-1.5"
 >
-    <HardDrive /> {$t("using")} {storageRatio}
+    <HardDrive />
+    {$t("using")}
+    {storageRatio}
 </div>

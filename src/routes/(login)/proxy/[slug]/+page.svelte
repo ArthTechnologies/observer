@@ -71,7 +71,7 @@
     } else {
       id = parseInt(window.location.href.split("/")[4]) - 10000;
     }
-    if ( usingOcelot) {
+    if (usingOcelot) {
       baseurl =
         JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
     }
@@ -432,8 +432,8 @@
   readCmd();
 </script>
 
-<div class="h-[75vh]">
-  <div class=" flex justify-between">
+<div class="-mt-10">
+  <div class=" flex justify-between mb-2">
     <div class="space-x-2 space-y-2 mb-2 flex flex-col items-center md:block">
       <a href="/" class="btn btn-info"
         ><ArrowLeft class="mr-1.5" />
@@ -589,7 +589,9 @@
           {/each}
         </div>
         <div class="space-x-1.5 space-y-1.5">
-          <label class="label" for="username">{$t("subservers.h.addServer")}</label>
+          <label class="label" for="username"
+            >{$t("subservers.h.addServer")}</label
+          >
 
           <input
             id="subServerName"
@@ -600,7 +602,7 @@
           <input
             id="serverIP"
             class="input input-sm input-bordered"
-            placeholder="{$t("subservers.p.ip")}"
+            placeholder={$t("subservers.p.ip")}
             type="text"
           />
           <button class="btn btn-sm btn-secondary" on:click={addServer}>
@@ -608,15 +610,19 @@
           </button>
         </div>
         <div class="space-x-1.5 space-y-1.5">
-          <label class="label" for="lobbyName">{$t("subservers.h.sendPlayersTo")}</label>
+          <label class="label" for="lobbyName"
+            >{$t("subservers.h.sendPlayersTo")}</label
+          >
 
           <input
             id="lobbyName"
             class="input input-sm w-1/2 md:w-auto input-bordered"
-            placeholder="{$t("currently")} '{lobbyName}'"
+            placeholder="{$t('currently')} '{lobbyName}'"
             type="text"
           />
-          <button class="btn btn-sm" on:click={setLobbyName}> {$t("sumbit")} </button>
+          <button class="btn btn-sm" on:click={setLobbyName}>
+            {$t("sumbit")}
+          </button>
         </div>
       </div>
       <div
@@ -624,8 +630,8 @@
       >
         <Info />
         <span class="text-sm w-[19rem] lg:w-[22.5rem] flex flex-wrap"
-          >{$t("proxy.forwardingSecret1")} <code
-            class="bg-gray-500 rounded p-0.5 flex ml-1"
+          >{$t("proxy.forwardingSecret1")}
+          <code class="bg-gray-500 rounded p-0.5 flex ml-1"
             ><div class="dropdown">
               <label tabindex="0" class="">{$t("proxy.showSecret")}</label>
               <div
@@ -635,7 +641,9 @@
                 {fSecret}
               </div>
             </div></code
-          >{$t("proxy.forwardingSecret2")}{hostName}{$t("proxy.forwardingSecret3")}
+          >{$t("proxy.forwardingSecret2")}{hostName}{$t(
+            "proxy.forwardingSecret3"
+          )}
           <code class="bg-gray-500 rounded p-0.5 mr-1"
             >config/paper-global.yml</code
           >

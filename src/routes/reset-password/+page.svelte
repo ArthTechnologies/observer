@@ -1,10 +1,10 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import {t} from "$lib/scripts/i18n";
+  import { t } from "$lib/scripts/i18n";
   import Navbar from "$lib/components/layout/Navbar.svelte";
   import { ArrowLeft } from "lucide-svelte";
   let enablePay = true;
-  let backurl = "/signin"
+  let backurl = "/signin";
   if (browser) {
     if (localStorage.getItem("enablePay") == "false") {
       enablePay = false;
@@ -70,7 +70,9 @@
         {$t("account.resetPassword.desc")}
       </p>
       <div class="flex flex-col mt-2">
-        <label for="email " class="font-bold">{$t("account.resetPassword.l.email")}</label>
+        <label for="email " class="font-bold"
+          >{$t("account.resetPassword.l.email")}</label
+        >
         <input id="email" class="input input-bordered" type="text" />
       </div>
       {#if enablePay}
@@ -82,7 +84,9 @@
         </div>
       {/if}
       <div class="flex flex-col mt-2">
-        <label for="password " class="font-bold">{$t("account.resetPassword.l.newPassword")}</label>
+        <label for="password " class="font-bold"
+          >{$t("account.resetPassword.l.newPassword")}</label
+        >
         <input id="password" class="input input-bordered" type="password" />
       </div>
       <div class="flex flex-col mt-2">

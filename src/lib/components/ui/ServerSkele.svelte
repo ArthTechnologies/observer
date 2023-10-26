@@ -1,6 +1,6 @@
 <div class="m-3">
-  <div class="card w-[21rem] h-40 bg-base-100 shadow-xl image-full ">
-    <div class="card-body animate-pulse ">
+  <div class="card w-[21rem] h-40 bg-base-100 shadow-xl image-full">
+    <div class="card-body animate-pulse">
       <h2 class="card-title">
         <div class="h-2 bg-base-100 rounded w-16 mt-4" />
       </h2>
@@ -25,7 +25,7 @@
           />
         </div>
 
-        <div class="badge w-12 bg-base-100  right-2 top-4 absolute" />
+        <div class="badge w-12 bg-base-100 right-2 top-4 absolute" />
       </div>
     </div>
   </div>

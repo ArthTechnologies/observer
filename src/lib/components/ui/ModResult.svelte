@@ -81,6 +81,6 @@
         </div>
       </div>
     </div>
-    <ChooseModVersion {id} name={name} author={author} desc={desc} icon={icon}/>
+    <ChooseModVersion {id} {name} {author} {desc} {icon} />
   </div>
 </div>

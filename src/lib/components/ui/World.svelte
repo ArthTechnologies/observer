@@ -297,7 +297,9 @@
               <Loader />
             </div>{/if}
           <p class="ml-1.5">
-            {#if downloading}{downloadProgress}{:else}{$t("button.download")}{/if}
+            {#if downloading}{downloadProgress}{:else}{$t(
+                "button.download"
+              )}{/if}
           </p></button
         >
       </div>
@@ -317,9 +319,7 @@
       class="bg-warning w-86 h-16 md:h-12 rounded-lg text-black p-2 flex items-center mb-2 space-x-2"
     >
       <AlertTriangle size="32" />
-      <span class="text-sm"
-        >{$t("warning.world")}</span
-      >
+      <span class="text-sm">{$t("warning.world")}</span>
     </div>
     {#if tab == "regen"}
       <div class="flex flex-col items-start space-y-5">
@@ -401,7 +401,9 @@
           class="input input-bordered max-w-xs mb-2"
           placeholder={$t("world.p.seed")}
         />
-        <label for="world" on:click={regen} class="btn">{$t("button.regenerateWorld")}</label>
+        <label for="world" on:click={regen} class="btn"
+          >{$t("button.regenerateWorld")}</label
+        >
       {/if}
       {#if tab == "upload"}
         <div class="flex space-x-2">
@@ -411,7 +413,9 @@
             class="file-input file-input-bordered file-input-secondary max-w-xs"
             on:change={handleFileSelect}
           />
-          <button on:click={upload} class="btn uploadBtn">{$t("button.upload")}</button>
+          <button on:click={upload} class="btn uploadBtn"
+            >{$t("button.upload")}</button
+          >
         </div>
       {/if}
     </div>

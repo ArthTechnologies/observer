@@ -68,7 +68,8 @@
             class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
           >
             <AlertCircle class="mr-1.5" size="16" />
-            {$t("requires")} {dependency.name}
+            {$t("requires")}
+            {dependency.name}
           </div>
         {/each}
       </div>
