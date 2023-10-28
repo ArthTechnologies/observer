@@ -398,10 +398,10 @@
       {:else if state == "installing"}
         <button class="btn btn-accent"
           ><Loader class="animate-spin mr-1.5" />
-          Installing</button
+          {$t("button.installing")}</button
         >
         <button on:click={stop} class="btn btn-error"
-          ><StopCircle class="mr-1.5" />Stop</button
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "stopping"}
         <button class="btn btn-disabled"
@@ -409,7 +409,7 @@
         >
         <button class="btn btn-error"
           ><Loader class="animate-spin mr-1.5" />
-          Stopping</button
+          {$t("button.stopping")}</button
         >
       {/if}
     </div>
