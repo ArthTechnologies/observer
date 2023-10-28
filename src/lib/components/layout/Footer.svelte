@@ -6,16 +6,6 @@
   type NavType = "default" | "welcome";
 
   export let navType: NavType;
-  let textSize = "sm"
-  //on certain languages, there is too much text on the discord help button, so this will shrink it to the right size
-  if (browser) {
-    //if spanish
-    if (navigator.language.startsWith("es")) {
-      textSize = "[.7rem]"
-    }
-  }
-
-
 </script>
 
 <footer class=" items-center p-4 fixed bottom-0 right-0 z-50">
@@ -78,7 +68,7 @@
           target="_blank"
           rel="noreferrer"
           ><img alt="discord logo" style="width:3ch" src="/discord.svg" />
-          <p id="text-shrink" class="w-28 ml-1.5 text-{textSize}">{$t("help.button.getHelpOnOurDiscord")}</p></a
+          <p id="text-shrink" class="w-28 ml-1.5 text-[.8rem]">{$t("help.button.getHelpOnOurDiscord")}</p></a
         >
       </div>
     </div>
