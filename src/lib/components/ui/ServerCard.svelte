@@ -8,10 +8,9 @@
   import { Loader } from "lucide-svelte";
   //Status variables
 
-  let stopcolor = "info";
   let startcolor = "accent";
   let starttext = "Start";
-  let starting = false;
+  let loading = false;
   let email = "noemail";
   let softwareType = "server";
   let address;
@@ -63,35 +62,26 @@
   }
   function status() {
     if (state == "true") {
-      starting = false;
-      stopcolor = "error";
+      loading = false;
       startcolor = "success";
       starttext = $t("button.restart");
     } else if (state == "false") {
-      starting = false;
-      stopcolor = "disabled";
+      loading = false;
       startcolor = "success";
       starttext = $t("button.start");
     } else if (state == "starting") {
-      starting = true;
-      stopcolor = "error";
+      loading = true;
       startcolor = "success";
-      starttext = "Starting";
+      starttext = $t("button.starting");
     } else if (state == "installing") {
       console.error("installing");
-      starting = true;
-      stopcolor = "error";
+      loading = true;
       startcolor = "accent";
-      starttext = "Installing";
+      starttext = $t("button.installing");
     } else if (state == "stopping") {
-      starting = false;
-      stopcolor = "error";
+      loading = false;
       startcolor = "disabled";
       starttext = $t("button.start");
-      const stopBtn = document.getElementById("stoppingBtn");
-      if (stopBtn != null) {
-        stopBtn.innerText = "Stopping";
-      }
     }
   }
   status();
@@ -119,7 +109,6 @@
         lock = false;
       }
       state = data.state;
-      console.log("state " + state);
       status();
     });
   }
@@ -141,7 +130,7 @@
 
 <div class="m-3 w-[21rem]">
   <div class="card w-50 bg-neutral shadow-xl image-full">
-    <div class="card-body">
+    <div class="card-body pr-0">
       <h2 class="card-title">{name}</h2>
       <p>
         {address}:{10000 + parseInt(id)}
@@ -155,44 +144,40 @@
               >Info</button
             ></a
           >
-          {#if restarting}
+          {#if state == "starting" || state == "installing"}
             <div
               id="start"
-              class="flex w-[7.5rem] bg-success rounded-lg font-semibold uppercase text-base-100 text-[.65rem] tracking-wider px-3 items-center"
+              class="no-hover-effect flex btn-{startcolor} rounded-lg font-semibold uppercase text-base-100 text-xs tracking-wider px-3 items-center"
             >
-              <Loader size="18" class="animate-spin" />
-              {$t("button.restarting3")}
+              <Loader size="18" class="animate-spin mr-1.5" />
+              {starttext}
             </div>
-            <button
-              on:click={stop}
-              class="btn btn-error btn-{stopcolor} btn-sm h-9 stop-btn btn-disabled"
-              >{$t("button.stop")}</button
-            >
-          {:else}
-            {#if !starting}
-              <button
-                on:click={start}
-                id="start"
-                type="submit"
-                class="btn btn-{startcolor} btn-sm h-9">{starttext}</button
-              >
             {:else}
-              <div
-                on:click={start}
+              <button
                 id="start"
-                class="flex w-[7.5rem] bg-{startcolor} rounded-lg font-semibold uppercase text-base-100 text-[.76rem] tracking-wider px-3 items-center"
+                on:click={start}
+                class="btn btn-{startcolor} btn-sm h-9"
               >
-                <Loader size="18" class="animate-spin" />
-                {$t("button.starting3")}
-              </div>
-            {/if}
+                {starttext}
+              </button>
+          {/if}
+          {#if state == "stopping"}
+          <div
+          id="start"
+          class="no-hover-effect flex btn-error rounded-lg font-semibold uppercase text-black text-xs tracking-wider px-3 items-center"
+        >
+          <Loader size="18" class="animate-spin mr-1.5" />
+          {$t("button.stopping")}
+        </div>
+        {:else}
             <button
               on:click={stop}
-              id="{state}Btn"
-              class="btn btn-error btn-{stopcolor} btn-sm h-9 stop-btn"
+              class="btn btn-error btn-sm h-9"
+              class:btn-disabled={state != "true"}
               >{$t("button.stop")}</button
             >
-          {/if}
+            {/if}
+          
         </div>
         <div class="self-center">
           <div class="badge badge-outline right-4 top-4 absolute">
@@ -204,3 +189,11 @@
     </div>
   </div>
 </div>
+
+<style>
+  .no-hover-effect {
+  /* Add any specific styling to prevent hover effect here */
+  pointer-events: none; /* Disable hover interaction */
+  cursor: default;      /* Change cursor to default */
+}
+</style>
