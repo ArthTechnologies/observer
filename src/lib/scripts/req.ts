@@ -297,7 +297,7 @@ export function getServers(em: string) {
         localStorage.setItem("amountOfServers", JSON.parse(input).length);
         localStorage.setItem("servers", input);
 
-        getServerNodes();
+        if (usingOcelot) getServerNodes();
       }
 
       console.log("Response Recieved: " + input);
