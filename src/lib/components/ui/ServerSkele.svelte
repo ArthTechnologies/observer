@@ -2,8 +2,8 @@
   import { t } from "$lib/scripts/i18n";
 </script>
 
-<div class="m-3">
-  <div class="card w-[21rem] h-40 bg-base-100 image-full">
+<div class="m-3 w-[21rem] mb-[1.25rem]">
+  <div class="card h-40 bg-base-100 image-full">
     <div class="card-body animate-pulse">
       <h2 class="card-title">
         <div class="h-3.5 bg-base-100 rounded w-16 mt-[.45rem]" />
