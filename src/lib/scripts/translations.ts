@@ -107,6 +107,14 @@ export default {
     "warning.changeVersion":
       "Warning: Your world, plugins/mods, and more may not work on a different version. Consider downloading your world beforehand.",
     "changeVersion.readyToUpdate": "Your server is ready to update to ",
+    "warning.updateModded":
+      "Warning: Your world and mods may not work on this version. Consider downloading your world beforehand.",
+    "update.worldgenReady": "All of your worldgen mods are ready for ",
+    "update.worldgenNotReady": "Not all of your worldgen mods have updated to ",
+    "update.worldgenNotReady2": " yet. Check back in a few days.",
+    "changeVersion.worldgenNotReady": "Worldgen mods are not available on ",
+    "changeVersion.worldgenNotReady2": " yet. You can reset your world to one without worldgen mods in order to change to ",
+    "update.cantUpdate": "Your server can't update to ",
     "button.changeVersion": "Change Version",
     save: "Save",
     description: "Description",
@@ -162,6 +170,7 @@ export default {
     "proxy.forwardingSecret4": "and disable online mode.",
     currently: "Currently",
     sumbit: "Submit",
+    update: "Update",
     "proxy.showSecret": "Show Secret ▼",
   },
   "es-ES": {
@@ -279,6 +288,9 @@ export default {
       "Advertencia: Su mundo, plugins/mods y más pueden no funcionar en una versión diferente. Considere descargar su mundo de antemano",
     "changeVersion.readyToUpdate":
       "Su servidor está listo para actualizarse a ",
+    "warning.updateModded":
+      "Advertencia: Su mundo y mods pueden no funcionar en esta versión. Considere descargar su mundo de antemano.",
+    "update.worldgenReady": "Todos sus mods de worldgen están listos para ",
     "button.changeVersion": "Cambiar Versión",
     save: "Salvar",
     description: "Descripción",
@@ -335,6 +347,7 @@ export default {
     "proxy.forwardingSecret4": "y deshabilite el modo en línea.",
     currently: "Actualmente",
     sumbit: "Enviar",
+    update: "Actualización",
     "proxy.showSecret": "Mostrar secreto ▼",
   },
 };

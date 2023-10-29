@@ -162,8 +162,10 @@
       {#if updateReady}
         {$t("changeVersion.readyToUpdate")} {version}.
       {:else}
-        Worldgen mods are not available on {version} yet. You can reset your world
-        to one without worldgen mods in order to change to {version}.
+        {$t("changeVersion.worldgenNotReady")}
+        {version}
+        {$t("changeVersion.worldgenNotReady2")}
+        {version}.
       {/if}
     </div>
 

@@ -1,9 +1,9 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { ArrowDownCircle } from "lucide-svelte";
+  import { AlertTriangle, ArrowDownCircle } from "lucide-svelte";
   import { apiurl } from "../../scripts/req";
   import { updateServer } from "../../scripts/req";
-  import AccountButton from "./AccountButton.svelte";
+  import { t } from "$lib/scripts/i18n";
   let latestUpdate = "";
   let worldgenMods = [];
   let serverAddons = [];
@@ -101,7 +101,7 @@
 {#if latestUpdate != serverVersion && jarAvailable}
   <label for="updates" class="btn btn-neutral" on:click={onclick}
     ><ArrowDownCircle class="mr-2.5" />
-    Update</label
+    {$t("button.update")}</label
   >
 {/if}
 <!-- Put this part before </body> tag -->
@@ -111,7 +111,15 @@
     <label for="updates" class="btn btn-sm btn-circle absolute right-2 top-2"
       >✕</label
     >
-    <h3 class="text-xl font-bold mb-2">{latestUpdate} Update</h3>
+    <h3 class="text-xl font-bold mb-2">{latestUpdate} {$t("update")}</h3>
+    {#if serverSoftware == "Forge" || serverSoftware == "Quilt" || serverSoftware == "Fabric"}
+      <div
+        class="bg-warning w-86 rounded-lg text-black p-2 py-0.5 flex items-center space-x-2"
+      >
+        <AlertTriangle size="48" />
+        <span class="text-sm">{$t("warning.updateModded")}</span>
+      </div>
+    {/if}
     <div class="flex justify-center">
       {#if areWorldgenMods}
         {#each serverAddons as addon}
@@ -124,26 +132,28 @@
         {/each}
       {/if}
     </div>
+
     {#if updateReady}
       <p class="text-center my-3">
         {#if areWorldgenMods}
-          All of your worldgen mods are ready for {latestUpdate}.
+          {$t("update.worldgenReady")} {latestUpdate}.
         {:else}
-          Your server is ready for {latestUpdate}.
+          {$t("changeVersion.readyToUpdate")} {latestUpdate}.
         {/if}
       </p>
     {:else}
       <p class="text-center">
         {#if areWorldgenMods}
-          Not all of your worldgen mods have updated to {latestUpdate} yet. Check
-          back in a few days.
+          {$t("update.worldgenNotReady")}
+          {latestUpdate}
+          {$t("update.worldgenNotReady2")}
         {:else}
-          Your server can't update to {latestUpdate}.
+          {$t("update.cantUpdate")} {latestUpdate}.
         {/if}
       </p>
     {/if}
     <label on:click={update} for="updates" id="confirmBtn" class="btn"
-      >Update</label
+      >{$t("button.update")}</label
     >
   </div>
 </div>
