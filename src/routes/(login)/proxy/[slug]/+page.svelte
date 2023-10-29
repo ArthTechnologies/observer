@@ -432,7 +432,7 @@
   readCmd();
 </script>
 
-<div class="-mt-10">
+<div class="lg:-mt-10">
   <div class=" flex justify-between mb-2">
     <div class="space-x-2 space-y-2 mb-2 flex flex-col items-center md:block">
       <a href="/" class="btn btn-info"
