@@ -31,67 +31,68 @@
     if (serverAddons[0] == "") {
       areWorldgenMods = false;
     }
-  }
-  console.log(serverAddons);
 
-  fetch(apiurl + "servers/jars")
-    .then((x) => x.json())
-    .then((x) => {
-      console.log(x);
-      if (
-        x.includes(
-          serverSoftware.toLowerCase() +
-            "-" +
-            serverVersion.toLowerCase() +
-            ".jar"
-        )
-      ) {
-        jarAvailable = true;
-      }
-    });
-  //fetch https://launchermeta.mojang.com/mc/game/version_manifest.json
-  //get latest release version
+    console.log(serverAddons);
 
-  fetch("https://launchermeta.mojang.com/mc/game/version_manifest.json")
-    .then((x) => x.json())
-    .then((x) => {
-      latestUpdate = x.latest.release;
-      fetch(apiurl + "servers/worldgenMods?version=" + latestUpdate)
-        .then((x) => x.json())
-        .then((x) => {
-          console.log("x" + x);
-          worldgenMods = x;
-          //for each worldgen mod
-          if (areWorldgenMods) {
-            for (var i = 0; i < worldgenMods.length; i++) {
-              //display the mod's image
-              if (browser && serverAddons.includes(worldgenMods[i])) {
-                console.log(worldgenMods[i]);
-                console.log(worldgenMods);
-                document
-                  .getElementById(worldgenMods[i] + "Updates")
-                  .classList.remove("grayscale");
-              }
-            }
-            for (var i = 0; i < serverAddons.length; i++) {
-              console.log(
-                "worldgenb" +
-                  worldgenMods +
-                  worldgenMods.includes(serverAddons[i])
-              );
-              if (!worldgenMods.includes(serverAddons[i])) {
-                updateReady = false;
-                //add class disabled to id "confirmBtn"
-                if (browser) {
+    fetch(apiurl + "servers/jars")
+      .then((x) => x.json())
+      .then((x) => {
+        console.log(x);
+        if (
+          x.includes(
+            serverSoftware.toLowerCase() +
+              "-" +
+              serverVersion.toLowerCase() +
+              ".jar"
+          )
+        ) {
+          jarAvailable = true;
+        }
+      });
+    //fetch https://launchermeta.mojang.com/mc/game/version_manifest.json
+    //get latest release version
+
+    fetch("https://launchermeta.mojang.com/mc/game/version_manifest.json")
+      .then((x) => x.json())
+      .then((x) => {
+        latestUpdate = x.latest.release;
+        fetch(apiurl + "servers/worldgenMods?version=" + latestUpdate)
+          .then((x) => x.json())
+          .then((x) => {
+            console.log("x" + x);
+            worldgenMods = x;
+            //for each worldgen mod
+            if (areWorldgenMods) {
+              for (var i = 0; i < worldgenMods.length; i++) {
+                //display the mod's image
+                if (browser && serverAddons.includes(worldgenMods[i])) {
+                  console.log(worldgenMods[i]);
+                  console.log(worldgenMods);
                   document
-                    .getElementById("confirmBtn")
-                    .classList.add("btn-disabled");
+                    .getElementById(worldgenMods[i] + "Updates")
+                    .classList.remove("grayscale");
+                }
+              }
+              for (var i = 0; i < serverAddons.length; i++) {
+                console.log(
+                  "worldgenb" +
+                    worldgenMods +
+                    worldgenMods.includes(serverAddons[i])
+                );
+                if (!worldgenMods.includes(serverAddons[i])) {
+                  updateReady = false;
+                  //add class disabled to id "confirmBtn"
+                  if (browser) {
+                    document
+                      .getElementById("confirmBtn")
+                      .classList.add("btn-disabled");
+                  }
                 }
               }
             }
-          }
-        });
-    });
+          });
+      });
+  }
 
   function onclick() {
     serverVersion = localStorage.getItem("serverVersion");
