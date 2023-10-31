@@ -413,6 +413,7 @@ export function loginEmail(em: string, pwd: string) {
 }
 
 export function changeServerState(reqstate: string, id: number, em: string) {
+  if(browser) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
@@ -425,6 +426,7 @@ export function changeServerState(reqstate: string, id: number, em: string) {
 
   return "done";
 }
+}
 
 export function createServer(
   n: string,
@@ -434,9 +436,8 @@ export function createServer(
   c: any[],
   mURL: string
 ) {
-  const url =
-    apiurl + "server/new?" + "email=" + localStorage.getItem("accountEmail");
-  if (browser) {
+  if(browser) {
+
     const url =
       apiurl +
       "server/new?" +
@@ -444,7 +445,7 @@ export function createServer(
       localStorage.getItem("accountEmail") +
       "&accountId=" +
       localStorage.getItem("accountId");
-  }
+  
   //get file from id worldFile
   const req = {
     method: "POST",
@@ -496,8 +497,10 @@ export function createServer(
       .catch((err) => console.error(err))
   );
 }
+}
 
 export function getPlayers(address: string) {
+  if(browser) {
   const req = {
     method: "GET",
   };
@@ -519,6 +522,7 @@ export function getPlayers(address: string) {
 
       // return input as a number
     });
+}
 }
 
 export function getServer(id: number) {
@@ -542,6 +546,7 @@ export function getServer(id: number) {
 }
 
 export function deleteServer(id: number, password: string) {
+  if(browser) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
@@ -571,8 +576,10 @@ export function deleteServer(id: number, password: string) {
       }
     });
 }
+}
 
 export function writeTerminal(id: number, cmd: string) {
+  if(browser) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
@@ -590,10 +597,12 @@ export function writeTerminal(id: number, cmd: string) {
       }
     });
 }
+}
 
 export function readTerminal(id: number) {
+  if(browser) {
   let baseurl = apiurl;
-  if (usingOcelot && browser)
+  if (usingOcelot)
     baseurl =
       JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
   const url = baseurl + "terminal/" + id;
@@ -604,8 +613,10 @@ export function readTerminal(id: number) {
       return input;
     });
 }
+}
 
 export function updateServer(id: number, version: string) {
+  if(browser) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
@@ -622,8 +633,10 @@ export function updateServer(id: number, version: string) {
       }
     });
 }
+}
 
 function getServerNodes() {
+  if(browser) {
   let serverIdArray = [];
   const servers = JSON.parse(localStorage.getItem("servers"));
   for (let i = 0; i < servers.length; i++) {
@@ -638,6 +651,7 @@ function getServerNodes() {
       //return input as json
       return input;
     });
+}
 }
 
 //check if stripe is enabled
