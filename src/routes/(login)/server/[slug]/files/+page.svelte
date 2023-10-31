@@ -1,7 +1,8 @@
 <script>
   import { browser } from "$app/environment";
-  import File from "$lib/components/ui/filetree/File.svelte";
-  import Folder from "$lib/components/ui/filetree/Folder.svelte";
+  import File from "$lib/components/ui/files/File.svelte";
+  import Folder from "$lib/components/ui/files/Folder.svelte";
+  import TextEditor from "$lib/components/ui/files/TextEditor.svelte";
   import { apiurl, usingOcelot } from "$lib/scripts/req";
   import { ArrowLeft } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
@@ -37,18 +38,8 @@
       });
   }
 
-  function saveIndicator() {
-    //if it doesn't already end with a *, add one to indicate it needs to be saved
-    if (!document.getElementById("filename").innerHTML.endsWith("*")) {
-      document.getElementById("filename").innerHTML += "*";
-    }
-
-    //remove btn-disabled from save button
-    document.getElementById("saveButton").classList.remove("btn-disabled");
-  }
-
   function save() {
-    console.log(document.getElementById("textEditor").value);
+    document.dispatchEvent(new Event("updatedTextEditor"));
     fetch(
       apiurl +
         "server/" +
@@ -109,18 +100,7 @@
         >{$t("save")}</button
       >
     </div>
-    <textarea
-      on:keydown={saveIndicator}
-      class="textarea w-full bg-base-200"
-      id="textEditor"
-    />
+    <TextEditor />
   </div>
   <div />
 </div>
-
-<style>
-  textarea {
-    resize: none;
-    height: 90%;
-  }
-</style>

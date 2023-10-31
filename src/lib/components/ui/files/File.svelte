@@ -50,6 +50,7 @@
         data = data.substring(1, data.length - 1);
 
         document.getElementById("textEditor").value = data;
+        document.dispatchEvent(new Event("updatedTextEditor"));
 
         document.getElementById("filename").innerHTML = filename;
         document.getElementById("filepath").value = url;
