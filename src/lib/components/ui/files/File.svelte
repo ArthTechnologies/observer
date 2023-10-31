@@ -42,14 +42,10 @@
         email: localStorage.getItem("accountEmail"),
       },
     })
-      .then((response) => response.text())
+      .then((response) => response.json())
       .then((data) => {
-        data = data.replace(/\\n/g, "\n").replace(/\\"/g, '"');
-
-        //replace quotes at beginning and end
-        data = data.substring(1, data.length - 1);
-
-        document.getElementById("textEditor").value = data;
+        let content = data.content.replace(/\\n/g, "\n").replace(/\\"/g, '"');
+        document.getElementById("textEditor").value = content;
         document.dispatchEvent(new Event("updatedTextEditor"));
 
         document.getElementById("filename").innerHTML = filename;
