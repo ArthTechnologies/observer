@@ -183,8 +183,7 @@
           icon = "/images/placeholder.webp";
         }
       });
-
-
+  });
   //grab window url
   if (browser) {
     url = window.location.href;
