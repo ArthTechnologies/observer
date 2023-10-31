@@ -110,7 +110,7 @@
 
     <div class="flex items-center space-x-1">
       <div
-        class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+        class="hidden md:flex bg-base-200 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
       >
         <Clock size="16" class="mr-1.5" />
         {time}
@@ -161,6 +161,12 @@
                 </div>
               </div>
             </div>
+            <div
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+            >
+              <Clock size="16" class="mr-1.5" />
+              {time}
+            </div>
           </div>
         {:else if platform == "gh"}
           <div class="flex justify-between place-items-center">
@@ -185,6 +191,12 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+            >
+              <Clock size="16" class="mr-1.5" />
+              {time}
             </div>
           </div>
         {:else if platform == "cx"}
@@ -215,6 +227,12 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+            >
+              <Clock size="16" class="mr-1.5" />
+              {time}
             </div>
           </div>
         {/if}
