@@ -31,7 +31,6 @@
     StopCircle,
     Trash2,
   } from "lucide-svelte";
-  import Folder from "$lib/components/ui/filetree/Folder.svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
   import Versions from "$lib/components/buttons/Versions.svelte";
 
