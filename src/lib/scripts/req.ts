@@ -522,6 +522,7 @@ export function getPlayers(address: string) {
 }
 
 export function getServer(id: number) {
+  if (browser) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
@@ -537,6 +538,7 @@ export function getServer(id: number) {
         return JSON.parse(input);
       }
     });
+  }
 }
 
 export function deleteServer(id: number, password: string) {
