@@ -23,16 +23,20 @@
   }
 
   // getServers and store "amount" given in the response in a variable
-  let promise = getServers(email).then((response) => {
-    if (browser) {
-      noserverlock = true;
-      console.log(response);
-      if (response.amount != "undefined") {
-        id = response.amount;
+  let promise;
+
+  if (browser) {
+    promise = getServers(email).then((response) => {
+      if (browser) {
+        noserverlock = true;
+        console.log(response);
+        if (response.amount != "undefined") {
+          id = response.amount;
+        }
+        servers = response;
       }
-      servers = response;
-    }
-  });
+    });
+  }
 
   let noserver = false;
 
