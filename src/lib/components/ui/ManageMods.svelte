@@ -128,7 +128,7 @@
             />
           {:else}
             <div class="px-3 py-2 rounded-lg bg-base-300 flex justify-between">
-              <div class="flex items-center space-x-1">
+              <div class="flex items-center space-x-1 break-all">
                 <p>{mod.filename}</p>
                 <button
                   on:click={() => {
