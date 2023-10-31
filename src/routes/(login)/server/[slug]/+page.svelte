@@ -54,6 +54,7 @@
   let icon = "/images/placeholder.webp";
   let secret = "";
   let difference = -1;
+  let baseurl = apiurl;
 
   if (browser) {
     name = localStorage.getItem("serverName");
@@ -69,7 +70,9 @@
     ) {
       modded = true;
     }
-
+    if (usingOcelot) {
+      baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()];
+    }
     if (localStorage.getItem("serverSoftware") == "Vanilla") {
       vanilla = true;
     }
@@ -142,10 +145,6 @@
   onMount(() => {
     localStorage.setItem("serverCardRedrict", "false");
     port += parseInt(id);
-    let baseurl = apiurl;
-    if (browser && usingOcelot)
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
     //GET apiurl/server/id/getInfo
     fetch(baseurl + "server/" + id + "/getInfo", {
       method: "GET",
