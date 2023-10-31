@@ -184,23 +184,7 @@
         }
       });
 
-    //wait half a second
-    setTimeout(() => {
-      //get players and store amount in a variable
-      const gp = getPlayers("arthmc.xyz:" + port).then((response) => {
-        if (browser) {
-          console.log("port is " + port);
-          apo = response;
-        }
-      });
-    }, 500);
-    //increase po evey second until it reaches apo
-    setInterval(() => {
-      if (po < apo) {
-        po++;
-      }
-    }, 50);
-  });
+
   //grab window url
   if (browser) {
     url = window.location.href;
