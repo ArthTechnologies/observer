@@ -47,6 +47,7 @@ export function setInfo(
   fSecret,
   automaticStartup
 ) {
+  if(browser) {
   console.log(icon);
   if (icon == "") {
     icon = "/images/placeholder.png";
@@ -117,8 +118,10 @@ export function setInfo(
     }
   }
 }
+}
 
 export function getMods(id: number, modtype: string) {
+  if(browser) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
@@ -132,6 +135,7 @@ export function getMods(id: number, modtype: string) {
       return JSON.parse(input);
     })
     .catch((err) => console.error(err));
+  }
 }
 
 export function sendVersion(
@@ -141,6 +145,7 @@ export function sendVersion(
   pluginName: string,
   modtype: string
 ) {
+  if(browser) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
@@ -171,7 +176,9 @@ export function sendVersion(
     })
     .catch((err) => console.error(err));
 }
+}
 export function getVersions(id: string) {
+  if(browser) {
   const url = lrurl + "project/" + id + "/version";
   return fetch(url, GET)
     .then((res) => res.text())
@@ -182,12 +189,14 @@ export function getVersions(id: string) {
     })
     .catch((err) => console.error(err));
 }
+}
 
 export function searchPlugins(
   software: string,
   version: string,
   query: string
 ) {
+  if(browser) {
   if (version == "Latest") {
     version = "1.19.3";
   }
@@ -218,6 +227,7 @@ export function searchPlugins(
       .catch((err) => console.error(err));
   }
 }
+}
 
 export function searchMods(
   software: string,
@@ -225,6 +235,7 @@ export function searchMods(
   query: string,
   modtype: string
 ) {
+  if(browser) {
   if (version == "Latest") {
     version = "1.19.3";
   }
@@ -257,8 +268,10 @@ export function searchMods(
       .catch((err) => console.error(err));
   }
 }
+}
 
 export function getSettings() {
+  if(browser) {
   console.log("Request Sent");
   return fetch(apiurl + "settings", GET)
     .then((res) => res.text())
@@ -281,13 +294,13 @@ export function getSettings() {
     })
     .catch((err) => console.error(err));
 }
+}
 
 export function getServers(em: string) {
-  let url = apiurl + "servers/" + "?accountId=";
-  if (browser) {
-    url =
+  if(browser) {
+  let url =
       apiurl + "servers/" + "?accountId=" + localStorage.getItem("accountId");
-  }
+  
   console.log("Request Sent: Get Servers");
 
   return fetch(url, GET)
@@ -310,7 +323,10 @@ export function getServers(em: string) {
     })
     .catch((err) => console.error(err));
 }
+}
+
 export function signupEmail(em: string, pwd: string) {
+  if(browser) {
   console.log("Request Sent");
   localStorage.setItem("accountEmail", em);
   return fetch(
@@ -358,8 +374,10 @@ export function signupEmail(em: string, pwd: string) {
     })
     .catch((err) => console.error(err));
 }
+}
 
 export function loginEmail(em: string, pwd: string) {
+  if(browser) {
   return fetch(
     apiurl +
       "accounts/email/signin?" +
@@ -410,6 +428,7 @@ export function loginEmail(em: string, pwd: string) {
       }
     })
     .catch((err) => console.error(err));
+}
 }
 
 export function changeServerState(reqstate: string, id: number, em: string) {
