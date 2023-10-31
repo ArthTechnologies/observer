@@ -70,7 +70,7 @@
   <div class="flex flex-col space-y-3 items-center m-2.5 md:m-5 w-full">
     <div
       id="terminalContainer2"
-      class="p-5 bg-base-300 rounded-xl shadow-xl overflow-auto max-sm:-mt-8 h-[90vh] rounded-xl w-full"
+      class="p-5 bg-base-300 rounded-xl shadow-xl overflow-auto max-sm:-mt-8 h-[78vh] md:h-[90vh] rounded-xl w-full"
     >
       <div class=" sm:text-xs xl:text-base font-mono relative">
         <label
