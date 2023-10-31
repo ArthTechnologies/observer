@@ -143,46 +143,48 @@
   }
 
   onMount(() => {
-    localStorage.setItem("serverCardRedrict", "false");
-    port += parseInt(id);
-    //GET apiurl/server/id/getInfo
-    fetch(baseurl + "server/" + id + "/getInfo", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        desc = data.desc;
-        console.log(data.secret + "secret");
-        secret = data.secret;
+    if (browser) {
+      localStorage.setItem("serverCardRedrict", "false");
+      port += parseInt(id);
+      //GET apiurl/server/id/getInfo
+      fetch(baseurl + "server/" + id + "/getInfo", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token"),
+          email: localStorage.getItem("accountEmail"),
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          desc = data.desc;
+          console.log(data.secret + "secret");
+          secret = data.secret;
 
-        //add checked property to toggle
+          //add checked property to toggle
 
-        if (data.proxiesEnabled) {
-          document.getElementById("proxiesEnabled").checked = true;
-        } else {
-          document.getElementById("proxiesEnabled").checked = false;
-        }
+          if (data.proxiesEnabled) {
+            document.getElementById("proxiesEnabled").checked = true;
+          } else {
+            document.getElementById("proxiesEnabled").checked = false;
+          }
 
-        if (data.automaticRestart) {
-          document.getElementById("automaticRestart").checked = true;
-        } else {
-          document.getElementById("automaticRestart").checked = false;
-        }
+          if (data.automaticRestart) {
+            document.getElementById("automaticRestart").checked = true;
+          } else {
+            document.getElementById("automaticRestart").checked = false;
+          }
 
-        document.getElementById("fSecret").value = data.secret;
-        if (data.iconUrl != undefined) {
-          console.log("icon is " + data.iconUrl);
-          icon = data.iconUrl;
-        } else {
-          console.log("setting placeholder");
-          icon = "/images/placeholder.webp";
-        }
-      });
+          document.getElementById("fSecret").value = data.secret;
+          if (data.iconUrl != undefined) {
+            console.log("icon is " + data.iconUrl);
+            icon = data.iconUrl;
+          } else {
+            console.log("setting placeholder");
+            icon = "/images/placeholder.webp";
+          }
+        });
+    }
   });
   //grab window url
   if (browser) {
