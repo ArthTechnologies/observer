@@ -20,7 +20,7 @@ The main panels currently used for running Minecraft servers are bulky, slow, ha
 3. Build the source code with `CI= npm run build`
 4. Run with `node build`
 
-You can update observer by running the `git pull` command inside your quartz folder.
+You can update observer by running the `git pull` command inside your observer folder.
 
 ## How to configure without docker
 
