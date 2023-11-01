@@ -107,12 +107,19 @@
 
     <div class="space-y-2">
       {#await promise}
-        <div class="bg-base-200 rounded-lg w-full h-[5rem] p-2">
+        <div
+          class="flex items-center justify-between bg-base-200 rounded-lg w-full h-[2.75rem] pr-3 py-2 pl-2.5 space-x-1"
+        >
+          <div class="flex items-center space-x-1">
+            <div
+              class="bg-slate-700 rounded-lg w-[17rem] h-[1.5rem] animate-pulse"
+            />
+            <div
+              class="bg-slate-700 rounded-lg w-[1.5rem] h-[1.5rem] animate-pulse"
+            />
+          </div>
           <div
-            class="bg-slate-700 rounded-lg w-[7rem] h-[1rem] animate-pulse mb-2"
-          />
-          <div
-            class="bg-slate-700 rounded-lg w-[30rem] h-[1rem] animate-pulse mt-3"
+            class="bg-slate-700 rounded-lg w-[13rem] h-[1.75rem] animate-pulse"
           />
         </div>
       {:then}
