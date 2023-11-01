@@ -3,6 +3,7 @@
 ### Warnings
 
 - Arth Panel is in beta and should not be used in production yet.
+- There are some issues with the docker image and we reccomend running observer directly for now.
 
 # About Observer
 
@@ -18,6 +19,14 @@ The main panels currently used for running Minecraft servers are bulky, slow, ha
 2. Install packages with `npm i`
 3. Build the source code with `CI= npm run build`
 4. Run with `node build`
+
+You can update observer by running the `git pull` command inside your quartz folder.
+
+## How to configure without docker
+
+- Go into `src/lib/scripts/req.ts` and change `apiurl` to the url of your quartz instance.
+- Advanced: If you have setup an ocelot master-backend instance, go into `src/lib.scripts/req.ts` and change `useOcelot` to `true` and set `apiurl` to the url of your ocelot instance.
+- WARNING: Whenever you update quartz, you may need to change the values in `req.ts` that you changes back to their origional values. We apologize for the inconvenience and hope to fix this soon.
 
 ## Other Requirements
 
