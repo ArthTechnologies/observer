@@ -230,6 +230,7 @@ export function searchPlugins(
 }
 
 export function searchMods(
+  platform: string,
   software: string,
   version: string,
   query: string,
@@ -240,7 +241,9 @@ export function searchMods(
     version = "1.19.3";
   }
 
-  const url =
+  let url;
+  if (platform == "mr")  {
+    url =
     lrurl +
     "search" +
     "?query=" +
@@ -253,6 +256,17 @@ export function searchMods(
     version +
     '"],["server_side:optional","server_side:required"]]' +
     "&limit=10";
+  } else if (platform == "cf") {
+    url =
+    apiurl +
+    "curseforge/search" +
+    "?query=" +
+    query +
+    '&version=' +
+    version +
+    '&loader=' +
+    software;
+  }
 
   if (!lock) {
     return fetch(url, GET)

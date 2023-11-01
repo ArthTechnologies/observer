@@ -5,53 +5,91 @@
   import ModResult from "./ModResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
+  import { onMount } from "svelte";
   let promise;
-  let results = [];
+  let cfResults = [];
+  let mrResults = [];
   let query = "";
-  search();
-  function search() {
+  let software;
+  let version;
+  let tab = "mr";
+
+  if (browser) {
+    software = localStorage.getItem("serverSoftware");
+    version = localStorage.getItem("serverVersion");
+  }
+  onMount(() => {
+    if (software.toLowerCase() == "forge") {
+      //cf();
+    }
+  });
+  search("mr");
+  search("cf");
+  function search(platform: string) {
+    if (platform == undefined) {
+      platform = tab;
+    }
     console.log("searching" + query);
-    results = [];
+    if (platform == "cf") cfResults = [];
+    else if (platform == "mr") mrResults = [];
+
     if (browser) {
-      let software = localStorage.getItem("serverSoftware");
-      let version = localStorage.getItem("serverVersion");
       if (version == "latest") {
         version = "1.19.4";
       }
+
       promise = null;
 
-      promise = searchMods(software, version, query, "mod").then((response) => {
-        response.hits.forEach((item) => {
-          console.log(numShort(item.downloads));
-          results.push({
-            name: item.title,
-            desc: item.description,
-            icon: item.icon_url,
-            author: item.author,
-            id: item.project_id,
-            client: item.client_side,
-            downloads: numShort(item.downloads),
-          });
-          console.log(item);
-        });
-      });
+      promise = searchMods(platform, software, version, query, "mod").then(
+        (response) => {
+          if (platform == "mr") {
+            response.hits.forEach((item) => {
+              console.log(numShort(item.downloads));
+              mrResults.push({
+                name: item.title,
+                desc: item.description,
+                icon: item.icon_url,
+                author: item.author,
+                id: item.project_id,
+                client: item.client_side,
+                downloads: numShort(item.downloads),
+              });
+              console.log(item);
+            });
+          } else if (platform == "cf") {
+            response.data.forEach((item) => {
+              console.log(item);
+              console.log(numShort(item.downloadCount));
+              cfResults.push({
+                name: item.name,
+                desc: item.summary,
+                icon: item.logo.thumbnailUrl,
+                author: item.authors[0].name,
+                id: item.id,
+                client: null,
+                downloads: numShort(item.downloadCount),
+              });
+            });
+          }
+        }
+      );
     }
   }
-  let tab = "mr";
-  /*function ft() {
-    if (browser) {
-      tab = "ft";
-      document.getElementById("ft").classList.add("tab-active");
-      document.getElementById("mr").classList.remove("tab-active");
-    }
-  }
+
   function mr() {
     if (browser) {
       tab = "mr";
       document.getElementById("mr").classList.add("tab-active");
-      document.getElementById("ft").classList.remove("tab-active");
+      document.getElementById("cf").classList.remove("tab-active");
     }
-  }*/
+  }
+  function cf() {
+    if (browser) {
+      tab = "cf";
+      document.getElementById("cf").classList.add("tab-active");
+      document.getElementById("mr").classList.remove("tab-active");
+    }
+  }
 </script>
 
 <label for="my-modal-5" class="btn btn-block" on:click={search}>Add Mod</label>
@@ -67,7 +105,8 @@
       >
 
       <div class="tabs tabs-boxed">
-        <button id="mr" class="tab tab-active">{$t("search")}</button>
+        <button id="mr" class="tab tab-active" on:click={mr}>Modrinth</button>
+        <!--<button id="cf" class="tab" on:click={cf}>Curseforge</button>-->
       </div>
     </div>
 
@@ -82,11 +121,19 @@
       />
     </div>
     <div id="mods" class="space-y-2">
-      {#await promise then}
-        {#each results as result}
-          <ModResult {...result} />
-        {/each}
-      {/await}
+      {#if tab == "mr"}
+        {#await promise then}
+          {#each mrResults as result}
+            <ModResult {...result} />
+          {/each}
+        {/await}
+      {:else if tab == "cf"}
+        {#await promise then}
+          {#each cfResults as result}
+            <ModResult {...result} />
+          {/each}
+        {/await}
+      {/if}
     </div>
   </div>
 </div>
