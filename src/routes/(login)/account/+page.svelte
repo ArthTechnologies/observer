@@ -8,9 +8,7 @@
   <div class="flex flex-col grow items-center max-w-[55rem] mb-10 space-y-6">
     <h1 class="divider px-10 text-3xl font-semibold">{$t("account.title")}</h1>
 
-    <div
-      class="flex flex-wrap justify-center button-container sm:space-x-3 w-[90%]"
-    >
+    <div class="flex flex-wrap justify-center button-container gap-3 w-[90%]">
       <a href="/pay" class="btn grow md:grow sm:w-44 ml-1 md:m-0"
         >{$t("account.button.managePayments")}</a
       >
