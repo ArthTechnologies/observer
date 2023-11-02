@@ -13,11 +13,12 @@ else
   echo "No changes in the source code, running..."
 fi
 
-docker run -p 3000:3000 arthmc/observer:latest
+docker run -d -p 3000:3000 arthmc/observer:latest
+
+echo "Use 'docker ps' to find the ID of this container in order to stop it."
 
 exit 0
 
-fi
 else
   echo "This script is not running with sudo privileges. Run 'sudo sh dockerbuild.sh' instead."
   exit 1

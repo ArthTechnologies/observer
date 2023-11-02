@@ -1,9 +1,20 @@
 import accountEmail from "$lib/stores/accountEmail";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
-export const apiurl = "https://us-dallas-1.arthmc.xyz/";
+export let apiurl = "https://us-dallas-1.arthmc.xyz/";
 export let usingOcelot = false;
 export const lrurl = "https://api.modrinth.com/v2/";
+
+//set apiurl & usingOcelot to the enviroment variable if it exists
+if (browser) {
+  if (import.meta.env.VITE_API_URL) {
+    apiurl = import.meta.env.VITE_API_URL;
+  }
+  if (import.meta.env.VITE_USING_OCELOT) {
+    usingOcelot = import.meta.env.VITE_USING_OCELOT;
+  }
+}
+
 let lock = false;
 
 let GET = {};
