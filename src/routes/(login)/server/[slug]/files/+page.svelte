@@ -6,6 +6,7 @@
   import { apiurl, usingOcelot } from "$lib/scripts/req";
   import { ArrowLeft } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
+  import HistoryButton from "$lib/components/buttons/HistoryButton.svelte";
 
   let files = ["server.properties", ["folder1", ["file1.txt", "file2.txt"]]];
   let id;
@@ -69,6 +70,10 @@
         document.getElementById("saveButton").classList.add("btn-disabled");
       });
   }
+
+  function getFilepath() {
+    return document.getElementById("filepath").value;
+  }
 </script>
 
 <a href="/{backurl}/{parseInt(id) + 10000}" class="btn btn-info mb-5"
@@ -93,12 +98,15 @@
   <div
     class="bg-base-200 rounded-xl p-3 h-[30rem] md:w-[25rem] lg:w-[30rem] lg:h-[35rem] xl:w-[50rem] xl:h-[45rem]"
   >
-    <div class="flex space-x-2 mb-2">
-      <div id="filepath" class="hidden" />
-      <h1 class="text-xl font-bold" id="filename">File</h1>
-      <button class="btn btn-sm btn-disabled" id="saveButton" on:click={save}
-        >{$t("save")}</button
-      >
+    <div class="flex justify-between">
+      <div class="flex space-x-2 mb-2">
+        <div id="filepath" class="hidden" />
+        <h1 class="text-xl font-bold" id="filename">File</h1>
+        <button class="btn btn-sm btn-disabled" id="saveButton" on:click={save}
+          >{$t("save")}</button
+        >
+      </div>
+      <!--<HistoryButton />-->
     </div>
     <TextEditor />
   </div>

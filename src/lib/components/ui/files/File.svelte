@@ -44,9 +44,13 @@
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         let content = data.content.replace(/\\n/g, "\n").replace(/\\"/g, '"');
         document.getElementById("textEditor").value = content;
         document.dispatchEvent(new Event("updatedTextEditor"));
+
+        localStorage.setItem("fileVersions", data.versions.toString());
+        document.dispatchEvent(new Event("updateVersionsList"));
 
         document.getElementById("filename").innerHTML = filename;
         document.getElementById("filepath").value = url;
