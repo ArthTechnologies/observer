@@ -119,7 +119,7 @@
             />
           </div>
           <div
-            class="bg-slate-700 rounded-lg w-[13rem] h-[1.75rem] animate-pulse"
+            class="bg-slate-700 rounded-lg w-[13rem] h-[1.75rem] animate-pulse hidden sm:block"
           />
         </div>
       {:then}
