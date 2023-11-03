@@ -13,6 +13,7 @@
   export let id: string;
   export let client: string;
   export let downloads: number;
+  export let versions: string[] = [];
 
   function get() {
     getVersions(id).then((data) => {
@@ -83,6 +84,14 @@
         </div>
       </div>
     </div>
-    <ChooseModVersion {platform} {id} {name} {author} {desc} {icon} />
+    <ChooseModVersion
+      {versions}
+      {platform}
+      {id}
+      {name}
+      {author}
+      {desc}
+      {icon}
+    />
   </div>
 </div>

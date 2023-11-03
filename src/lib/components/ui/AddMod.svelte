@@ -56,6 +56,7 @@
                 id: item.project_id,
                 client: item.client_side,
                 downloads: numShort(item.downloads),
+                versions: [],
               });
               console.log(item);
             });
@@ -73,6 +74,7 @@
                 id: item.id,
                 client: null,
                 downloads: numShort(item.downloadCount),
+                versions: item.latestFiles,
               });
             });
           }

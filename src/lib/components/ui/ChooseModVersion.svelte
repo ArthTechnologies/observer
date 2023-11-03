@@ -13,6 +13,7 @@
   export let desc: string;
   export let icon: string;
   export let platform: string;
+  export let versions: string[] = [];
   var software = "";
   var sVersion = "";
 
@@ -80,23 +81,52 @@
     }
 
     let vname = "undefined";
-    getVersions(id).then((data) => {
+    if (platform == "mr") {
+      getVersions(id).then((data) => {
+        document.getElementById("list").innerHTML = "";
+        data.forEach((version) => {
+          if (
+            version.name != vname &&
+            version.loaders.includes(software) &&
+            version.game_versions.includes(sVersion)
+          ) {
+            vname = version.name;
+
+            new Version({
+              target: document.getElementById("list"),
+              props: {
+                name: version.name,
+                date: version.date_published,
+                type: version.version_type,
+                url: version.files[0].url,
+                pluginId: id,
+                pluginName: name,
+                modtype: "mod",
+                dependencies: version.dependencies,
+              },
+            });
+          }
+        });
+        //if it's still blank, add a message saying that there are no versions for this plugin
+        if (document.getElementById("list").innerHTML == "") {
+          document.getElementById("list").innerHTML =
+            "<p class='text-center'>This mod doesn't support your Minecraft version currently.</p>";
+        }
+      });
+    } else if (platform == "cf") {
       document.getElementById("list").innerHTML = "";
-      data.forEach((version) => {
-        if (
-          version.name != vname &&
-          version.loaders.includes(software) &&
-          version.game_versions.includes(sVersion)
-        ) {
-          vname = version.name;
+      console.error(versions);
+      versions.forEach((version) => {
+        if (version.name != vname && version.gameVersions.includes(sVersion)) {
+          vname = version.displayName;
 
           new Version({
             target: document.getElementById("list"),
             props: {
-              name: version.name,
-              date: version.date_published,
-              type: version.version_type,
-              url: version.files[0].url,
+              name: version.displayName,
+              date: version.fileDate,
+              type: "release",
+              url: version.downloadUrl,
               pluginId: id,
               pluginName: name,
               modtype: "mod",
@@ -110,7 +140,7 @@
         document.getElementById("list").innerHTML =
           "<p class='text-center'>This mod doesn't support your Minecraft version currently.</p>";
       }
-    });
+    }
   }
 </script>
 
