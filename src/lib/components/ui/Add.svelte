@@ -7,6 +7,7 @@
   let promise;
   let results = [];
   let query = "";
+  let skeletonsLength = 10;
   function search() {
     console.log("searching" + query);
     results = [];
@@ -19,6 +20,7 @@
 
       setTimeout(function () {
         promise = searchPlugins(software, version, query).then((response) => {
+          skeletonsLength = response.hits.length;
           response.hits.forEach((item) => {
             results.push({
               name: item.title,
@@ -84,7 +86,22 @@
         />
       </div>
       <div id="plugins" class="space-y-2">
-        {#await promise then}
+        {#await promise}
+          {#each Array.from({ length: skeletonsLength }) as _}
+            <div class="bg-base-200 h-[5rem] p-3 rounded-lg flex space-x-3">
+              <div class="bg-slate-700 bg-pulse w-[3.35rem] h-14 rounded-lg" />
+              <div class="flex flex-col justify-between py-1.5">
+                <div class="flex space-x-1 items-end">
+                  <div class="bg-slate-700 bg-pulse w-[10rem] h-4 rounded-lg" />
+                  <div class="bg-slate-700 bg-pulse w-[5rem] h-3 rounded-lg" />
+                </div>
+                <div
+                  class="bg-slate-700 bg-pulse w-[17.5rem] h-3.5 rounded-lg"
+                />
+              </div>
+            </div>
+          {/each}
+        {:then}
           {#each results as result}
             <PluginResult {...result} />
           {/each}
