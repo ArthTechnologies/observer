@@ -1,6 +1,6 @@
 <script lang="ts">
   import Version from "./Version.svelte";
-  import { getVersions, lrurl } from "$lib/scripts/req";
+  import { apiurl, getVersions, lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
   import { Plus } from "lucide-svelte";
   import PluginResult from "./PluginResult.svelte";
@@ -12,6 +12,7 @@
   export let author: string;
   export let desc: string;
   export let icon: string;
+  export let platform: string;
   var software = "";
   var sVersion = "";
 
@@ -32,36 +33,51 @@
     }
   }
   function get() {
-    fetch(lrurl + "project/" + id, {
-      method: "GET",
+    //get description
+    if (platform == "mr") {
+      fetch(lrurl + "project/" + id, {
+        method: "GET",
 
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
 
-      .then((data) => {
-        document.getElementById("body").innerHTML = marked(data.body);
-        document.getElementById("pluginTitle").innerHTML = data.title;
+        .then((data) => {
+          document.getElementById("body").innerHTML = marked(data.body);
+          document.getElementById("pluginTitle").innerHTML = data.title;
 
-        document.getElementById("pluginDesc").innerHTML = data.description;
-        document.getElementById("pluginIcon").src = data.icon_url;
+          document.getElementById("pluginDesc").innerHTML = data.description;
+          document.getElementById("pluginIcon").src = data.icon_url;
 
-        fetch(lrurl + "team/" + data.team + "/members", {
-          method: "GET",
+          fetch(lrurl + "team/" + data.team + "/members", {
+            method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((response) => response.json())
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
 
-          .then((data) => {
-            document.getElementById("pluginAuthor").innerHTML =
-              data[0].user.username;
-          });
-      });
+            .then((data) => {
+              document.getElementById("pluginAuthor").innerHTML =
+                data[0].user.username;
+            });
+        });
+    } else if (platform == "cf") {
+      fetch(apiurl + "curseforge/" + id + "/description", {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById("body").innerHTML = marked(data);
+        });
+    }
 
     let vname = "undefined";
     getVersions(id).then((data) => {

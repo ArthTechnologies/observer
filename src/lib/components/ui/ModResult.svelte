@@ -5,6 +5,7 @@
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
   import { Download, Monitor } from "lucide-svelte";
+  export let platform: string;
   export let name: string;
   export let author: string;
   export let desc: string;
@@ -12,6 +13,7 @@
   export let id: string;
   export let client: string;
   export let downloads: number;
+
   function get() {
     getVersions(id).then((data) => {
       console.log(data);
@@ -81,6 +83,6 @@
         </div>
       </div>
     </div>
-    <ChooseModVersion {id} {name} {author} {desc} {icon} />
+    <ChooseModVersion {platform} {id} {name} {author} {desc} {icon} />
   </div>
 </div>

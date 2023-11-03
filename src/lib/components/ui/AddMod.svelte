@@ -48,6 +48,7 @@
             response.hits.forEach((item) => {
               console.log(numShort(item.downloads));
               mrResults.push({
+                platform: "mr",
                 name: item.title,
                 desc: item.description,
                 icon: item.icon_url,
@@ -64,6 +65,7 @@
               console.log(item);
               console.log(numShort(item.downloadCount));
               cfResults.push({
+                platform: "cf",
                 name: item.name,
                 desc: item.summary,
                 icon: item.logo.thumbnailUrl,
