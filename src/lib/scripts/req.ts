@@ -248,7 +248,7 @@ export function searchMods(
   modtype: string
 ) {
   if(browser) {
-  if (version == "Latest") {
+      if (version == "Latest") {
     version = "1.19.3";
   }
 

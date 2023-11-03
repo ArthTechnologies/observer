@@ -20,7 +20,7 @@
   }
   onMount(() => {
     if (software.toLowerCase() == "forge") {
-      //cf();
+      cf();
     }
   });
   search("mr");
@@ -92,7 +92,9 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-block" on:click={search}>Add Mod</label>
+<label for="my-modal-5" class="btn btn-block" on:click={() => search(tab)}
+  >Add Mod</label
+>
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="my-modal-5" class="modal-toggle" />
@@ -106,16 +108,16 @@
 
       <div class="tabs tabs-boxed">
         <button id="mr" class="tab tab-active" on:click={mr}>Modrinth</button>
-        <!--<button id="cf" class="tab" on:click={cf}>Curseforge</button>-->
+        <button id="cf" class="tab" on:click={cf}>Curseforge</button>
       </div>
     </div>
 
     <div>
       <input
         bind:value={query}
-        on:keypress={search}
+        on:keypress={() => search(tab)}
         type="text"
-        placeholder="{$t('search')} Modrinth"
+        placeholder={$t("search")}
         class="searchBar input input-bordered input-sm"
         id="search"
       />
