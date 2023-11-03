@@ -13,6 +13,7 @@
   let software;
   let version;
   let tab = "mr";
+  let skeletonsLength = 10;
 
   if (browser) {
     software = localStorage.getItem("serverSoftware");
@@ -43,6 +44,7 @@
       promise = searchMods(platform, software, version, query, "mod").then(
         (response) => {
           if (platform == "mr") {
+            skeletonsLength = response.hits.length;
             response.hits.forEach((item) => {
               console.log(numShort(item.downloads));
               mrResults.push({
@@ -57,6 +59,7 @@
               console.log(item);
             });
           } else if (platform == "cf") {
+            skeletonsLength = response.data.length;
             response.data.forEach((item) => {
               console.log(item);
               console.log(numShort(item.downloadCount));
@@ -123,19 +126,35 @@
       />
     </div>
     <div id="mods" class="space-y-2">
-      {#if tab == "mr"}
-        {#await promise then}
+      {#await promise}
+        {#each Array.from({ length: skeletonsLength }) as _}
+          <div class="bg-base-200 h-[7rem] p-3 rounded-lg flex space-x-3">
+            <div
+              class="w-14 h-14 md:w-20 md:h-20 bg-slate-700 bg-pulse w-[3.35rem] h-14 rounded-lg"
+            />
+            <div class="flex flex-col justify-between pt-1.5">
+              <div class="flex space-x-1 items-end">
+                <div class="bg-slate-700 bg-pulse w-[10rem] h-4 rounded-lg" />
+                <div class="bg-slate-700 bg-pulse w-[5rem] h-3 rounded-lg" />
+              </div>
+              <div
+                class="bg-slate-700 bg-pulse w-[17.5rem] h-3.5 rounded-lg mb-0.5"
+              />
+              <div class="bg-slate-700 bg-pulse w-[5.68rem] h-7 rounded-lg" />
+            </div>
+          </div>
+        {/each}
+      {:then}
+        {#if tab == "mr"}
           {#each mrResults as result}
             <ModResult {...result} />
           {/each}
-        {/await}
-      {:else if tab == "cf"}
-        {#await promise then}
+        {:else if tab == "cf"}
           {#each cfResults as result}
             <ModResult {...result} />
           {/each}
-        {/await}
-      {/if}
+        {/if}
+      {/await}
     </div>
   </div>
 </div>
