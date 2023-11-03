@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { browser } from "$app/environment";
   import { searchMods, searchPlugins } from "$lib/scripts/req";
   import ModpackResult from "./ModpackResult.svelte";
@@ -7,11 +7,19 @@
   import { numShort } from "$lib/scripts/numShort";
 
   let promise;
-  let results = [];
+  let mrResults = [];
+  let cfResults = [];
   let query = "";
-  function search() {
-    console.log("searching" + query);
-    results = [];
+  let tab = "cf";
+
+  function search(platform: string) {
+    console.error("searching" + platform);
+    if (platform != "cf" && platform != "mr") {
+      if (tab == "mr") mrResults = [];
+      platform = tab;
+      if (tab == "cf") cfResults = [];
+      platform = tab;
+    }
     if (browser) {
       let software = document
         .getElementById("softwareDropdown")
@@ -19,10 +27,16 @@
       let version = document.getElementById("versionDropdown").value;
 
       setTimeout(function () {
-        promise = searchMods(software, version, query, "modpack").then(
-          (response) => {
+        promise = searchMods(
+          platform,
+          software,
+          version,
+          query,
+          "modpack"
+        ).then((response) => {
+          if (platform == "mr") {
             response.hits.forEach((item) => {
-              results.push({
+              mrResults.push({
                 name: item.title,
                 desc: item.description,
                 icon: item.icon_url,
@@ -30,33 +44,54 @@
                 id: item.project_id,
                 client: item.client_side,
                 downloads: numShort(item.downloads),
+                platform: "mr",
               });
-              console.log(results);
+              console.log(mrResults);
+            });
+          } else if (platform == "cf") {
+            response.data.forEach((item) => {
+              cfResults.push({
+                platform: "cf",
+                name: item.name,
+                desc: item.summary,
+                icon: item.logo.thumbnailUrl,
+                author: item.authors[0].name,
+                id: item.id,
+                client: null,
+                downloads: numShort(item.downloadCount),
+                versions: item.latestFiles,
+              });
             });
           }
-        );
+        });
       }, 1);
     }
   }
-  let tab = "mr";
-  function ft() {
-    if (browser) {
-      tab = "ft";
-      document.getElementById("ft").classList.add("tab-active");
-      document.getElementById("mr").classList.remove("tab-active");
-    }
-  }
+
   function mr() {
     if (browser) {
       tab = "mr";
       document.getElementById("mr").classList.add("tab-active");
-      document.getElementById("ft").classList.remove("tab-active");
+      document.getElementById("cf").classList.remove("tab-active");
+    }
+  }
+
+  function cf() {
+    if (browser) {
+      tab = "cf";
+      document.getElementById("cf").classList.add("tab-active");
+      document.getElementById("mr").classList.remove("tab-active");
     }
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-block btn-primary" on:click={search}
-  >Use Modpack</label
+<label
+  for="my-modal-5"
+  class="btn btn-block btn-primary"
+  on:click={() => {
+    search("cf");
+    search("mr");
+  }}>Use Modpack</label
 >
 
 <!-- Put this part before </body> tag -->
@@ -70,16 +105,15 @@
       >
 
       <div class="tabs tabs-boxed">
-        <button id="mr" on:click={mr} class="tab tab-active"
-          >{$t("search")}</button
-        >
+        <button id="mr" on:click={mr} class="tab">Modrinth</button>
+        <button id="cf" on:click={cf} class="tab tab-active">Curseforge</button>
       </div>
     </div>
     {#if tab == "mr"}
       <div>
         <input
           bind:value={query}
-          on:keypress={search}
+          on:keypress={() => search(tab)}
           type="text"
           placeholder="{$t('search')} Modrinth"
           class="searchBar input input-bordered input-sm"
@@ -88,42 +122,30 @@
       </div>
       <div id="modpacks" class="space-y-2">
         {#await promise then}
-          {#each results as result}
+          {#each mrResults as result}
             <ModpackResult {...result} />
           {/each}
         {/await}
       </div>
-    {:else if tab == "ft"}
+    {:else if tab == "cf"}
       <div class="space-y-2">
-        <FeaturedPlugin
-          icon="https://www.spigotmc.org/data/resource_icons/34/34315.jpg?1483592228"
-          name="Vault"
-          desc="Vault is a Permissions, Chat, & Economy API required by many plugins."
-          author="milkbowl"
-          authorLink="https://github.com/MilkBowl"
-          pluginId="MilkBowl/Vault"
-          link="https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar"
-          disclaimer="This plugin has not been tested on minecraft versions before 1.13."
-        />
-        <FeaturedPlugin
-          icon="https://media.forgecdn.net/avatars/thumbnails/493/419/64/64/637803056128514812.png"
-          name="Squaremap"
-          desc="
-  
-            A minimalistic and lightweight world map viewer for Minecraft servers, using the vanilla map rendering style "
-          author="jpenilla"
-          authorLink="https://github.com/jpenilla"
-          pluginId="jpenilla/squaremap"
-          link="https://github.com/jpenilla/squaremap/releases/download/v1.1.12/squaremap-paper-mc1.19.4-1.1.12.jar"
-          disclaimer="This plugin only supports the latest minecraft version."
-        />
-        <ModpackResult
-          name="WorldEdit (FAWE)"
-          author="NotMyFault"
-          desc="Blazingly fast world manipulation for artists, builders and everyone else."
-          icon="https://cdn.modrinth.com/data/z4HZZnLr/1dab3e5596f37ade9a65f3587254ff61a9cf3c43.svg"
-          id="z4HZZnLr"
-        />
+        <div>
+          <input
+            bind:value={query}
+            on:keypress={() => search(tab)}
+            type="text"
+            placeholder="{$t('search')} CurseForge"
+            class="searchBar input input-bordered input-sm"
+            id="search"
+          />
+        </div>
+        <div id="modpacks" class="space-y-2">
+          {#await promise then}
+            {#each cfResults as result}
+              <ModpackResult {...result} />
+            {/each}
+          {/await}
+        </div>
       </div>
     {/if}
   </div>

@@ -253,6 +253,7 @@ export function searchMods(
   }
 
   let url;
+
   if (platform == "mr")  {
     url =
     lrurl +
@@ -268,6 +269,10 @@ export function searchMods(
     '"],["server_side:optional","server_side:required"]]' +
     "&limit=10";
   } else if (platform == "cf") {
+    let classId = 6;
+    if (modtype == "modpack") {
+     classId = 4471;
+    }
     url =
     apiurl +
     "curseforge/search" +
@@ -276,7 +281,9 @@ export function searchMods(
     '&version=' +
     version +
     '&loader=' +
-    software;
+    software +
+    '&classId=' +
+    classId;
   }
 
   if (!lock) {

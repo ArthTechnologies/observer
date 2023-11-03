@@ -12,6 +12,7 @@
   export let id: string;
   export let client: string;
   export let downloads: number;
+  export let platform: string;
   console.log(client);
   switch (client) {
     case "required":
@@ -84,6 +85,6 @@
         </div>
       </div>
     </div>
-    <ChooseVersionModpack {id} modpackName={name} />
+    <ChooseVersionModpack {platform} {id} modpackName={name} />
   </div>
 </div>
