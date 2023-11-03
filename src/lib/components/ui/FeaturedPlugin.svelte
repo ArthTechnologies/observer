@@ -4,6 +4,7 @@
   import { browser } from "$app/environment";
   import Helper from "./Helper.svelte";
   import { t } from "$lib/scripts/i18n";
+  import { Check, Info, Plus } from "lucide-svelte";
   export let name: string;
   export let author: string;
   export let desc: string;
@@ -38,21 +39,21 @@
 </script>
 
 <div class="bg-base-200 rounded-lg p-3">
-  <div class="flex justify-between place-items-center">
-    <div class="flex space-x-3">
+  <div class="flex justify-between place-items-center max-w-full relative">
+    <div class="flex space-x-3 flex-shrink-0 w-minus-7">
       <a href="https://github.com/{pluginId}/#readme" target="_blank">
         <img
           src={icon}
           alt="noicon"
-          class="w-14 h-14 bg-base-300 rounded-lg text-sm"
+          class="w-[56px] h-[56px] bg-base-300 rounded-lg text-sm"
         /></a
       >
-      <div>
-        <div class="flex space-x-1">
+      <div class="max-w-full w-minus-7">
+        <div class="sm:flex gap-1 max-w-full">
           <a
             href="https://github.com/{pluginId}/#readme"
             target="_blank"
-            class="flex link link-hover text-xl font-bold"
+            class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
             >{name}
           </a>
           <div class="flex space-x-1 place-items-end">
@@ -61,63 +62,24 @@
               >{author}
             </a>
             {#if disclaimer != ""}
-              <div class="tooltip  tooltip-right" data-tip={disclaimer}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="feather feather-info ml-1"
-                  ><circle cx="12" cy="12" r="10" /><line
-                    x1="12"
-                    y1="16"
-                    x2="12"
-                    y2="12"
-                  /><line x1="12" y1="8" x2="12.01" y2="8" /></svg
-                >
+              <div class="tooltip tooltip-right" data-tip={disclaimer}>
+                <Info class="ml-1" />
               </div>
             {/if}
           </div>
         </div>
-        <p>{desc}</p>
+        <p class="w-minus-7">
+          {desc}
+        </p>
       </div>
     </div>
-    <label on:click={submit} class="btn btn-circle btn-ghost swap swap-rotate">
-      <input type="checkbox" /><svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="feather feather-plus swap-off"
-        ><line x1="12" y1="5" x2="12" y2="19" /><line
-          x1="5"
-          y1="12"
-          x2="19"
-          y2="12"
-        /></svg
-      ><svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="feather feather-check swap-on"
-        ><polyline points="20 6 9 17 4 12" /></svg
-      ></label
+    <label
+      on:click={submit}
+      class="btn btn-circle btn-ghost swap swap-rotate absolute right-0"
+    >
+      <input type="checkbox" /><Plus class="swap-off" /><Check
+        class="swap-on"
+      /></label
     >
   </div>
 </div>

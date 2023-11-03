@@ -122,7 +122,7 @@
         id="servers"
       >
         <li>
-          <a href="/" class="nav btn btn-ghost rounded-lg "
+          <a href="/" class="nav btn btn-ghost rounded-lg"
             >{$t("navbar.servers")}</a
           >
           <!-- todo: get font back to normal and find out why the button is square-->
@@ -131,10 +131,10 @@
 
       <Home />
 
+      <NewServer />
       {#if enablePay == "true"}
         <Billing />
       {/if}
-      <NewServer />
 
       <ThemeToggle />
       <AccountButton loginStatus={login} />
@@ -142,8 +142,10 @@
   </div>
 {:else if navType === "welcome"}
   <div class="navbar fixed justify-between px-6">
+    <a class="btn btn-ghost normal-case text-xl invisible sm:visible" href="https://arthmc.xyz/"
+        >
     <img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" />
-
+</a>
     <ThemeToggle />
   </div>
 {/if}

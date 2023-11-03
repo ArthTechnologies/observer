@@ -4,7 +4,8 @@ module.exports = {
     theme: {
         extend: {},
     },
-    plugins: [require("daisyui")],
+    plugins: [require("daisyui"),
+require('@tailwindcss/typography')],
 
     daisyui: {
         themes: [
@@ -21,8 +22,12 @@ module.exports = {
                     ...require("daisyui/src/colors/themes")[
                         "[data-theme=light]"
                     ],
-                    primary: "#088385",
-                    secondary: "#cc4304",
+                    primary: "#cc4304",
+                    secondary: "#088385",
+                    "base-100": "#e5dfd7",
+                    "base-200": "#888888",
+                    "base-300": "#aaaaaa",
+                    
 
                 },
             },

@@ -7,40 +7,35 @@
   import { goto } from "$app/navigation";
 
   // NOTE: the element that is using one of the theme attributes must be in the DOM on mount
-  let servers = [];
+  let servers: any[] = [];
   //Example
 
   var id = 0;
 
   let noserverlock = false;
+  let amountOfServersForSkeletons = 1;
 
   let res2 = {};
   let email: string = "";
   if (browser) {
     email = localStorage.getItem("accountEmail");
+    amountOfServersForSkeletons = localStorage.getItem("amountOfServers");
   }
 
   // getServers and store "amount" given in the response in a variable
-  let promise = getServers(email).then((response) => {
-    if (browser) {
-      noserverlock = true;
-      console.log(response);
-      if (response.amount != "undefined") {
-        id = response.amount;
+  let promise;
+
+  if (browser) {
+    promise = getServers(email).then((response) => {
+      if (browser) {
+        noserverlock = true;
+        console.log(response);
+        if (response.amount != "undefined") {
+          id = response.amount;
+        }
+        servers = response;
       }
-      DOM(response);
-    }
-  });
-  function DOM(res2) {
-    for (var i = 0; i < id; i++) {
-      servers.push({
-        name: res2.names[i],
-        software: res2.softwares[i],
-        version: res2.versions[i],
-        id: res2.ids[i],
-        state: res2.states[i],
-      });
-    }
+    });
   }
 
   let noserver = false;
@@ -50,7 +45,7 @@
   }
 </script>
 
-<div class="flex flex-col items-center space-y-20 ">
+<div class="flex flex-col items-center space-y-20">
   <div>
     <div class="text-center px-5 text-3xl font-semibold divider">
       {#if noserver}
@@ -68,7 +63,9 @@
 
     <div class="flex flex-wrap justify-center" id="serverList">
       {#await promise}
-        <ServerSkele />
+        {#each Array.from({ length: amountOfServersForSkeletons }) as _}
+          <ServerSkele />
+        {/each}
       {:then}
         {#each servers as server}
           <ServerCard {...server} />

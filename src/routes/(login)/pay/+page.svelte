@@ -4,7 +4,7 @@
   import { browser } from "$app/environment";
   let servers = 0;
   if (browser) {
-    servers = localStorage.getItem("servers");
+    servers = localStorage.getItem("amountOfServers");
   }
   var email: string = "";
   //get subs and servers from localstorage

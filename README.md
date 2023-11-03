@@ -3,11 +3,15 @@
 ### Warnings
 
 - Arth Panel is in beta and should not be used in production yet.
-- There are several issues with the docker image currently, and we reccomend running observer directly for now.
+- There are some issues with the docker image and we reccomend running observer directly for now.
 
 # About Observer
 
 Observer is a frontend for Arth Panel, a lightweight self-hosted Minecraft server panel. Observer is made with HTML/CSS/JS, Node, SvelteKit, TailwindCSS, and DaisyUI.
+
+## Why Arth Panel?
+
+The main panels currently used for running Minecraft servers are bulky, slow, hard to setup, and hard to understand. It could be quite time-consuming to figure out where your servers actually are if you ever choose to ditch a panel like pufferpanel or pterodactyl. So Arth Panel was built from the ground up, with simplicity, design, and performance in mind. It doesn't use docker to contain your servers, so they're right there in the "servers" folder if you ever have a problem with Arth Panel and need to run them directly.
 
 ## How to run without docker
 
@@ -15,6 +19,14 @@ Observer is a frontend for Arth Panel, a lightweight self-hosted Minecraft serve
 2. Install packages with `npm i`
 3. Build the source code with `CI= npm run build`
 4. Run with `node build`
+
+You can update observer by running the `git pull` command inside your observer folder.
+
+## How to configure without docker
+
+- Go into `src/lib/scripts/req.ts` and change `apiurl` to the url of your quartz instance.
+- Advanced: If you have setup an ocelot master-backend instance, go into `src/lib.scripts/req.ts` and change `useOcelot` to `true` and set `apiurl` to the url of your ocelot instance.
+- WARNING: Whenever you update quartz, you may need to change the values in `req.ts` that you changes back to their origional values. We apologize for the inconvenience and hope to fix this soon.
 
 ## Other Requirements
 
@@ -36,13 +48,9 @@ Observer is a frontend for Arth Panel, a lightweight self-hosted Minecraft serve
 ## Contributing Guidelines
 
 - Please format your code with Prettier, or an alternative that achieves the same results.
-- Please use [feather](https://feathericons.com) for svg icons & use webp for raster images whenever possible. If you're wondering what tools have been used to make images like the arth logo (seen on arthmc.xyz) and the favicon, they were made with Lunacy.
+- Please use [Lucide Icons](https://lucide.dev)(Included as an npm package) for svg icons & use webp for raster images whenever possible. If you're wondering what tools have been used to make images like the arth logo (seen on arthmc.xyz) and the favicon, they were made with Lunacy.
 
 ### Check out our [backend](https://github.com/arthmc/quartz)'s progress
-
-## Why Arth Panel?
-
-The main difference between Arth Panel and an alternative like pufferpanel or pterodactyl is that it's meant to work in a way so that if an issue were to occur, you could easily just SSH into the machine and run the jar directly in a folder, so you know that your server's uptime is not dependant on a panel someone else made working flawlessly.
 
 # To-do list
 

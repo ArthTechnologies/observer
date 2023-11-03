@@ -2,6 +2,7 @@
   import { sendVersion } from "$lib/scripts/req";
 
   import { browser } from "$app/environment";
+  import { AlertCircle, Check, Clock, Plus } from "lucide-svelte";
 
   export let name: string;
   export let date: string;
@@ -21,7 +22,6 @@
 
   function submit() {
     let id = "";
-
     if (browser) {
       id = localStorage.getItem("serverID");
       localStorage.setItem("modpackURL", url);
@@ -30,50 +30,31 @@
 </script>
 
 <div class="bg-base-200 rounded-lg p-3">
-  <div class="flex justify-between place-items-center">
-    <div class="flex space-x-1">
-      <p class="text-xl font-bold">{name}</p>
-      <div class="flex space-x-1 place-items-end">
-        <p class="text-warning">{type}</p>
+  <div class="flex justify-between place-items-center items-center">
+    <div>
+      <div class="flex space-x-1">
+        <p class="text-xl font-bold">{name}</p>
+        <div class="flex space-x-1 place-items-end">
+          <p class="text-warning">{type}</p>
+        </div>
+      </div>
+      <div class="flex gap-2 flex-wrap mt-2">
+        <div
+          class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+        >
+          <Clock size="16" class="mr-1.5" />
+          {time}
+        </div>
       </div>
     </div>
     <div class="flex place-items-center space-x-2">
-      <p>{time}</p>
-
       <label
         on:click={submit}
         class="btn btn-circle btn-ghost swap swap-rotate"
       >
-        <input type="checkbox" /><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-plus swap-off"
-          ><line x1="12" y1="5" x2="12" y2="19" /><line
-            x1="5"
-            y1="12"
-            x2="19"
-            y2="12"
-          /></svg
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-check swap-on"
-          ><polyline points="20 6 9 17 4 12" /></svg
-        ></label
+        <input type="checkbox" /><Plus class="swap-off" /><Check
+          class="swap-on"
+        /></label
       >
     </div>
   </div>

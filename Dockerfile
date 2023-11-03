@@ -14,8 +14,5 @@ COPY . .
 
 EXPOSE 3000
 
-# Build the app
-CMD ["CI=", "npm", "run", "build" ]
-
 # Run the app
 CMD [ "node", "build" ]

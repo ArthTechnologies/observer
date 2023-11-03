@@ -5,13 +5,14 @@
   import { getServer } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
+  import { Loader } from "lucide-svelte";
   //Status variables
 
-  let stopcolor = "info";
-  let startcolor = "info";
+  let startcolor = "accent";
   let starttext = "Start";
-  let starting = false;
+  let loading = false;
   let email = "noemail";
+  let softwareType = "server";
   let address;
   if (browser) {
     localStorage.getItem("accountEmail");
@@ -37,6 +38,10 @@
   export let software: string;
   export let state: string;
   export let id: number;
+
+  if (software == "velocity") {
+    softwareType = "proxy";
+  }
   let restarting = false;
 
   function uppercaseFirstLetter(string: string) {
@@ -57,20 +62,26 @@
   }
   function status() {
     if (state == "true") {
-      starting = false;
-      stopcolor = "error";
-      startcolor = "warning";
+      loading = false;
+      startcolor = "success";
       starttext = $t("button.restart");
     } else if (state == "false") {
-      starting = false;
-      stopcolor = "disabled";
+      loading = false;
       startcolor = "success";
       starttext = $t("button.start");
     } else if (state == "starting") {
-      starting = true;
-      stopcolor = "error";
+      loading = true;
+      startcolor = "success";
+      starttext = $t("button.starting");
+    } else if (state == "installing") {
+      console.error("installing");
+      loading = true;
+      startcolor = "accent";
+      starttext = $t("button.installing");
+    } else if (state == "stopping") {
+      loading = false;
       startcolor = "disabled";
-      starttext = "Starting";
+      starttext = $t("button.start");
     }
   }
   status();
@@ -98,13 +109,17 @@
         lock = false;
       }
       state = data.state;
-      console.log("state " + state);
       status();
     });
   }
   //Run status function every 5 seconds if theyre still on this page
   if (browser) {
     address = localStorage.getItem("address");
+    setTimeout(function () {
+      if (window.location.pathname == "/") {
+        getStatus();
+      }
+    }, 100);
     setInterval(function () {
       if (window.location.pathname == "/") {
         getStatus();
@@ -114,122 +129,55 @@
 </script>
 
 <div class="m-3 w-[21rem]">
-  <div class="card w-50 bg-base-100 shadow-xl image-full">
-    <div class="card-body">
+  <div class="card w-50 bg-neutral shadow-xl image-full">
+    <div class="card-body pr-0">
       <h2 class="card-title">{name}</h2>
       <p>
         {address}:{10000 + parseInt(id)}
       </p>
       <!-- <div class="card-actions justify-beginning" /> -->
-      <div class="card-actions justify-end ">
+      <div class="card-actions justify-end">
         <!-- placeholder for now? -->
         <div class="grow space-x-1.5 flex">
-          <a href="/server/{10000 + parseInt(id)}"
+          <a href="/{softwareType}/{10000 + parseInt(id)}"
             ><button on:click={setName} class="btn btn-primary btn-sm h-9"
               >Info</button
             ></a
           >
-          {#if restarting}
+          {#if state == "starting" || state == "installing"}
             <div
               id="start"
-              class="flex w-[7.5rem] bg-success rounded-lg font-semibold uppercase text-base-100 text-[.65rem] tracking-wider  px-3  items-center"
+              class="no-hover-effect flex btn-{startcolor} rounded-lg font-semibold uppercase text-base-100 text-xs tracking-wider px-3 items-center"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-loader animate-spin"
-                ><line x1="12" y1="2" x2="12" y2="6" /><line
-                  x1="12"
-                  y1="18"
-                  x2="12"
-                  y2="22"
-                /><line x1="4.93" y1="4.93" x2="7.76" y2="7.76" /><line
-                  x1="16.24"
-                  y1="16.24"
-                  x2="19.07"
-                  y2="19.07"
-                /><line x1="2" y1="12" x2="6" y2="12" /><line
-                  x1="18"
-                  y1="12"
-                  x2="22"
-                  y2="12"
-                /><line x1="4.93" y1="19.07" x2="7.76" y2="16.24" /><line
-                  x1="16.24"
-                  y1="7.76"
-                  x2="19.07"
-                  y2="4.93"
-                /></svg
-              >
-              {$t("button.restarting3")}
+              <Loader size="18" class="animate-spin mr-1.5" />
+              {starttext}
             </div>
-            <button
-              on:click={stop}
-              class="btn btn-error btn-{stopcolor} btn-sm h-9 stop-btn btn-disabled"
-              >{$t("button.stop")}</button
-            >
-          {:else}
-            {#if !starting}
-              <button
-                on:click={start}
-                id="start"
-                type="submit"
-                class="btn btn-success btn-sm h-9">{starttext}</button
-              >
             {:else}
-              <div
-                on:click={start}
+              <button
                 id="start"
-                class="flex w-[7.5rem] bg-success rounded-lg font-semibold uppercase text-base-100 text-[.76rem] tracking-wider  px-3  items-center"
+                on:click={start}
+                class="btn btn-{startcolor} btn-sm h-9"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="feather feather-loader animate-spin"
-                  ><line x1="12" y1="2" x2="12" y2="6" /><line
-                    x1="12"
-                    y1="18"
-                    x2="12"
-                    y2="22"
-                  /><line x1="4.93" y1="4.93" x2="7.76" y2="7.76" /><line
-                    x1="16.24"
-                    y1="16.24"
-                    x2="19.07"
-                    y2="19.07"
-                  /><line x1="2" y1="12" x2="6" y2="12" /><line
-                    x1="18"
-                    y1="12"
-                    x2="22"
-                    y2="12"
-                  /><line x1="4.93" y1="19.07" x2="7.76" y2="16.24" /><line
-                    x1="16.24"
-                    y1="7.76"
-                    x2="19.07"
-                    y2="4.93"
-                  /></svg
-                >
-                {$t("button.starting3")}
-              </div>
-            {/if}
+                {starttext}
+              </button>
+          {/if}
+          {#if state == "stopping"}
+          <div
+          id="start"
+          class="no-hover-effect flex btn-error rounded-lg font-semibold uppercase text-black text-xs tracking-wider px-3 items-center"
+        >
+          <Loader size="18" class="animate-spin mr-1.5" />
+          {$t("button.stopping")}
+        </div>
+        {:else}
             <button
               on:click={stop}
-              class="btn btn-error btn-{stopcolor} btn-sm h-9 stop-btn"
+              class="btn btn-error btn-sm h-9"
+              class:btn-disabled={state != "true"}
               >{$t("button.stop")}</button
             >
-          {/if}
+            {/if}
+          
         </div>
         <div class="self-center">
           <div class="badge badge-outline right-4 top-4 absolute">
@@ -242,6 +190,10 @@
   </div>
 </div>
 
-<style lang="scss">
-  //
+<style>
+  .no-hover-effect {
+  /* Add any specific styling to prevent hover effect here */
+  pointer-events: none; /* Disable hover interaction */
+  cursor: default;      /* Change cursor to default */
+}
 </style>

@@ -29,7 +29,7 @@
 
 <Navbar navType="welcome" />
 <div class="p-7" />
-<div class="grid  items-center">
+<div class="grid items-center">
   <ul class="steps">
     <li id="0" class="step step-secondary">{$t("setup.s1")}</li>
     <li id="1" class="step">{$t("setup.s2")}</li>

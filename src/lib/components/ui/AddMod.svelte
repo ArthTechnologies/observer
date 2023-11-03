@@ -5,25 +5,47 @@
   import ModResult from "./ModResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
+  import { onMount } from "svelte";
   let promise;
-  let results = [];
+  let cfResults = [];
+  let mrResults = [];
   let query = "";
-  function search() {
+  let software;
+  let version;
+  let tab = "mr";
+
+  if (browser) {
+    software = localStorage.getItem("serverSoftware");
+    version = localStorage.getItem("serverVersion");
+  }
+  onMount(() => {
+    if (software.toLowerCase() == "forge") {
+      //cf();
+    }
+  });
+  search("mr");
+  search("cf");
+  function search(platform: string) {
+    if (platform == undefined) {
+      platform = tab;
+    }
     console.log("searching" + query);
-    results = [];
+    if (platform == "cf") cfResults = [];
+    else if (platform == "mr") mrResults = [];
+
     if (browser) {
-      let software = localStorage.getItem("serverSoftware");
-      let version = localStorage.getItem("serverVersion");
       if (version == "latest") {
         version = "1.19.4";
       }
 
-      setTimeout(function () {
-        promise = searchMods(software, version, query, "mod").then(
-          (response) => {
+      promise = null;
+
+      promise = searchMods(platform, software, version, query, "mod").then(
+        (response) => {
+          if (platform == "mr") {
             response.hits.forEach((item) => {
               console.log(numShort(item.downloads));
-              results.push({
+              mrResults.push({
                 name: item.title,
                 desc: item.description,
                 icon: item.icon_url,
@@ -34,24 +56,38 @@
               });
               console.log(item);
             });
+          } else if (platform == "cf") {
+            response.data.forEach((item) => {
+              console.log(item);
+              console.log(numShort(item.downloadCount));
+              cfResults.push({
+                name: item.name,
+                desc: item.summary,
+                icon: item.logo.thumbnailUrl,
+                author: item.authors[0].name,
+                id: item.id,
+                client: null,
+                downloads: numShort(item.downloadCount),
+              });
+            });
           }
-        );
-      }, 1);
+        }
+      );
     }
   }
-  let tab = "mr";
-  function ft() {
-    if (browser) {
-      tab = "ft";
-      document.getElementById("ft").classList.add("tab-active");
-      document.getElementById("mr").classList.remove("tab-active");
-    }
-  }
+
   function mr() {
     if (browser) {
       tab = "mr";
       document.getElementById("mr").classList.add("tab-active");
-      document.getElementById("ft").classList.remove("tab-active");
+      document.getElementById("cf").classList.remove("tab-active");
+    }
+  }
+  function cf() {
+    if (browser) {
+      tab = "cf";
+      document.getElementById("cf").classList.add("tab-active");
+      document.getElementById("mr").classList.remove("tab-active");
     }
   }
 </script>
@@ -69,54 +105,35 @@
       >
 
       <div class="tabs tabs-boxed">
-        <button id="mr" on:click={mr} class="tab tab-active"
-          >{$t("search")}</button
-        >
+        <button id="mr" class="tab tab-active" on:click={mr}>Modrinth</button>
+        <!--<button id="cf" class="tab" on:click={cf}>Curseforge</button>-->
       </div>
     </div>
-    {#if tab == "mr"}
-      <div>
-        <input
-          bind:value={query}
-          on:keypress={search}
-          type="text"
-          placeholder="{$t('search')} Modrinth"
-          class="searchBar input input-bordered input-sm"
-          id="search"
-        />
-      </div>
-      <div id="mods" class="space-y-2">
+
+    <div>
+      <input
+        bind:value={query}
+        on:keypress={search}
+        type="text"
+        placeholder="{$t('search')} Modrinth"
+        class="searchBar input input-bordered input-sm"
+        id="search"
+      />
+    </div>
+    <div id="mods" class="space-y-2">
+      {#if tab == "mr"}
         {#await promise then}
-          {#each results as result}
+          {#each mrResults as result}
             <ModResult {...result} />
           {/each}
         {/await}
-      </div>
-    {:else if tab == "ft"}
-      <div class="space-y-2">
-        <FeaturedPlugin
-          icon="https://www.spigotmc.org/data/resource_icons/34/34315.jpg?1483592228"
-          name="Vault"
-          desc="Vault is a Permissions, Chat, & Economy API required by many plugins."
-          author="milkbowl"
-          authorLink="https://github.com/MilkBowl"
-          pluginId="MilkBowl/Vault"
-          link="https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar"
-          disclaimer="This plugin has not been tested on minecraft versions before 1.13."
-        />
-        <FeaturedPlugin
-          icon="https://media.forgecdn.net/avatars/thumbnails/493/419/64/64/637803056128514812.png"
-          name="Squaremap"
-          desc="
-
-          A minimalistic and lightweight world map viewer for Minecraft servers, using the vanilla map rendering style "
-          author="jpenilla"
-          authorLink="https://github.com/jpenilla"
-          pluginId="jpenilla/squaremap"
-          link="https://github.com/jpenilla/squaremap/releases/download/v1.1.12/squaremap-paper-mc1.19.4-1.1.12.jar"
-          disclaimer="This plugin only supports the latest minecraft version."
-        />
-      </div>
-    {/if}
+      {:else if tab == "cf"}
+        {#await promise then}
+          {#each cfResults as result}
+            <ModResult {...result} />
+          {/each}
+        {/await}
+      {/if}
+    </div>
   </div>
 </div>

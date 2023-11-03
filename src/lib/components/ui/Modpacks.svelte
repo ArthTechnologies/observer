@@ -16,7 +16,7 @@
       let software = document
         .getElementById("softwareDropdown")
         .value.toLowerCase();
-      let version = "1.19.4";
+      let version = document.getElementById("versionDropdown").value;
 
       setTimeout(function () {
         promise = searchMods(software, version, query, "modpack").then(
@@ -55,7 +55,7 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-block mt-5" on:click={search}
+<label for="my-modal-5" class="btn btn-block btn-primary" on:click={search}
   >Use Modpack</label
 >
 

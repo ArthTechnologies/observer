@@ -6,18 +6,19 @@
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
   import Alert from "$lib/components/ui/Alert.svelte";
+  import { Eye, EyeOff } from "lucide-svelte";
   let visible = false;
   let msg = "";
   let goodPwd = true;
   let matchPwd = true;
-  let networkerror = false;
+
   let sign = "up";
+  let pwdVisible = "password";
   function pwdVisibility() {
-    var x = document.getElementById("pwd");
-    if (x.type === "password") {
-      x.type = "text";
+    if (pwdVisible == "password") {
+      pwdVisible = "text";
     } else {
-      x.type = "password";
+      pwdVisible = "password";
     }
   }
 
@@ -130,50 +131,43 @@
   }
 </script>
 
-<div class="divider" />
-<div class="tabs ">
+<div class="tabs ml-2">
   <a id="sin" on:click={signIn} class="tab tab-lifted">{$t("signin")}</a>
   <a id="sup" on:click={signUp} class="tab tab-lifted tab-active"
     >{$t("signup")}</a
   >
 </div>
 {#if sign === "in"}
-  <div
-    class="hero bg-base-300 border-dashed border-2 border-accent-content rounded "
-  >
-    <div class="hero-content text-center">
+  <div class="bg-base-300 border-4 border-base-100 rounded-xl w-96">
+    <div class="text-center p-6">
       <div class="max-w-md space-y-5">
-        {#if networkerror === true}
-          <div class="badge badge-error gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block w-4 h-4 stroke-current"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              /></svg
-            >
-            You encountered a network error.
-          </div>
-        {/if}
-        <p class="text-xl">{$t("signin.h.email")}</p>
-        <input
-          id="email"
-          type="text"
-          placeholder={$t("signin.l.email")}
-          class="input w-full max-w-xs"
-        />
         <div class="space-x-2 space-y-5">
+          <p class="text-xl">{$t("signin.h.email")}</p>
           <input
-            type="password"
-            id="pwd"
-            placeholder={$t("signin.l.pwd")}
+            id="email"
+            type="text"
+            placeholder={$t("signin.l.email")}
             class="input w-full max-w-xs"
           />
+
+          <div class="w-full flex space-x-2">
+            <div class="w-full flex space-x-2">
+              <input
+                type={pwdVisible}
+                id="pwd"
+                placeholder={$t("signin.l.pwd")}
+                class="input w-full max-w-xs"
+              />
+              <label class="btn btn-circle swap swap-rotate btn-ghost">
+                <!-- this hidden checkbox controls the state -->
+                <input type="checkbox" on:click={pwdVisibility} />
+
+                <Eye size="28" class="swap-off" />
+
+                <EyeOff size="28" class="swap-on" />
+              </label>
+            </div>
+          </div>
 
           <button on:click={submit} class="btn btn-primary">Submit</button>
         </div>
@@ -181,29 +175,9 @@
     </div>
   </div>
 {:else}
-  <div
-    class="hero bg-base-300 border-dashed border-2 border-accent-content rounded "
-  >
-    <div class="hero-content text-center">
+  <div class="bg-base-300 border-4 border-base-100 rounded-xl w-96 pl-2">
+    <div class="p-6 text-center">
       <div class="max-w-md space-y-5">
-        {#if networkerror === true}
-          <div class="badge badge-error gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block w-4 h-4 stroke-current"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              /></svg
-            >
-            You encountered a network error.
-          </div>
-        {/if}
-
         <p class="text-xl">Sign up via Email:</p>
         <input
           id="email"
@@ -211,23 +185,33 @@
           placeholder={$t("signin.l.email")}
           class="input w-full max-w-xs"
         />
-        <input
-          type="password"
-          id="pwd"
-          placeholder={$t("signin.l.pwd")}
-          class="input w-full max-w-xs"
-        />
+        <div class="w-full flex space-x-2">
+          <div class="w-full flex space-x-2">
+            <input
+              type={pwdVisible}
+              id="pwd"
+              placeholder={$t("signin.l.pwd")}
+              class="input w-full max-w-xs"
+            />
+            <label class="btn btn-circle swap swap-rotate btn-ghost">
+              <!-- this hidden checkbox controls the state -->
+              <input type="checkbox" on:click={pwdVisibility} />
 
-        <div class="space-x-2 space-y-5">
+              <Eye size="28" class="swap-off" />
+
+              <EyeOff size="28" class="swap-on" />
+            </label>
+          </div>
+        </div>
+
+        <div class="space-y-5">
           <input
             type="password"
             id="confPwd"
             placeholder={$t("signin.l.cpwd")}
             class="input w-full max-w-xs"
           />
-          <button on:click={submit} class="btn btn-primary"
-            >{$t("button.submit")}</button
-          >
+          <button on:click={submit} class="btn btn-primary">Continue</button>
         </div>
       </div>
     </div>

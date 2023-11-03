@@ -1,9 +1,20 @@
 import accountEmail from "$lib/stores/accountEmail";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
-export const apiurl = "https://api.arthmc.xyz/";
-
+export let apiurl = "https://us-dallas-1.arthmc.xyz/";
+export let usingOcelot = false;
 export const lrurl = "https://api.modrinth.com/v2/";
+
+//set apiurl & usingOcelot to the enviroment variable if it exists
+if (browser) {
+  if (import.meta.env.VITE_API_URL) {
+    apiurl = import.meta.env.VITE_API_URL;
+  }
+  if (import.meta.env.VITE_USING_OCELOT) {
+    usingOcelot = import.meta.env.VITE_USING_OCELOT;
+  }
+}
+
 let lock = false;
 
 let GET = {};
@@ -39,12 +50,24 @@ if (browser) {
   };
 }
 
-export function setInfo(id, icon, desc) {
+export function setInfo(
+  id,
+  icon,
+  desc,
+  proxiesEnabled,
+  fSecret,
+  automaticStartup
+) {
+  if(browser) {
   console.log(icon);
   if (icon == "") {
     icon = "/images/placeholder.png";
   }
-  const url = apiurl + "server/" + id + "/setInfo";
+  let baseurl = apiurl;
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "server/" + id + "/setInfo";
   const req = {
     method: "POST",
     headers: {
@@ -55,6 +78,9 @@ export function setInfo(id, icon, desc) {
     body: JSON.stringify({
       desc: desc,
       icon: icon,
+      proxiesEnabled: proxiesEnabled,
+      fSecret: fSecret,
+      automaticStartup: automaticStartup,
     }),
   };
 
@@ -70,8 +96,10 @@ export function setInfo(id, icon, desc) {
             console.log("Response Recieved: " + input);
 
             if (input.indexOf("400") > -1) {
+              alert("wrong password.");
               return "error";
             } else {
+              setDescText(desc);
               return "success";
             }
           })
@@ -89,15 +117,27 @@ export function setInfo(id, icon, desc) {
         if (input.indexOf("400") > -1) {
           return "error";
         } else {
+          setDescText(desc);
           return "success";
         }
       })
       .catch((err) => console.error(err));
   }
+  function setDescText(desc) {
+    if (document.getElementById("xDesc") != null) {
+      document.getElementById("xDesc").innerHTML = "Description: " + desc;
+    }
+  }
+}
 }
 
 export function getMods(id: number, modtype: string) {
-  const url = apiurl + "server/" + id + "/" + modtype;
+  if(browser) {
+  let baseurl = apiurl;
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "server/" + id + "/" + modtype;
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
@@ -106,6 +146,7 @@ export function getMods(id: number, modtype: string) {
       return JSON.parse(input);
     })
     .catch((err) => console.error(err));
+  }
 }
 
 export function sendVersion(
@@ -115,8 +156,13 @@ export function sendVersion(
   pluginName: string,
   modtype: string
 ) {
+  if(browser) {
+  let baseurl = apiurl;
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
   const url =
-    apiurl +
+    baseurl +
     "server/" +
     id +
     "/add/" +
@@ -141,7 +187,9 @@ export function sendVersion(
     })
     .catch((err) => console.error(err));
 }
+}
 export function getVersions(id: string) {
+  if(browser) {
   const url = lrurl + "project/" + id + "/version";
   return fetch(url, GET)
     .then((res) => res.text())
@@ -152,12 +200,14 @@ export function getVersions(id: string) {
     })
     .catch((err) => console.error(err));
 }
+}
 
 export function searchPlugins(
   software: string,
   version: string,
   query: string
 ) {
+  if(browser) {
   if (version == "Latest") {
     version = "1.19.3";
   }
@@ -169,6 +219,8 @@ export function searchPlugins(
     query +
     '&facets=[["categories:' +
     software +
+    '"],["versions:' +
+    version +
     '"],["server_side:optional","server_side:required"]]' +
     "&limit=10";
 
@@ -186,18 +238,23 @@ export function searchPlugins(
       .catch((err) => console.error(err));
   }
 }
+}
 
 export function searchMods(
+  platform: string,
   software: string,
   version: string,
   query: string,
   modtype: string
 ) {
+  if(browser) {
   if (version == "Latest") {
     version = "1.19.3";
   }
 
-  const url =
+  let url;
+  if (platform == "mr")  {
+    url =
     lrurl +
     "search" +
     "?query=" +
@@ -206,8 +263,21 @@ export function searchMods(
     software +
     '"], ["project_type:' +
     modtype +
+    '"],["versions:' +
+    version +
     '"],["server_side:optional","server_side:required"]]' +
     "&limit=10";
+  } else if (platform == "cf") {
+    url =
+    apiurl +
+    "curseforge/search" +
+    "?query=" +
+    query +
+    '&version=' +
+    version +
+    '&loader=' +
+    software;
+  }
 
   if (!lock) {
     return fetch(url, GET)
@@ -223,21 +293,24 @@ export function searchMods(
       .catch((err) => console.error(err));
   }
 }
+}
 
 export function getSettings() {
+  if(browser) {
   console.log("Request Sent");
   return fetch(apiurl + "settings", GET)
     .then((res) => res.text())
     .then((input: string) => {
       console.log("Response Recieved: " + input);
       if (browser) {
-        window.localStorage.setItem("enablePay", JSON.parse(input).enablePay);
-        window.localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
-        window.localStorage.setItem("address", JSON.parse(input).address);
-        window.localStorage.setItem("webName", JSON.parse(input).webName);
+        localStorage.setItem("enablePay", JSON.parse(input).enablePay);
+        localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
+        localStorage.setItem("address", JSON.parse(input).address);
+        localStorage.setItem("webName", JSON.parse(input).webName);
+        localStorage.setItem("latestVersion", JSON.parse(input).latestVersion);
 
         if (JSON.parse(input).enableAuth == false) {
-          window.localStorage.setItem("accountEmail", "guest");
+          localStorage.setItem("accountEmail", "guest");
           accountEmail.set("guest");
         }
       }
@@ -246,20 +319,23 @@ export function getSettings() {
     })
     .catch((err) => console.error(err));
 }
+}
 
 export function getServers(em: string) {
-  let url = apiurl + "servers/" + "?accountId=";
-  if (browser) {
-    url =
+  if(browser) {
+  let url =
       apiurl + "servers/" + "?accountId=" + localStorage.getItem("accountId");
-  }
+  
   console.log("Request Sent: Get Servers");
 
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
       if (browser) {
-        window.localStorage.setItem("servers", JSON.parse(input).amount);
+        localStorage.setItem("amountOfServers", JSON.parse(input).length);
+        localStorage.setItem("servers", input);
+
+        if (usingOcelot) getServerNodes();
       }
 
       console.log("Response Recieved: " + input);
@@ -272,7 +348,10 @@ export function getServers(em: string) {
     })
     .catch((err) => console.error(err));
 }
+}
+
 export function signupEmail(em: string, pwd: string) {
+  if(browser) {
   console.log("Request Sent");
   localStorage.setItem("accountEmail", em);
   return fetch(
@@ -320,8 +399,10 @@ export function signupEmail(em: string, pwd: string) {
     })
     .catch((err) => console.error(err));
 }
+}
 
 export function loginEmail(em: string, pwd: string) {
+  if(browser) {
   return fetch(
     apiurl +
       "accounts/email/signin?" +
@@ -342,10 +423,10 @@ export function loginEmail(em: string, pwd: string) {
       } else {
         if (browser) {
           console.log(JSON.parse(input));
-          window.localStorage.setItem("token", JSON.parse(input).token);
-          window.localStorage.setItem("accountEmail", em);
-          window.localStorage.setItem("loggedIn", "true");
-          window.localStorage.setItem("accountId", JSON.parse(input).accountId);
+          localStorage.setItem("token", JSON.parse(input).token);
+          localStorage.setItem("accountEmail", em);
+          localStorage.setItem("loggedIn", "true");
+          localStorage.setItem("accountId", JSON.parse(input).accountId);
           GET = {
             method: "GET",
             headers: {
@@ -373,15 +454,22 @@ export function loginEmail(em: string, pwd: string) {
     })
     .catch((err) => console.error(err));
 }
+}
 
 export function changeServerState(reqstate: string, id: number, em: string) {
-  const url = apiurl + "server/" + id + "/state/" + reqstate + "?email=" + em;
+  if(browser) {
+  let baseurl = apiurl;
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "server/" + id + "/state/" + reqstate + "?email=" + em;
   const response = fetch(url, POST)
     .then((res) => res.text())
     .then((text) => console.log("Response Recieved: " + text))
     .catch((err) => console.error(err));
 
   return "done";
+}
 }
 
 export function createServer(
@@ -392,27 +480,23 @@ export function createServer(
   c: any[],
   mURL: string
 ) {
-  const url =
-    apiurl +
-    "server/new?" +
-    "email=" +
-    window.localStorage.getItem("accountEmail");
-  if (browser) {
+  if(browser) {
+
     const url =
       apiurl +
       "server/new?" +
       "email=" +
-      window.localStorage.getItem("accountEmail") +
+      localStorage.getItem("accountEmail") +
       "&accountId=" +
-      window.localStorage.getItem("accountId");
-  }
-
+      localStorage.getItem("accountId");
+  
+  //get file from id worldFile
   const req = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      token: window.localStorage.getItem("token"),
-      email: window.localStorage.getItem("accountEmail"),
+      token: localStorage.getItem("token"),
+      email: localStorage.getItem("accountEmail"),
     },
     body: JSON.stringify({
       name: n,
@@ -423,6 +507,7 @@ export function createServer(
       modpackURL: mURL,
     }),
   };
+
   console.log("Request Sent: " + JSON.stringify(req.body));
   //if response is 409, send an alert, otherwise do nothing
   return fetch(url, req).then((res) =>
@@ -439,15 +524,15 @@ export function createServer(
         } else {
           //set text.subscription to localstorage
           if (browser) {
-            window.localStorage.setItem("subs", res.subscriptions);
+            localStorage.setItem("subs", res.subscriptions);
             //if localstorage servers is null, set it to 0
-            if (window.localStorage.getItem("servers") == null) {
-              window.localStorage.setItem("servers", "0");
+            if (localStorage.getItem("amountOfServers") == null) {
+              localStorage.setItem("amountOfServers", "0");
             }
             //increase localstorage servers by 1
-            window.localStorage.setItem(
+            localStorage.setItem(
               "servers",
-              (parseInt(localStorage.getItem("servers")) + 1).toString()
+              (parseInt(localStorage.getItem("amountOfServers")) + 1).toString()
             );
           }
           return true;
@@ -456,8 +541,10 @@ export function createServer(
       .catch((err) => console.error(err))
   );
 }
+}
 
 export function getPlayers(address: string) {
+  if(browser) {
   const req = {
     method: "GET",
   };
@@ -480,9 +567,15 @@ export function getPlayers(address: string) {
       // return input as a number
     });
 }
+}
 
 export function getServer(id: number) {
-  const url = apiurl + "server/" + id;
+  if (browser) {
+  let baseurl = apiurl;
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "server/" + id;
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
@@ -493,14 +586,23 @@ export function getServer(id: number) {
         return JSON.parse(input);
       }
     });
+  }
 }
 
-export function deleteServer(id: number) {
-  localStorage.setItem(
-    "servers",
-    (parseInt(localStorage.getItem("servers")) - 1).toString()
-  );
-  const url = apiurl + "server/" + id;
+export function deleteServer(id: number, password: string) {
+  if(browser) {
+  let baseurl = apiurl;
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url =
+    baseurl +
+    "server/" +
+    id +
+    "?email=" +
+    localStorage.getItem("accountEmail") +
+    "&password=" +
+    password;
 
   return fetch(url, DELETE)
     .then((res) => res.text())
@@ -508,14 +610,25 @@ export function deleteServer(id: number) {
       if (input.indexOf("400") > -1) {
         return "error";
       } else {
+        localStorage.setItem(
+          "servers",
+          (parseInt(localStorage.getItem("amountOfServers")) - 1).toString()
+        );
+        goto("/");
         //return input as json
         return JSON.parse(input);
       }
     });
 }
+}
 
 export function writeTerminal(id: number, cmd: string) {
-  const url = apiurl + "terminal/" + id + "?cmd=" + cmd;
+  if(browser) {
+  let baseurl = apiurl;
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "terminal/" + id + "?cmd=" + cmd;
   return fetch(url, POST)
     .then((res) => res.text())
     .then((input: string) => {
@@ -528,10 +641,32 @@ export function writeTerminal(id: number, cmd: string) {
       }
     });
 }
+}
 
 export function readTerminal(id: number) {
-  const url = apiurl + "terminal/" + id;
+  if(browser) {
+  let baseurl = apiurl;
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "terminal/" + id;
   return fetch(url, GET)
+    .then((res) => res.text())
+    .then((input: string) => {
+      //return input as json
+      return input;
+    });
+}
+}
+
+export function updateServer(id: number, version: string) {
+  if(browser) {
+  let baseurl = apiurl;
+  if (usingOcelot)
+    baseurl =
+      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+  const url = baseurl + "server/" + id + "/version?version=" + version;
+  return fetch(url, POST)
     .then((res) => res.text())
     .then((input: string) => {
       if (input.indexOf("400") > -1) {
@@ -541,6 +676,26 @@ export function readTerminal(id: number) {
         return input;
       }
     });
+}
+}
+
+function getServerNodes() {
+  if(browser) {
+  let serverIdArray = [];
+  const servers = JSON.parse(localStorage.getItem("servers"));
+  for (let i = 0; i < servers.length; i++) {
+    serverIdArray.push(servers[i].id);
+  }
+  const url = apiurl + "serverNodes?servers=" + serverIdArray.join(",");
+  return fetch(url, GET)
+    .then((res) => res.text())
+    .then((input: string) => {
+      console.log("Response Recieved: " + input);
+      localStorage.setItem("serverNodes", input);
+      //return input as json
+      return input;
+    });
+}
 }
 
 //check if stripe is enabled

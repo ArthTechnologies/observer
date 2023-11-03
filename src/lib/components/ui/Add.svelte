@@ -13,6 +13,9 @@
     if (browser) {
       let software = localStorage.getItem("serverSoftware");
       let version = localStorage.getItem("serverVersion");
+      if (software == "Velocity") {
+        version = localStorage.getItem("latestVersion");
+      }
 
       setTimeout(function () {
         promise = searchPlugins(software, version, query).then((response) => {
@@ -48,14 +51,14 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn md:btn-block" on:click={search}
+<label for="my-modal-5" class="btn btn-block" on:click={search}
   >{$t("button.addplugin")}</label
 >
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="my-modal-5" class="modal-toggle" />
 <div class="modal">
-  <div class="modal-box relative w-11/12 max-w-5xl space-y-5 h-[50rem]">
+  <div class="modal-box relative w-11/12 max-w-5xl space-y-5">
     <div class="flex justify-between">
       <label
         for="my-modal-5"
@@ -63,10 +66,10 @@
       >
 
       <div class="tabs tabs-boxed">
-        <button id="ft" on:click={ft} class="tab tab-active "
+        <button id="ft" on:click={ft} class="tab tab-active"
           >{$t("featured")}</button
         >
-        <button id="mr" on:click={mr} class="tab ">{$t("search")}</button>
+        <button id="mr" on:click={mr} class="tab">{$t("search")}</button>
       </div>
     </div>
     {#if tab == "mr"}

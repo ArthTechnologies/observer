@@ -61,8 +61,8 @@
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="versionsAlt" class="modal-toggle" />
-<div class="modal">
-  <div class="modal-box w-11/12 max-w-5xl space-y-5">
+<div class="modal flex flex-col justify-center">
+  <div class="modal-box w-[97%] h-[97%] max-w-5xl space-y-5">
     <div class="flex justify-between">
       <h3 class="font-bold text-lg">Versions</h3>
       <div class="modal-action">

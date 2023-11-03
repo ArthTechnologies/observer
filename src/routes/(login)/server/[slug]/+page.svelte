@@ -8,6 +8,7 @@
     writeTerminal,
     readTerminal,
     apiurl,
+    usingOcelot,
   } from "$lib/scripts/req";
   import { getServer } from "$lib/scripts/req";
 
@@ -19,7 +20,22 @@
   import EditInfo from "$lib/components/ui/EditInfo.svelte";
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
-
+  import Updates from "$lib/components/buttons/Updates.svelte";
+  import World from "$lib/components/ui/World.svelte";
+  import FullscreenTerminal from "$lib/components/buttons/FullscreenTerminal.svelte";
+  import {
+    ArrowLeft,
+    FolderClosed,
+    HelpCircle,
+    Loader,
+    PlayCircle,
+    Repeat,
+    StopCircle,
+    Settings,
+  } from "lucide-svelte";
+  import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
+  import Versions from "$lib/components/buttons/Versions.svelte";
+  let scrollCorrected = false;
   let modded = false;
   let vanilla = false;
   let name: string = "-";
@@ -35,8 +51,18 @@
   let restarting = false;
   let email: string = "";
   let state = "false";
-  let icon = "";
+  let icon = "/images/placeholder.webp";
+  let secret = "";
+  let difference = -1;
+  let baseurl = apiurl;
+
   if (browser) {
+    name = localStorage.getItem("serverName");
+    if (localStorage.getItem("serverCardRedrict") != "true") {
+      id = parseInt(localStorage.getItem("serverID"));
+    } else {
+      id = parseInt(window.location.href.split("/")[4]) - 10000;
+    }
     if (
       localStorage.getItem("serverSoftware") == "Fabric" ||
       localStorage.getItem("serverSoftware") == "Quilt" ||
@@ -44,7 +70,9 @@
     ) {
       modded = true;
     }
-
+    if (usingOcelot) {
+      baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()];
+    }
     if (localStorage.getItem("serverSoftware") == "Vanilla") {
       vanilla = true;
     }
@@ -115,56 +143,48 @@
   }
 
   onMount(() => {
-    name = localStorage.getItem("serverName");
-    if (localStorage.getItem("serverCardRedrict") != "true") {
-      id = parseInt(localStorage.getItem("serverID"));
-    } else {
-      if (browser) {
-        id = parseInt(window.location.href.split("/")[4]) - 10000;
-      }
-    }
-    localStorage.setItem("serverCardRedrict", "false");
-    port += parseInt(id);
-    console.log(apiurl + "server/" + id + "/getInfo");
-    //GET apiurl/server/id/getInfo
-    fetch(apiurl + "server/" + id + "/getInfo", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        desc = data.desc;
-        console.log(data.iconUrl + "icon");
-        if (data.iconUrl != undefined) {
-          console.log("icon is " + data.iconUrl);
-          icon = data.iconUrl;
-        } else {
-          console.log("setting placeholder");
-          icon = "/images/placeholder.webp";
-        }
-      });
+    if (browser) {
+      localStorage.setItem("serverCardRedrict", "false");
+      port += parseInt(id);
+      //GET apiurl/server/id/getInfo
+      fetch(baseurl + "server/" + id + "/getInfo", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token"),
+          email: localStorage.getItem("accountEmail"),
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          desc = data.desc;
+          console.log(data.secret + "secret");
+          secret = data.secret;
 
-    //wait half a second
-    setTimeout(() => {
-      //get players and store amount in a variable
-      const gp = getPlayers("arthmc.xyz:" + port).then((response) => {
-        if (browser) {
-          console.log("port is " + port);
-          apo = response;
-        }
-      });
-    }, 500);
-    //increase po evey second until it reaches apo
-    setInterval(() => {
-      if (po < apo) {
-        po++;
-      }
-    }, 50);
+          //add checked property to toggle
+
+          if (data.proxiesEnabled) {
+            document.getElementById("proxiesEnabled").checked = true;
+          } else {
+            document.getElementById("proxiesEnabled").checked = false;
+          }
+
+          if (data.automaticRestart) {
+            document.getElementById("automaticRestart").checked = true;
+          } else {
+            document.getElementById("automaticRestart").checked = false;
+          }
+
+          document.getElementById("fSecret").value = data.secret;
+          if (data.iconUrl != undefined) {
+            console.log("icon is " + data.iconUrl);
+            icon = data.iconUrl;
+          } else {
+            console.log("setting placeholder");
+            icon = "/images/placeholder.webp";
+          }
+        });
+    }
   });
   //grab window url
   if (browser) {
@@ -179,9 +199,12 @@
   function getStatus() {
     //get server status
     getServer(id).then((response) => {
-      console.log(response);
+      //convert addons array to string, save it to "serverAddons" array
+      localStorage.setItem("serverAddons", response.addons.toString());
+      localStorage.setItem("serverVersion", response.version);
       //set state to response
       state = response.state;
+
       if (restarting && state == "starting") {
         restarting = false;
         console.log("unlocking");
@@ -260,263 +283,149 @@
 
   function readCmd() {
     let rt;
-    readTerminal(id).then((response) => {
-      if (browser) {
-        document.getElementById("terminal").innerHTML = response.replace(
-          /\n/g,
-          "<p>"
-        );
-        setTimeout(() => {
-          const terminal = document.getElementById("terminal");
-          terminal.scrollTop = terminal.scrollHeight;
-        }, 20);
-      }
-    });
-    //set terminal's text to rt
+
+    if (browser) {
+      readTerminal(id).then((response) => {
+        const terminalContainer = document.getElementById("terminalContainer");
+        const terminal = document.getElementById("terminal");
+        const filteredResponse = response
+          .replace(/\x1B\[[0-9;]*[mG]/g, "")
+          .replace(/\n/g, "<p>");
+
+        //scroll down the height of the new lines added
+        if (
+          terminal.innerHTML.split("<p>").length <
+          filteredResponse.split("<p>").length
+        ) {
+          terminalContainer.scrollTop +=
+            12 *
+            (filteredResponse.split("<p>").length -
+              terminal.innerHTML.split("<p>").length);
+        }
+
+        //response replace newlines with <p>, remove things that start with [ and end with m
+        if (response.length < 100000) {
+          if (
+            filteredResponse.length - terminal.innerHTML.length !=
+            difference
+          ) {
+            difference = filteredResponse.length - terminal.innerHTML.length;
+
+            terminal.innerHTML = filteredResponse;
+          }
+        } else {
+          terminal.innerHTML = filteredResponse.substring(
+            filteredResponse.length - 100000
+          );
+        }
+
+        //if this is the first time the terminal is loaded, this will scroll to the bottom.
+        if (scrollCorrected == false) {
+          terminalContainer.scrollTop = terminalContainer.scrollHeight;
+          if (
+            terminalContainer.scrollHeight - terminalContainer.scrollTop <=
+            384
+          ) {
+            scrollCorrected = true;
+          }
+        }
+      });
+    }
   }
   readCmd();
 </script>
 
-<div class="h-[75vh] ">
-  <div class=" flex justify-between">
+<div class="lg:-mt-10">
+  <div class=" flex justify-between mb-2">
     <div class="space-x-2 space-y-2 mb-2 flex flex-col items-center md:block">
-      <a href="/" class="btn btn-info "
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-arrow-left"
-          ><line x1="19" y1="12" x2="5" y2="12" /><polyline
-            points="12 19 5 12 12 5"
-          /></svg
-        >
+      <a href="/" class="btn btn-info"
+        ><ArrowLeft class="mr-1.5" />
         {$t("button.back")}</a
       >
       <DeleteServer />
+      <Updates />
+      <World />
     </div>
     <!-- TODO: these should be on the right, add an if for not reaching the backend -->
     <div class="space-x-2 space-y-2 flex flex-col items-center md:block">
       {#if state == "true" && !restarting}
         <button on:click={start} class="btn btn-success"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-repeat"
-            ><polyline points="17 1 21 5 17 9" /><path
-              d="M3 11V9a4 4 0 0 1 4-4h14"
-            /><polyline points="7 23 3 19 7 15" /><path
-              d="M21 13v2a4 4 0 0 1-4 4H3"
-            /></svg
-          >{$t("button.restart2")}</button
+          ><Repeat class="mr-1.5" />{$t("button.restart")}</button
         >
         <button on:click={stop} class="btn btn-error"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-stop-circle"
-            ><circle cx="12" cy="12" r="10" /><rect
-              x="9"
-              y="9"
-              width="6"
-              height="6"
-            /></svg
-          >{$t("button.stop2")}</button
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if restarting}
         <button class="btn btn-success"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-loader animate-spin"
-            ><line x1="12" y1="2" x2="12" y2="6" /><line
-              x1="12"
-              y1="18"
-              x2="12"
-              y2="22"
-            /><line x1="4.93" y1="4.93" x2="7.76" y2="7.76" /><line
-              x1="16.24"
-              y1="16.24"
-              x2="19.07"
-              y2="19.07"
-            /><line x1="2" y1="12" x2="6" y2="12" /><line
-              x1="18"
-              y1="12"
-              x2="22"
-              y2="12"
-            /><line x1="4.93" y1="19.07" x2="7.76" y2="16.24" /><line
-              x1="16.24"
-              y1="7.76"
-              x2="19.07"
-              y2="4.93"
-            /></svg
-          >
-          {$t("button.restarting2")}</button
+          ><Loader class="animate-spin mr-1.5" />
+          {$t("button.restarting")}</button
         >
 
         <button class="btn btn-disabled"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-stop-circle"
-            ><circle cx="12" cy="12" r="10" /><rect
-              x="9"
-              y="9"
-              width="6"
-              height="6"
-            /></svg
-          >{$t("button.stop2")}</button
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "false"}
         <button on:click={start} class="btn btn-success"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-play-circle"
-            ><circle cx="12" cy="12" r="10" /><polygon
-              points="10 8 16 12 10 16 10 8"
-            /></svg
-          >{$t("button.start2")}</button
+          ><PlayCircle class="mr-1.5" />{$t("button.start")}</button
         >
         <a href="/" class="btn btn-disabled"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-stop-circle"
-            ><circle cx="12" cy="12" r="10" /><rect
-              x="9"
-              y="9"
-              width="6"
-              height="6"
-            /></svg
-          >{$t("button.stop2")}</a
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</a
         >
-      {:else}
+      {:else if state == "starting"}
         <button class="btn btn-success"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-loader animate-spin"
-            ><line x1="12" y1="2" x2="12" y2="6" /><line
-              x1="12"
-              y1="18"
-              x2="12"
-              y2="22"
-            /><line x1="4.93" y1="4.93" x2="7.76" y2="7.76" /><line
-              x1="16.24"
-              y1="16.24"
-              x2="19.07"
-              y2="19.07"
-            /><line x1="2" y1="12" x2="6" y2="12" /><line
-              x1="18"
-              y1="12"
-              x2="22"
-              y2="12"
-            /><line x1="4.93" y1="19.07" x2="7.76" y2="16.24" /><line
-              x1="16.24"
-              y1="7.76"
-              x2="19.07"
-              y2="4.93"
-            /></svg
-          >
-          {$t("button.starting2")}</button
+          ><Loader class="animate-spin mr-1.5" />
+          {$t("button.starting")}</button
         >
         <button on:click={stop} class="btn btn-error"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-stop-circle"
-            ><circle cx="12" cy="12" r="10" /><rect
-              x="9"
-              y="9"
-              width="6"
-              height="6"
-            /></svg
-          >{$t("button.stop2")}</button
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
+        >
+      {:else if state == "installing"}
+        <button class="btn btn-accent"
+          ><Loader class="animate-spin mr-1.5" />
+          {$t("button.installing")}</button
+        >
+        <button on:click={stop} class="btn btn-error"
+          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
+        >
+      {:else if state == "stopping"}
+        <button class="btn btn-disabled"
+          ><PlayCircle class="mr-1.5" />{$t("button.start")}</button
+        >
+        <button class="btn btn-error"
+          ><Loader class="animate-spin mr-1.5" />
+          {$t("button.stopping")}</button
         >
       {/if}
     </div>
   </div>
   <div class="flex flex-col mt-5 md:mt-0">
-    <div class="text-5xl font-bold divider ">{name}</div>
+    <div
+      class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold divider"
+      id="serverName"
+    >
+      {name}
+    </div>
   </div>
 
   <div
-    class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10 "
+    class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10"
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div
-        class="bg-base-300 w-[19rem] h-96 lg:h-[30rem] rounded-xl shadow-xl overflow-auto lg:w-[30rem] xl:w-[50rem] "
+        id="terminalContainer"
+        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
       >
-        <p class="p-5 sm:text-xs xl:text-base font-mono" id="terminal" />
+        <div class="p-5 sm:text-xs xl:text-base font-mono relative">
+          <FullscreenTerminal />
+          <p id="terminal" />
+        </div>
       </div>
       <input
         on:keypress={writeCmd}
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 w-64 lg:w-[30rem] xl:w-[50rem] "
+        class="input input-secondary bg-base-200 w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
       />
       <div class="divider md:hidden pt-5 pb-4" />
     </div>
@@ -526,19 +435,15 @@
     >
       <div class="space-y-5 mb-4">
         <div
-          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-56 md:w-auto"
+          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
         >
           <div class="flex relative">
             <div class="p-4 space-x-4 flex">
-              <img
-                id="xIcon"
-                src={icon}
-                class="w-[4rem] h-[4rem] rounded-md "
-              />
+              <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md" />
 
               <div class="">
                 <div class="stat-title">{$t("server.ip")}</div>
-                <div class="font-bold text-sm sm:text-lg md:text-3xl">
+                <div class="font-bold sm:text-lg md:text-3xl">
                   {address}:{port}
                 </div>
                 <div id="xDesc" class="text-xs font-light flex justify-between">
@@ -550,40 +455,24 @@
               href="https://arthmc.xyz/docs/how-to-join-servers"
               target="_blank"
               rel="noreferrer"
-              class="btn btn-ghost btn-xs absolute bottom-2 right-0.5 md:top-3 md:right-11 -mb-2.5"
+              class="btn btn-ghost btn-sm md:btn-xs absolute bottom-2 right-2.5 md:top-3 md:right-11 md:-mb-2.5"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class=" feather feather-help-circle md:mr-1"
-                ><circle cx="12" cy="12" r="10" /><path
-                  d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
-                /><line x1="12" y1="17" x2="12.01" y2="17" /></svg
-              >
+              <HelpCircle size="18" class="md:mr-1.5" />
               <p class="hidden md:block">How to join</p></a
             >
-            <EditInfo />
+            <EditInfo type="smallBtn" />
           </div>
         </div>
       </div>
 
-      <div class="flex place-content-center w-[10.6rem] space-x-2">
+      <div class="w-[10.6rem] flex place-content-center space-x-2">
         {#if modded}<AddMod /><ManageMods />{:else if !vanilla}
           <Add /><Manage />
         {/if}
       </div>
-      <div
-        class=" bg-base-200 mt-4 rounded-xl px-4 py-3 shadow-xl w-64 md:w-auto"
-      >
+      <div class=" bg-base-200 mt-4 rounded-xl px-4 py-3 w-[20rem] md:w-auto">
         <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
-        <div class="space-x-1.5 space-y-1.5 ">
+        <div class="space-x-1.5 space-y-1.5">
           <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
 
           <input
@@ -620,6 +509,16 @@
           <button on:click={alwaysDay} class="btn btn-secondary btn-sm"
             >{$t("button.send")}</button
           >
+        </div>
+      </div>
+      <div class="w-[20rem] flex flex-col items-center">
+        <div class="flex space-x-2 mb-2 mt-4">
+          <EditInfo type="fullBtn" /><StorageLimit />
+        </div>
+        <div class="flex space-x-2">
+          <a class="btn btn-primary" href="/server/{parseInt(id) + 10000}/files"
+            ><FolderClosed class="mr-1.5" />{$t("button.files")}</a
+          ><Versions />
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-<div class="flex justify-center  hero  bg-base-100 rounded-xl">
+<div class="flex justify-center hero bg-base-100 rounded-xl">
   <div class="flex flex-col hero-content">
     <div class="space-x-10">
       <p class="text-left text-2xl">

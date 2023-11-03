@@ -1,11 +1,12 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { getMods } from "$lib/scripts/req";
+  import { apiurl, getMods, usingOcelot } from "$lib/scripts/req";
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import ManagePlugin from "./ManagePlugin.svelte";
+  import { ChevronDown, ChevronUp, Clock, Trash2 } from "lucide-svelte";
   let promise;
-  let res = { names: [], ids: [], platforms: [], modpack: {} };
+  let res = { mods: [], modpack: {} };
   let query = "";
   if (browser) {
     //run search upon the "refresh" event
@@ -24,13 +25,32 @@
       setTimeout(function () {
         promise = getMods(id, "mods").then((response) => {
           res = response;
-          console.log(response.modpack.files.length - 1);
-          console.log(response.modpack.files[0].downloads[0].split("/")[4]);
+          console.log(res);
+          for (let i in res.mods) {
+            res.mods[i].time = new Date(res.mods[i].date).toLocaleString();
+          }
+          if (
+            response.modpack != undefined &&
+            response.modpack.files.length > 0
+          ) {
+            console.log(response.modpack.files.length - 1);
 
-          for (let i = 0; i < response.modpack.files.length - 1; i++) {
-            res.ids.push(response.modpack.files[i].downloads[0].split("/")[4]);
-            res.platforms.push("lr");
-            res.names.push("yo");
+            for (let i = 0; i < response.modpack.files.length - 1; i++) {
+              for (let k = 0; k < response.mods.length; k++) {
+                if (
+                  response.mods[k].filename ==
+                  response.modpack.files[i].path.split("\\")[1]
+                ) {
+                  res.mods.splice(k, 1);
+                  res.mods.push({
+                    id: response.modpack.files[i].downloads[0].split("/")[4],
+                    platform: "lr",
+                    name: response.modpack.files[i].downloads[0].split("/")[4],
+                    filename: response.modpack.files[i].path.split("\\")[1],
+                  });
+                }
+              }
+            }
           }
           console.log(res);
         });
@@ -38,6 +58,29 @@
     }
   }
   search();
+  function del(filename) {
+    //tell upstream component to refresh
+    const event = new CustomEvent("refresh");
+    document.dispatchEvent(event);
+
+    let serverId = "";
+    if (browser) {
+      serverId = localStorage.getItem("serverID");
+    }
+
+    let baseurl = apiurl;
+    if (usingOcelot)
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    const url = baseurl + "server/" + serverId + "/file/mods*" + filename;
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    });
+  }
 </script>
 
 <label for="manage" on:click={search} class="btn btn-block btn-primary"
@@ -48,10 +91,10 @@
 <input type="checkbox" id="manage" class="modal-toggle" />
 <div class="modal">
   <div class="modal-box relative w-11/12 max-w-5xl space-y-2 h-[50rem]">
-    <div class="flex items-center space-x-3">
+    <div class="md:flex items-center md:space-x-3">
       <p class="font-bold text-2xl">Mods</p>
       {#if res.modpack.name != undefined}
-        <p class=" h-15 p-2 bg-base-200  rounded-lg">
+        <p class=" h-15 p-2 bg-base-200 rounded-lg mt-2 md:mt-0">
           Modpack: {res.modpack.name}
         </p>
       {/if}
@@ -64,22 +107,53 @@
 
     <div class="space-y-2">
       {#await promise}
-        <div class="bg-base-200 rounded-lg w-full h-[5rem] p-2">
+        <div
+          class="flex items-center justify-between bg-base-200 rounded-lg w-full h-[2.75rem] pr-3 py-2 pl-2.5 space-x-1"
+        >
+          <div class="flex items-center space-x-1">
+            <div
+              class="bg-slate-700 rounded-lg w-[17rem] h-[1.5rem] animate-pulse"
+            />
+            <div
+              class="bg-slate-700 rounded-lg w-[1.5rem] h-[1.5rem] animate-pulse"
+            />
+          </div>
           <div
-            class="bg-slate-700 rounded-lg w-[7rem] h-[1rem] animate-pulse mb-2"
-          />
-          <div
-            class="bg-slate-700 rounded-lg w-[30rem] h-[1rem] animate-pulse mt-3"
+            class="bg-slate-700 rounded-lg w-[13rem] h-[1.75rem] animate-pulse hidden sm:block"
           />
         </div>
       {:then}
-        {#each res.ids as id, i}
-          <ManagePlugin
-            name={res.names[i]}
-            {id}
-            platform={res.platforms[i]}
-            modtype="mod"
-          />
+        {#each res.mods as mod}
+          {#if mod.id != undefined}
+            <ManagePlugin
+              name={mod.name}
+              id={mod.id}
+              platform={mod.platform}
+              filename={mod.filename}
+              date={mod.date}
+              modtype="mod"
+            />
+          {:else}
+            <div class="px-3 py-2 rounded-lg bg-base-300 flex justify-between">
+              <div class="flex items-center space-x-1 break-all">
+                <p>{mod.filename}</p>
+                <button
+                  on:click={() => {
+                    del(mod.filename);
+                  }}
+                  class="btn btn-xs btn-error mt-0.5 btn-square"
+                >
+                  <Trash2 size="15" /></button
+                >
+              </div>
+              <div
+                class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              >
+                <Clock size="16" class="mr-1.5" />
+                {mod.time}
+              </div>
+            </div>
+          {/if}
         {/each}
       {/await}
     </div>
