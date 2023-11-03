@@ -11,15 +11,15 @@
   let cfResults = [];
   let query = "";
   let tab = "cf";
+  let skeletonsLength = 10;
 
   function search(platform: string) {
     console.error("searching" + platform);
     if (platform != "cf" && platform != "mr") {
-      if (tab == "mr") mrResults = [];
-      platform = tab;
-      if (tab == "cf") cfResults = [];
       platform = tab;
     }
+    if (platform == "cf") cfResults = [];
+    else if (platform == "mr") mrResults = [];
     if (browser) {
       let software = document
         .getElementById("softwareDropdown")
@@ -35,6 +35,7 @@
           "modpack"
         ).then((response) => {
           if (platform == "mr") {
+            skeletonsLength = response.hits.length;
             response.hits.forEach((item) => {
               mrResults.push({
                 name: item.title,
@@ -49,6 +50,7 @@
               console.log(mrResults);
             });
           } else if (platform == "cf") {
+            skeletonsLength = response.data.length;
             response.data.forEach((item) => {
               cfResults.push({
                 platform: "cf",
@@ -109,44 +111,50 @@
         <button id="cf" on:click={cf} class="tab tab-active">Curseforge</button>
       </div>
     </div>
-    {#if tab == "mr"}
-      <div>
-        <input
-          bind:value={query}
-          on:keypress={() => search(tab)}
-          type="text"
-          placeholder="{$t('search')} Modrinth"
-          class="searchBar input input-bordered input-sm"
-          id="search"
-        />
-      </div>
-      <div id="modpacks" class="space-y-2">
-        {#await promise then}
+    <div>
+      <input
+        bind:value={query}
+        on:keypress={() => search(tab)}
+        type="text"
+        placeholder="{$t('search')} Modrinth"
+        class="searchBar input input-bordered input-sm"
+        id="search"
+      />
+    </div>
+    {#await promise}
+      {#each Array.from({ length: skeletonsLength }) as _}
+        <div class="bg-base-200 h-[7rem] p-3 rounded-lg flex space-x-3">
+          <div
+            class="w-14 h-14 md:w-20 md:h-20 bg-slate-700 bg-pulse w-[3.35rem] h-14 rounded-lg"
+          />
+          <div class="flex flex-col justify-between pt-1.5">
+            <div class="flex space-x-1 items-end">
+              <div class="bg-slate-700 bg-pulse w-[10rem] h-4 rounded-lg" />
+              <div class="bg-slate-700 bg-pulse w-[5rem] h-3 rounded-lg" />
+            </div>
+            <div
+              class="bg-slate-700 bg-pulse w-[17.5rem] h-3.5 rounded-lg mb-0.5"
+            />
+            <div class="bg-slate-700 bg-pulse w-[5.68rem] h-7 rounded-lg" />
+          </div>
+        </div>
+      {/each}
+    {:then}
+      {#if tab == "mr"}
+        <div id="modpacks" class="space-y-2">
           {#each mrResults as result}
             <ModpackResult {...result} />
           {/each}
-        {/await}
-      </div>
-    {:else if tab == "cf"}
-      <div class="space-y-2">
-        <div>
-          <input
-            bind:value={query}
-            on:keypress={() => search(tab)}
-            type="text"
-            placeholder="{$t('search')} CurseForge"
-            class="searchBar input input-bordered input-sm"
-            id="search"
-          />
         </div>
-        <div id="modpacks" class="space-y-2">
-          {#await promise then}
+      {:else if tab == "cf"}
+        <div class="space-y-2">
+          <div id="modpacks" class="space-y-2">
             {#each cfResults as result}
               <ModpackResult {...result} />
             {/each}
-          {/await}
+          </div>
         </div>
-      </div>
-    {/if}
+      {/if}
+    {/await}
   </div>
 </div>
