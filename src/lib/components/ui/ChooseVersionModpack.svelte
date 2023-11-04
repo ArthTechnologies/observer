@@ -13,6 +13,7 @@
     export let desc: string;
     export let icon: string;
     export let platform: string;
+    export let versions: string[] = [];
     var software = "";
     var sVersion = "";
 
@@ -80,35 +81,53 @@
                 });
         }
         let vname = "undefined";
-        getVersions(id).then((data) => {
-            document.getElementById("list").innerHTML = "";
-            data.forEach((version) => {
-                if (
-                    version.name != vname &&
-                    version.loaders.includes(software) &&
-                    version.game_versions.includes(sVersion)
-                ) {
-                    vname = version.name;
-                    console.log(version.name + vname);
-                    new ModpackVersion({
-                        target: document.getElementById("list"),
-                        props: {
-                            name: version.name,
-                            date: version.date_published,
-                            type: version.version_type,
-                            url: version.files[0].url,
-                            modpackId: id,
-                            versionId: version.id,
-                        },
-                    });
+        if (platform == "mr") {
+            getVersions(id).then((data) => {
+                document.getElementById("list").innerHTML = "";
+                data.forEach((version) => {
+                    if (
+                        version.name != vname &&
+                        version.loaders.includes(software) &&
+                        version.game_versions.includes(sVersion)
+                    ) {
+                        vname = version.name;
+                        console.log(version.name + vname);
+                        new ModpackVersion({
+                            target: document.getElementById("list"),
+                            props: {
+                                name: version.name,
+                                date: version.date_published,
+                                type: version.version_type,
+                                url: version.files[0].url,
+                                modpackId: id,
+                                versionId: version.id,
+                            },
+                        });
+                    }
+                });
+
+                if (document.getElementById("list").innerHTML == "") {
+                    document.getElementById("list").innerHTML =
+                        "<p class='text-center'>This modpack doesn't support your selected Minecraft version currently.</p>";
                 }
             });
-
-            if (document.getElementById("list").innerHTML == "") {
-                document.getElementById("list").innerHTML =
-                    "<p class='text-center'>This modpack doesn't support your selected Minecraft version currently.</p>";
-            }
-        });
+        } else if (platform == "cf") {
+            versions.forEach((version) => {
+                new ModpackVersion({
+                    target: document.getElementById("list"),
+                    props: {
+                        name: version.displayName,
+                        date: version.fileDate,
+                        type: "release",
+                        url: version.downloadUrl,
+                        id: id,
+                        pluginName: name,
+                        modtype: "mod",
+                        dependencies: version.dependencies,
+                    },
+                });
+            });
+        }
     }
 </script>
 

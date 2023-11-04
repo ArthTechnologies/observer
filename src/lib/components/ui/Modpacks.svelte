@@ -46,6 +46,7 @@
                 client: item.client_side,
                 downloads: numShort(item.downloads),
                 platform: "mr",
+                versions: [],
               });
               console.log(mrResults);
             });
