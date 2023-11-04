@@ -21,40 +21,37 @@
 
     if (browser) {
       let id = localStorage.getItem("serverID");
+      promise = null;
+      promise = getMods(id, "mods").then((response) => {
+        res = response;
+        for (let i in res.mods) {
+          res.mods[i].time = new Date(res.mods[i].date).toLocaleString();
+        }
+        if (
+          response.modpack != undefined &&
+          response.modpack.files.length > 0
+        ) {
+          console.log(response.modpack.files.length - 1);
 
-      setTimeout(function () {
-        promise = getMods(id, "mods").then((response) => {
-          res = response;
-          console.log(res);
-          for (let i in res.mods) {
-            res.mods[i].time = new Date(res.mods[i].date).toLocaleString();
-          }
-          if (
-            response.modpack != undefined &&
-            response.modpack.files.length > 0
-          ) {
-            console.log(response.modpack.files.length - 1);
-
-            for (let i = 0; i < response.modpack.files.length - 1; i++) {
-              for (let k = 0; k < response.mods.length; k++) {
-                if (
-                  response.mods[k].filename ==
-                  response.modpack.files[i].path.split("\\")[1]
-                ) {
-                  res.mods.splice(k, 1);
-                  res.mods.push({
-                    id: response.modpack.files[i].downloads[0].split("/")[4],
-                    platform: "lr",
-                    name: response.modpack.files[i].downloads[0].split("/")[4],
-                    filename: response.modpack.files[i].path.split("\\")[1],
-                  });
-                }
+          for (let i = 0; i < response.modpack.files.length - 1; i++) {
+            for (let k = 0; k < response.mods.length; k++) {
+              if (
+                response.mods[k].filename ==
+                response.modpack.files[i].path.split("\\")[1]
+              ) {
+                res.mods.splice(k, 1);
+                res.mods.push({
+                  id: response.modpack.files[i].downloads[0].split("/")[4],
+                  platform: "lr",
+                  name: response.modpack.files[i].downloads[0].split("/")[4],
+                  filename: response.modpack.files[i].path.split("\\")[1],
+                });
               }
             }
           }
-          console.log(res);
-        });
-      }, 1);
+        }
+        console.log(res);
+      });
     }
   }
   search();
@@ -93,7 +90,7 @@
   <div class="modal-box relative w-11/12 max-w-5xl space-y-2 h-[50rem]">
     <div class="md:flex items-center md:space-x-3">
       <p class="font-bold text-2xl">Mods</p>
-      {#if res.modpack.name != undefined}
+      {#if res.modpack != undefined}
         <p class=" h-15 p-2 bg-base-200 rounded-lg mt-2 md:mt-0">
           Modpack: {res.modpack.name}
         </p>
