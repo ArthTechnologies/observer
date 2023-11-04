@@ -31,7 +31,7 @@
     pluginName = pluginName.replace(/["']/g, "");
     pluginName = pluginName.replace(/[\(\)]/g, "");
     pluginName = pluginName.replace(/[\s_]/g, "-");
-    sendVersion(url, id, "lr_" + pluginId, pluginName, modtype);
+    sendVersion(url, id, pluginId, pluginName, modtype);
   }
   console.log(dependencies);
   for (let i in dependencies) {
