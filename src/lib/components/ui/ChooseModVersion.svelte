@@ -115,17 +115,20 @@
       });
     } else if (platform == "cf") {
       document.getElementById("list").innerHTML = "";
-      console.error(versions);
+
       versions.forEach((version) => {
         if (version.name != vname && version.gameVersions.includes(sVersion)) {
           vname = version.displayName;
-
+          console.log(version.releaseType == 1);
+          let type = "release";
+          if (version.releaseType == 1) type = "beta";
+          else if (version.releaseType == 0) type = "alpha";
           new Version({
             target: document.getElementById("list"),
             props: {
               name: version.displayName,
               date: version.fileDate,
-              type: "release",
+              type: type,
               url: version.downloadUrl,
               pluginId: id,
               pluginName: name,
