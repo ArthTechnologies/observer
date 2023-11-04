@@ -8,6 +8,7 @@
   import accountEmail from "$lib/stores/accountEmail";
   import SkeleResult from "./SkeleResult.svelte";
   import { ChevronDown, ChevronUp, Clock, Trash, Trash2 } from "lucide-svelte";
+  import { split } from "postcss/lib/list";
 
   export let name;
   export let id;
@@ -37,6 +38,14 @@
       .then((response) => response.json())
       .then((data) => {
         author = data[0].user.username;
+      });
+  } else if (platform == "cf") {
+    fetch(apiurl + "curseforge/" + id)
+      .then((response) => response.json())
+      .then((data) => {
+        desc = data.summary;
+        slug = data.links.slug;
+        name = data.name;
       });
   } else if (platform == "gh") {
     author = id.split("/")[0];
@@ -154,6 +163,47 @@
                     </div>
                     <img
                       src="https://github.com/modrinth/art/blob/main/Branding/Mark/mark-dark__32x32.png?raw=true"
+                      width="24"
+                    />
+                  </div>
+                  <div class="" />
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+            >
+              <Clock size="16" class="mr-1.5" />
+              {time}
+            </div>
+          </div>
+        {:else if platform == "cf"}
+          <div class="flex justify-between place-items-center">
+            <div class="flex space-x-3">
+              <div>
+                <div class="flex space-x-1">
+                  <div class="flex space-x-1.5 place-items-end">
+                    {#if name == id}
+                      <div
+                        class="h-6 w-16 animate-pulse bg-slate-600 rounded-lg"
+                      />
+                    {:else}
+                      <a
+                        href="https://curseforge.com/minecraft/mc-mods/{slug}"
+                        target="_blank"
+                        class="link link-hover text-xl font-bold">{name}</a
+                      >
+                    {/if}
+                    <div class="flex space-x-1">
+                      <p>by</p>
+                      <a
+                        href="https://legacy.curseforge.com/members/{author}"
+                        target="_blank"
+                        class="link link-hover">{author}</a
+                      >
+                    </div>
+                    <img
+                      src="https://static-beta.curseforge.com/images/favicon.ico"
                       width="24"
                     />
                   </div>
