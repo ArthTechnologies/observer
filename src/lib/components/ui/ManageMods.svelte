@@ -24,7 +24,6 @@
 
       setTimeout(function () {
         promise = getMods(id, "mods").then((response) => {
-          Promise.resolve(response);
           res = response;
           console.log(res);
           for (let i in res.mods) {
