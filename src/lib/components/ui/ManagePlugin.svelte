@@ -44,8 +44,9 @@
       .then((response) => response.json())
       .then((data) => {
         desc = data.summary;
-        slug = data.links.slug;
+        slug = data.slug;
         name = data.name;
+        author = data.authors[0].name;
       });
   } else if (platform == "gh") {
     author = id.split("/")[0];
