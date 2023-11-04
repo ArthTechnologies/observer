@@ -29,7 +29,8 @@
         }
         if (
           response.modpack != undefined &&
-          response.modpack.files.length > 0
+          response.modpack.files.length > 0 &&
+          response.modpack.files[0].path != undefined
         ) {
           console.log(response.modpack.files.length - 1);
 
