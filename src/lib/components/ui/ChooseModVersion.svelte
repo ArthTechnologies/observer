@@ -77,6 +77,12 @@
         .then((response) => response.json())
         .then((data) => {
           document.getElementById("body").innerHTML = marked(data);
+          document.getElementById("pluginTitle").innerHTML = name;
+
+          document.getElementById("pluginDesc").innerHTML = desc;
+          document.getElementById("pluginIcon").src = icon;
+          document.getElementById("pluginAuthor").innerHTML = author;
+
         });
     }
 
