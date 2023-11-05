@@ -42,16 +42,21 @@
       .then((response) => response.json())
 
       .then((data) => {
-                  //change youtube.com to youtube-nocookie.com
-                  data.body = data.body.replaceAll(
-            "https://www.youtube.com",
-            "https://www.youtube-nocookie.com"
-          );
-                    //change height="358" and width="638" (the size of all youtube embeds) to 70% of that
-                    data.body = data.body.replaceAll(
-            "height=\"358\" width=\"638\"",
-            "height=\"304\" width=\"542\""
-            );
+        //change youtube.com to youtube-nocookie.com
+        data.body = data.body.replaceAll(
+          "https://www.youtube.com/embed",
+          "https://www.youtube-nocookie.com/embed"
+        );
+        //change height="358" and width="638" (the size of all youtube embeds) to 70% of that
+        data.body = data.body.replaceAll(
+          'height="358" width="638"',
+          'height="304" width="542"'
+        );
+        //make all links open in a new tab
+        data = data.replaceAll(
+          "href=",
+          'target="_blank" rel="noreferrer" href='
+        );
         document.getElementById("body").innerHTML = marked(data.body);
         document.getElementById("pluginTitle").innerHTML = data.title;
 
@@ -125,7 +130,6 @@
           class="flex justify-between place-items-center max-w-full relative"
         >
           <div class="flex space-x-3 flex-shrink-0 w-minus-7">
-            
             <a href="https://modrinth.com/plugin/{id}" target="_blank">
               <img
                 id="pluginIcon"

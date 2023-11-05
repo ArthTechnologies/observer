@@ -49,21 +49,26 @@
         .then((data) => {
           //change youtube.com to youtube-nocookie.com
           data.body = data.body.replaceAll(
-            "https://www.youtube.com",
-            "https://www.youtube-nocookie.com"
+            "https://www.youtube.com/embed",
+            "https://www.youtube-nocookie.com/embed"
           );
-                    //change height="358" and width="638" (the size of all youtube embeds) to 70% of that
-                    data.body = data.body.replaceAll(
-            "height=\"358\" width=\"638\"",
-            "height=\"304\" width=\"542\""
-            );
+          //change height="358" and width="638" (the size of all youtube embeds) to 70% of that
+          data.body = data.body.replaceAll(
+            'height="358" width="638"',
+            'height="304" width="542"'
+          );
+          //make all links open in a new tab
+          data = data.replaceAll(
+            "href=",
+            'target="_blank" rel="noreferrer" href='
+          );
           document.getElementById("body").innerHTML = marked(data.body);
 
           document.getElementById("pluginTitle").innerHTML = data.title;
 
           document.getElementById("pluginDesc").innerHTML = data.description;
           document.getElementById("pluginIcon").src = data.icon_url;
-          
+
           fetch(lrurl + "team/" + data.team + "/members", {
             method: "GET",
 
@@ -88,23 +93,27 @@
       })
         .then((response) => response.json())
         .then((data) => {
-                    //change youtube.com to youtube-nocookie.com
-                    data = data.replaceAll(
-            "https://www.youtube.com",
-            "https://www.youtube-nocookie.com"
+          //change youtube.com to youtube-nocookie.com
+          data = data.replaceAll(
+            "https://www.youtube.com/embed",
+            "https://www.youtube-nocookie.com/embed"
           );
-                    //change height="358" and width="638" (the size of all youtube embeds) to 70% of that
-                    data = data.replaceAll(
-            "height=\"358\" width=\"638\"",
-            "height=\"304\" width=\"542\""
-            );
+          //change height="358" and width="638" (the size of all youtube embeds) to 70% of that
+          data = data.replaceAll(
+            'height="358" width="638"',
+            'height="304" width="542"'
+          );
+          //make all links open in a new tab
+          data = data.replaceAll(
+            "href=",
+            'target="_blank" rel="noreferrer" href='
+          );
           document.getElementById("body").innerHTML = marked(data);
           document.getElementById("pluginTitle").innerHTML = name;
 
           document.getElementById("pluginDesc").innerHTML = desc;
           document.getElementById("pluginIcon").src = icon;
           document.getElementById("pluginAuthor").innerHTML = author;
-
         });
     }
 
@@ -193,69 +202,72 @@
         >
           <div class="flex space-x-3 flex-shrink-0 w-minus-7">
             {#if platform == "mr"}
-            <a href="https://modrinth.com/plugin/{slug}" target="_blank">
-              <img
-                id="pluginIcon"
-                src={icon}
-                alt="noicon"
-                class="w-14 h-14 bg-base-300 rounded-lg text-sm"
-              />
-            </a>
-            <div class="max-w-full w-minus-7">
-              <div class="sm:flex gap-1 max-w-full">
-                <a
-                  id="pluginTitle"
-                  href="https://modrinth.com/plugin/{slug}"
-                  target="_blank"
-                  class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
-                  >{name}</a
-                >
-                <div class="flex space-x-1 place-items-end">
-                  <p>{$t("by")}</p>
+              <a href="https://modrinth.com/plugin/{slug}" target="_blank">
+                <img
+                  id="pluginIcon"
+                  src={icon}
+                  alt="noicon"
+                  class="w-14 h-14 bg-base-300 rounded-lg text-sm"
+                />
+              </a>
+              <div class="max-w-full w-minus-7">
+                <div class="sm:flex gap-1 max-w-full">
                   <a
-                    id="pluginAuthor"
-                    href="https://modrinth.com/user/{author}"
+                    id="pluginTitle"
+                    href="https://modrinth.com/plugin/{slug}"
                     target="_blank"
-                    class="link link-hover">{author}</a
+                    class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+                    >{name}</a
                   >
+                  <div class="flex space-x-1 place-items-end">
+                    <p>{$t("by")}</p>
+                    <a
+                      id="pluginAuthor"
+                      href="https://modrinth.com/user/{author}"
+                      target="_blank"
+                      class="link link-hover">{author}</a
+                    >
+                  </div>
                 </div>
+                <p class="w-minus-7" id="pluginDesc">
+                  {desc}
+                </p>
               </div>
-              <p class="w-minus-7" id="pluginDesc">
-                {desc}
-              </p>
-            </div>
             {:else if platform == "cf"}
-            <a href="https://curseforge.com/minecraft/mc-mods/{slug}" target="_blank">
-              <img
-                id="pluginIcon"
-                src={icon}
-                alt="noicon"
-                class="w-14 h-14 bg-base-300 rounded-lg text-sm"
-              />
-            </a>
-            <div class="max-w-full w-minus-7">
-              <div class="sm:flex gap-1 max-w-full">
-                <a
-                  id="pluginTitle"
-                  href="https://curseforge.com/minecraft/mc-mods/{slug}"
-                  target="_blank"
-                  class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
-                  >{name}</a
-                >
-                <div class="flex space-x-1 place-items-end">
-                  <p>{$t("by")}</p>
+              <a
+                href="https://curseforge.com/minecraft/mc-mods/{slug}"
+                target="_blank"
+              >
+                <img
+                  id="pluginIcon"
+                  src={icon}
+                  alt="noicon"
+                  class="w-14 h-14 bg-base-300 rounded-lg text-sm"
+                />
+              </a>
+              <div class="max-w-full w-minus-7">
+                <div class="sm:flex gap-1 max-w-full">
                   <a
-                    id="pluginAuthor"
-                    href="https://curseforge.com/members/{author}"
+                    id="pluginTitle"
+                    href="https://curseforge.com/minecraft/mc-mods/{slug}"
                     target="_blank"
-                    class="link link-hover">{author}</a
+                    class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+                    >{name}</a
                   >
+                  <div class="flex space-x-1 place-items-end">
+                    <p>{$t("by")}</p>
+                    <a
+                      id="pluginAuthor"
+                      href="https://curseforge.com/members/{author}"
+                      target="_blank"
+                      class="link link-hover">{author}</a
+                    >
+                  </div>
                 </div>
+                <p class="w-minus-7" id="pluginDesc">
+                  {desc}
+                </p>
               </div>
-              <p class="w-minus-7" id="pluginDesc">
-                {desc}
-              </p>
-            </div>
             {/if}
           </div>
         </div>
