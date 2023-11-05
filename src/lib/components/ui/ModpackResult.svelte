@@ -108,12 +108,14 @@
             <Download class="mr-1.5" size="16" />
             {downloads}
           </div>
+          {#if client != null}
           <div
-            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[10rem] md:w-auto"
-          >
-            <AlertCircle class="mr-1.5" size="16" />
-            {client}
-          </div>
+          class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[10rem] md:w-auto"
+        >
+          <AlertCircle class="mr-1.5" size="16" />
+          {client}
+        </div>
+        {/if}
         </div>
       </div>
     </div>
