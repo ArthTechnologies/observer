@@ -47,12 +47,23 @@
         .then((response) => response.json())
 
         .then((data) => {
+          //change youtube.com to youtube-nocookie.com
+          data.body = data.body.replaceAll(
+            "https://www.youtube.com",
+            "https://www.youtube-nocookie.com"
+          );
+                    //change height="358" and width="638" (the size of all youtube embeds) to 70% of that
+                    data.body = data.body.replaceAll(
+            "height=\"358\" width=\"638\"",
+            "height=\"304\" width=\"542\""
+            );
           document.getElementById("body").innerHTML = marked(data.body);
+
           document.getElementById("pluginTitle").innerHTML = data.title;
 
           document.getElementById("pluginDesc").innerHTML = data.description;
           document.getElementById("pluginIcon").src = data.icon_url;
-
+          
           fetch(lrurl + "team/" + data.team + "/members", {
             method: "GET",
 
@@ -77,6 +88,16 @@
       })
         .then((response) => response.json())
         .then((data) => {
+                    //change youtube.com to youtube-nocookie.com
+                    data = data.replaceAll(
+            "https://www.youtube.com",
+            "https://www.youtube-nocookie.com"
+          );
+                    //change height="358" and width="638" (the size of all youtube embeds) to 70% of that
+                    data = data.replaceAll(
+            "height=\"358\" width=\"638\"",
+            "height=\"304\" width=\"542\""
+            );
           document.getElementById("body").innerHTML = marked(data);
           document.getElementById("pluginTitle").innerHTML = name;
 

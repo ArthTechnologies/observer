@@ -42,6 +42,16 @@
       .then((response) => response.json())
 
       .then((data) => {
+                  //change youtube.com to youtube-nocookie.com
+                  data.body = data.body.replaceAll(
+            "https://www.youtube.com",
+            "https://www.youtube-nocookie.com"
+          );
+                    //change height="358" and width="638" (the size of all youtube embeds) to 70% of that
+                    data.body = data.body.replaceAll(
+            "height=\"358\" width=\"638\"",
+            "height=\"304\" width=\"542\""
+            );
         document.getElementById("body").innerHTML = marked(data.body);
         document.getElementById("pluginTitle").innerHTML = data.title;
 
