@@ -198,7 +198,7 @@
                     <div class="flex space-x-1">
                       <p>by</p>
                       <a
-                        href="https://legacy.curseforge.com/members/{author}"
+                        href="https://curseforge.com/members/{author}"
                         target="_blank"
                         class="link link-hover">{author}</a
                       >

@@ -209,7 +209,7 @@
                                 <p>{$t("by")}</p>
                                 <a
                                     id="pluginAuthor"
-                                    href="https://legacy.curseforge.com/members/{author}"
+                                    href="https://curseforge.com/members/{author}"
                                     target="_blank"
                                     class="link link-hover">{author}</a
                                 >
