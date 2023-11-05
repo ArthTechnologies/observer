@@ -58,7 +58,7 @@
             'height="304" width="542"'
           );
           //make all links open in a new tab
-          data = data.replaceAll(
+          data.body = data.body.replaceAll(
             "href=",
             'target="_blank" rel="noreferrer" href='
           );
