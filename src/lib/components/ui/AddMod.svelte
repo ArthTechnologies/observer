@@ -57,6 +57,7 @@
                 client: item.client_side,
                 downloads: numShort(item.downloads),
                 versions: [],
+                slug: item.slug,
               });
               console.log(item);
             });
@@ -75,6 +76,7 @@
                 client: null,
                 downloads: numShort(item.downloadCount),
                 versions: item.latestFiles,
+                slug: item.slug,
               });
             });
           }

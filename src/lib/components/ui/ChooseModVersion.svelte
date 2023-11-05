@@ -14,6 +14,7 @@
   export let icon: string;
   export let platform: string;
   export let versions: string[] = [];
+  export let slug: string;
   var software = "";
   var sVersion = "";
 
@@ -170,7 +171,8 @@
           class="flex justify-between place-items-center max-w-full relative"
         >
           <div class="flex space-x-3 flex-shrink-0 w-minus-7">
-            <a href="https://modrinth.com/plugin/{id}" target="_blank">
+            {#if platform == "mr"}
+            <a href="https://modrinth.com/plugin/{slug}" target="_blank">
               <img
                 id="pluginIcon"
                 src={icon}
@@ -182,7 +184,7 @@
               <div class="sm:flex gap-1 max-w-full">
                 <a
                   id="pluginTitle"
-                  href="https://modrinth.com/plugin/{id}"
+                  href="https://modrinth.com/plugin/{slug}"
                   target="_blank"
                   class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
                   >{name}</a
@@ -201,6 +203,39 @@
                 {desc}
               </p>
             </div>
+            {:else if platform == "cf"}
+            <a href="https://curseforge.com/minecraft/mc-mods/{slug}" target="_blank">
+              <img
+                id="pluginIcon"
+                src={icon}
+                alt="noicon"
+                class="w-14 h-14 bg-base-300 rounded-lg text-sm"
+              />
+            </a>
+            <div class="max-w-full w-minus-7">
+              <div class="sm:flex gap-1 max-w-full">
+                <a
+                  id="pluginTitle"
+                  href="https://curseforge.com/minecraft/mc-mods/{slug}"
+                  target="_blank"
+                  class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+                  >{name}</a
+                >
+                <div class="flex space-x-1 place-items-end">
+                  <p>{$t("by")}</p>
+                  <a
+                    id="pluginAuthor"
+                    href="https://legacy.curseforge.com/members/{author}"
+                    target="_blank"
+                    class="link link-hover">{author}</a
+                  >
+                </div>
+              </div>
+              <p class="w-minus-7" id="pluginDesc">
+                {desc}
+              </p>
+            </div>
+            {/if}
           </div>
         </div>
       </div>

@@ -14,6 +14,7 @@
   export let client: string;
   export let downloads: number;
   export let versions: string[] = [];
+  export let slug: string;
 
   function get() {
     getVersions(id).then((data) => {
@@ -32,7 +33,7 @@
   <div class="flex justify-between place-items-center relative">
     <div class="flex space-x-3 flex-shrink-0">
       {#if platform == "mr"}
-        <a href="https://modrinth.com/plugin/{id}" target="_blank">
+        <a href="https://modrinth.com/plugin/{slug}" target="_blank">
           <img
             src={icon}
             alt="noicon"
@@ -40,7 +41,7 @@
           />
         </a>
       {:else if platform == "cf"}
-        <a href="https://curseforge.com/minecraft/mc-mods/{id}" target="_blank">
+        <a href="https://curseforge.com/minecraft/mc-mods/{slug}" target="_blank">
           <img
             src={icon}
             alt="noicon"
@@ -52,7 +53,7 @@
         <div class="sm:flex gap-1">
           {#if platform == "mr"}
             <a
-              href="https://modrinth.com/plugin/{id}"
+              href="https://modrinth.com/plugin/{slug}"
               target="_blank"
               class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
               >{name}</a
@@ -67,7 +68,7 @@
             </div>
           {:else if platform == "cf"}
             <a
-              href="https://curseforge.com/minecraft/mc-mods/{id}"
+              href="https://curseforge.com/minecraft/mc-mods/{slug}"
               target="_blank"
               class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
               >{name}</a
@@ -119,6 +120,7 @@
       {author}
       {desc}
       {icon}
+      {slug}
     />
   </div>
 </div>
