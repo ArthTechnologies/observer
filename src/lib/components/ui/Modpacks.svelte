@@ -5,6 +5,7 @@
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
   import { numShort } from "$lib/scripts/numShort";
+  import { onMount } from "svelte";
 
   let promise;
   let mrResults = [];
@@ -12,7 +13,12 @@
   let query = "";
   let tab = "cf";
   let skeletonsLength = 10;
-
+  onMount(() => {
+    if (browser) {
+      search("mr");
+      search("cf");
+    }
+  });
   function search(platform: string) {
     console.error("searching" + platform);
     if (platform != "cf" && platform != "mr") {
@@ -93,10 +99,7 @@
 <label
   for="my-modal-5"
   class="btn btn-block btn-primary"
-  on:click={() => {
-    search("cf");
-    search("mr");
-  }}>Use Modpack</label
+>Use Modpack</label
 >
 
 <!-- Put this part before </body> tag -->

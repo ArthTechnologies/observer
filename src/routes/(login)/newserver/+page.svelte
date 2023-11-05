@@ -143,6 +143,16 @@
       }
     } else {
       worldgen.classList.add("hidden");
+      //modpacks search as soon as the button is loaded, so this search needs to
+      //be re-done for the new version.
+      const modpacks = document.getElementById("modpacks");
+      modpacks.innerHTML = "";
+      new Modpacks({
+        target: modpacks,
+      });
+      
+
+
     }
   }
 
