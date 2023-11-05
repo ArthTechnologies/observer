@@ -47,6 +47,7 @@
                 downloads: numShort(item.downloads),
                 platform: "mr",
                 versions: [],
+                slug: item.slug,
               });
               console.log(mrResults);
             });
@@ -63,6 +64,7 @@
                 client: null,
                 downloads: numShort(item.downloadCount),
                 versions: item.latestFiles,
+                slug: item.slug,
               });
             });
           }
