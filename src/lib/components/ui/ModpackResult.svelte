@@ -86,6 +86,6 @@
         </div>
       </div>
     </div>
-    <ChooseVersionModpack {versions} {platform} {id} modpackName={name} />
+    <ChooseVersionModpack {versions} {platform} {id} {name} {author} {desc} {icon} />
   </div>
 </div>
