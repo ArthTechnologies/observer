@@ -313,7 +313,6 @@ export function getSettings() {
         localStorage.setItem("enablePay", JSON.parse(input).enablePay);
         localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
         localStorage.setItem("address", JSON.parse(input).address);
-        localStorage.setItem("webName", JSON.parse(input).webName);
         localStorage.setItem("latestVersion", JSON.parse(input).latestVersion);
 
         if (JSON.parse(input).enableAuth == false) {
