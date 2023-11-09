@@ -117,17 +117,7 @@
       >
     </div>
     <div class="flex-1 md:flex-none space-x-2 navbar-end">
-      <ul
-        class="invisible md:visible md:space-x-0 menu menu-horizontal p-0"
-        id="servers"
-      >
-        <li>
-          <a href="/" class="nav btn btn-ghost rounded-lg"
-            >{$t("navbar.servers")}</a
-          >
-          <!-- todo: get font back to normal and find out why the button is square-->
-        </li>
-      </ul>
+      <a href="/" class="btn btn-ghost rounded-lg">{$t("navbar.servers")}</a>
 
       <Home />
 
@@ -142,10 +132,12 @@
   </div>
 {:else if navType === "welcome"}
   <div class="navbar fixed justify-between px-6">
-    <a class="btn btn-ghost normal-case text-xl invisible sm:visible" href="https://arthmc.xyz/"
-        >
-    <img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" />
-</a>
+    <a
+      class="btn btn-ghost normal-case text-xl invisible sm:visible"
+      href="https://arthmc.xyz/"
+    >
+      <img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" />
+    </a>
     <ThemeToggle />
   </div>
 {/if}
