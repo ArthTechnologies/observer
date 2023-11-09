@@ -114,12 +114,13 @@
         {#each res.mods as mod}
           {#if mod.id != undefined}
             <ManagePlugin
-              name={mod.name}
+              name={mod.name.split(".disabled")[0]}
               id={mod.id}
               platform={mod.platform}
-              filename={mod.filename}
+              filename={mod.filename.split(".disabled")[0]}
               date={mod.date}
               modtype="plugin"
+              disabled={mod.filename.includes(".disabled")}
             />
           {:else}
             <div class="px-3 py-2 rounded-lg bg-base-300 flex justify-between">

@@ -16,12 +16,20 @@
   export let modtype;
   export let filename;
   export let date;
+  export let disabled;
   let showInfo = true;
-  let sendName = name;
+  let disableText = "Disable";
+  if (disabled) {
+    disableText = "Enable";
+  }
   let author;
   let desc;
   let slug = id;
   let time = new Date(date).toLocaleString();
+  let serverId = "";
+  if (browser) {
+    serverId = localStorage.getItem("serverID");
+  }
 
   if (platform == "lr") {
     name = name.replace(/-/g, " ");
@@ -73,11 +81,6 @@
     const event = new CustomEvent("refresh");
     document.dispatchEvent(event);
 
-    let serverId = "";
-    if (browser) {
-      serverId = localStorage.getItem("serverID");
-    }
-
     let baseurl = apiurl;
     if (usingOcelot)
       baseurl =
@@ -100,6 +103,37 @@
       showInfo = true;
     }
   }
+
+  function toggleDisable() {
+    let baseurl = apiurl;
+    if (usingOcelot)
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    const url =
+      baseurl +
+      "server/" +
+      serverId +
+      "/toggleDisable/" +
+      modtype +
+      "?filename=" +
+      filename;
+    fetch(url, {
+      method: "POST",
+      headers: {
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        console.error(data);
+        if (data.includes("disabled")) {
+          disableText = "Enable";
+        } else if (data.includes("enabled")) {
+          disableText = "Disable";
+        }
+      });
+  }
 </script>
 
 <div>
@@ -116,6 +150,9 @@
       >
         <Trash2 size="15" /></button
       >
+      <button class="btn btn-xs btn-ghost mt-0.5" on:click={toggleDisable}>
+        {disableText}
+      </button>
     </div>
 
     <div class="flex items-center space-x-1">
