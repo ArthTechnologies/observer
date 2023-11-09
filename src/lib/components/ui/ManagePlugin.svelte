@@ -9,6 +9,8 @@
   import SkeleResult from "./SkeleResult.svelte";
   import { ChevronDown, ChevronUp, Clock, Trash, Trash2 } from "lucide-svelte";
   import { split } from "postcss/lib/list";
+  import ChooseVersion from "./ChooseVersion.svelte";
+  import ChooseModVersion from "./ChooseModVersion.svelte";
 
   export let name;
   export let id;
@@ -24,9 +26,11 @@
   }
   let author;
   let desc;
+  let icon;
   let slug = id;
   let time = new Date(date).toLocaleString();
   let serverId = "";
+  let promise;
   if (browser) {
     serverId = localStorage.getItem("serverID");
   }
@@ -34,12 +38,13 @@
   if (platform == "lr") {
     name = name.replace(/-/g, " ");
 
-    fetch(lrurl + "project/" + id)
+    promise = fetch(lrurl + "project/" + id)
       .then((response) => response.json())
       .then((data) => {
         desc = data.description;
         slug = data.slug;
         name = data.title;
+        icon = data.icon_url;
       });
 
     fetch(lrurl + "project/" + id + "/members")
@@ -48,13 +53,14 @@
         author = data[0].user.username;
       });
   } else if (platform == "cf") {
-    fetch(apiurl + "curseforge/" + id)
+    promise = fetch(apiurl + "curseforge/" + id)
       .then((response) => response.json())
       .then((data) => {
         desc = data.summary;
         slug = data.slug;
         name = data.name;
         author = data.authors[0].name;
+        icon = data.logo.thumbnailUrl;
       });
   } else if (platform == "gh") {
     author = id.split("/")[0];
@@ -153,6 +159,22 @@
       <button class="btn btn-xs btn-ghost mt-0.5" on:click={toggleDisable}>
         {disableText}
       </button>
+      {#await promise then}
+        {#if modtype == "plugin"}
+          <ChooseVersion {id} {name} {author} {desc} {icon} buttonType="2" />
+        {:else if modtype == "mod"}
+          <ChooseModVersion
+            {id}
+            {name}
+            {author}
+            {desc}
+            {icon}
+            {platform}
+            {slug}
+            buttonType="2"
+          />
+        {/if}
+      {/await}
     </div>
 
     <div class="flex items-center space-x-1">

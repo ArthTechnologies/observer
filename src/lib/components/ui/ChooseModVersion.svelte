@@ -15,6 +15,7 @@
   export let platform: string;
   export let versions: string[] = [];
   export let slug: string;
+  export let buttonType: string = "default";
   var software = "";
   var sVersion = "";
 
@@ -184,11 +185,17 @@
   }
 </script>
 
-<label
-  for="versions"
-  on:click={get}
-  class="btn btn-circle btn-ghost absolute right-0"><Plus /></label
->
+{#if buttonType == "default"}
+  <label
+    for="versions"
+    on:click={get}
+    class="btn btn-circle btn-ghost absolute right-0"><Plus /></label
+  >
+{:else if buttonType == "2"}
+  <label for="versions" on:click={get} class="btn btn-xs btn-neutral mt-0.5"
+    >Versions</label
+  >
+{/if}
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="versions" class="modal-toggle" />
