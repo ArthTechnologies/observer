@@ -16,6 +16,11 @@
   export let versions: string[] = [];
   export let slug: string;
   export let buttonType: string = "default";
+  //the suffix is needed to seperate the modal for a mod search result and a installed mod.
+  let suffix = "";
+  if (buttonType != "default") {
+    suffix = "manage";
+  }
   var software = "";
   var sVersion = "";
 
@@ -63,7 +68,9 @@
             "href=",
             'target="_blank" rel="noreferrer" href='
           );
-          document.getElementById("body").innerHTML = marked(data.body);
+          document.getElementById("body" + suffix).innerHTML = marked(
+            data.body
+          );
 
           document.getElementById("pluginTitle").innerHTML = data.title;
 
@@ -109,9 +116,8 @@
             "href=",
             'target="_blank" rel="noreferrer" href='
           );
-          document.getElementById("body").innerHTML = marked(data);
+          document.getElementById("body" + suffix).innerHTML = marked(data);
           document.getElementById("pluginTitle").innerHTML = name;
-
           document.getElementById("pluginDesc").innerHTML = desc;
           document.getElementById("pluginIcon").src = icon;
           document.getElementById("pluginAuthor").innerHTML = author;
@@ -121,7 +127,7 @@
     let vname = "undefined";
     if (platform == "mr") {
       getVersions(id).then((data) => {
-        document.getElementById("list").innerHTML = "";
+        document.getElementById("list" + suffix).innerHTML = "";
         data.forEach((version) => {
           if (
             version.name != vname &&
@@ -131,7 +137,7 @@
             vname = version.name;
 
             new Version({
-              target: document.getElementById("list"),
+              target: document.getElementById("list" + suffix),
               props: {
                 name: version.name,
                 date: version.date_published,
@@ -146,40 +152,60 @@
           }
         });
         //if it's still blank, add a message saying that there are no versions for this plugin
-        if (document.getElementById("list").innerHTML == "") {
-          document.getElementById("list").innerHTML =
+        if (document.getElementById("list" + suffix).innerHTML == "") {
+          document.getElementById("list" + suffix).innerHTML =
             "<p class='text-center'>This mod doesn't support your Minecraft version currently.</p>";
         }
       });
     } else if (platform == "cf") {
-      document.getElementById("list").innerHTML = "";
+      document.getElementById("list" + suffix).innerHTML = "";
+      if (versions.length == 0) {
+        fetch(apiurl + "curseforge/" + id + "/", {
+          method: "GET",
 
-      versions.forEach((version) => {
-        if (version.name != vname && version.gameVersions.includes(sVersion)) {
-          vname = version.displayName;
-          console.log(version.releaseType == 1);
-          let type = "release";
-          if (version.releaseType == 1) type = "beta";
-          else if (version.releaseType == 0) type = "alpha";
-          new Version({
-            target: document.getElementById("list"),
-            props: {
-              name: version.displayName,
-              date: version.fileDate,
-              type: type,
-              url: version.downloadUrl,
-              pluginId: id,
-              pluginName: name,
-              modtype: "mod",
-              dependencies: version.dependencies,
-            },
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            versions = data.latestFiles;
+            appendVersions();
           });
+      } else {
+        appendVersions();
+      }
+      function appendVersions() {
+        versions.forEach((version) => {
+          if (
+            version.name != vname &&
+            version.gameVersions.includes(sVersion)
+          ) {
+            vname = version.displayName;
+            console.log(version.releaseType == 1);
+            let type = "release";
+            if (version.releaseType == 1) type = "beta";
+            else if (version.releaseType == 0) type = "alpha";
+            new Version({
+              target: document.getElementById("list" + suffix),
+              props: {
+                name: version.displayName,
+                date: version.fileDate,
+                type: type,
+                url: version.downloadUrl,
+                pluginId: id,
+                pluginName: name,
+                modtype: "mod",
+                dependencies: version.dependencies,
+              },
+            });
+          }
+        });
+        //if it's still blank, add a message saying that there are no versions for this plugin
+        if (document.getElementById("list" + suffix).innerHTML == "") {
+          document.getElementById("list" + suffix).innerHTML =
+            "<p class='text-center'>This mod doesn't support your Minecraft version currently.</p>";
         }
-      });
-      //if it's still blank, add a message saying that there are no versions for this plugin
-      if (document.getElementById("list").innerHTML == "") {
-        document.getElementById("list").innerHTML =
-          "<p class='text-center'>This mod doesn't support your Minecraft version currently.</p>";
       }
     }
   }
@@ -192,13 +218,15 @@
     class="btn btn-circle btn-ghost absolute right-0"><Plus /></label
   >
 {:else if buttonType == "2"}
-  <label for="versions" on:click={get} class="btn btn-xs btn-neutral mt-0.5"
-    >Versions</label
+  <label
+    for="versions{suffix}"
+    on:click={get}
+    class="btn btn-xs btn-neutral mt-0.5">Versions</label
   >
 {/if}
 
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id="versions" class="modal-toggle" />
+<input type="checkbox" id="versions{suffix}" class="modal-toggle" />
 <div class="modal flex flex-col justify-center">
   <div class="modal-box w-[97%] h-[97%] max-w-5xl space-y-5">
     <div class="pt-6">
@@ -285,19 +313,22 @@
       >
         <div class="">
           <h3 class="font-bold text-2xl mb-4">{$t("description")}</h3>
-          <article id="body" class="mb-5 prose bg-base-200 rounded-lg p-3" />
+          <article
+            id="body{suffix}"
+            class="mb-5 prose bg-base-200 rounded-lg p-3"
+          />
         </div>
 
         <div class="">
           <h3 class="font-bold text-2xl mb-4">{$t("versions")}</h3>
-          <div id="list" class="space-y-2 mb-5" />
+          <div id="list{suffix}" class="space-y-2 mb-5" />
         </div>
       </div>
     </div>
 
     <div class="modal-action">
       <label
-        for="versions"
+        for="versions{suffix}"
         class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2 mb-5"
         >✕</label
       >

@@ -160,7 +160,7 @@
         {disableText}
       </button>
       {#await promise then}
-        {#if modtype == "plugin"}
+        {#if modtype == "plugin" && (platform == "cf" || platform == "lr")}
           <ChooseVersion {id} {name} {author} {desc} {icon} buttonType="2" />
         {:else if modtype == "mod"}
           <ChooseModVersion

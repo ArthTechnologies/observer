@@ -60,6 +60,7 @@
     {#if !recursive}<ChooseVersion
         {id}
         pluginName={name}
+        {name}
         {desc}
         {author}
         {icon}
