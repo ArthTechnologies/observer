@@ -24,7 +24,8 @@
     >
       <a
         href="/request-placeholder"
-        class="btn grow md:grow sm:w-44 ml-1 md:m-0">{$t("button.methods")}</a
+        class="btn btn-neutral grow md:grow sm:w-44 ml-1 md:m-0"
+        >{$t("button.methods")}</a
       >
       <a
         href="/request-placeholder"

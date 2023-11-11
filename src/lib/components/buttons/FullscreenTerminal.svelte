@@ -55,7 +55,7 @@
 </script>
 
 <label for="fullscreenTerminal"
-  ><div class="btn btn-sm btn-circle absolute right-2 bottom-2">
+  ><div class="btn btn-neutral btn-sm btn-circle absolute right-2 bottom-2">
     <Maximize2 size="17" />
   </div></label
 >
@@ -75,7 +75,7 @@
       <div class=" sm:text-xs xl:text-base font-mono relative">
         <label
           for="fullscreenTerminal"
-          class="btn btn-sm btn-circle absolute right-0 bottom-0"
+          class="btn btn-neutral btn-sm btn-circle absolute right-0 bottom-0"
           ><Minimize2 size="17" /></label
         >
         <p id="terminal2" />

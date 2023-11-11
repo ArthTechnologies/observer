@@ -42,7 +42,8 @@
         target="_blank"
         rel="noopener noreferrer"
         href="https://billing.stripe.com/p/login/fZeaHs7161SWaWcaEE?prefilled_email={email}"
-        class="btn grow md:grow sm:w-44 ml-1 md:m-0">{$t("button.manage")}</a
+        class="btn btn-neutral grow md:grow sm:w-44 ml-1 md:m-0"
+        >{$t("button.manage")}</a
       >
 
       <a

@@ -53,7 +53,7 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-block" on:click={search}
+<label for="my-modal-5" class="btn btn-neutral btn-block" on:click={search}
   >{$t("button.addplugin")}</label
 >
 
@@ -64,7 +64,8 @@
     <div class="flex justify-between">
       <label
         for="my-modal-5"
-        class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+        >✕</label
       >
 
       <div class="tabs tabs-boxed">

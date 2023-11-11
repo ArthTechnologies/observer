@@ -34,7 +34,8 @@
     <div class="flex-row justify-between">
       <label
         for="HowToJoin"
-        class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+        >✕</label
       >
       <div class="tabs tabs-boxed w-fit">
         <button class="tab tab-active" id="je" on:click={je}

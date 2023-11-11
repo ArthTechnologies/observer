@@ -280,8 +280,9 @@
 <input type="checkbox" id="world" class="modal-toggle" />
 <div class="modal">
   <div class="modal-box relative">
-    <label for="world" class="btn btn-sm btn-circle absolute right-2 top-2"
-      >✕</label
+    <label
+      for="world"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
     <div
       class=" w-11/12 md:w-96 bg-base-200 rounded-lg p-1 px-2 py-2 space-y-3"
@@ -401,7 +402,7 @@
           class="input input-bordered max-w-xs mb-2"
           placeholder={$t("world.p.seed")}
         />
-        <label for="world" on:click={regen} class="btn"
+        <label for="world" on:click={regen} class="btn btn-neutral"
           >{$t("button.regenerateWorld")}</label
         >
       {/if}
@@ -413,7 +414,7 @@
             class="file-input file-input-bordered file-input-secondary max-w-xs"
             on:change={handleFileSelect}
           />
-          <button on:click={upload} class="btn uploadBtn"
+          <button on:click={upload} class="btn btn-neutral uploadBtn"
             >{$t("button.upload")}</button
           >
         </div>

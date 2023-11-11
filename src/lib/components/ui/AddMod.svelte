@@ -101,8 +101,10 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-block" on:click={() => search(tab)}
-  >Add Mod</label
+<label
+  for="my-modal-5"
+  class="btn btn-neutral btn-block"
+  on:click={() => search(tab)}>Add Mod</label
 >
 
 <!-- Put this part before </body> tag -->
@@ -112,7 +114,8 @@
     <div class="flex justify-between">
       <label
         for="my-modal-5"
-        class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+        >✕</label
       >
 
       <div class="tabs tabs-boxed">

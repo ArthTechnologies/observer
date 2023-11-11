@@ -38,13 +38,13 @@
   <div class="modal-box relative">
     <label
       for="support-modal"
-      class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
     <h3 class="text-2xl font-bold mb-2">{$t("help.title")}</h3>
 
     <h3 class="text-lg font-bold mt-2 mb-1">{$t("help.l.tutorials")}</h3>
     <a
-      class="btn btn-sm"
+      class="btn btn-neutral btn-sm"
       href="https://arthmc.xyz/docs/how-to-join-servers"
       target="_blank"
       rel="noreferer"
@@ -62,13 +62,15 @@
 
       <div class="flex">
         <a
-        id="discord-button"
-          class="btn z-50"
+          id="discord-button"
+          class="btn btn-neutral z-50"
           href="https://discord.gg/gCafNVA43d"
           target="_blank"
           rel="noreferrer"
           ><img alt="discord logo" style="width:3ch" src="/discord.svg" />
-          <p id="text-shrink" class="w-28 ml-1.5 text-[.8rem]">{$t("help.button.getHelpOnOurDiscord")}</p></a
+          <p id="text-shrink" class="w-28 ml-1.5 text-[.8rem]">
+            {$t("help.button.getHelpOnOurDiscord")}
+          </p></a
         >
       </div>
     </div>

@@ -45,7 +45,7 @@
 </script>
 
 <li>
-  <a class="btn-sm -space-x-2 md:space-x-0" on:click={toggleOpen}>
+  <a class="btn-sm btn-neutral -space-x-2 md:space-x-0" on:click={toggleOpen}>
     <FolderClosed class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     <p class="text-xs md:text-sm">{foldername}</p>
 

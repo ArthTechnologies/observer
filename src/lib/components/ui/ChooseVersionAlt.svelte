@@ -68,7 +68,8 @@
       <div class="modal-action">
         <label
           for="versionsAlt"
-          class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+          class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+          >✕</label
         >
       </div>
     </div>

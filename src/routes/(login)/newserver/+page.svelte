@@ -150,9 +150,6 @@
       new Modpacks({
         target: modpacks,
       });
-      
-
-
     }
   }
 
@@ -327,7 +324,9 @@
               <Modpacks />{/if}
           </div>
 
-          <a on:click={send} class="btn mt-4">{$t("button.createServer")}</a>
+          <a on:click={send} class="btn btn-neutral mt-4"
+            >{$t("button.createServer")}</a
+          >
         </div>
       </form>
     </div>

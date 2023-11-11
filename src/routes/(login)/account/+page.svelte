@@ -9,7 +9,7 @@
     <h1 class="divider px-10 text-3xl font-semibold">{$t("account.title")}</h1>
 
     <div class="flex flex-wrap justify-center button-container gap-3 w-[90%]">
-      <a href="/pay" class="btn grow md:grow sm:w-44 ml-1 md:m-0"
+      <a href="/pay" class="btn btn-neutral grow md:grow sm:w-44 ml-1 md:m-0"
         >{$t("account.button.managePayments")}</a
       >
       <a

@@ -12,7 +12,7 @@
   <div class="modal-box relative flex flex-col space-y-3">
     <label
       for="upload-world"
-      class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
     Upload World File
     <input type="file" id="worldFile" class="file-input w-full max-w-xs" />

@@ -125,7 +125,7 @@
 {#if type == "smallBtn"}
   <label for="editInfo"
     ><div
-      class="btn btn-circle absolute right-2 top-2 md:btn-sm"
+      class="btn btn-neutral btn-circle absolute right-2 top-2 md:btn-sm"
       on:click={get}
     >
       <Settings class="w-[1.5rem] h-[1.5rem] md:w-[1rem] md:h-[1rem]" />
@@ -133,7 +133,7 @@
   >
 {:else if type == "fullBtn"}
   <label for="editInfo"
-    ><div class="btn" on:click={get}>
+    ><div class="btn btn-neutral" on:click={get}>
       <Settings class="mr-1.5" />{$t("button.settings")}
     </div></label
   >
@@ -142,8 +142,9 @@
 <input type="checkbox" id="editInfo" class="modal-toggle" />
 <div class="modal">
   <div class="modal-box relative">
-    <label for="editInfo" class="btn btn-sm btn-circle fixed right-2 top-2"
-      >✕</label
+    <label
+      for="editInfo"
+      class="btn btn-neutral btn-sm btn-circle fixed right-2 top-2">✕</label
     >
     <h3 class="text-2xl font-bold mb-3">{$t("button.settings")}</h3>
     <label for="serverDescription" class="block font-bold mb-2"

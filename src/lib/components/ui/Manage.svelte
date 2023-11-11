@@ -70,7 +70,9 @@
   <div class="modal-box relative w-11/12 max-w-5xl space-y-2 h-[50rem]">
     <p class="font-bold text-2xl">Plugins</p>
     <div class="flex justify-between">
-      <label for="manage" class="btn btn-sm btn-circle absolute right-2 top-2"
+      <label
+        for="manage"
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
         >✕</label
       >
     </div>

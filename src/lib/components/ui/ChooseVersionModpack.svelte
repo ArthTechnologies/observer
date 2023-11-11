@@ -266,7 +266,8 @@
     <div class="modal-action">
       <label
         for="versions"
-        class="btn btn-sm btn-circle absolute right-2 top-2 mb-5">✕</label
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2 mb-5"
+        >✕</label
       >
     </div>
   </div>

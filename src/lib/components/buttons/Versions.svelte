@@ -117,7 +117,7 @@
   <div class="modal-box relative">
     <label
       for="versionsModal"
-      class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
 
     <h3 class="text-xl font-bold mb-2">{$t("versions.title")}</h3>
@@ -170,8 +170,11 @@
     </div>
 
     {#if updateReady}
-      <label on:click={update} for="versionsModal" id="confirmBtn" class="btn"
-        >{$t("versions.title")}</label
+      <label
+        on:click={update}
+        for="versionsModal"
+        id="confirmBtn"
+        class="btn btn-neutral">{$t("versions.title")}</label
       >
     {:else}
       <label

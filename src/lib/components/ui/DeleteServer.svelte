@@ -11,11 +11,16 @@
   function del() {
     deleteServer(id, document.getElementById("password").value).then(() => {
       if (usingOcelot) {
-        fetch(apiurl + "node?url="+JSON.parse(localStorage.getItem("serverNodes"))[id.toString()], {
-          method: "POST",
-        });
+        fetch(
+          apiurl +
+            "node?url=" +
+            JSON.parse(localStorage.getItem("serverNodes"))[id.toString()],
+          {
+            method: "POST",
+          }
+        );
       }
-    }); 
+    });
   }
 </script>
 
@@ -28,8 +33,9 @@
 <input type="checkbox" id="delete" class="modal-toggle" />
 <div class="modal">
   <div class="modal-box relative">
-    <label for="delete" class="btn btn-sm btn-circle absolute right-2 top-2"
-      >✕</label
+    <label
+      for="delete"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
     <h3 class="text-lg font-bold">Do you want to delete this server?</h3>
     <div

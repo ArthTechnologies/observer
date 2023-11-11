@@ -96,11 +96,7 @@
   }
 </script>
 
-<label
-  for="my-modal-5"
-  class="btn btn-block btn-primary"
->Use Modpack</label
->
+<label for="my-modal-5" class="btn btn-block btn-primary">Use Modpack</label>
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="my-modal-5" class="modal-toggle" />
@@ -109,7 +105,8 @@
     <div class="flex justify-between">
       <label
         for="my-modal-5"
-        class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+        >✕</label
       >
 
       <div class="tabs tabs-boxed">

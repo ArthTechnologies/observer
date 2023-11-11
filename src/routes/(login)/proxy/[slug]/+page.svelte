@@ -627,7 +627,7 @@
             placeholder="{$t('currently')} '{lobbyName}'"
             type="text"
           />
-          <button class="btn btn-sm" on:click={setLobbyName}>
+          <button class="btn btn-neutral btn-sm" on:click={setLobbyName}>
             {$t("sumbit")}
           </button>
         </div>
