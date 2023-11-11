@@ -76,8 +76,10 @@
             .getElementById("newserver")
             .classList.remove("text-accent-content");
           break;
-        case "/pay":
-          document.getElementById("pay").classList.add("text-accent-content");
+        case "/billing":
+          document
+            .getElementById("billing")
+            .classList.add("text-accent-content");
 
           document
             .getElementById("servers")

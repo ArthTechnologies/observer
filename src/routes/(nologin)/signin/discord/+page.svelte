@@ -21,7 +21,7 @@
                 "discord",
                 code,
                 "VERIFIER",
-                "https://servers.arthmc.xyz/pay/"
+                "https://servers.arthmc.xyz/billing/"
             );
 
         console.log(authData);
