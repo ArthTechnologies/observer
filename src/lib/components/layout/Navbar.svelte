@@ -114,12 +114,14 @@
 {#if navType === "default"}
   <div class="navbar bg-base-300 px-4">
     <div class="hidden sm:block flex-1">
-      <a class="btn btn-ghost normal-case text-xl invisible sm:visible" href="/"
+      <a class="btn btn-ghost normal-case text-xl" href="/"
         ><img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" /></a
       >
     </div>
     <div class="flex-1 md:flex-none space-x-2 navbar-end">
-      <a href="/" class="btn btn-ghost rounded-lg">{$t("navbar.servers")}</a>
+      <a href="/" class="btn btn-ghost rounded-lg hidden md:flex"
+        >{$t("navbar.servers")}</a
+      >
 
       <Home />
 
