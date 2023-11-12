@@ -41,7 +41,10 @@
           />
         </a>
       {:else if platform == "cf"}
-        <a href="https://curseforge.com/minecraft/mc-mods/{slug}" target="_blank">
+        <a
+          href="https://curseforge.com/minecraft/mc-mods/{slug}"
+          target="_blank"
+        >
           <img
             src={icon}
             alt="noicon"
@@ -86,7 +89,7 @@
 
         <p class="w-[10rem] sm:w-[11rem] md:w-[50rem]">{desc}</p>
         <div
-          class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-2"
+          class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-1.5"
         >
           {#if client == "optional"}
             <div

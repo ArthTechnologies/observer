@@ -43,64 +43,67 @@
   <div class="flex justify-between place-items-center max-w-full relative">
     <div class="flex space-x-3 flex-shrink-0 w-minus-7">
       {#if platform == "mr"}
-      <a href="https://modrinth.com/plugin/{slug}" target="_blank">
-        <img
-          src={icon}
-          alt="noicon"
-          class="w-14 h-14 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm"
-        />
-      </a>
+        <a href="https://modrinth.com/plugin/{slug}" target="_blank">
+          <img
+            src={icon}
+            alt="noicon"
+            class="w-14 h-14 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm"
+          />
+        </a>
       {:else if platform == "cf"}
-      <a href="https://curseforge.com/minecraft/modpacks/{slug}" target="_blank">
-        <img
-          src={icon}
-          alt="noicon"
-          class="w-14 h-14 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm"
-        />
-      </a>
+        <a
+          href="https://curseforge.com/minecraft/modpacks/{slug}"
+          target="_blank"
+        >
+          <img
+            src={icon}
+            alt="noicon"
+            class="w-14 h-14 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm"
+          />
+        </a>
       {/if}
       <div class="max-w-full w-minus-7">
         {#if platform == "mr"}
-        <div class="sm:flex gap-1 max-w-full">
-          <a
-            href="https://modrinth.com/mod/{slug}"
-            target="_blank"
-            class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
-            >{name}</a
-          >
-          <div class="flex space-x-1 place-items-end">
-            <p>{$t("by")}</p>
+          <div class="sm:flex gap-1 max-w-full">
             <a
-              href="https://modrinth.com/user/{author}"
+              href="https://modrinth.com/mod/{slug}"
               target="_blank"
-              class="link link-hover">{author}</a
+              class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+              >{name}</a
             >
+            <div class="flex space-x-1 place-items-end">
+              <p>{$t("by")}</p>
+              <a
+                href="https://modrinth.com/user/{author}"
+                target="_blank"
+                class="link link-hover">{author}</a
+              >
+            </div>
           </div>
-       </div>
         {:else if platform == "cf"}
-        <div class="sm:flex gap-1 max-w-full">
-          <a
-            href="https://curseforge.com/minecraft/modpacks/{slug}"
-            target="_blank"
-            class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
-            >{name}</a
-          >
-          <div class="flex space-x-1 place-items-end">
-            <p>{$t("by")}</p>
+          <div class="sm:flex gap-1 max-w-full">
             <a
-              href="https://curseforge.com/members/{author}"
+              href="https://curseforge.com/minecraft/modpacks/{slug}"
               target="_blank"
-              class="link link-hover">{author}</a
+              class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+              >{name}</a
             >
+            <div class="flex space-x-1 place-items-end">
+              <p>{$t("by")}</p>
+              <a
+                href="https://curseforge.com/members/{author}"
+                target="_blank"
+                class="link link-hover">{author}</a
+              >
+            </div>
           </div>
-        </div>
         {/if}
         <p class="w-minus-7">
           {desc}
         </p>
 
         <div
-          class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-2"
+          class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-1.5"
         >
           <div
             class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[5rem] md:w-auto"
@@ -109,16 +112,25 @@
             {downloads}
           </div>
           {#if client != null}
-          <div
-          class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[10rem] md:w-auto"
-        >
-          <AlertCircle class="mr-1.5" size="16" />
-          {client}
-        </div>
-        {/if}
+            <div
+              class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[10rem] md:w-auto"
+            >
+              <AlertCircle class="mr-1.5" size="16" />
+              {client}
+            </div>
+          {/if}
         </div>
       </div>
     </div>
-    <ChooseVersionModpack {versions} {platform} {id} {name} {author} {desc} {icon} {slug}/>
+    <ChooseVersionModpack
+      {versions}
+      {platform}
+      {id}
+      {name}
+      {author}
+      {desc}
+      {icon}
+      {slug}
+    />
   </div>
 </div>
