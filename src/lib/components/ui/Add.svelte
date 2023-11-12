@@ -60,7 +60,7 @@
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="my-modal-5" class="modal-toggle" />
 <div class="modal">
-  <div class="modal-box relative w-11/12 max-w-5xl space-y-5">
+  <div class="modal-box relative w-11/12 max-w-5xl space-y-5 h-[50rem]">
     <div class="flex justify-between">
       <label
         for="my-modal-5"
