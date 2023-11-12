@@ -33,6 +33,10 @@
   let promise;
   if (browser) {
     serverId = localStorage.getItem("serverID");
+    //if screen is small, only say the date
+    if (window.innerWidth < 768) {
+      time = new Date(date).toLocaleString().split(",")[0];
+    }
   }
 
   if (platform == "lr") {
@@ -146,7 +150,7 @@
   <div
     class="px-3 py-2 rounded-t-lg bg-base-300 flex justify-between items-center"
   >
-    <div class="flex items-center space-x-1">
+    <div class="flex items-center space-x-1 break-all">
       <p>{filename}</p>
       <button
         on:click={() => {
@@ -179,7 +183,7 @@
 
     <div class="flex items-center space-x-1">
       <div
-        class="hidden md:flex bg-base-200 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+        class="hidden md:flex bg-base-200 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
       >
         <Clock size="16" class="mr-1.5" />
         {time}
@@ -231,7 +235,7 @@
               </div>
             </div>
             <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
             >
               <Clock size="16" class="mr-1.5" />
               {time}
@@ -272,7 +276,7 @@
               </div>
             </div>
             <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
             >
               <Clock size="16" class="mr-1.5" />
               {time}
@@ -303,7 +307,7 @@
               </div>
             </div>
             <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
             >
               <Clock size="16" class="mr-1.5" />
               {time}
@@ -339,7 +343,7 @@
               </div>
             </div>
             <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
             >
               <Clock size="16" class="mr-1.5" />
               {time}
