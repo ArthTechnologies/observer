@@ -1,9 +1,10 @@
 <script lang="ts">
-  type loginStatus = true | false;
+  // ... (your existing imports and types)
+
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
-  import { User } from "lucide-svelte";
+  import { ChevronUp, User } from "lucide-svelte";
   export let loginStatus: boolean;
 
   function signOut() {
@@ -18,42 +19,60 @@
     if (browser) {
       accountEmail = localStorage.getItem("accountEmail");
 
-      //if accountEmail is longer than 20 characters
       if (accountEmail.length > 18) {
-        //slice it to 20 characters
-        accountEmailChopped = accountEmail.slice(0, 18);
-        accountEmailChopped += "...";
+        accountEmailChopped = accountEmail.slice(0, 18) + "...";
       } else {
-        //else, just use accountEmail
         accountEmailChopped = accountEmail;
       }
+      // Add event listener to close dropdown on window click
+      window.addEventListener("click", handleWindowClick);
     }
   });
+  function handleWindowClick(event) {
+    const dropdown = document.getElementById("profileDropdown");
+
+    // Check if the clicked element is outside of the dropdown
+    if (dropdown && !dropdown.contains(event.target)) {
+      closeDropdown();
+    }
+  }
+
+  function closeDropdown() {
+    document.getElementById("profileDropdown").open = false;
+  }
 </script>
 
 {#if loginStatus === true}
   <div class="flex-none gap-2" id="navbtn">
-    <div class="dropdown dropdown-end">
-      <label
-        tabindex="0"
-        for="profileDropdown"
-        class="btn btn-ghost btn-circle"
-      >
+    <details class="dropdown dropdown-end z-50" id="profileDropdown">
+      <summary tabindex="0" class="btn btn-ghost btn-circle">
         <User />
-      </label>
+      </summary>
       <ul
-        id="profileDropdown"
         tabindex="0"
-        class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-52"
+        class="p-2 shadow menu menu-compact dropdown-content bg-neutral rounded-box w-52 bg-opacity-60 backdrop-blur relative pt-10"
       >
-        <li class="">
-          <p class="justify-between">
-            {accountEmailChopped}
-          </p>
+        <p class="px-4 pb-2 pt-[.1rem] font-bold text-xl absolute left-2 top-2">
+          Your Account
+        </p>
+        <!--<button
+          class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+          on:click={closeDropdown}
+        >
+          <ChevronUp />
+        </button>-->
+
+        <p class="px-4 py-2">
+          {accountEmailChopped}
+        </p>
+
+        <li>
+          <a on:click={closeDropdown} href="/account"
+            >{$t("account.manageAccount")}</a
+          >
         </li>
-        <li><a href="/account">{$t("account.manageAccount")}</a></li>
         <li><a on:click={signOut}>{$t("account.logout")}</a></li>
       </ul>
-    </div>
+    </details>
   </div>
 {/if}
