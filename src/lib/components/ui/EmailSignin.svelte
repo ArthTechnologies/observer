@@ -7,6 +7,7 @@
   import { goto } from "$app/navigation";
   import Alert from "$lib/components/ui/Alert.svelte";
   import { Eye, EyeOff } from "lucide-svelte";
+  import { stripePaymentLink } from "$lib/scripts/req";
   let visible = false;
   let msg = "";
   let goodPwd = true;
@@ -83,7 +84,8 @@
             if (localStorage.getItem("enablePay") == "true") {
               //change this to your own stripe checkout link
               goto(
-                "https://buy.stripe.com/dR63fv4bX3qjc1i28a?prefilled_email=" +
+                stripePaymentLink +
+                  "?prefilled_email=" +
                   document.getElementById("email").value +
                   "&prefilled_promo_code=2023"
               );

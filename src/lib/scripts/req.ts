@@ -4,6 +4,7 @@ import { goto } from "$app/navigation";
 export let apiurl = "https://us-dallas-1.arthmc.xyz/";
 export let usingOcelot = false;
 export const lrurl = "https://api.modrinth.com/v2/";
+export let stripePaymentLink = "https://buy.stripe.com/dR63fv4bX3qjc1i28a";
 
 //set apiurl & usingOcelot to the enviroment variable if it exists
 if (browser) {
