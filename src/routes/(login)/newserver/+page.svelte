@@ -273,27 +273,31 @@
               <img
                 class="mask mask-hexagon"
                 src="/images/terralith.webp"
-                width="80ch"
+                width="82ch"
+                alt="Terralith"
               />
 
               <img
                 class="mask mask-hexagon"
                 src="/images/incendium.webp"
-                width="80ch"
+                width="82ch"
+                alt="Incendium"
               />
               <img
                 class="mask mask-hexagon"
                 src="/images/nullscape.webp"
-                width="80ch"
+                width="82ch"
+                alt="Nullscape"
               />
               <img
                 class="mask mask-hexagon"
                 src="/images/structory.webp"
-                width="80ch"
+                width="82ch"
+                alt="Structory"
               />
             </div>
             <div class="p-2" />
-            <div class="flex justify-center space-x-14">
+            <div class="flex justify-center space-x-[3.575rem]">
               <input
                 id="terralith"
                 type="checkbox"
@@ -318,7 +322,7 @@
           </div>
           <div
             id="modpacks"
-            class=" justify-evenly mt-5 space-y-5 rounded-xl items-center"
+            class=" justify-evenly mt-4 space-y-5 rounded-xl items-center"
           >
             {#if modpacks}
               <Modpacks />{/if}
