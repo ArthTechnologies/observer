@@ -50,7 +50,7 @@
       </summary>
       <ul
         tabindex="0"
-        class="p-2 shadow menu menu-compact dropdown-content bg-neutral rounded-box w-52 bg-opacity-60 backdrop-blur relative pt-10"
+        class="p-2 shadow menu menu-compact bg-base-200 dropdown-content rounded-box w-52 bg-opacity-95 backdrop-blur relative pt-10"
       >
         <p class="px-4 pb-2 pt-[.1rem] font-bold text-xl absolute left-2 top-2">
           Your Account
