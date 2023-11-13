@@ -38,7 +38,7 @@
       document.getElementById("plugins").innerHTML = "";
     }
   }
-  let tab = "ft";
+  let tab = "mr";
   function ft() {
     if (browser) {
       tab = "ft";
@@ -73,10 +73,8 @@
       >
 
       <div class="tabs tabs-boxed">
-        <button id="ft" on:click={ft} class="tab tab-active"
-          >{$t("featured")}</button
-        >
-        <button id="mr" on:click={mr} class="tab">{$t("search")}</button>
+        <button id="ft" on:click={ft} class="tab">{$t("featured")}</button>
+        <button id="mr" on:click={mr} class="tab tab-active">Modrinth</button>
       </div>
     </div>
     {#if tab == "mr"}
@@ -85,7 +83,7 @@
           bind:value={query}
           on:keypress={search}
           type="text"
-          placeholder="{$t('search')} Modrinth"
+          placeholder={$t("search")}
           class="searchBar input input-bordered input-sm"
           id="search"
         />
