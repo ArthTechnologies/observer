@@ -18,7 +18,12 @@
   let modpackURL = "";
   let latestVersion = "1.20.1";
   let index = {};
-  let versionOptions = [latestVersion];
+  let worldgenMods = [
+    { name: "terralith", tooltip: "Terralith - Overworld Evolved" },
+    { name: "incendium", tooltip: "Incendium - Nether Expansion" },
+    { name: "nullscape", tooltip: "Nullscape - End Expansion" },
+    { name: "structory", tooltip: "Structory - New Structures" },
+  ];
   let worldgen = null;
   let jarsList = [];
 
@@ -270,54 +275,28 @@
             </div>
 
             <div class="flex justify-center">
-              <img
-                class="mask mask-hexagon"
-                src="/images/terralith.webp"
-                width="82ch"
-                alt="Terralith"
-              />
-
-              <img
-                class="mask mask-hexagon"
-                src="/images/incendium.webp"
-                width="82ch"
-                alt="Incendium"
-              />
-              <img
-                class="mask mask-hexagon"
-                src="/images/nullscape.webp"
-                width="82ch"
-                alt="Nullscape"
-              />
-              <img
-                class="mask mask-hexagon"
-                src="/images/structory.webp"
-                width="82ch"
-                alt="Structory"
-              />
+              {#each worldgenMods as item}
+                <div
+                  class="flex flex-col items-center tooltip tooltip-top z-40"
+                  data-tip={item.tooltip}
+                >
+                  <img
+                    class="mask mask-hexagon w-[5.15rem] h-[5.15rem] hover:scale-[1.2] transition-all duration-100 ease-in-out"
+                    src={"/images/" + item.name + ".webp"}
+                    alt={item.name}
+                  />
+                </div>
+              {/each}
             </div>
             <div class="p-2" />
             <div class="flex justify-center space-x-[3.575rem]">
-              <input
-                id="terralith"
-                type="checkbox"
-                class="checkbox checkbox-secondary"
-              />
-              <input
-                id="incendium"
-                type="checkbox"
-                class="checkbox checkbox-secondary"
-              />
-              <input
-                id="nullscape"
-                type="checkbox"
-                class="checkbox checkbox-secondary"
-              />
-              <input
-                id="structory"
-                type="checkbox"
-                class="checkbox checkbox-secondary"
-              />
+              {#each worldgenMods as item}
+                <input
+                  id={item.name}
+                  type="checkbox"
+                  class="checkbox checkbox-secondary"
+                />
+              {/each}
             </div>
           </div>
           <div
