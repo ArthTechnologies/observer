@@ -223,7 +223,7 @@ export function searchPlugins(
     '"],["versions:' +
     version +
     '"],["server_side:optional","server_side:required"]]' +
-    "&limit=10";
+    "&limit=15";
 
   if (!lock) {
     return fetch(url, GET)
@@ -268,7 +268,7 @@ export function searchMods(
     '"],["versions:' +
     version +
     '"],["server_side:optional","server_side:required"]]' +
-    "&limit=10";
+    "&limit=15";
   } else if (platform == "cf") {
     let classId = 6;
     if (modtype == "modpack") {
