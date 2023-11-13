@@ -9,7 +9,9 @@
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="upload-world" class="modal-toggle" />
 <div class="modal">
-  <div class="modal-box relative flex flex-col space-y-3">
+  <div
+    class="modal-box bg-opacity-95 backdrop-blur relative flex flex-col space-y-3"
+  >
     <label
       for="upload-world"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label

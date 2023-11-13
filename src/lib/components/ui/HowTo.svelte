@@ -30,7 +30,9 @@
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="HowToJoin" class="modal-toggle" />
 <label for="HowToJoin" class="modal cursor-pointer">
-  <div class="modal-box relative flex-col w-11/12 max-w-5xl space-y-5">
+  <div
+    class="modal-box bg-opacity-95 backdrop-blur relative flex-col w-11/12 max-w-5xl space-y-5"
+  >
     <div class="flex-row justify-between">
       <label
         for="HowToJoin"

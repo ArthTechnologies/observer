@@ -114,7 +114,7 @@
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="versionsModal" class="modal-toggle" />
 <div class="modal">
-  <div class="modal-box relative">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
     <label
       for="versionsModal"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label

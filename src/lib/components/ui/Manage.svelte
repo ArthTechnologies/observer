@@ -67,7 +67,9 @@
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="manage" class="modal-toggle" />
 <div class="modal">
-  <div class="modal-box relative w-11/12 max-w-5xl space-y-2 h-[50rem]">
+  <div
+    class="modal-box bg-opacity-95 backdrop-blur relative w-11/12 max-w-5xl space-y-2 h-[50rem]"
+  >
     <p class="font-bold text-2xl">Plugins</p>
     <div class="flex justify-between">
       <label

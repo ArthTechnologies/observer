@@ -141,7 +141,7 @@
 
 <input type="checkbox" id="editInfo" class="modal-toggle" />
 <div class="modal">
-  <div class="modal-box relative">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
     <label
       for="editInfo"
       class="btn btn-neutral btn-sm btn-circle fixed right-2 top-2">✕</label
