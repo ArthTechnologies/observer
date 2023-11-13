@@ -12,7 +12,7 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/adapter-node": "^1.0.0-next.96",
-		"@sveltejs/kit": "next",
+		"@sveltejs/kit": "^1.27.5",
 		"@tailwindcss/typography": "^0.5.9",
 		"autoprefixer": "^10.4.11",
 		"daisyui": "^3.9.4",
