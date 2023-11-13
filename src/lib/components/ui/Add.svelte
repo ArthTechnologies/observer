@@ -4,6 +4,7 @@
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
+  import { numShort } from "$lib/scripts/numShort";
   let promise;
   let results = [];
   let query = "";
@@ -28,6 +29,7 @@
               icon: item.icon_url,
               author: item.author,
               id: item.project_id,
+              downloads: numShort(item.downloads),
             });
             console.log(results);
           });
