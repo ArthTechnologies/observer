@@ -12,7 +12,7 @@ require('@tailwindcss/typography')],
             {
                 dark: {
                     ...require("daisyui/src/theming/themes")[
-                        "[data-theme=dark]"
+                        "[dark]"
                     ],
                     "color-scheme": "dark",
                     primary: "#088385",
@@ -32,7 +32,7 @@ require('@tailwindcss/typography')],
                 },
                 light: {
                     ...require("daisyui/src/theming/themes")[
-                        "[data-theme=light]"
+                        "[light]"
                     ],
                     primary: "#cc4304",
                     secondary: "#088385",
