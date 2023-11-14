@@ -255,7 +255,6 @@ export function searchMods(
       if (version == "Latest") {
     version = "1.19.3";
   }
-
   let url;
 
   if (platform == "mr")  {

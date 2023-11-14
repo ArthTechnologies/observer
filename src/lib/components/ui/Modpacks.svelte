@@ -12,20 +12,27 @@
   let cfResults = [];
   let query = "";
   let tab = "cf";
-  let skeletonsLength = 10;
+  let skeletonsLength = 15;
   onMount(() => {
     if (browser) {
       search("mr");
       search("cf");
     }
   });
-  function search(platform: string) {
+  function search(platform: string, loadMore: boolean = false) {
     console.error("searching" + platform);
     if (platform != "cf" && platform != "mr") {
       platform = tab;
     }
-    if (platform == "cf") cfResults = [];
-    else if (platform == "mr") mrResults = [];
+    let offset = 0;
+    if (loadMore) {
+      skeletonsLength += 15;
+      offset = skeletonsLength;
+    } else {
+      skeletonsLength = 15;
+      if (platform == "cf") cfResults = [];
+      else if (platform == "mr") mrResults = [];
+    }
     if (browser) {
       let software = document
         .getElementById("softwareDropdown")
@@ -38,7 +45,8 @@
           software,
           version,
           query,
-          "modpack"
+          "modpack",
+          offset
         ).then((response) => {
           if (platform == "mr") {
             skeletonsLength = response.hits.length;
@@ -158,6 +166,16 @@
           </div>
         </div>
       {/if}
+      <div class="flex place-content-center">
+        <p
+          on:click={() => {
+            search(tab, true);
+          }}
+          class=" hover:link text-primary mt-2"
+        >
+          Load More
+        </p>
+      </div>
     {/await}
   </div>
 </div>
