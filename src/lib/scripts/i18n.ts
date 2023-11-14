@@ -10,7 +10,6 @@ function translate(locale: string, key: string, vars: string) {
 
 
   let text;
-  console.log(locale)
   if (Object.keys(translations).includes(locale)) {
     text = translations[locale][key]; 
   } else {
