@@ -8,8 +8,11 @@
   let promise;
   let results = [];
   let query = "";
-  let skeletonsLength = 10;
+  let skeletonsLength = 15;
+  let resultGroupsLoaded = 0;
   function search() {
+    resultGroupsLoaded = 1;
+    skeletonsLength = 15;
     console.log("searching" + query);
     results = [];
     if (browser) {
@@ -20,7 +23,45 @@
       }
 
       setTimeout(function () {
-        promise = searchPlugins(software, version, query).then((response) => {
+        promise = searchPlugins(software, version, query, 0).then(
+          (response) => {
+            skeletonsLength = response.hits.length;
+            response.hits.forEach((item) => {
+              results.push({
+                name: item.title,
+                desc: item.description,
+                icon: item.icon_url,
+                author: item.author,
+                id: item.project_id,
+                downloads: numShort(item.downloads),
+              });
+              console.log(results);
+            });
+          }
+        );
+      }, 1);
+      document.getElementById("plugins").innerHTML = "";
+    }
+  }
+
+  function loadMore() {
+    resultGroupsLoaded++;
+    skeletonsLength = resultGroupsLoaded * 15;
+    console.log("searching" + query);
+    if (browser) {
+      let software = localStorage.getItem("serverSoftware");
+      let version = localStorage.getItem("serverVersion");
+      if (software == "Velocity") {
+        version = localStorage.getItem("latestVersion");
+      }
+
+      setTimeout(function () {
+        promise = searchPlugins(
+          software,
+          version,
+          query,
+          (resultGroupsLoaded - 1) * 15
+        ).then((response) => {
           skeletonsLength = response.hits.length;
           response.hits.forEach((item) => {
             results.push({
@@ -35,9 +76,9 @@
           });
         });
       }, 1);
-      document.getElementById("plugins").innerHTML = "";
     }
   }
+
   let tab = "mr";
   function ft() {
     if (browser) {
@@ -108,6 +149,11 @@
           {#each results as result}
             <PluginResult {...result} />
           {/each}
+          <div class="flex place-content-center">
+            <p on:click={loadMore} class=" hover:link text-primary mt-2">
+              Load More
+            </p>
+          </div>
         {/await}
       </div>
     {:else if tab == "ft"}

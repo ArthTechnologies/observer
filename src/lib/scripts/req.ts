@@ -206,7 +206,8 @@ export function getVersions(id: string) {
 export function searchPlugins(
   software: string,
   version: string,
-  query: string
+  query: string,
+  offset: number
 ) {
   if(browser) {
   if (version == "Latest") {
@@ -223,7 +224,8 @@ export function searchPlugins(
     '"],["versions:' +
     version +
     '"],["server_side:optional","server_side:required"]]' +
-    "&limit=15";
+    "&limit=15" +
+    "&offset=" + offset;
 
   if (!lock) {
     return fetch(url, GET)
