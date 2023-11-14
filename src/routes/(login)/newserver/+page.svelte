@@ -281,7 +281,7 @@
                   data-tip={item.tooltip}
                 >
                   <img
-                    class="mask mask-hexagon w-[5.15rem] h-[5.15rem] hover:scale-[1.2] transition-all duration-100 ease-in-out"
+                    class="mask mask-hexagon w-[5rem] h-[5rem] md:w-[5.15rem] md:h-[5.15rem] hover:scale-[1.2] transition-all duration-100 ease-in-out"
                     src={"/images/" + item.name + ".webp"}
                     alt={item.name}
                   />
@@ -289,7 +289,9 @@
               {/each}
             </div>
             <div class="p-2" />
-            <div class="flex justify-center space-x-[3.575rem]">
+            <div
+              class="flex justify-center space-x-[3.475rem] md:space-x-[3.575rem]"
+            >
               {#each worldgenMods as item}
                 <input
                   id={item.name}

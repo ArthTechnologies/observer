@@ -28,25 +28,21 @@
     <div class="max-w-md">
       <h1 class="text-5xl font-bold">{$t("signin.title")}</h1>
       <p class="py-6">{$t("signin.h")}</p>
-      <div
-        class="mt-1 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 justify-center"
+
+      <a
+        class="btn btn-neutral mb-2 btn-icon-text text-2xs btn-disabled"
+        href="https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri={address}/auth/discord&response_type=token&scope=identify"
+        ><img alt="microsoft logo" style="width:2.5ch" src="discord.svg" />{$t(
+          "signin.discord"
+        )}</a
       >
-        <a
-          class="btn btn-neutral mb-6 btn-icon-text text-2xs btn-disabled"
-          href="https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri={address}/auth/discord&response_type=token&scope=identify"
-          ><img
-            alt="microsoft logo"
-            style="width:2.5ch"
-            src="discord.svg"
-          />{$t("signin.discord")}</a
-        >
-        <div class="divider" />
-      </div>
+      <div class="max-sm:divider md:mt-4" />
+
       <div class="h-96">
         <EmailSignin />
       </div>
-      <a class="btn btn-sm mt-3 btn-ghost" href="/reset-password"
-        >Forgot password?</a
+      <button class="btn btn-sm mt-3 btn-ghost" href="/reset-password"
+        >Forgot password?</button
       >
     </div>
   </div>
