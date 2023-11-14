@@ -8,9 +8,15 @@ function translate(locale: string, key: string, vars: string) {
   if (!key) throw new Error("no key provided to $t()");
   if (!locale) throw new Error(`no translation for key "${key}"`);
 
-  let text = translations[locale][key];
 
-  if (!text) throw new Error(`no translation found for ${locale}.${key}`);
+  let text;
+  if (new Array(translations).includes(locale)) {
+    text = translations[locale][key]; 
+  } else {
+    text = translations["en-US"][key]
+  }
+
+  if (!text) console.error(`no translation found for ${locale}.${key}`);
 
   Object.keys(vars).map((k) => {
     const regex = new RegExp(`{{${k}}}`, "g");
@@ -18,7 +24,8 @@ function translate(locale: string, key: string, vars: string) {
   });
 
   return text;
-}
+} 
+
 
 export const t = derived(
   locale,
