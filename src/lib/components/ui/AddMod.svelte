@@ -13,7 +13,7 @@
   let software;
   let version;
   let tab = "mr";
-  let skeletonsLength = 10;
+  let skeletonsLength = 15;
 
   if (browser) {
     software = localStorage.getItem("serverSoftware");
@@ -26,13 +26,20 @@
   });
   search("mr");
   search("cf");
-  function search(platform: string) {
+  function search(platform: string, loadMore: boolean = false) {
+    let offset = 0;
+    if (loadMore) {
+      skeletonsLength += 15;
+      offset = skeletonsLength;
+    } else {
+      skeletonsLength = 15;
+      if (platform == "cf") cfResults = [];
+      else if (platform == "mr") mrResults = [];
+    }
     if (platform == undefined) {
       platform = tab;
     }
     console.log("searching" + query);
-    if (platform == "cf") cfResults = [];
-    else if (platform == "mr") mrResults = [];
 
     if (browser) {
       if (version == "latest") {
@@ -41,47 +48,52 @@
 
       promise = null;
 
-      promise = searchMods(platform, software, version, query, "mod").then(
-        (response) => {
-          if (platform == "mr") {
-            skeletonsLength = response.hits.length;
-            response.hits.forEach((item) => {
-              console.log(numShort(item.downloads));
-              mrResults.push({
-                platform: "mr",
-                name: item.title,
-                desc: item.description,
-                icon: item.icon_url,
-                author: item.author,
-                id: item.project_id,
-                client: item.client_side,
-                downloads: numShort(item.downloads),
-                versions: [],
-                slug: item.slug,
-              });
-              console.log(item);
+      promise = searchMods(
+        platform,
+        software,
+        version,
+        query,
+        "mod",
+        offset
+      ).then((response) => {
+        if (platform == "mr") {
+          skeletonsLength = response.hits.length;
+          response.hits.forEach((item) => {
+            console.log(numShort(item.downloads));
+            mrResults.push({
+              platform: "mr",
+              name: item.title,
+              desc: item.description,
+              icon: item.icon_url,
+              author: item.author,
+              id: item.project_id,
+              client: item.client_side,
+              downloads: numShort(item.downloads),
+              versions: [],
+              slug: item.slug,
             });
-          } else if (platform == "cf") {
-            skeletonsLength = response.data.length;
-            response.data.forEach((item) => {
-              console.log(item);
-              console.log(numShort(item.downloadCount));
-              cfResults.push({
-                platform: "cf",
-                name: item.name,
-                desc: item.summary,
-                icon: item.logo.thumbnailUrl,
-                author: item.authors[0].name,
-                id: item.id,
-                client: null,
-                downloads: numShort(item.downloadCount),
-                versions: item.latestFiles,
-                slug: item.slug,
-              });
+            console.log(item);
+          });
+        } else if (platform == "cf") {
+          skeletonsLength = response.data.length;
+          response.data.forEach((item) => {
+            console.log(item);
+            console.log(numShort(item.downloadCount));
+            cfResults.push({
+              platform: "cf",
+              name: item.name,
+              desc: item.summary,
+              icon: item.logo.thumbnailUrl,
+              author: item.authors[0].name,
+              id: item.id,
+              client: null,
+              downloads: numShort(item.downloadCount),
+              versions: item.latestFiles,
+              slug: item.slug,
             });
-          }
+          });
         }
-      );
+      });
     }
   }
 
@@ -163,6 +175,16 @@
             <ModResult {...result} />
           {/each}
         {/if}
+        <div class="flex place-content-center">
+          <p
+            on:click={() => {
+              search(tab, true);
+            }}
+            class=" hover:link text-primary mt-2"
+          >
+            Load More
+          </p>
+        </div>
       {/await}
     </div>
   </div>

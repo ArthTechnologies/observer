@@ -248,7 +248,8 @@ export function searchMods(
   software: string,
   version: string,
   query: string,
-  modtype: string
+  modtype: string,
+  offset: number
 ) {
   if(browser) {
       if (version == "Latest") {
@@ -270,7 +271,8 @@ export function searchMods(
     '"],["versions:' +
     version +
     '"],["server_side:optional","server_side:required"]]' +
-    "&limit=15";
+    "&limit=15" +
+    "&offset=" + offset;
   } else if (platform == "cf") {
     let classId = 6;
     if (modtype == "modpack") {
@@ -286,7 +288,8 @@ export function searchMods(
     '&loader=' +
     software +
     '&classId=' +
-    classId;
+    classId +
+    '&index=' + offset;
   }
 
   if (!lock) {
