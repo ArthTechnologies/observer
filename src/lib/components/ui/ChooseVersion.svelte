@@ -112,7 +112,7 @@
       //if it's still blank, add a message saying that there are no versions for this plugin
       if (document.getElementById("list" + suffix).innerHTML == "") {
         document.getElementById("list" + suffix).innerHTML =
-          "<p class='text-center'>This plugin doesn't support your Minecraft version currently.</p>";
+          "<p class='text-center'>" + $t("noVersionsPlugin") + "</p>";
       }
     });
   }
@@ -128,7 +128,7 @@
   <label
     for="versionsmanage"
     on:click={get}
-    class="btn btn-xs btn-neutral mt-0.5">Versions</label
+    class="btn btn-xs btn-neutral mt-0.5">{$t("versions")}</label
   >
 {/if}
 <!-- Put this part before </body> tag -->

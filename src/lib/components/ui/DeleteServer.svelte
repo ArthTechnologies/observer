@@ -37,15 +37,12 @@
       for="delete"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
-    <h3 class="text-lg font-bold">Do you want to delete this server?</h3>
+    <h3 class="text-lg font-bold">{$t("server.delete.title")}</h3>
     <div
       class="bg-warning w-86 h-16 rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-2"
     >
       <AlertTriangle size="48" />
-      <span class="text-sm"
-        >Warning: Your server will be instantly deleted. This cannot be undone.
-        Consider downloading your world first.</span
-      >
+      <span class="text-sm">{$t("server.delete.desc")}</span>
     </div>
     <input
       type="password"

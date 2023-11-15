@@ -82,7 +82,7 @@
 </script>
 
 <label for="manage" on:click={search} class="btn btn-block btn-primary"
-  >Manage Mods</label
+  >{$t("button.managemods")}</label
 >
 
 <!-- Put this part before </body> tag -->

@@ -140,7 +140,7 @@
 
         if (document.getElementById("list").innerHTML == "") {
           document.getElementById("list").innerHTML =
-            "<p class='text-center'>This modpack doesn't support your selected Minecraft version currently.</p>";
+            "<p class='text-center'>" + $t("noVersionsModpack") + "</p>";
         }
       });
     } else if (platform == "cf") {

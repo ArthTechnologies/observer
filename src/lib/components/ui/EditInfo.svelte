@@ -214,7 +214,7 @@
         </label>
       </div>
       <label for="serverDescription" class="block font-bold my-2"
-        >Forwarding Secret
+        >{$t("forwardingSecret")}
       </label>
       <input
         bind:value={fSecret}

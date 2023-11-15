@@ -2,6 +2,7 @@
   import Version from "./Version.svelte";
   import { getVersions } from "$lib/scripts/req";
   import { browser } from "$app/environment";
+  import { t } from "$lib/scripts/i18n";
 
   export let id: string;
   export let pluginName: string;
@@ -49,7 +50,7 @@
       //if it's still blank, add a message saying that there are no versions for this plugin
       if (document.getElementById("list").innerHTML == "") {
         document.getElementById("list").innerHTML =
-          "<p class='text-center'>This plugin doesn't support your Minecraft version currently.</p>";
+          "<p class='text-center'>" + $t("noVersionsPlugin") + "</p>";
       }
     });
   }

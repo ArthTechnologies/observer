@@ -2,13 +2,8 @@
   import { apiurl, usingOcelot } from "$lib/scripts/req";
   import { lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
-  import { getHeapSpaceStatistics } from "v8";
   import { t } from "$lib/scripts/i18n";
-  import ChooseVersionAlt from "./ChooseVersionAlt.svelte";
-  import accountEmail from "$lib/stores/accountEmail";
-  import SkeleResult from "./SkeleResult.svelte";
   import { ChevronDown, ChevronUp, Clock, Trash, Trash2 } from "lucide-svelte";
-  import { split } from "postcss/lib/list";
   import ChooseVersion from "./ChooseVersion.svelte";
   import ChooseModVersion from "./ChooseModVersion.svelte";
 
@@ -20,9 +15,9 @@
   export let date;
   export let disabled;
   let showInfo = true;
-  let disableText = "Disable";
+  let disableText = $t("disable");
   if (disabled) {
-    disableText = "Enable";
+    disableText = $t("enable");
   }
   let author;
   let desc;
@@ -138,9 +133,9 @@
       .then((data) => {
         console.error(data);
         if (data.includes("disabled")) {
-          disableText = "Enable";
+          disableText = $t("enable");
         } else if (data.includes("enabled")) {
-          disableText = "Disable";
+          disableText = $t("disable");
         }
       });
   }
@@ -218,7 +213,7 @@
                       >
                     {/if}
                     <div class="flex space-x-1">
-                      <p>by</p>
+                      <p>{$t("by")}</p>
                       <a
                         href="https://modrinth.com/user/{author}"
                         target="_blank"
@@ -259,7 +254,7 @@
                       >
                     {/if}
                     <div class="flex space-x-1">
-                      <p>by</p>
+                      <p>{$t("by")}</p>
                       <a
                         href="https://curseforge.com/members/{author}"
                         target="_blank"
@@ -294,7 +289,7 @@
                   >
                   <div class="flex space-x-1.5 place-items-end">
                     <div class="flex space-x-1">
-                      <p>by</p>
+                      <p>{$t("by")}</p>
                       <a
                         href="https://github.com/{author}"
                         target="_blank"
@@ -321,7 +316,7 @@
                   {#if name == "Geyser" || name == "Floodgate"}
                     <p class="text-xl font-bold">{name}</p>
                     <div class=" flex space-x-1 place-items-end">
-                      <p>by</p>
+                      <p>{$t("by")}</p>
                       <a
                         href="https://geysermc.org"
                         target="_blank"

@@ -173,7 +173,7 @@
           }}
           class=" hover:link text-primary mt-2"
         >
-          Load More
+          {$t("loadMore")}
         </p>
       </div>
     {/await}

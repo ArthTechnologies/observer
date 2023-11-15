@@ -154,7 +154,7 @@
         //if it's still blank, add a message saying that there are no versions for this plugin
         if (document.getElementById("list" + suffix).innerHTML == "") {
           document.getElementById("list" + suffix).innerHTML =
-            "<p class='text-center'>This mod doesn't support your Minecraft version currently.</p>";
+            "<p class='text-center'>" + $t("noVersionsMod") + "</p>";
         }
       });
     } else if (platform == "cf") {
@@ -204,7 +204,7 @@
         //if it's still blank, add a message saying that there are no versions for this plugin
         if (document.getElementById("list" + suffix).innerHTML == "") {
           document.getElementById("list" + suffix).innerHTML =
-            "<p class='text-center'>This mod doesn't support your Minecraft version currently.</p>";
+            "<p class='text-center'>" + $t("noVersionsMod") + "</p>";
         }
       }
     }
@@ -221,7 +221,7 @@
   <label
     for="versions{suffix}"
     on:click={get}
-    class="btn btn-xs btn-neutral mt-0.5">Versions</label
+    class="btn btn-xs btn-neutral mt-0.5">{$t("versions")}</label
   >
 {/if}
 

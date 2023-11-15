@@ -116,7 +116,7 @@
 <label
   for="my-modal-5"
   class="btn btn-neutral btn-block"
-  on:click={() => search(tab)}>Add Mod</label
+  on:click={() => search(tab)}>{$t("button.addmod")}</label
 >
 
 <!-- Put this part before </body> tag -->
@@ -182,7 +182,7 @@
             }}
             class=" hover:link text-primary mt-2"
           >
-            Load More
+            {$t("loadMore")}
           </p>
         </div>
       {/await}

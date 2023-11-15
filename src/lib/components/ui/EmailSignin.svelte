@@ -176,7 +176,9 @@
             </div>
           </div>
 
-          <button on:click={submit} class="btn btn-primary">Submit</button>
+          <button on:click={submit} class="btn btn-primary"
+            >{$t("continue")}</button
+          >
         </div>
       </div>
     </div>
@@ -185,7 +187,7 @@
   <div class="bg-base-300 border-4 border-base-100 rounded-xl w-96 pl-2">
     <div class="p-6 text-center">
       <div class="max-w-md space-y-5">
-        <p class="text-xl">Sign up via Email:</p>
+        <p class="text-xl">{$t("signin.h.signupEmail")}</p>
         <input
           id="email"
           type="text"
@@ -218,7 +220,9 @@
             placeholder={$t("signin.l.cpwd")}
             class="input w-full max-w-xs"
           />
-          <button on:click={submit} class="btn btn-primary">Continue</button>
+          <button on:click={submit} class="btn btn-primary"
+            >{$t("continue")}</button
+          >
         </div>
       </div>
     </div>

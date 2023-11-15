@@ -154,7 +154,7 @@
           {/each}
           <div class="flex place-content-center">
             <p on:click={loadMore} class=" hover:link text-primary mt-2">
-              Load More
+              {$t("loadMore")}
             </p>
           </div>
         {/await}

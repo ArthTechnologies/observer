@@ -2,6 +2,7 @@
   import { browser } from "$app/environment";
   import { writeTerminal } from "$lib/scripts/req";
   import { Maximize2, Minimize2 } from "lucide-svelte";
+  import { t } from "$lib/scripts/i18n";
   let id;
   let scrollCorrected = false;
 
@@ -85,7 +86,7 @@
       on:keypress={writeCmd}
       id="input2"
       type="text"
-      placeholder="Enter Command"
+      placeholder={$t("p.enterCommand")}
       class="input input-secondary bg-base-200 w-full"
     />
   </div>

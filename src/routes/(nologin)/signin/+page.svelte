@@ -42,7 +42,7 @@
         <EmailSignin />
       </div>
       <button class="btn btn-sm mt-3 btn-ghost" href="/reset-password"
-        >Forgot password?</button
+        >{$t("button.forgotPassword")}</button
       >
     </div>
   </div>

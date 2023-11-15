@@ -62,7 +62,7 @@
   <a
     href="#textEditor"
     on:click={getText}
-    class="btn-sm btn-neutral pointer-events-{clickable} -space-x-2 md:space-x-0"
+    class="btn-sm pointer-events-{clickable} -space-x-2 md:space-x-0"
   >
     {#if extension == "png" || extension == "jpg" || extension == "jpeg"}
       <Image class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
