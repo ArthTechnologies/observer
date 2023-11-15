@@ -213,6 +213,7 @@ export function searchPlugins(
   if (version == "Latest") {
     version = "1.19.3";
   }
+  query = query.replace(" ", "-");
 
   const url =
     lrurl +
@@ -255,6 +256,7 @@ export function searchMods(
       if (version == "Latest") {
     version = "1.19.3";
   }
+  query = query.replace(" ", "-");
   let url;
 
   if (platform == "mr")  {
