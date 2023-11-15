@@ -5,6 +5,7 @@
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
   import { Download, Monitor } from "lucide-svelte";
+  export let platform: string;
   export let name: string;
   export let author: string;
   export let desc: string;
@@ -12,6 +13,9 @@
   export let id: string;
   export let client: string;
   export let downloads: number;
+  export let versions: string[] = [];
+  export let slug: string;
+
   function get() {
     getVersions(id).then((data) => {
       console.log(data);
@@ -28,34 +32,64 @@
 <div class="bg-base-200 rounded-lg p-3">
   <div class="flex justify-between place-items-center relative">
     <div class="flex space-x-3 flex-shrink-0">
-      <a href="https://modrinth.com/plugin/{id}" target="_blank">
-        <img
-          src={icon}
-          alt="noicon"
-          class="w-14 h-14 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm md:w-auto"
-        />
-      </a>
+      {#if platform == "mr"}
+        <a href="https://modrinth.com/plugin/{slug}" target="_blank">
+          <img
+            src={icon}
+            alt="noicon"
+            class="w-14 h-14 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm md:w-auto"
+          />
+        </a>
+      {:else if platform == "cf"}
+        <a
+          href="https://curseforge.com/minecraft/mc-mods/{slug}"
+          target="_blank"
+        >
+          <img
+            src={icon}
+            alt="noicon"
+            class="w-14 h-14 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm md:w-auto"
+          />
+        </a>
+      {/if}
       <div>
         <div class="sm:flex gap-1">
-          <a
-            href="https://modrinth.com/plugin/{id}"
-            target="_blank"
-            class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
-            >{name}</a
-          >
-          <div class="flex space-x-1 place-items-end">
-            <p>{$t("by")}</p>
+          {#if platform == "mr"}
             <a
-              href="https://modrinth.com/user/{author}"
+              href="https://modrinth.com/plugin/{slug}"
               target="_blank"
-              class="link link-hover">{author}</a
+              class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+              >{name}</a
             >
-          </div>
+            <div class="flex space-x-1 place-items-end">
+              <p>{$t("by")}</p>
+              <a
+                href="https://modrinth.com/user/{author}"
+                target="_blank"
+                class="link link-hover">{author}</a
+              >
+            </div>
+          {:else if platform == "cf"}
+            <a
+              href="https://curseforge.com/minecraft/mc-mods/{slug}"
+              target="_blank"
+              class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+              >{name}</a
+            >
+            <div class="flex space-x-1 place-items-end">
+              <p>{$t("by")}</p>
+              <a
+                href="https://curseforge.com/members/{author}"
+                target="_blank"
+                class="link link-hover">{author}</a
+              >
+            </div>
+          {/if}
         </div>
 
         <p class="w-[10rem] sm:w-[11rem] md:w-[50rem]">{desc}</p>
         <div
-          class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-2"
+          class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-1.5"
         >
           {#if client == "optional"}
             <div
@@ -81,6 +115,15 @@
         </div>
       </div>
     </div>
-    <ChooseModVersion {id} {name} {author} {desc} {icon} />
+    <ChooseModVersion
+      {versions}
+      {platform}
+      {id}
+      {name}
+      {author}
+      {desc}
+      {icon}
+      {slug}
+    />
   </div>
 </div>

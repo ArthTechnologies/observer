@@ -2,6 +2,7 @@
   import { browser } from "$app/environment";
   import { writeTerminal } from "$lib/scripts/req";
   import { Maximize2, Minimize2 } from "lucide-svelte";
+  import { t } from "$lib/scripts/i18n";
   let id;
   let scrollCorrected = false;
 
@@ -55,7 +56,7 @@
 </script>
 
 <label for="fullscreenTerminal"
-  ><div class="btn btn-sm btn-circle absolute right-2 bottom-2">
+  ><div class="btn btn-neutral btn-sm btn-circle absolute right-2 bottom-2">
     <Maximize2 size="17" />
   </div></label
 >
@@ -75,17 +76,17 @@
       <div class=" sm:text-xs xl:text-base font-mono relative">
         <label
           for="fullscreenTerminal"
-          class="btn btn-sm btn-circle absolute right-0 bottom-0"
+          class="btn btn-neutral btn-sm btn-circle absolute right-0 bottom-0"
           ><Minimize2 size="17" /></label
         >
         <p id="terminal2" />
       </div>
     </div>
     <input
-      on:keypress={writeCmd}
+      on:input={writeCmd}
       id="input2"
       type="text"
-      placeholder="Enter Command"
+      placeholder={$t("p.enterCommand")}
       class="input input-secondary bg-base-200 w-full"
     />
   </div>

@@ -2,12 +2,10 @@
   import { apiurl, usingOcelot } from "$lib/scripts/req";
   import { lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
-  import { getHeapSpaceStatistics } from "v8";
   import { t } from "$lib/scripts/i18n";
-  import ChooseVersionAlt from "./ChooseVersionAlt.svelte";
-  import accountEmail from "$lib/stores/accountEmail";
-  import SkeleResult from "./SkeleResult.svelte";
   import { ChevronDown, ChevronUp, Clock, Trash, Trash2 } from "lucide-svelte";
+  import ChooseVersion from "./ChooseVersion.svelte";
+  import ChooseModVersion from "./ChooseModVersion.svelte";
 
   export let name;
   export let id;
@@ -15,28 +13,53 @@
   export let modtype;
   export let filename;
   export let date;
+  export let disabled;
   let showInfo = true;
-  let sendName = name;
+  let disableText = $t("disable");
+  if (disabled) {
+    disableText = $t("enable");
+  }
   let author;
   let desc;
+  let icon;
   let slug = id;
   let time = new Date(date).toLocaleString();
+  let serverId = "";
+  let promise;
+  if (browser) {
+    serverId = localStorage.getItem("serverID");
+    //if screen is small, only say the date
+    if (window.innerWidth < 768) {
+      time = new Date(date).toLocaleString().split(",")[0];
+    }
+  }
 
   if (platform == "lr") {
     name = name.replace(/-/g, " ");
 
-    fetch(lrurl + "project/" + id)
+    promise = fetch(lrurl + "project/" + id)
       .then((response) => response.json())
       .then((data) => {
         desc = data.description;
         slug = data.slug;
         name = data.title;
+        icon = data.icon_url;
       });
 
     fetch(lrurl + "project/" + id + "/members")
       .then((response) => response.json())
       .then((data) => {
         author = data[0].user.username;
+      });
+  } else if (platform == "cf") {
+    promise = fetch(apiurl + "curseforge/" + id)
+      .then((response) => response.json())
+      .then((data) => {
+        desc = data.summary;
+        slug = data.slug;
+        name = data.name;
+        author = data.authors[0].name;
+        icon = data.logo.thumbnailUrl;
       });
   } else if (platform == "gh") {
     author = id.split("/")[0];
@@ -63,11 +86,6 @@
     const event = new CustomEvent("refresh");
     document.dispatchEvent(event);
 
-    let serverId = "";
-    if (browser) {
-      serverId = localStorage.getItem("serverID");
-    }
-
     let baseurl = apiurl;
     if (usingOcelot)
       baseurl =
@@ -90,13 +108,44 @@
       showInfo = true;
     }
   }
+
+  function toggleDisable() {
+    let baseurl = apiurl;
+    if (usingOcelot)
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    const url =
+      baseurl +
+      "server/" +
+      serverId +
+      "/toggleDisable/" +
+      modtype +
+      "?filename=" +
+      filename;
+    fetch(url, {
+      method: "POST",
+      headers: {
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        console.error(data);
+        if (data.includes("disabled")) {
+          disableText = $t("enable");
+        } else if (data.includes("enabled")) {
+          disableText = $t("disable");
+        }
+      });
+  }
 </script>
 
 <div>
   <div
     class="px-3 py-2 rounded-t-lg bg-base-300 flex justify-between items-center"
   >
-    <div class="flex items-center space-x-1">
+    <div class="flex items-center space-x-1 break-all">
       <p>{filename}</p>
       <button
         on:click={() => {
@@ -106,11 +155,30 @@
       >
         <Trash2 size="15" /></button
       >
+      <button class="btn btn-xs btn-ghost mt-0.5" on:click={toggleDisable}>
+        {disableText}
+      </button>
+      {#await promise then}
+        {#if modtype == "plugin" && (platform == "cf" || platform == "lr")}
+          <ChooseVersion {id} {name} {author} {desc} {icon} buttonType="2" />
+        {:else if modtype == "mod"}
+          <ChooseModVersion
+            {id}
+            {name}
+            {author}
+            {desc}
+            {icon}
+            {platform}
+            {slug}
+            buttonType="2"
+          />
+        {/if}
+      {/await}
     </div>
 
     <div class="flex items-center space-x-1">
       <div
-        class="hidden md:flex bg-base-200 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+        class="hidden md:flex bg-base-200 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
       >
         <Clock size="16" class="mr-1.5" />
         {time}
@@ -145,7 +213,7 @@
                       >
                     {/if}
                     <div class="flex space-x-1">
-                      <p>by</p>
+                      <p>{$t("by")}</p>
                       <a
                         href="https://modrinth.com/user/{author}"
                         target="_blank"
@@ -162,7 +230,48 @@
               </div>
             </div>
             <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
+            >
+              <Clock size="16" class="mr-1.5" />
+              {time}
+            </div>
+          </div>
+        {:else if platform == "cf"}
+          <div class="flex justify-between place-items-center">
+            <div class="flex space-x-3">
+              <div>
+                <div class="flex space-x-1">
+                  <div class="flex space-x-1.5 place-items-end">
+                    {#if name == id}
+                      <div
+                        class="h-6 w-16 animate-pulse bg-slate-600 rounded-lg"
+                      />
+                    {:else}
+                      <a
+                        href="https://curseforge.com/minecraft/mc-mods/{slug}"
+                        target="_blank"
+                        class="link link-hover text-xl font-bold">{name}</a
+                      >
+                    {/if}
+                    <div class="flex space-x-1">
+                      <p>{$t("by")}</p>
+                      <a
+                        href="https://curseforge.com/members/{author}"
+                        target="_blank"
+                        class="link link-hover">{author}</a
+                      >
+                    </div>
+                    <img
+                      src="https://static-beta.curseforge.com/images/favicon.ico"
+                      width="24"
+                    />
+                  </div>
+                  <div class="" />
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
             >
               <Clock size="16" class="mr-1.5" />
               {time}
@@ -180,7 +289,7 @@
                   >
                   <div class="flex space-x-1.5 place-items-end">
                     <div class="flex space-x-1">
-                      <p>by</p>
+                      <p>{$t("by")}</p>
                       <a
                         href="https://github.com/{author}"
                         target="_blank"
@@ -193,7 +302,7 @@
               </div>
             </div>
             <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
             >
               <Clock size="16" class="mr-1.5" />
               {time}
@@ -207,7 +316,7 @@
                   {#if name == "Geyser" || name == "Floodgate"}
                     <p class="text-xl font-bold">{name}</p>
                     <div class=" flex space-x-1 place-items-end">
-                      <p>by</p>
+                      <p>{$t("by")}</p>
                       <a
                         href="https://geysermc.org"
                         target="_blank"
@@ -229,7 +338,7 @@
               </div>
             </div>
             <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
             >
               <Clock size="16" class="mr-1.5" />
               {time}

@@ -4,6 +4,7 @@ import { goto } from "$app/navigation";
 export let apiurl = "https://us-dallas-1.arthmc.xyz/";
 export let usingOcelot = false;
 export const lrurl = "https://api.modrinth.com/v2/";
+export let stripePaymentLink = "https://buy.stripe.com/dR63fv4bX3qjc1i28a";
 
 //set apiurl & usingOcelot to the enviroment variable if it exists
 if (browser) {
@@ -205,12 +206,14 @@ export function getVersions(id: string) {
 export function searchPlugins(
   software: string,
   version: string,
-  query: string
+  query: string,
+  offset: number
 ) {
   if(browser) {
   if (version == "Latest") {
     version = "1.19.3";
   }
+  query = query.replace(" ", "-");
 
   const url =
     lrurl +
@@ -222,7 +225,8 @@ export function searchPlugins(
     '"],["versions:' +
     version +
     '"],["server_side:optional","server_side:required"]]' +
-    "&limit=10";
+    "&limit=15" +
+    "&offset=" + offset;
 
   if (!lock) {
     return fetch(url, GET)
@@ -245,14 +249,16 @@ export function searchMods(
   software: string,
   version: string,
   query: string,
-  modtype: string
+  modtype: string,
+  offset: number
 ) {
   if(browser) {
-  if (version == "Latest") {
+      if (version == "Latest") {
     version = "1.19.3";
   }
-
+  query = query.replace(" ", "-");
   let url;
+
   if (platform == "mr")  {
     url =
     lrurl +
@@ -266,8 +272,13 @@ export function searchMods(
     '"],["versions:' +
     version +
     '"],["server_side:optional","server_side:required"]]' +
-    "&limit=10";
+    "&limit=15" +
+    "&offset=" + offset;
   } else if (platform == "cf") {
+    let classId = 6;
+    if (modtype == "modpack") {
+     classId = 4471;
+    }
     url =
     apiurl +
     "curseforge/search" +
@@ -276,7 +287,10 @@ export function searchMods(
     '&version=' +
     version +
     '&loader=' +
-    software;
+    software +
+    '&classId=' +
+    classId +
+    '&index=' + offset;
   }
 
   if (!lock) {
@@ -306,7 +320,6 @@ export function getSettings() {
         localStorage.setItem("enablePay", JSON.parse(input).enablePay);
         localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
         localStorage.setItem("address", JSON.parse(input).address);
-        localStorage.setItem("webName", JSON.parse(input).webName);
         localStorage.setItem("latestVersion", JSON.parse(input).latestVersion);
 
         if (JSON.parse(input).enableAuth == false) {

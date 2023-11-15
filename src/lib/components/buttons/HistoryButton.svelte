@@ -79,17 +79,17 @@
   }
 </script>
 
-<label for="historyModal" class="btn btn-sm">
+<label for="historyModal" class="btn btn-neutral btn-sm">
   <History />
   <p class="ml-1.5">History</p>
 </label>
 
 <input type="checkbox" id="historyModal" class="modal-toggle" />
 <div class="modal">
-  <div class="modal-box relative">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
     <label
       for="historyModal"
-      class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
 
     <h3 class="text-xl font-bold mb-2">File History</h3>

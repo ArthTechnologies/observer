@@ -76,8 +76,10 @@
             .getElementById("newserver")
             .classList.remove("text-accent-content");
           break;
-        case "/pay":
-          document.getElementById("pay").classList.add("text-accent-content");
+        case "/billing":
+          document
+            .getElementById("billing")
+            .classList.add("text-accent-content");
 
           document
             .getElementById("servers")
@@ -111,23 +113,15 @@
 
 {#if navType === "default"}
   <div class="navbar bg-base-300 px-4">
-    <div class="hidden sm:block flex-1">
-      <a class="btn btn-ghost normal-case text-xl invisible sm:visible" href="/"
+    <div class="hidden sm:block flex-1 h-[3rem]">
+      <a class="btn btn-ghost normal-case text-xl" href="/"
         ><img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" /></a
       >
     </div>
     <div class="flex-1 md:flex-none space-x-2 navbar-end">
-      <ul
-        class="invisible md:visible md:space-x-0 menu menu-horizontal p-0"
-        id="servers"
+      <a href="/" class="btn btn-ghost rounded-lg hidden md:flex"
+        >{$t("navbar.servers")}</a
       >
-        <li>
-          <a href="/" class="nav btn btn-ghost rounded-lg"
-            >{$t("navbar.servers")}</a
-          >
-          <!-- todo: get font back to normal and find out why the button is square-->
-        </li>
-      </ul>
 
       <Home />
 
@@ -142,10 +136,12 @@
   </div>
 {:else if navType === "welcome"}
   <div class="navbar fixed justify-between px-6">
-    <a class="btn btn-ghost normal-case text-xl invisible sm:visible" href="https://arthmc.xyz/"
-        >
-    <img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" />
-</a>
+    <a
+      class="btn btn-ghost normal-case text-xl invisible sm:visible"
+      href="https://arthmc.xyz/"
+    >
+      <img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" />
+    </a>
     <ThemeToggle />
   </div>
 {/if}

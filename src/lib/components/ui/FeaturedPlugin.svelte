@@ -45,7 +45,7 @@
         <img
           src={icon}
           alt="noicon"
-          class="w-[56px] h-[56px] bg-base-300 rounded-lg text-sm"
+          class="w-[56px] h-[56px] md:w-[5.6rem] md:h-20 bg-base-300 rounded-lg text-sm"
         /></a
       >
       <div class="max-w-full w-minus-7">

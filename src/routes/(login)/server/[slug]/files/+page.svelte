@@ -78,7 +78,7 @@
 
 <a href="/{backurl}/{parseInt(id) + 10000}" class="btn btn-info mb-5"
   ><ArrowLeft class="mr-1.5" />
-  Back</a
+  {$t("button.back")}</a
 >
 <div
   class=" h-[75vh] md:flex justify-between items-start max-md:space-y-1 md:space-x-5"
@@ -101,7 +101,7 @@
     <div class="flex justify-between">
       <div class="flex space-x-2 mb-2">
         <div id="filepath" class="hidden" />
-        <h1 class="text-xl font-bold" id="filename">File</h1>
+        <h1 class="text-xl font-bold" id="filename">{$t("file")}</h1>
         <button class="btn btn-sm btn-disabled" id="saveButton" on:click={save}
           >{$t("save")}</button
         >

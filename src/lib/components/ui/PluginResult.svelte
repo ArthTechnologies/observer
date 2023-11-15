@@ -4,12 +4,14 @@
   import ChooseVersion from "$lib/components/ui/ChooseVersion.svelte";
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
+  import { Download } from "lucide-svelte";
   export let name: string;
   export let author: string;
   export let desc: string;
   export let icon: string;
   export let id: string;
   export let recursive = false;
+  export let downloads: number;
 
   let software = "";
   let version = "";
@@ -31,7 +33,7 @@
         <img
           src={icon}
           alt="noicon"
-          class="w-14 h-14 bg-base-300 rounded-lg text-sm"
+          class="w-14 h-14 md:w-[5.4rem] md:h-20 bg-base-300 rounded-lg text-sm"
         />
       </a>
       <div class="max-w-full w-minus-7">
@@ -54,12 +56,23 @@
         <p class="w-minus-7">
           {desc}
         </p>
+        <div
+          class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-1.5"
+        >
+          <div
+            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[5rem] md:w-auto"
+          >
+            <Download class="mr-1.5" size="16" />
+            {downloads}
+          </div>
+        </div>
       </div>
     </div>
 
     {#if !recursive}<ChooseVersion
         {id}
         pluginName={name}
+        {name}
         {desc}
         {author}
         {icon}

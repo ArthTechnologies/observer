@@ -4,12 +4,23 @@
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
+  import { numShort } from "$lib/scripts/numShort";
   let promise;
   let results = [];
   let query = "";
-  function search() {
+  let skeletonsLength = 15;
+  let allowLoadMore = true;
+  let offset = 0;
+  function search(loadMore = false) {
+    if (loadMore) {
+      skeletonsLength = offset + 15;
+      offset += 15;
+    } else {
+      if (skeletonsLength > 15) skeletonsLength = 15;
+      results = [];
+    }
     console.log("searching" + query);
-    results = [];
+
     if (browser) {
       let software = localStorage.getItem("serverSoftware");
       let version = localStorage.getItem("serverVersion");
@@ -18,23 +29,29 @@
       }
 
       setTimeout(function () {
-        promise = searchPlugins(software, version, query).then((response) => {
-          response.hits.forEach((item) => {
-            results.push({
-              name: item.title,
-              desc: item.description,
-              icon: item.icon_url,
-              author: item.author,
-              id: item.project_id,
+        promise = searchPlugins(software, version, query, offset).then(
+          (response) => {
+            skeletonsLength = response.hits.length;
+            allowLoadMore = response.hits.length == 15;
+            response.hits.forEach((item) => {
+              results.push({
+                name: item.title,
+                desc: item.description,
+                icon: item.icon_url,
+                author: item.author,
+                id: item.project_id,
+                downloads: numShort(item.downloads),
+              });
+              console.log(results);
             });
-            console.log(results);
-          });
-        });
+          }
+        );
       }, 1);
       document.getElementById("plugins").innerHTML = "";
     }
   }
-  let tab = "ft";
+
+  let tab = "mr";
   function ft() {
     if (browser) {
       tab = "ft";
@@ -51,43 +68,82 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-block" on:click={search}
+<label for="my-modal-5" class="btn btn-neutral btn-block" on:click={search}
   >{$t("button.addplugin")}</label
 >
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="my-modal-5" class="modal-toggle" />
 <div class="modal">
-  <div class="modal-box relative w-11/12 max-w-5xl space-y-5">
+  <div
+    class="modal-box bg-opacity-95 backdrop-blur relative w-11/12 max-w-5xl space-y-5 h-[50rem]"
+  >
     <div class="flex justify-between">
       <label
         for="my-modal-5"
-        class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+        >✕</label
       >
 
       <div class="tabs tabs-boxed">
-        <button id="ft" on:click={ft} class="tab tab-active"
-          >{$t("featured")}</button
-        >
-        <button id="mr" on:click={mr} class="tab">{$t("search")}</button>
+        <button id="ft" on:click={ft} class="tab">{$t("featured")}</button>
+        <button id="mr" on:click={mr} class="tab tab-active">Modrinth</button>
       </div>
     </div>
     {#if tab == "mr"}
       <div>
         <input
           bind:value={query}
-          on:keypress={search}
+          on:input={() => {
+            search(false);
+          }}
           type="text"
-          placeholder="{$t('search')} Modrinth"
+          placeholder={$t("search")}
           class="searchBar input input-bordered input-sm"
           id="search"
         />
       </div>
       <div id="plugins" class="space-y-2">
-        {#await promise then}
+        {#await promise}
+          {#each Array.from({ length: skeletonsLength }) as _}
+            <div class="bg-base-200 h-[6.875rem] p-3 rounded-lg flex space-x-3">
+              <div
+                class="w-14 h-14 md:w-20 md:h-20 bg-slate-700 animate-pulse w-[3.35rem] h-14 rounded-lg"
+              />
+              <div class="flex flex-col justify-between pt-1.5 pb-0.5">
+                <div class="flex space-x-1 items-end">
+                  <div
+                    class="bg-slate-700 animate-pulse w-[10rem] h-4 rounded-lg"
+                  />
+                  <div
+                    class="bg-slate-700 animate-pulse w-[5rem] h-3 rounded-lg"
+                  />
+                </div>
+                <div
+                  class="bg-slate-700 animate-pulse w-[17.5rem] h-3.5 rounded-lg"
+                />
+                <div
+                  class="bg-slate-700 animate-pulse w-[5.68rem] h-7 rounded-lg"
+                />
+              </div>
+            </div>
+          {/each}
+        {:then}
           {#each results as result}
             <PluginResult {...result} />
           {/each}
+          <div class="flex place-content-center">
+            {#if allowLoadMore}
+              <p
+                on:click={() => {
+                  search(true);
+                }}
+                class=" hover:link text-primary mt-2"
+              >
+                {$t("loadMore")}
+              </p>
+            {/if}
+          </div>
         {/await}
       </div>
     {:else if tab == "ft"}
@@ -109,6 +165,7 @@
           desc="Blazingly fast world manipulation for artists, builders and everyone else."
           icon="https://cdn.modrinth.com/data/z4HZZnLr/1dab3e5596f37ade9a65f3587254ff61a9cf3c43.svg"
           id="z4HZZnLr"
+          downloads="9.6k"
         />
       </div>
     {/if}

@@ -4,6 +4,6 @@
 </script>
 
 <div>
-  <Navbar navType="welcome" />
+  <Navbar navType="welcome" disableButtons="true" />
   <slot />
 </div>

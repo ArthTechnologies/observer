@@ -450,10 +450,12 @@
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if restarting}
-        <button class="btn btn-success"
-          ><Loader class="animate-spin mr-1.5" />
-          {$t("button.restarting")}</button
+        <div
+          class="inline-flex pointer-events-none bg-success flex items-center px-4 py-3 text-center text-sm font-semibold text-black uppercase rounded-md"
         >
+          <Loader class="animate-spin mr-1.5" />
+          {$t("button.restarting")}
+        </div>
 
         <button class="btn btn-disabled"
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
@@ -466,29 +468,35 @@
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</a
         >
       {:else if state == "starting"}
-        <button class="btn btn-success"
-          ><Loader class="mr-1.5 animate-spin" />
-          {$t("button.starting")}</button
+        <div
+          class="inline-flex pointer-events-none bg-success flex items-center px-4 py-3 text-center text-sm font-semibold text-black uppercase rounded-md"
         >
+          <Loader class="animate-spin mr-1.5" />
+          {$t("button.starting")}
+        </div>
         <button on:click={stop} class="btn btn-error"
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "installing"}
-        <button class="btn btn-accent"
-          ><Loader class="mr-1.5 animate-spin" />
-          {$t("button.installing")}</button
+        <div
+          class="inline-flex pointer-events-none bg-accent flex items-center px-4 py-3 text-center text-sm font-semibold text-white uppercase rounded-md"
         >
+          <Loader class="animate-spin mr-1.5" />
+          {$t("button.installing")}
+        </div>
         <button on:click={stop} class="btn btn-error"
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "stopping"}
-        <button class="btn btn-disabled"
-          ><PlayCircle class="mr-1.5" />{$t("button.start")}</button
+        <button class="btn btn-disabled">
+          <PlayCircle class="mr-1.5" />{$t("button.start")}
+        </button>
+        <div
+          class="inline-flex pointer-events-none bg-error flex items-center px-4 py-3 text-center text-sm font-semibold text-black uppercase rounded-md"
         >
-        <button class="btn btn-error"
-          ><Loader class="mr-1.5 animate-spin" />
-          {$t("button.stopping")}</button
-        >
+          <Loader class="animate-spin mr-1.5" />
+          {$t("button.stopping")}
+        </div>
       {/if}
     </div>
   </div>
@@ -515,7 +523,7 @@
         </div>
       </div>
       <input
-        on:keypress={writeCmd}
+        on:input={writeCmd}
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
@@ -619,7 +627,7 @@
             placeholder="{$t('currently')} '{lobbyName}'"
             type="text"
           />
-          <button class="btn btn-sm" on:click={setLobbyName}>
+          <button class="btn btn-neutral btn-sm" on:click={setLobbyName}>
             {$t("sumbit")}
           </button>
         </div>

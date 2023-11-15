@@ -1,17 +1,40 @@
-<script>
+<script lang="ts">
   import { browser } from "$app/environment";
   import { searchMods, searchPlugins } from "$lib/scripts/req";
   import ModpackResult from "./ModpackResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
   import { numShort } from "$lib/scripts/numShort";
+  import { onMount } from "svelte";
 
   let promise;
-  let results = [];
+  let mrResults = [];
+  let cfResults = [];
   let query = "";
-  function search() {
-    console.log("searching" + query);
-    results = [];
+  let tab = "cf";
+  let skeletonsLength = 15;
+  let allowLoadMore = true;
+  let offset = 0;
+  onMount(() => {
+    if (browser) {
+      search("mr");
+      search("cf");
+    }
+  });
+  function search(platform: string, loadMore: boolean = false) {
+    console.error("searching" + platform);
+    if (platform != "cf" && platform != "mr") {
+      platform = tab;
+    }
+    let offset = 0;
+    if (loadMore) {
+      skeletonsLength = offset + 15;
+      offset += 15;
+    } else {
+      if (skeletonsLength > 15) skeletonsLength = 15;
+      if (platform == "cf") cfResults = [];
+      else if (platform == "mr") mrResults = [];
+    }
     if (browser) {
       let software = document
         .getElementById("softwareDropdown")
@@ -19,10 +42,18 @@
       let version = document.getElementById("versionDropdown").value;
 
       setTimeout(function () {
-        promise = searchMods(software, version, query, "modpack").then(
-          (response) => {
+        promise = searchMods(
+          platform,
+          software,
+          version,
+          query,
+          "modpack",
+          offset
+        ).then((response) => {
+          if (platform == "mr") {
+            skeletonsLength = response.hits.length;
             response.hits.forEach((item) => {
-              results.push({
+              mrResults.push({
                 name: item.title,
                 desc: item.description,
                 icon: item.icon_url,
@@ -30,101 +61,131 @@
                 id: item.project_id,
                 client: item.client_side,
                 downloads: numShort(item.downloads),
+                platform: "mr",
+                versions: [],
+                slug: item.slug,
               });
-              console.log(results);
+              console.log(mrResults);
+            });
+          } else if (platform == "cf") {
+            skeletonsLength = response.data.length;
+            response.data.forEach((item) => {
+              cfResults.push({
+                platform: "cf",
+                name: item.name,
+                desc: item.summary,
+                icon: item.logo.thumbnailUrl,
+                author: item.authors[0].name,
+                id: item.id,
+                client: null,
+                downloads: numShort(item.downloadCount),
+                versions: item.latestFiles,
+                slug: item.slug,
+              });
             });
           }
-        );
+        });
       }, 1);
     }
   }
-  let tab = "mr";
-  function ft() {
-    if (browser) {
-      tab = "ft";
-      document.getElementById("ft").classList.add("tab-active");
-      document.getElementById("mr").classList.remove("tab-active");
-    }
-  }
+
   function mr() {
     if (browser) {
       tab = "mr";
       document.getElementById("mr").classList.add("tab-active");
-      document.getElementById("ft").classList.remove("tab-active");
+      document.getElementById("cf").classList.remove("tab-active");
+    }
+  }
+
+  function cf() {
+    if (browser) {
+      tab = "cf";
+      document.getElementById("cf").classList.add("tab-active");
+      document.getElementById("mr").classList.remove("tab-active");
     }
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-block btn-primary" on:click={search}
-  >Use Modpack</label
->
+<label for="my-modal-5" class="btn btn-block btn-primary">Use Modpack</label>
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="my-modal-5" class="modal-toggle" />
 <div class="modal">
-  <div class="modal-box relative w-11/12 max-w-5xl space-y-5 h-[50rem]">
+  <div
+    class="modal-box bg-opacity-95 backdrop-blur relative w-11/12 max-w-5xl space-y-5 h-[61.5rem]"
+  >
     <div class="flex justify-between">
       <label
         for="my-modal-5"
-        class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+        >✕</label
       >
 
       <div class="tabs tabs-boxed">
-        <button id="mr" on:click={mr} class="tab tab-active"
-          >{$t("search")}</button
-        >
+        <button id="mr" on:click={mr} class="tab">Modrinth</button>
+        <button id="cf" on:click={cf} class="tab tab-active">Curseforge</button>
       </div>
     </div>
-    {#if tab == "mr"}
-      <div>
-        <input
-          bind:value={query}
-          on:keypress={search}
-          type="text"
-          placeholder="{$t('search')} Modrinth"
-          class="searchBar input input-bordered input-sm"
-          id="search"
-        />
-      </div>
-      <div id="modpacks" class="space-y-2">
-        {#await promise then}
-          {#each results as result}
+    <div>
+      <input
+        bind:value={query}
+        on:input={() => search(tab)}
+        type="text"
+        placeholder="{$t('search')} Modrinth"
+        class="searchBar input input-bordered input-sm"
+        id="search"
+      />
+    </div>
+    {#await promise}
+      {#each Array.from({ length: skeletonsLength }) as _}
+        <div class="bg-base-200 h-[6.875rem] p-3 rounded-lg flex space-x-3">
+          <div
+            class="w-14 h-14 md:w-20 md:h-20 bg-slate-700 animate-pulse w-[3.35rem] h-14 rounded-lg"
+          />
+          <div class="flex flex-col justify-between pt-1.5 pb-0.5">
+            <div class="flex space-x-1 items-end">
+              <div
+                class="bg-slate-700 animate-pulse w-[10rem] h-4 rounded-lg"
+              />
+              <div class="bg-slate-700 animate-pulse w-[5rem] h-3 rounded-lg" />
+            </div>
+            <div
+              class="bg-slate-700 animate-pulse w-[17.5rem] h-3.5 rounded-lg"
+            />
+            <div
+              class="bg-slate-700 animate-pulse w-[5.68rem] h-7 rounded-lg"
+            />
+          </div>
+        </div>
+      {/each}
+    {:then}
+      {#if tab == "mr"}
+        <div id="modpacks" class="space-y-2">
+          {#each mrResults as result}
             <ModpackResult {...result} />
           {/each}
-        {/await}
+        </div>
+      {:else if tab == "cf"}
+        <div class="space-y-2">
+          <div id="modpacks" class="space-y-2">
+            {#each cfResults as result}
+              <ModpackResult {...result} />
+            {/each}
+          </div>
+        </div>
+      {/if}
+      <div class="flex place-content-center">
+        {#if allowLoadMore}
+          <p
+            on:click={() => {
+              search(tab, true);
+            }}
+            class=" hover:link text-primary mt-2"
+          >
+            {$t("loadMore")}
+          </p>
+        {/if}
       </div>
-    {:else if tab == "ft"}
-      <div class="space-y-2">
-        <FeaturedPlugin
-          icon="https://www.spigotmc.org/data/resource_icons/34/34315.jpg?1483592228"
-          name="Vault"
-          desc="Vault is a Permissions, Chat, & Economy API required by many plugins."
-          author="milkbowl"
-          authorLink="https://github.com/MilkBowl"
-          pluginId="MilkBowl/Vault"
-          link="https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar"
-          disclaimer="This plugin has not been tested on minecraft versions before 1.13."
-        />
-        <FeaturedPlugin
-          icon="https://media.forgecdn.net/avatars/thumbnails/493/419/64/64/637803056128514812.png"
-          name="Squaremap"
-          desc="
-  
-            A minimalistic and lightweight world map viewer for Minecraft servers, using the vanilla map rendering style "
-          author="jpenilla"
-          authorLink="https://github.com/jpenilla"
-          pluginId="jpenilla/squaremap"
-          link="https://github.com/jpenilla/squaremap/releases/download/v1.1.12/squaremap-paper-mc1.19.4-1.1.12.jar"
-          disclaimer="This plugin only supports the latest minecraft version."
-        />
-        <ModpackResult
-          name="WorldEdit (FAWE)"
-          author="NotMyFault"
-          desc="Blazingly fast world manipulation for artists, builders and everyone else."
-          icon="https://cdn.modrinth.com/data/z4HZZnLr/1dab3e5596f37ade9a65f3587254ff61a9cf3c43.svg"
-          id="z4HZZnLr"
-        />
-      </div>
-    {/if}
+    {/await}
   </div>
 </div>

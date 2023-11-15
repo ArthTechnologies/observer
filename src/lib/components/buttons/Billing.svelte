@@ -10,6 +10,6 @@
   } from "lucide-svelte";
 </script>
 
-<a href="/pay" id="pay" class="nav btn btn-ghost btn-circle"
+<a href="/billing" id="billing" class="nav btn btn-ghost btn-circle"
   ><ShoppingCart />
 </a>

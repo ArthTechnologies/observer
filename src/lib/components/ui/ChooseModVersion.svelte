@@ -1,6 +1,6 @@
 <script lang="ts">
   import Version from "./Version.svelte";
-  import { getVersions, lrurl } from "$lib/scripts/req";
+  import { apiurl, getVersions, lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
   import { Plus } from "lucide-svelte";
   import PluginResult from "./PluginResult.svelte";
@@ -12,6 +12,15 @@
   export let author: string;
   export let desc: string;
   export let icon: string;
+  export let platform: string;
+  export let versions: string[] = [];
+  export let slug: string;
+  export let buttonType: string = "default";
+  //the suffix is needed to seperate the modal for a mod search result and a installed mod.
+  let suffix = "";
+  if (buttonType != "default") {
+    suffix = "manage";
+  }
   var software = "";
   var sVersion = "";
 
@@ -32,23 +41,126 @@
     }
   }
   function get() {
-    fetch(lrurl + "project/" + id, {
-      method: "GET",
+    //get description
+    if (platform == "mr") {
+      fetch(lrurl + "project/" + id, {
+        method: "GET",
 
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
 
-      .then((data) => {
-        document.getElementById("body").innerHTML = marked(data.body);
-        document.getElementById("pluginTitle").innerHTML = data.title;
+        .then((data) => {
+          //change youtube.com to youtube-nocookie.com
+          data.body = data.body.replaceAll(
+            "https://www.youtube.com/embed",
+            "https://www.youtube-nocookie.com/embed"
+          );
+          //change height="358" and width="638" (the size of all youtube embeds) to 70% of that
+          data.body = data.body.replaceAll(
+            'height="358" width="638"',
+            'height="304" width="542"'
+          );
+          //make all links open in a new tab
+          data.body = data.body.replaceAll(
+            "href=",
+            'target="_blank" rel="noreferrer" href='
+          );
+          document.getElementById("body" + suffix).innerHTML = marked(
+            data.body
+          );
 
-        document.getElementById("pluginDesc").innerHTML = data.description;
-        document.getElementById("pluginIcon").src = data.icon_url;
+          document.getElementById("pluginTitle").innerHTML = data.title;
 
-        fetch(lrurl + "team/" + data.team + "/members", {
+          document.getElementById("pluginDesc").innerHTML = data.description;
+          document.getElementById("pluginIcon").src = data.icon_url;
+
+          fetch(lrurl + "team/" + data.team + "/members", {
+            method: "GET",
+
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+
+            .then((data) => {
+              document.getElementById("pluginAuthor").innerHTML =
+                data[0].user.username;
+            });
+        });
+    } else if (platform == "cf") {
+      fetch(apiurl + "curseforge/" + id + "/description", {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          //change youtube.com to youtube-nocookie.com
+          data = data.replaceAll(
+            "https://www.youtube.com/embed",
+            "https://www.youtube-nocookie.com/embed"
+          );
+          //change height="358" and width="638" (the size of all youtube embeds) to 70% of that
+          data = data.replaceAll(
+            'height="358" width="638"',
+            'height="304" width="542"'
+          );
+          //make all links open in a new tab
+          data = data.replaceAll(
+            "href=",
+            'target="_blank" rel="noreferrer" href='
+          );
+          document.getElementById("body" + suffix).innerHTML = marked(data);
+          document.getElementById("pluginTitle").innerHTML = name;
+          document.getElementById("pluginDesc").innerHTML = desc;
+          document.getElementById("pluginIcon").src = icon;
+          document.getElementById("pluginAuthor").innerHTML = author;
+        });
+    }
+
+    let vname = "undefined";
+    if (platform == "mr") {
+      getVersions(id).then((data) => {
+        document.getElementById("list" + suffix).innerHTML = "";
+        data.forEach((version) => {
+          if (
+            version.name != vname &&
+            version.loaders.includes(software) &&
+            version.game_versions.includes(sVersion)
+          ) {
+            vname = version.name;
+
+            new Version({
+              target: document.getElementById("list" + suffix),
+              props: {
+                name: version.name,
+                date: version.date_published,
+                type: version.version_type,
+                url: version.files[0].url,
+                pluginId: id,
+                pluginName: name,
+                modtype: "mod",
+                dependencies: version.dependencies,
+              },
+            });
+          }
+        });
+        //if it's still blank, add a message saying that there are no versions for this plugin
+        if (document.getElementById("list" + suffix).innerHTML == "") {
+          document.getElementById("list" + suffix).innerHTML =
+            "<p class='text-center'>" + $t("noVersionsMod") + "</p>";
+        }
+      });
+    } else if (platform == "cf") {
+      document.getElementById("list" + suffix).innerHTML = "";
+      if (versions.length == 0) {
+        fetch(apiurl + "curseforge/" + id + "/", {
           method: "GET",
 
           headers: {
@@ -56,56 +168,65 @@
           },
         })
           .then((response) => response.json())
-
           .then((data) => {
-            document.getElementById("pluginAuthor").innerHTML =
-              data[0].user.username;
+            versions = data.latestFiles;
+            appendVersions();
           });
-      });
-
-    let vname = "undefined";
-    getVersions(id).then((data) => {
-      document.getElementById("list").innerHTML = "";
-      data.forEach((version) => {
-        if (
-          version.name != vname &&
-          version.loaders.includes(software) &&
-          version.game_versions.includes(sVersion)
-        ) {
-          vname = version.name;
-
-          new Version({
-            target: document.getElementById("list"),
-            props: {
-              name: version.name,
-              date: version.date_published,
-              type: version.version_type,
-              url: version.files[0].url,
-              pluginId: id,
-              pluginName: name,
-              modtype: "mod",
-              dependencies: version.dependencies,
-            },
-          });
-        }
-      });
-      //if it's still blank, add a message saying that there are no versions for this plugin
-      if (document.getElementById("list").innerHTML == "") {
-        document.getElementById("list").innerHTML =
-          "<p class='text-center'>This mod doesn't support your Minecraft version currently.</p>";
+      } else {
+        appendVersions();
       }
-    });
+      function appendVersions() {
+        versions.forEach((version) => {
+          if (
+            version.name != vname &&
+            version.gameVersions.includes(sVersion)
+          ) {
+            vname = version.displayName;
+            console.log(version.releaseType == 1);
+            let type = "release";
+            if (version.releaseType == 1) type = "beta";
+            else if (version.releaseType == 0) type = "alpha";
+            new Version({
+              target: document.getElementById("list" + suffix),
+              props: {
+                name: version.displayName,
+                date: version.fileDate,
+                type: type,
+                url: version.downloadUrl,
+                pluginId: id,
+                pluginName: name,
+                modtype: "mod",
+                dependencies: version.dependencies,
+              },
+            });
+          }
+        });
+        //if it's still blank, add a message saying that there are no versions for this plugin
+        if (document.getElementById("list" + suffix).innerHTML == "") {
+          document.getElementById("list" + suffix).innerHTML =
+            "<p class='text-center'>" + $t("noVersionsMod") + "</p>";
+        }
+      }
+    }
   }
 </script>
 
-<label
-  for="versions"
-  on:click={get}
-  class="btn btn-circle btn-ghost absolute right-0"><Plus /></label
->
+{#if buttonType == "default"}
+  <label
+    for="versions"
+    on:click={get}
+    class="btn btn-circle btn-ghost absolute right-0"><Plus /></label
+  >
+{:else if buttonType == "2"}
+  <label
+    for="versions{suffix}"
+    on:click={get}
+    class="btn btn-xs btn-neutral mt-0.5">{$t("versions")}</label
+  >
+{/if}
 
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id="versions" class="modal-toggle" />
+<input type="checkbox" id="versions{suffix}" class="modal-toggle" />
 <div class="modal flex flex-col justify-center">
   <div class="modal-box w-[97%] h-[97%] max-w-5xl space-y-5">
     <div class="pt-6">
@@ -115,37 +236,74 @@
           class="flex justify-between place-items-center max-w-full relative"
         >
           <div class="flex space-x-3 flex-shrink-0 w-minus-7">
-            <a href="https://modrinth.com/plugin/{id}" target="_blank">
-              <img
-                id="pluginIcon"
-                src={icon}
-                alt="noicon"
-                class="w-14 h-14 bg-base-300 rounded-lg text-sm"
-              />
-            </a>
-            <div class="max-w-full w-minus-7">
-              <div class="sm:flex gap-1 max-w-full">
-                <a
-                  id="pluginTitle"
-                  href="https://modrinth.com/plugin/{id}"
-                  target="_blank"
-                  class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
-                  >{name}</a
-                >
-                <div class="flex space-x-1 place-items-end">
-                  <p>{$t("by")}</p>
+            {#if platform == "mr"}
+              <a href="https://modrinth.com/plugin/{slug}" target="_blank">
+                <img
+                  id="pluginIcon"
+                  src={icon}
+                  alt="noicon"
+                  class="w-14 h-14 bg-base-300 rounded-lg text-sm"
+                />
+              </a>
+              <div class="max-w-full w-minus-7">
+                <div class="sm:flex gap-1 max-w-full">
                   <a
-                    id="pluginAuthor"
-                    href="https://modrinth.com/user/{author}"
+                    id="pluginTitle"
+                    href="https://modrinth.com/plugin/{slug}"
                     target="_blank"
-                    class="link link-hover">{author}</a
+                    class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+                    >{name}</a
                   >
+                  <div class="flex space-x-1 place-items-end">
+                    <p>{$t("by")}</p>
+                    <a
+                      id="pluginAuthor"
+                      href="https://modrinth.com/user/{author}"
+                      target="_blank"
+                      class="link link-hover">{author}</a
+                    >
+                  </div>
                 </div>
+                <p class="w-minus-7" id="pluginDesc">
+                  {desc}
+                </p>
               </div>
-              <p class="w-minus-7" id="pluginDesc">
-                {desc}
-              </p>
-            </div>
+            {:else if platform == "cf"}
+              <a
+                href="https://curseforge.com/minecraft/mc-mods/{slug}"
+                target="_blank"
+              >
+                <img
+                  id="pluginIcon"
+                  src={icon}
+                  alt="noicon"
+                  class="w-14 h-14 bg-base-300 rounded-lg text-sm"
+                />
+              </a>
+              <div class="max-w-full w-minus-7">
+                <div class="sm:flex gap-1 max-w-full">
+                  <a
+                    id="pluginTitle"
+                    href="https://curseforge.com/minecraft/mc-mods/{slug}"
+                    target="_blank"
+                    class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+                    >{name}</a
+                  >
+                  <div class="flex space-x-1 place-items-end">
+                    <p>{$t("by")}</p>
+                    <a
+                      id="pluginAuthor"
+                      href="https://curseforge.com/members/{author}"
+                      target="_blank"
+                      class="link link-hover">{author}</a
+                    >
+                  </div>
+                </div>
+                <p class="w-minus-7" id="pluginDesc">
+                  {desc}
+                </p>
+              </div>
+            {/if}
           </div>
         </div>
       </div>
@@ -155,20 +313,24 @@
       >
         <div class="">
           <h3 class="font-bold text-2xl mb-4">{$t("description")}</h3>
-          <article id="body" class="mb-5 prose bg-base-200 rounded-lg p-3" />
+          <article
+            id="body{suffix}"
+            class="mb-5 prose bg-base-200 rounded-lg p-3"
+          />
         </div>
 
         <div class="">
           <h3 class="font-bold text-2xl mb-4">{$t("versions")}</h3>
-          <div id="list" class="space-y-2 mb-5" />
+          <div id="list{suffix}" class="space-y-2 mb-5" />
         </div>
       </div>
     </div>
 
     <div class="modal-action">
       <label
-        for="versions"
-        class="btn btn-sm btn-circle absolute right-2 top-2 mb-5">✕</label
+        for="versions{suffix}"
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2 mb-5"
+        >✕</label
       >
     </div>
   </div>
