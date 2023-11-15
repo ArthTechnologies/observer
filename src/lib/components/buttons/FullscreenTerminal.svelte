@@ -83,7 +83,7 @@
       </div>
     </div>
     <input
-      on:keypress={writeCmd}
+      on:input={writeCmd}
       id="input2"
       type="text"
       placeholder={$t("p.enterCommand")}

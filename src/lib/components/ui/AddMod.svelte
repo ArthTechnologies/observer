@@ -148,7 +148,7 @@
     <div>
       <input
         bind:value={query}
-        on:keypress={() => search(tab)}
+        on:input={() => search(tab)}
         type="text"
         placeholder={$t("search")}
         class="searchBar input input-bordered input-sm"

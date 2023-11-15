@@ -94,7 +94,7 @@
       <div>
         <input
           bind:value={query}
-          on:keypress={() => {
+          on:input={() => {
             search(false);
           }}
           type="text"
