@@ -12,7 +12,7 @@ require('@tailwindcss/typography')],
             {
                 dark: {
                     ...require("daisyui/src/theming/themes")[
-                        "[data-theme=dark]"
+                        "dark"
                     ],
                     "color-scheme": "dark",
                     primary: "#088385",
@@ -22,7 +22,6 @@ require('@tailwindcss/typography')],
                     accent: "#1FB2A5",
                     "accent-content": "#ffffff",
                     neutral: "#191D24",
-                    "neutral-focus": "#111318",
                     "neutral-content": "#A6ADBB",
                     "base-100": "#2A303C",
                     "base-200": "#242933",
@@ -32,7 +31,7 @@ require('@tailwindcss/typography')],
                 },
                 light: {
                     ...require("daisyui/src/theming/themes")[
-                        "[data-theme=light]"
+                        "light"
                     ],
                     primary: "#cc4304",
                     secondary: "#088385",
