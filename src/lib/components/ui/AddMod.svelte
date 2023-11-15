@@ -14,6 +14,7 @@
   let version;
   let tab = "mr";
   let skeletonsLength = 15;
+  let allowLoadMore = true;
 
   if (browser) {
     software = localStorage.getItem("serverSoftware");
@@ -58,6 +59,7 @@
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
+          allowLoadMore = response.data.length == 15;
           response.hits.forEach((item) => {
             console.log(numShort(item.downloads));
             mrResults.push({
@@ -76,15 +78,20 @@
           });
         } else if (platform == "cf") {
           skeletonsLength = response.data.length;
+          allowLoadMore = response.data.length == 15;
           response.data.forEach((item) => {
             console.log(item);
             console.log(numShort(item.downloadCount));
+            let author = "Unknown";
+            if (item.authors[0] != undefined) {
+              author = item.authors[0].name;
+            }
             cfResults.push({
               platform: "cf",
               name: item.name,
               desc: item.summary,
               icon: item.logo.thumbnailUrl,
-              author: item.authors[0].name,
+              author: author,
               id: item.id,
               client: null,
               downloads: numShort(item.downloadCount),
@@ -184,14 +191,16 @@
           {/each}
         {/if}
         <div class="flex place-content-center">
-          <p
-            on:click={() => {
-              search(tab, true);
-            }}
-            class=" hover:link text-primary mt-2"
-          >
-            {$t("loadMore")}
-          </p>
+          {#if allowLoadMore}
+            <p
+              on:click={() => {
+                search(tab, true);
+              }}
+              class=" hover:link text-primary mt-2"
+            >
+              {$t("loadMore")}
+            </p>
+          {/if}
         </div>
       {/await}
     </div>
