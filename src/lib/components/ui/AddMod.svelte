@@ -15,6 +15,7 @@
   let tab = "mr";
   let skeletonsLength = 15;
   let allowLoadMore = true;
+  let offset = 0;
 
   if (browser) {
     software = localStorage.getItem("serverSoftware");
@@ -28,12 +29,11 @@
   search("mr");
   search("cf");
   function search(platform: string, loadMore: boolean = false) {
-    let offset = 0;
     if (loadMore) {
       skeletonsLength += 15;
-      offset = skeletonsLength;
+      offset += 15;
     } else {
-      skeletonsLength = 15;
+      if (skeletonsLength > 15) skeletonsLength = 15;
       if (platform == "cf") cfResults = [];
       else if (platform == "mr") mrResults = [];
     }

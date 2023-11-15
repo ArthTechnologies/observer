@@ -13,6 +13,8 @@
   let query = "";
   let tab = "cf";
   let skeletonsLength = 15;
+  let allowLoadMore = true;
+  let offset = 0;
   onMount(() => {
     if (browser) {
       search("mr");
@@ -26,10 +28,10 @@
     }
     let offset = 0;
     if (loadMore) {
-      skeletonsLength += 15;
-      offset = skeletonsLength;
+      skeletonsLength = offset + 15;
+      offset += 15;
     } else {
-      skeletonsLength = 15;
+      if (skeletonsLength > 15) skeletonsLength = 15;
       if (platform == "cf") cfResults = [];
       else if (platform == "mr") mrResults = [];
     }
@@ -173,14 +175,16 @@
         </div>
       {/if}
       <div class="flex place-content-center">
-        <p
-          on:click={() => {
-            search(tab, true);
-          }}
-          class=" hover:link text-primary mt-2"
-        >
-          {$t("loadMore")}
-        </p>
+        {#if allowLoadMore}
+          <p
+            on:click={() => {
+              search(tab, true);
+            }}
+            class=" hover:link text-primary mt-2"
+          >
+            {$t("loadMore")}
+          </p>
+        {/if}
       </div>
     {/await}
   </div>
