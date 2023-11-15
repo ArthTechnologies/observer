@@ -41,8 +41,8 @@
       <div class="h-96">
         <EmailSignin />
       </div>
-      <button class="btn btn-sm mt-3 btn-ghost" href="/reset-password"
-        >{$t("button.forgotPassword")}</button
+      <a class="btn btn-sm mt-3 btn-ghost" href="/reset-password"
+        >{$t("button.forgotPassword")}</a
       >
     </div>
   </div>
