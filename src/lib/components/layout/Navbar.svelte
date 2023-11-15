@@ -113,7 +113,7 @@
 
 {#if navType === "default"}
   <div class="navbar bg-base-300 px-4">
-    <div class="hidden sm:block flex-1">
+    <div class="hidden sm:block flex-1 h-[3rem]">
       <a class="btn btn-ghost normal-case text-xl" href="/"
         ><img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" /></a
       >
