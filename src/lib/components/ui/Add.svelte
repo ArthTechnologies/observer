@@ -9,12 +9,18 @@
   let results = [];
   let query = "";
   let skeletonsLength = 15;
-  let resultGroupsLoaded = 0;
-  function search() {
-    resultGroupsLoaded = 1;
-    skeletonsLength = 15;
+  let allowLoadMore = true;
+  let offset = 0;
+  function search(loadMore = false) {
+    if (loadMore) {
+      skeletonsLength = offset + 15;
+      offset += 15;
+    } else {
+      if (skeletonsLength > 15) skeletonsLength = 15;
+      results = [];
+    }
     console.log("searching" + query);
-    results = [];
+
     if (browser) {
       let software = localStorage.getItem("serverSoftware");
       let version = localStorage.getItem("serverVersion");
@@ -23,9 +29,10 @@
       }
 
       setTimeout(function () {
-        promise = searchPlugins(software, version, query, 0).then(
+        promise = searchPlugins(software, version, query, offset).then(
           (response) => {
             skeletonsLength = response.hits.length;
+            allowLoadMore = response.hits.length == 15;
             response.hits.forEach((item) => {
               results.push({
                 name: item.title,
@@ -41,41 +48,6 @@
         );
       }, 1);
       document.getElementById("plugins").innerHTML = "";
-    }
-  }
-
-  function loadMore() {
-    resultGroupsLoaded++;
-    skeletonsLength = resultGroupsLoaded * 15;
-    console.log("searching" + query);
-    if (browser) {
-      let software = localStorage.getItem("serverSoftware");
-      let version = localStorage.getItem("serverVersion");
-      if (software == "Velocity") {
-        version = localStorage.getItem("latestVersion");
-      }
-
-      setTimeout(function () {
-        promise = searchPlugins(
-          software,
-          version,
-          query,
-          (resultGroupsLoaded - 1) * 15
-        ).then((response) => {
-          skeletonsLength = response.hits.length;
-          response.hits.forEach((item) => {
-            results.push({
-              name: item.title,
-              desc: item.description,
-              icon: item.icon_url,
-              author: item.author,
-              id: item.project_id,
-              downloads: numShort(item.downloads),
-            });
-            console.log(results);
-          });
-        });
-      }, 1);
     }
   }
 
@@ -122,7 +94,9 @@
       <div>
         <input
           bind:value={query}
-          on:keypress={search}
+          on:keypress={() => {
+            search(false);
+          }}
           type="text"
           placeholder={$t("search")}
           class="searchBar input input-bordered input-sm"
@@ -159,9 +133,16 @@
             <PluginResult {...result} />
           {/each}
           <div class="flex place-content-center">
-            <p on:click={loadMore} class=" hover:link text-primary mt-2">
-              {$t("loadMore")}
-            </p>
+            {#if allowLoadMore}
+              <p
+                on:click={() => {
+                  search(true);
+                }}
+                class=" hover:link text-primary mt-2"
+              >
+                {$t("loadMore")}
+              </p>
+            {/if}
           </div>
         {/await}
       </div>

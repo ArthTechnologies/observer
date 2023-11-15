@@ -30,7 +30,7 @@
   search("cf");
   function search(platform: string, loadMore: boolean = false) {
     if (loadMore) {
-      skeletonsLength += 15;
+      skeletonsLength = offset + 15;
       offset += 15;
     } else {
       if (skeletonsLength > 15) skeletonsLength = 15;
@@ -59,7 +59,7 @@
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
-          allowLoadMore = response.data.length == 15;
+          allowLoadMore = response.hits.length == 15;
           response.hits.forEach((item) => {
             console.log(numShort(item.downloads));
             mrResults.push({
