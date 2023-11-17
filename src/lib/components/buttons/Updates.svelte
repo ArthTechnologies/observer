@@ -154,8 +154,11 @@
         {/if}
       </p>
     {/if}
-    <label on:click={update} for="updates" id="confirmBtn" class="btn"
-      >{$t("button.update")}</label
+    <label
+      on:click={update}
+      for="updates"
+      id="confirmBtn"
+      class="btn btn-neutral">{$t("button.update")}</label
     >
   </div>
 </div>
