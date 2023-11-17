@@ -138,8 +138,8 @@
   }
 </script>
 
-<div class="tabs ml-2">
-  <a id="sin" on:click={signIn} class="tab tab-lifted">{$t("signin")}</a>
+<div class="tabs ml-2 tabs-lifted flex items-start">
+  <a id="sin" on:click={signIn} class="tab">{$t("signin")}</a>
   <a id="sup" on:click={signUp} class="tab tab-lifted tab-active"
     >{$t("signup")}</a
   >
