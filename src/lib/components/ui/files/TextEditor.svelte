@@ -29,10 +29,12 @@
     }
   }
 
-  //event listener for 'updatedTextEditor' event
-  document.addEventListener("updatedTextEditor", function (e) {
-    getOrigionalText();
-  });
+  if (browser) {
+    //event listener for 'updatedTextEditor' event
+    document.addEventListener("updatedTextEditor", function (e) {
+      getOrigionalText();
+    });
+  }
 </script>
 
 <textarea
