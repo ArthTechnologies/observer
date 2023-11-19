@@ -13,7 +13,6 @@
   export let desc: string;
   export let icon: string;
   export let platform: string;
-  export let versions: string[] = [];
   export let slug: string;
   export let buttonType: string = "default";
   //the suffix is needed to seperate the modal for a mod search result and a installed mod.
@@ -159,54 +158,47 @@
       });
     } else if (platform == "cf") {
       document.getElementById("list" + suffix).innerHTML = "";
-      if (versions.length == 0) {
-        fetch(apiurl + "curseforge/" + id + "/", {
-          method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            versions = data.latestFiles;
-            appendVersions();
+      fetch(apiurl + "curseforge/" + id + "/versions", {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          data.forEach((version) => {
+            if (
+              version.name != vname &&
+              version.gameVersions.includes(sVersion)
+            ) {
+              vname = version.displayName;
+              console.log(version.releaseType == 1);
+              let type = "release";
+              if (version.releaseType == 1) type = "beta";
+              else if (version.releaseType == 0) type = "alpha";
+              new Version({
+                target: document.getElementById("list" + suffix),
+                props: {
+                  name: version.displayName,
+                  date: version.fileDate,
+                  type: type,
+                  url: version.downloadUrl,
+                  pluginId: id,
+                  pluginName: name,
+                  modtype: "mod",
+                  dependencies: version.dependencies,
+                },
+              });
+            }
           });
-      } else {
-        appendVersions();
-      }
-      function appendVersions() {
-        versions.forEach((version) => {
-          if (
-            version.name != vname &&
-            version.gameVersions.includes(sVersion)
-          ) {
-            vname = version.displayName;
-            console.log(version.releaseType == 1);
-            let type = "release";
-            if (version.releaseType == 1) type = "beta";
-            else if (version.releaseType == 0) type = "alpha";
-            new Version({
-              target: document.getElementById("list" + suffix),
-              props: {
-                name: version.displayName,
-                date: version.fileDate,
-                type: type,
-                url: version.downloadUrl,
-                pluginId: id,
-                pluginName: name,
-                modtype: "mod",
-                dependencies: version.dependencies,
-              },
-            });
+          //if it's still blank, add a message saying that there are no versions for this plugin
+          if (document.getElementById("list" + suffix).innerHTML == "") {
+            document.getElementById("list" + suffix).innerHTML =
+              "<p class='text-center'>" + $t("noVersionsMod") + "</p>";
           }
         });
-        //if it's still blank, add a message saying that there are no versions for this plugin
-        if (document.getElementById("list" + suffix).innerHTML == "") {
-          document.getElementById("list" + suffix).innerHTML =
-            "<p class='text-center'>" + $t("noVersionsMod") + "</p>";
-        }
-      }
     }
   }
 </script>
