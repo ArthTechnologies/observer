@@ -47,10 +47,18 @@
             "https://www.youtube.com/embed",
             "https://www.youtube-nocookie.com/embed"
           );
-          //change height="358" and width="638" (the size of all youtube embeds) to 70% of that
+          data.body = data.body.replaceAll("http://", "https://");
+          let newDimensions = '"height="304" width="542"';
+          if (window.innerWidth < 768) {
+            newDimensions = '"height="198" width="380"';
+          }
           data.body = data.body.replaceAll(
             'height="358" width="638"',
-            'height="304" width="542"'
+            newDimensions
+          );
+          data.body = data.body.replaceAll(
+            'height="360" width="640"',
+            newDimensions
           );
           //make all links open in a new tab
           data.body = data.body.replaceAll(
@@ -94,11 +102,13 @@
             "https://www.youtube.com/embed",
             "https://www.youtube-nocookie.com/embed"
           );
-          //change height="358" and width="638" (the size of all youtube embeds) to 85% of that
-          data = data.replaceAll(
-            'height="358" width="638"',
-            'height="304" width="542"'
-          );
+          data = data.replaceAll("http://", "https://");
+          let newDimensions = '"height="304" width="542"';
+          if (window.innerWidth < 768) {
+            newDimensions = '"height="198" width="380"';
+          }
+          data = data.replaceAll('height="358" width="638"', newDimensions);
+          data = data.replaceAll('height="360" width="640"', newDimensions);
           //make all links open in a new tab
           data = data.replaceAll(
             "href=",
