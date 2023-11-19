@@ -5,12 +5,20 @@
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
   import { numShort } from "$lib/scripts/numShort";
+  import { onMount } from "svelte";
   let promise;
   let results = [];
   let query = "";
   let skeletonsLength = 15;
   let allowLoadMore = true;
   let offset = 0;
+  let sortBy = "relevance";
+  onMount(() => {
+    if (browser) {
+      search(false);
+    }
+  });
+
   function search(loadMore = false) {
     if (loadMore) {
       skeletonsLength = offset + 15;
@@ -18,6 +26,7 @@
     } else {
       if (skeletonsLength > 15) skeletonsLength = 15;
       results = [];
+      offset = 0;
     }
     console.log("searching" + query);
 
@@ -27,26 +36,31 @@
       if (software == "Velocity") {
         version = localStorage.getItem("latestVersion");
       }
+      if (document.getElementById("sortByDropdown") != null) {
+        sortBy = document.getElementById("sortByDropdown").value.toLowerCase();
+      }
+      if (sortBy == "last update") {
+        sortBy = "updated";
+      }
 
-      setTimeout(function () {
-        promise = searchPlugins(software, version, query, offset).then(
-          (response) => {
-            skeletonsLength = response.hits.length;
-            allowLoadMore = response.hits.length == 15;
-            response.hits.forEach((item) => {
-              results.push({
-                name: item.title,
-                desc: item.description,
-                icon: item.icon_url,
-                author: item.author,
-                id: item.project_id,
-                downloads: numShort(item.downloads),
-              });
-              console.log(results);
+      promise = searchPlugins(software, version, query, offset, sortBy).then(
+        (response) => {
+          skeletonsLength = response.hits.length;
+          allowLoadMore = response.hits.length == 15;
+          response.hits.forEach((item) => {
+            results.push({
+              name: item.title,
+              desc: item.description,
+              icon: item.icon_url,
+              author: item.author,
+              id: item.project_id,
+              downloads: numShort(item.downloads),
             });
-          }
-        );
-      }, 1);
+            console.log(results);
+          });
+        }
+      );
+
       document.getElementById("plugins").innerHTML = "";
     }
   }
@@ -91,7 +105,7 @@
       </div>
     </div>
     {#if tab == "mr"}
-      <div>
+      <div class="flex justify-between space-x-2">
         <input
           bind:value={query}
           on:input={() => {
@@ -102,6 +116,19 @@
           class="searchBar input input-bordered input-sm"
           id="search"
         />
+        <div class="flex items-center">
+          Sort By<select
+            id="sortByDropdown"
+            class="select select-sm ml-2 bg-base-300"
+            on:change={() => {
+              search(false);
+            }}
+          >
+            <option>Relevance</option>
+            <option>Downloads</option>
+            <option>Last Update</option></select
+          >
+        </div>
       </div>
       <div id="plugins" class="space-y-2">
         {#await promise}

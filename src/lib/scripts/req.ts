@@ -207,7 +207,8 @@ export function searchPlugins(
   software: string,
   version: string,
   query: string,
-  offset: number
+  offset: number,
+  sortBy: string
 ) {
   if(browser) {
   if (version == "Latest") {
@@ -226,8 +227,9 @@ export function searchPlugins(
     version +
     '"],["server_side:optional","server_side:required"]]' +
     "&limit=15" +
-    "&offset=" + offset;
-
+    "&offset=" + offset +
+    "&index=" + sortBy;
+    console.log(url)
   if (!lock) {
     return fetch(url, GET)
       .then((res) => res.text())
@@ -250,11 +252,13 @@ export function searchMods(
   version: string,
   query: string,
   modtype: string,
-  offset: number
+  offset: number,
+  sortBy: string
 ) {
   if(browser) {
       if (version == "Latest") {
     version = "1.19.3";
+
   }
   query = query.replace(" ", "-");
   let url;
@@ -273,8 +277,22 @@ export function searchMods(
     version +
     '"],["server_side:optional","server_side:required"]]' +
     "&limit=15" +
-    "&offset=" + offset;
+    "&offset=" + offset +
+    "&index=" + sortBy;
   } else if (platform == "cf") {
+    let sf = 0;
+    switch (sortBy) {
+      case "relevance":
+        sf = 1;
+        break;
+      case "downloads":
+        sf = 6;
+        break;
+      case "updated":
+        sf = 3;
+        break;
+    }
+
     let classId = 6;
     if (modtype == "modpack") {
      classId = 4471;
@@ -290,7 +308,8 @@ export function searchMods(
     software +
     '&classId=' +
     classId +
-    '&index=' + offset;
+    '&index=' + offset +
+    "&sortField=" + sf;
   }
 
   if (!lock) {

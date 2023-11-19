@@ -15,6 +15,7 @@
   let skeletonsLength = 15;
   let allowLoadMore = true;
   let offset = 0;
+  let sortBy = "relevance";
   onMount(() => {
     if (browser) {
       search("mr");
@@ -26,7 +27,7 @@
     if (platform != "cf" && platform != "mr") {
       platform = tab;
     }
-    let offset = 0;
+    offset = 0;
     if (loadMore) {
       skeletonsLength = offset + 15;
       offset += 15;
@@ -40,52 +41,57 @@
         .getElementById("softwareDropdown")
         .value.toLowerCase();
       let version = document.getElementById("versionDropdown").value;
+      if (document.getElementById("sortByDropdown") != null) {
+        sortBy = document.getElementById("sortByDropdown").value.toLowerCase();
+      }
+      if (sortBy == "last update") {
+        sortBy = "updated";
+      }
 
-      setTimeout(function () {
-        promise = searchMods(
-          platform,
-          software,
-          version,
-          query,
-          "modpack",
-          offset
-        ).then((response) => {
-          if (platform == "mr") {
-            skeletonsLength = response.hits.length;
-            response.hits.forEach((item) => {
-              mrResults.push({
-                name: item.title,
-                desc: item.description,
-                icon: item.icon_url,
-                author: item.author,
-                id: item.project_id,
-                client: item.client_side,
-                downloads: numShort(item.downloads),
-                platform: "mr",
-                versions: [],
-                slug: item.slug,
-              });
-              console.log(mrResults);
+      promise = searchMods(
+        platform,
+        software,
+        version,
+        query,
+        "modpack",
+        offset,
+        sortBy
+      ).then((response) => {
+        if (platform == "mr") {
+          skeletonsLength = response.hits.length;
+          response.hits.forEach((item) => {
+            mrResults.push({
+              name: item.title,
+              desc: item.description,
+              icon: item.icon_url,
+              author: item.author,
+              id: item.project_id,
+              client: item.client_side,
+              downloads: numShort(item.downloads),
+              platform: "mr",
+              versions: [],
+              slug: item.slug,
             });
-          } else if (platform == "cf") {
-            skeletonsLength = response.data.length;
-            response.data.forEach((item) => {
-              cfResults.push({
-                platform: "cf",
-                name: item.name,
-                desc: item.summary,
-                icon: item.logo.thumbnailUrl,
-                author: item.authors[0].name,
-                id: item.id,
-                client: null,
-                downloads: numShort(item.downloadCount),
-                versions: item.latestFiles,
-                slug: item.slug,
-              });
+            console.log(mrResults);
+          });
+        } else if (platform == "cf") {
+          skeletonsLength = response.data.length;
+          response.data.forEach((item) => {
+            cfResults.push({
+              platform: "cf",
+              name: item.name,
+              desc: item.summary,
+              icon: item.logo.thumbnailUrl,
+              author: item.authors[0].name,
+              id: item.id,
+              client: null,
+              downloads: numShort(item.downloadCount),
+              versions: item.latestFiles,
+              slug: item.slug,
             });
-          }
-        });
-      }, 1);
+          });
+        }
+      });
     }
   }
 
@@ -126,7 +132,7 @@
         <button id="cf" on:click={cf} class="tab tab-active">Curseforge</button>
       </div>
     </div>
-    <div>
+    <div class="flex justify-between space-x-2">
       <input
         bind:value={query}
         on:input={() => search(tab)}
@@ -135,6 +141,17 @@
         class="searchBar input input-bordered input-sm"
         id="search"
       />
+      <div class="flex items-center">
+        Sort By<select
+          id="sortByDropdown"
+          class="select select-sm ml-2 bg-base-300"
+          on:change={() => search(tab)}
+        >
+          <option>Relevance</option>
+          <option>Downloads</option>
+          <option>Last Update</option></select
+        >
+      </div>
     </div>
     {#await promise}
       {#each Array.from({ length: skeletonsLength }) as _}

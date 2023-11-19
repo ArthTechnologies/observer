@@ -16,6 +16,7 @@
   let skeletonsLength = 15;
   let allowLoadMore = true;
   let offset = 0;
+  let sortBy = "relevance";
 
   if (browser) {
     software = localStorage.getItem("serverSoftware");
@@ -48,14 +49,20 @@
       }
 
       promise = null;
-
+      if (document.getElementById("sortByDropdown") != null) {
+        sortBy = document.getElementById("sortByDropdown").value.toLowerCase();
+      }
+      if (sortBy == "last update") {
+        sortBy = "updated";
+      }
       promise = searchMods(
         platform,
         software,
         version,
         query,
         "mod",
-        offset
+        offset,
+        sortBy
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
@@ -145,7 +152,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="flex justify-between space-x-2">
       <input
         bind:value={query}
         on:input={() => search(tab)}
@@ -154,6 +161,17 @@
         class="searchBar input input-bordered input-sm"
         id="search"
       />
+      <div class="flex items-center">
+        Sort By<select
+          id="sortByDropdown"
+          class="select select-sm ml-2 bg-base-300"
+          on:change={() => search(tab)}
+        >
+          <option>Relevance</option>
+          <option>Downloads</option>
+          <option>Last Update</option></select
+        >
+      </div>
     </div>
     <div id="mods" class="space-y-2">
       {#await promise}
