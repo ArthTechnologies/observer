@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sendVersion } from "$lib/scripts/req";
+  import { apiurl, sendVersion } from "$lib/scripts/req";
 
   import { browser } from "$app/environment";
   import { AlertCircle, Check, Clock, Plus } from "lucide-svelte";
@@ -13,6 +13,7 @@
   export let pluginName: string;
   export let modtype: string;
   export let dependencies: string[] = [];
+  export let platform: string = "mr";
   if (type == "release") {
     type = "";
   } else if (type == "beta") {
@@ -35,14 +36,23 @@
   }
   console.log(dependencies);
   for (let i in dependencies) {
-    //GET https://api.modrinth.com/v2/project/{depencencies[i].project_id}
+    if (platform == "mr") {
+      //GET https://api.modrinth.com/v2/project/{depencencies[i].project_id}
 
-    fetch("https://api.modrinth.com/v2/project/" + dependencies[i].project_id)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        dependencies[i].name = data.title;
-      });
+      fetch("https://api.modrinth.com/v2/project/" + dependencies[i].project_id)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          dependencies[i].name = data.title;
+        });
+    } else {
+      fetch(apiurl + "curseforge/" + dependencies[i].modId)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          dependencies[i].name = data.name;
+        });
+    }
   }
 </script>
 

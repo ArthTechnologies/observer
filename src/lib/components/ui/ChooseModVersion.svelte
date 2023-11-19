@@ -189,6 +189,7 @@
                   pluginName: name,
                   modtype: "mod",
                   dependencies: version.dependencies,
+                  platform: "cf",
                 },
               });
             }
