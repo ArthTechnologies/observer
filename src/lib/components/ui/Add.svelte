@@ -113,7 +113,7 @@
           }}
           type="text"
           placeholder={$t("search")}
-          class="searchBar input input-bordered input-sm"
+          class="searchBar input input-bordered input-sm max-sm:w-32"
           id="search"
         />
         <div class="flex items-center">

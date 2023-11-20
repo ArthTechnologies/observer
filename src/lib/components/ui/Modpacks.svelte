@@ -138,7 +138,7 @@
         on:input={() => search(tab)}
         type="text"
         placeholder="{$t('search')} Modrinth"
-        class="searchBar input input-bordered input-sm"
+        class="searchBar input input-bordered input-sm max-sm:w-32"
         id="search"
       />
       <div class="flex items-center">
