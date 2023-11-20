@@ -107,7 +107,7 @@
             </div>
           {/if}
           <div
-            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[5rem] md:w-auto"
+            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[6rem] md:w-auto"
           >
             <Download class="mr-1.5" size="16" />
             {downloads}
