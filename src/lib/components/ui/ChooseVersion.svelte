@@ -167,7 +167,7 @@
                   id="pluginTitle"
                   href="https://modrinth.com/plugin/{id}"
                   target="_blank"
-                  class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+                  class="flex hover:link text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
                   >{name}</a
                 >
                 <div class="flex space-x-1 place-items-end">
@@ -176,7 +176,7 @@
                     id="pluginAuthor"
                     href="https://curseforge.com/member/{author}"
                     target="_blank"
-                    class="link link-hover">{author}</a
+                    class="hover:link">{author}</a
                   >
                 </div>
               </div>

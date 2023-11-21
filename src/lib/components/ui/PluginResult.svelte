@@ -45,14 +45,14 @@
           <a
             href="https://modrinth.com/plugin/{id}"
             target="_blank"
-            class="link link-hover text-xl font-bold md:w-auto">{name}</a
+            class="hover:link text-xl font-bold md:w-auto">{name}</a
           >
 
           {$t("by")}
           <a
             href="https://modrinth.com/user/{author}"
             target="_blank"
-            class="link link-hover">{author}</a
+            class="hover:link">{author}</a
           >
         </p>
 

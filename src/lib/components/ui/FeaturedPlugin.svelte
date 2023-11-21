@@ -57,12 +57,12 @@
           <a
             href="https://github.com/{pluginId}/#readme"
             target="_blank"
-            class=" flex link link-hover text-xl font-bold md:w-auto break-all sm:break-works"
+            class=" flex hover:link text-xl font-bold md:w-auto break-all sm:break-works"
             >{name}
           </a>
           <div class="flex space-x-1 place-items-end">
             <p>{$t("by")}</p>
-            <a href={authorLink} target="_blank" class="flex link link-hover"
+            <a href={authorLink} target="_blank" class="flex hover:link"
               >{author}
             </a>
             {#if disclaimer != ""}

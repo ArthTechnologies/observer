@@ -73,27 +73,27 @@
             <a
               href="https://modrinth.com/mod/{slug}"
               target="_blank"
-              class="link link-hover text-xl font-bold md:w-auto break-all sm:break-works"
+              class="hover:link text-xl font-bold md:w-auto break-all sm:break-works"
               >{name}</a
             >
             {$t("by")}
             <a
               href="https://modrinth.com/user/{author}"
               target="_blank"
-              class="link link-hover">{author}</a
+              class="hover:link">{author}</a
             >
           {:else if platform == "cf"}
             <a
               href="https://curseforge.com/minecraft/modpacks/{slug}"
               target="_blank"
-              class="link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+              class="hover:link text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
               >{name}</a
             >
             {$t("by")}
             <a
               href="https://curseforge.com/members/{author}"
               target="_blank"
-              class="link link-hover">{author}</a
+              class="hover:link">{author}</a
             >
           {/if}
         </div>

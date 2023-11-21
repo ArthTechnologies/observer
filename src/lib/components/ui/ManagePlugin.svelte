@@ -209,7 +209,7 @@
                       <a
                         href="https://modrinth.com/plugin/{slug}"
                         target="_blank"
-                        class="link link-hover text-xl font-bold">{name}</a
+                        class="hover:link text-xl font-bold">{name}</a
                       >
                     {/if}
                     <div class="flex space-x-1">
@@ -217,7 +217,7 @@
                       <a
                         href="https://modrinth.com/user/{author}"
                         target="_blank"
-                        class="link link-hover">{author}</a
+                        class="hover:link">{author}</a
                       >
                     </div>
                     <img
@@ -250,7 +250,7 @@
                       <a
                         href="https://curseforge.com/minecraft/mc-mods/{slug}"
                         target="_blank"
-                        class="link link-hover text-xl font-bold">{name}</a
+                        class="hover:link text-xl font-bold">{name}</a
                       >
                     {/if}
                     <div class="flex space-x-1">
@@ -258,7 +258,7 @@
                       <a
                         href="https://curseforge.com/members/{author}"
                         target="_blank"
-                        class="link link-hover">{author}</a
+                        class="hover:link">{author}</a
                       >
                     </div>
                     <img
@@ -285,7 +285,7 @@
                   <a
                     href="https://github.com/{id}"
                     target="_blank"
-                    class="link link-hover text-xl font-bold">{name}</a
+                    class="hover:link text-xl font-bold">{name}</a
                   >
                   <div class="flex space-x-1.5 place-items-end">
                     <div class="flex space-x-1">
@@ -293,7 +293,7 @@
                       <a
                         href="https://github.com/{author}"
                         target="_blank"
-                        class="link link-hover">{author}</a
+                        class="hover:link">{author}</a
                       >
                     </div>
                     <img src="https://github.com/favicon.ico" width="24" />
@@ -320,7 +320,7 @@
                       <a
                         href="https://geysermc.org"
                         target="_blank"
-                        class="link link-hover">GeyserMC</a
+                        class="hover:link">GeyserMC</a
                       >
                     </div>
                   {:else}

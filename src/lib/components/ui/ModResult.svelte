@@ -63,27 +63,27 @@
             <a
               href="https://modrinth.com/mod/{slug}"
               target="_blank"
-              class="link link-hover text-xl font-bold">{name}</a
+              class="hover:link text-xl font-bold">{name}</a
             >
 
             {$t("by")}
             <a
               href="https://modrinth.com/user/{author}"
               target="_blank"
-              class="link link-hover">{author}</a
+              class="hover:link">{author}</a
             >
           {:else if platform == "cf"}
             <a
               href="https://curseforge.com/minecraft/mc-mods/{slug}"
               target="_blank"
-              class="link link-hover text-xl font-bold">{name}</a
+              class="hover:link text-xl font-bold">{name}</a
             >
 
             {$t("by")}
             <a
               href="https://curseforge.com/members/{author}"
               target="_blank"
-              class="link link-hover">{author}</a
+              class="hover:link">{author}</a
             >
           {/if}
         </div>
