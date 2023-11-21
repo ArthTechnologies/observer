@@ -277,7 +277,7 @@
             <div class="flex justify-center">
               {#each worldgenMods as item, i}
                 <div
-                  class="flex flex-col items-center tooltip tooltip-right z-[{i}]"
+                  class="flex flex-col items-center md:tooltip tooltip-right"
                   data-tip={item.tooltip}
                 >
                   <img
