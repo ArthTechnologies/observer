@@ -106,17 +106,27 @@
   }
 </script>
 
-<label for="versionsModal" class="btn btn-neutral" on:click={onclick}
+<label
+  for="versionsmodal"
+  style="margin:0rem;"
+  class="btn btn-neutral"
+  on:click={onclick}
   ><ArrowDownCircle class="mr-2.5" />
   {$t("button.versions")}</label
 >
 
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id="versionsModal" class="modal-toggle" />
-<div class="modal">
+<input
+  type="checkbox"
+  id="versionsmodal"
+  style="margin:0rem;"
+  class="modal-toggle"
+/>
+<div class="modal" style="margin:0rem;">
   <div class="modal-box bg-opacity-95 backdrop-blur relative">
     <label
-      for="versionsModal"
+      for="versionsmodal"
+      style="margin:0rem;"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
 
@@ -172,14 +182,16 @@
     {#if updateReady}
       <label
         on:click={update}
-        for="versionsModal"
+        for="versionsmodal"
+        style="margin:0rem;"
         id="confirmBtn"
         class="btn btn-neutral">{$t("versions.title")}</label
       >
     {:else}
       <label
         on:click={update}
-        for="versionsModal"
+        for="versionsmodal"
+        style="margin:0rem;"
         id="confirmBtn"
         class="btn btn-disabled">{$t("versions.title")}</label
       >

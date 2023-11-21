@@ -37,7 +37,7 @@
   >{$t("account.button.deleteAccount")}</label
 >
 <input type="checkbox" id="deleteAccount" class="modal-toggle" />
-<div class="modal">
+<div class="modal" style="margin:0rem;">
   <div class="modal-box bg-opacity-95 backdrop-blur relative">
     <label
       for="deleteAccount"

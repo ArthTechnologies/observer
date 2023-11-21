@@ -31,7 +31,7 @@
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="delete" class="modal-toggle" />
-<div class="modal">
+<div class="modal" style="margin:0rem;">
   <div class="modal-box bg-opacity-95 backdrop-blur relative">
     <label
       for="delete"

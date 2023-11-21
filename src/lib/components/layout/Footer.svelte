@@ -12,6 +12,7 @@
   <div class="items-center grid-flow-col" />
   <label
     for="support-modal"
+    style="margin:0rem;"
     class="btn btn-sm btn-ghost flex items-center justify-self-end"
   >
     <svg
@@ -33,11 +34,17 @@
 </footer>
 
 <!-- Support Modal -->
-<input type="checkbox" id="support-modal" class="modal-toggle" />
-<div class="modal">
+<input
+  type="checkbox"
+  id="support-modal"
+  style="margin:0rem;"
+  class="modal-toggle"
+/>
+<div class="modal" style="margin:0rem;">
   <div class="modal-box bg-opacity-95 backdrop-blur relative">
     <label
       for="support-modal"
+      style="margin:0rem;"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
     <h3 class="text-2xl font-bold mb-2">{$t("help.title")}</h3>

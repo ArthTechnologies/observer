@@ -79,16 +79,22 @@
   }
 </script>
 
-<label for="historyModal" class="btn btn-neutral btn-sm">
+<label for="historymodal" style="margin:0rem;" class="btn btn-neutral btn-sm">
   <History />
   <p class="ml-1.5">History</p>
 </label>
 
-<input type="checkbox" id="historyModal" class="modal-toggle" />
-<div class="modal">
+<input
+  type="checkbox"
+  id="historymodal"
+  style="margin:0rem;"
+  class="modal-toggle"
+/>
+<div class="modal" style="margin:0rem;">
   <div class="modal-box bg-opacity-95 backdrop-blur relative">
     <label
-      for="historyModal"
+      for="historymodal"
+      style="margin:0rem;"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
 

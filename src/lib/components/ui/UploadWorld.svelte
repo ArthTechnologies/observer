@@ -8,7 +8,7 @@
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="upload-world" class="modal-toggle" />
-<div class="modal">
+<div class="modal" style="margin:0rem;">
   <div
     class="modal-box bg-opacity-95 backdrop-blur relative flex flex-col space-y-3"
   >
