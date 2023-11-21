@@ -135,19 +135,19 @@
           {#each Array.from({ length: skeletonsLength }) as _}
             <div class="bg-base-200 h-[6.875rem] p-3 rounded-lg flex space-x-3">
               <div
-                class="w-14 h-14 md:w-20 md:h-20 bg-slate-700 animate-pulse w-[3.35rem] h-14 rounded-lg"
+                class="w-16 h-16 shrink-0 md:w-20 md:h-20 bg-slate-700 animate-pulse rounded-lg"
               />
               <div class="flex flex-col justify-between pt-1.5 pb-0.5">
                 <div class="flex space-x-1 items-end">
                   <div
-                    class="bg-slate-700 animate-pulse w-[10rem] h-4 rounded-lg"
+                    class="bg-slate-700 animate-pulse w-[7rem] md:w-[10rem] h-4 rounded-lg"
                   />
                   <div
-                    class="bg-slate-700 animate-pulse w-[5rem] h-3 rounded-lg"
+                    class="bg-slate-700 animate-pulse w-[3rem] md:w-[5rem] h-3 rounded-lg"
                   />
                 </div>
                 <div
-                  class="bg-slate-700 animate-pulse w-[17.5rem] h-3.5 rounded-lg"
+                  class="bg-slate-700 animate-pulse w-[12.5rem] md:w-[17.5rem] h-3.5 rounded-lg"
                 />
                 <div
                   class="bg-slate-700 animate-pulse w-[5.68rem] h-7 rounded-lg"
