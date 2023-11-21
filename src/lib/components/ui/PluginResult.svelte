@@ -28,31 +28,34 @@
 
 <div class="bg-base-200 rounded-lg p-3">
   <div class="flex justify-between place-items-center max-w-full relative">
-    <div class="flex space-x-3 flex-shrink-0 w-minus-7">
-      <a href="https://modrinth.com/plugin/{id}" target="_blank">
+    <div class="flex space-x-3 w-minus-7">
+      <a
+        class="shrink-0"
+        href="https://modrinth.com/plugin/{id}"
+        target="_blank"
+      >
         <img
           src={icon}
           alt="noicon"
-          class="w-14 h-14 md:w-[5.4rem] md:h-20 bg-base-300 rounded-lg text-sm"
+          class="w-16 h-16 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm"
         />
       </a>
-      <div class="max-w-full w-minus-7">
-        <div class="sm:flex gap-1 max-w-full">
+      <div class="w-minus-7">
+        <p class="w-minus-5">
           <a
             href="https://modrinth.com/plugin/{id}"
             target="_blank"
-            class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
-            >{name}</a
+            class="link link-hover text-xl font-bold md:w-auto">{name}</a
           >
-          <div class="flex space-x-1 place-items-end">
-            <p>{$t("by")}</p>
-            <a
-              href="https://modrinth.com/user/{author}"
-              target="_blank"
-              class="link link-hover">{author}</a
-            >
-          </div>
-        </div>
+
+          {$t("by")}
+          <a
+            href="https://modrinth.com/user/{author}"
+            target="_blank"
+            class="link link-hover">{author}</a
+          >
+        </p>
+
         <p class="w-minus-7">
           {desc}
         </p>

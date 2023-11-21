@@ -137,7 +137,7 @@
         bind:value={query}
         on:input={() => search(tab)}
         type="text"
-        placeholder="{$t('search')} Modrinth"
+        placeholder={$t("search")}
         class="searchBar input input-bordered input-sm max-sm:w-32"
         id="search"
       />
