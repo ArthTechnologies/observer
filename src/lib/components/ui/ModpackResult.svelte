@@ -73,8 +73,7 @@
             <a
               href="https://modrinth.com/mod/{slug}"
               target="_blank"
-              class="hover:link text-xl font-bold md:w-auto break-all sm:break-works"
-              >{name}</a
+              class="hover:link text-xl font-bold md:w-auto">{name}</a
             >
             {$t("by")}
             <a
@@ -86,8 +85,7 @@
             <a
               href="https://curseforge.com/minecraft/modpacks/{slug}"
               target="_blank"
-              class="hover:link text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
-              >{name}</a
+              class="hover:link text-xl font-bold w-[10rem] md:w-auto">{name}</a
             >
             {$t("by")}
             <a
