@@ -67,7 +67,9 @@
   class="modal-toggle"
   on:click={correctScroll}
 />
-<div class="modal bg-base-100 h-screen w-screen">
+<div
+  class="modal bg-base-100 h-screen w-screen max-sm:items-start items-center"
+>
   <div
     class="flex flex-col space-y-3 items-center m-2.5 md:m-5 w-full px-[1rem] md:px-[5rem] md:py-[2rem]"
   >
