@@ -173,7 +173,7 @@
           desc="Blazingly fast world manipulation for artists, builders and everyone else."
           icon="https://cdn.modrinth.com/data/z4HZZnLr/1dab3e5596f37ade9a65f3587254ff61a9cf3c43.svg"
           id="z4HZZnLr"
-          downloads="9.6k"
+          downloads="null"
         />
       </div>
     {/if}

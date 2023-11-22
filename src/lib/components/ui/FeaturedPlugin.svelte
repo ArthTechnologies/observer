@@ -34,7 +34,7 @@
 
     let plId = pluginId.replace(/\//g, "_");
 
-    sendVersion(link, id, "gh_" + plId, name);
+    sendVersion(link, id, "gh_" + plId, name, "plugin");
   }
 </script>
 

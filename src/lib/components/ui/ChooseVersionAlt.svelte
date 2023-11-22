@@ -62,7 +62,7 @@
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="versionsAlt" class="modal-toggle" />
-<div class="modal flex flex-col justify-center">
+<div class="modal flex flex-col justify-center" style="margin:0rem;">
   <div
     class="modal-box bg-opacity-[.975] backdrop-blur w-[97%] h-[97%] max-w-5xl space-y-5"
   >

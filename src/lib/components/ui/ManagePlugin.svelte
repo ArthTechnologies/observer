@@ -145,35 +145,74 @@
   <div
     class="px-3 py-2 rounded-t-lg bg-base-300 flex justify-between items-center"
   >
-    <div class="flex items-center space-x-1 break-all">
-      <p>{filename}</p>
-      <button
-        on:click={() => {
-          del(filename);
-        }}
-        class="btn btn-xs btn-error mt-0.5 btn-square"
-      >
-        <Trash2 size="15" /></button
-      >
-      <button class="btn btn-xs btn-ghost mt-0.5" on:click={toggleDisable}>
-        {disableText}
-      </button>
-      {#await promise then}
-        {#if modtype == "plugin" && (platform == "cf" || platform == "lr")}
-          <ChooseVersion {id} {name} {author} {desc} {icon} buttonType="2" />
-        {:else if modtype == "mod"}
-          <ChooseModVersion
-            {id}
-            {name}
-            {author}
-            {desc}
-            {icon}
-            {platform}
-            {slug}
-            buttonType="2"
+    <div class="sm:flex items-center gap-1 break-all">
+      <div class="flex mr-1 items-center">
+        {name}
+        {#if platform == "lr"}
+          <img
+            class="ml-1.5 h-6"
+            src="https://github.com/modrinth/art/blob/main/Branding/Mark/mark-dark__32x32.png?raw=true"
+            width="24"
+            height="24"
+          />
+        {:else if platform == "cf"}
+          <img
+            class="ml-1.5 h-6"
+            src="https://static-beta.curseforge.com/images/favicon.ico"
+            width="24"
+            height="24"
+          />
+        {:else if platform == "gh"}
+          <img
+            class="ml-1.5 h-6"
+            src="https://github.githubassets.com/favicons/favicon.svg"
+            width="24"
+            height="24"
+          />
+        {:else if platform == "cx"}
+          <img
+            class="ml-1.5 h-6"
+            src="https://geysermc.org/favicon.ico"
+            width="24"
+            height="24"
           />
         {/if}
-      {/await}
+      </div>
+
+      <div class="flex items-center space-x-1 max-sm:mt-0.5">
+        <button
+          on:click={() => {
+            del(filename);
+          }}
+          class="btn btn-xs btn-error mt-0.5 btn-square"
+        >
+          <Trash2 size="15" /></button
+        >
+        <button class="btn btn-xs btn-ghost mt-0.5" on:click={toggleDisable}>
+          {disableText}
+        </button>
+
+        {#await promise}
+          <div
+            class="bg-slate-700 animate-pulse h-[1.5rem] w-[4.82rem] rounded-lg"
+          />
+        {:then}
+          {#if modtype == "plugin" && (platform == "cf" || platform == "lr")}
+            <ChooseVersion {id} {name} {author} {desc} {icon} buttonType="2" />
+          {:else if modtype == "mod"}
+            <ChooseModVersion
+              {id}
+              {name}
+              {author}
+              {desc}
+              {icon}
+              {platform}
+              {slug}
+              buttonType="2"
+            />
+          {/if}
+        {/await}
+      </div>
     </div>
 
     <div class="flex items-center space-x-1">
@@ -193,14 +232,19 @@
     </div>
   </div>
   {#if showInfo === true}
-    <div class="bg-base-200 rounded-b-lg px-1.5 pt-2.5 pb-2.5 space-x-1">
+    <div
+      class="bg-base-200 rounded-b-lg px-1.5 pt-2.5 pb-2.5 space-x-1 relative"
+    >
+      <div class="absolute bottom-2 md:top-2 right-2 text-sm text-[#767c87]">
+        {filename}
+      </div>
       <div class="px-1.5">
         {#if platform == "lr"}
           <div class="flex justify-between place-items-center">
             <div class="flex space-x-3">
               <div>
                 <div class="flex space-x-1">
-                  <div class="flex space-x-1.5 place-items-end">
+                  <div>
                     {#if name == id}
                       <div
                         class="h-6 w-16 animate-pulse bg-slate-600 rounded-lg"
@@ -212,20 +256,15 @@
                         class="hover:link text-xl font-bold">{name}</a
                       >
                     {/if}
-                    <div class="flex space-x-1">
-                      <p>{$t("by")}</p>
-                      <a
-                        href="https://modrinth.com/user/{author}"
-                        target="_blank"
-                        class="hover:link">{author}</a
-                      >
-                    </div>
-                    <img
-                      src="https://github.com/modrinth/art/blob/main/Branding/Mark/mark-dark__32x32.png?raw=true"
-                      width="24"
-                    />
+
+                    {$t("by")}
+                    <a
+                      href="https://modrinth.com/user/{author}"
+                      target="_blank"
+                      class="hover:link"
+                      >{author}
+                    </a>
                   </div>
-                  <div class="" />
                 </div>
               </div>
             </div>
@@ -241,7 +280,7 @@
             <div class="flex space-x-3">
               <div>
                 <div class="flex space-x-1">
-                  <div class="flex space-x-1.5 place-items-end">
+                  <div>
                     {#if name == id}
                       <div
                         class="h-6 w-16 animate-pulse bg-slate-600 rounded-lg"
@@ -253,20 +292,15 @@
                         class="hover:link text-xl font-bold">{name}</a
                       >
                     {/if}
-                    <div class="flex space-x-1">
-                      <p>{$t("by")}</p>
-                      <a
-                        href="https://curseforge.com/members/{author}"
-                        target="_blank"
-                        class="hover:link">{author}</a
-                      >
-                    </div>
-                    <img
-                      src="https://static-beta.curseforge.com/images/favicon.ico"
-                      width="24"
-                    />
+
+                    {$t("by")}
+                    <a
+                      href="https://curseforge.com/members/{author}"
+                      target="_blank"
+                      class="hover:link"
+                      >{author}
+                    </a>
                   </div>
-                  <div class="" />
                 </div>
               </div>
             </div>
@@ -282,21 +316,26 @@
             <div class="flex space-x-3">
               <div>
                 <div class="flex space-x-1">
-                  <a
-                    href="https://github.com/{id}"
-                    target="_blank"
-                    class="hover:link text-xl font-bold">{name}</a
-                  >
-                  <div class="flex space-x-1.5 place-items-end">
-                    <div class="flex space-x-1">
-                      <p>{$t("by")}</p>
+                  <div>
+                    {#if name == id}
+                      <div
+                        class="h-6 w-16 animate-pulse bg-slate-600 rounded-lg"
+                      />
+                    {:else}
                       <a
-                        href="https://github.com/{author}"
+                        href="https://github.com/{id}"
                         target="_blank"
-                        class="hover:link">{author}</a
+                        class="hover:link text-xl font-bold">{name}</a
                       >
-                    </div>
-                    <img src="https://github.com/favicon.ico" width="24" />
+                    {/if}
+
+                    {$t("by")}
+                    <a
+                      href="https://github.com/{author}"
+                      target="_blank"
+                      class="hover:link"
+                      >{author}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -312,28 +351,19 @@
           <div class="flex justify-between place-items-center">
             <div class="flex space-x-3">
               <div>
-                <div class="flex space-x-1">
+                <div>
                   {#if name == "Geyser" || name == "Floodgate"}
-                    <p class="text-xl font-bold">{name}</p>
-                    <div class=" flex space-x-1 place-items-end">
-                      <p>{$t("by")}</p>
-                      <a
-                        href="https://geysermc.org"
-                        target="_blank"
-                        class="hover:link">GeyserMC</a
-                      >
-                    </div>
+                    <span class="text-xl font-bold">{name}</span>
+
+                    {$t("by")}
+                    <a
+                      href="https://geysermc.org"
+                      target="_blank"
+                      class="hover:link">GeyserMC</a
+                    >
                   {:else}
                     <p class="text-xl font-bold">{name}</p>
-                    <div class=" flex space-x-1 place-items-end" />
                   {/if}
-                  <div class="flex space-x-1.5 place-items-end">
-                    <img
-                      src="https://arthmc.xyz/favicon.png"
-                      width="24"
-                      class="ml-0.5 mb-0.5"
-                    />
-                  </div>
                 </div>
               </div>
             </div>
@@ -346,7 +376,7 @@
           </div>
         {/if}
 
-        <div>
+        <div class="max-md:mb-5">
           {desc}
         </div>
       </div>

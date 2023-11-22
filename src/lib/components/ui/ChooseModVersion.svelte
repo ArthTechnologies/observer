@@ -231,7 +231,7 @@
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="versions{suffix}" class="modal-toggle" />
-<div class="modal flex flex-col justify-center">
+<div class="modal flex flex-col justify-center" style="margin:0rem;">
   <div class="modal-box w-[97%] h-[97%] max-w-5xl space-y-5">
     <div class="pt-6">
       <!-- Plugin Result cannot be imported due to a bug where it always says 'Simple Voice Chat'-->

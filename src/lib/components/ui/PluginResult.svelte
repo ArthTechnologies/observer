@@ -62,12 +62,15 @@
         <div
           class="md:flex space-x-0 md:space-x-2 space-y-2 md:space-y-0 items-center mt-1.5"
         >
-          <div
-            class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[5rem] md:w-auto"
-          >
-            <Download class="mr-1.5" size="16" />
-            {downloads}
-          </div>
+          {#if downloads != "null"}
+            <div
+              class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[5rem] md:w-auto"
+            >
+              <Download class="mr-1.5" size="16" />
+
+              {downloads}
+            </div>
+          {/if}
         </div>
       </div>
     </div>
