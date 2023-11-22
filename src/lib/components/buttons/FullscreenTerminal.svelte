@@ -56,7 +56,7 @@
 </script>
 
 <label for="fullscreenTerminal"
-  ><div class="btn btn-neutral btn-sm btn-circle absolute right-2 bottom-2">
+  ><div class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2 z-20">
     <Maximize2 size="17" />
   </div></label
 >
@@ -68,18 +68,22 @@
   on:click={correctScroll}
 />
 <div class="modal bg-base-100 h-screen w-screen">
-  <div class="flex flex-col space-y-3 items-center m-2.5 md:m-5 w-full">
-    <div
-      id="terminalContainer2"
-      class="p-5 bg-base-300 rounded-xl shadow-xl overflow-auto max-sm:-mt-8 h-[78vh] md:h-[90vh] rounded-xl w-full"
-    >
-      <div class=" sm:text-xs xl:text-base font-mono relative">
+  <div
+    class="flex flex-col space-y-3 items-center m-2.5 md:m-5 w-full px-[1rem] md:px-[5rem] md:py-[2rem]"
+  >
+    <div id="terminalContainerContainer2" class="relative">
+      <div
+        id="terminalContainer2"
+        class="p-5 bg-base-300 rounded-xl shadow-xl overflow-auto h-[87vh] md:h-[85vh] rounded-xl"
+      >
         <label
           for="fullscreenTerminal"
-          class="btn btn-neutral btn-sm btn-circle absolute right-0 bottom-0"
+          class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
           ><Minimize2 size="17" /></label
         >
-        <p id="terminal2" />
+        <div class=" sm:text-xs xl:text-base font-mono">
+          <p id="terminal2" />
+        </div>
       </div>
     </div>
     <input
