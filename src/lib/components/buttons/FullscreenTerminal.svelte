@@ -71,10 +71,10 @@
   <div
     class="flex flex-col space-y-3 items-center m-2.5 md:m-5 w-full px-[1rem] md:px-[5rem] md:py-[2rem]"
   >
-    <div id="terminalContainerContainer2" class="relative">
+    <div id="terminalContainerContainer2" class="relative w-full">
       <div
         id="terminalContainer2"
-        class="p-5 bg-base-300 rounded-xl shadow-xl overflow-auto h-[87vh] md:h-[85vh] rounded-xl"
+        class="p-5 bg-base-300 rounded-xl shadow-xl overflow-auto h-[80vh] md:h-[85vh] rounded-xl"
       >
         <label
           for="fullscreenTerminal"
