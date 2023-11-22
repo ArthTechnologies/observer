@@ -6,6 +6,7 @@
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
   import { numShort } from "$lib/scripts/numShort";
   import { onMount } from "svelte";
+  import { Plus } from "lucide-svelte";
   let promise;
   let results = [];
   let query = "";
@@ -133,7 +134,9 @@
       <div id="plugins" class="space-y-2">
         {#await promise}
           {#each Array.from({ length: skeletonsLength }) as _}
-            <div class="bg-base-200 h-[6.875rem] p-3 rounded-lg flex space-x-3">
+            <div
+              class="bg-base-200 h-[6.875rem] p-3 rounded-lg flex space-x-3 relative"
+            >
               <div
                 class="w-16 h-16 shrink-0 md:w-20 md:h-20 bg-slate-700 animate-pulse rounded-lg"
               />
@@ -152,6 +155,11 @@
                 <div
                   class="bg-slate-700 animate-pulse w-[5.68rem] h-7 rounded-lg"
                 />
+              </div>
+              <div
+                class="w-[3rem] h-[5.375rem] absolute right-[.75rem] flex items-center justify-center"
+              >
+                <Plus color="#2f3c4d" class="animate-pulse" />
               </div>
             </div>
           {/each}
