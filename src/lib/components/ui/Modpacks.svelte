@@ -7,6 +7,7 @@
   import { numShort } from "$lib/scripts/numShort";
   import { onMount } from "svelte";
   import { Plus } from "lucide-svelte";
+  import ResultSkele from "./ResultSkele.svelte";
 
   let promise;
   let mrResults = [];
@@ -156,34 +157,7 @@
     </div>
     {#await promise}
       {#each Array.from({ length: skeletonsLength }) as _}
-        <div
-          class="bg-base-200 h-[6.875rem] p-3 rounded-lg flex space-x-3 relative"
-        >
-          <div
-            class="w-16 h-16 shrink-0 md:w-20 md:h-20 bg-slate-700 animate-pulse rounded-lg"
-          />
-          <div class="flex flex-col justify-between pt-1.5 pb-0.5">
-            <div class="flex space-x-1 items-end">
-              <div
-                class="bg-slate-700 animate-pulse w-[7rem] md:w-[10rem] h-4 rounded-lg"
-              />
-              <div
-                class="bg-slate-700 animate-pulse w-[3rem] md:w-[5rem] h-3 rounded-lg"
-              />
-            </div>
-            <div
-              class="bg-slate-700 animate-pulse w-[12.5rem] md:w-[17.5rem] h-3.5 rounded-lg"
-            />
-            <div
-              class="bg-slate-700 animate-pulse w-[5.68rem] h-7 rounded-lg"
-            />
-          </div>
-          <div
-            class="w-[3rem] h-[5.375rem] absolute right-[.75rem] flex items-center justify-center"
-          >
-            <Plus color="#2f3c4d" class="animate-pulse" />
-          </div>
-        </div>
+        <ResultSkele />
       {/each}
     {:then}
       {#if tab == "mr"}
