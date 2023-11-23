@@ -147,7 +147,7 @@
           {#if state == "starting" || state == "installing"}
             <div
               id="start"
-              class="no-hover-effect flex btn-{startcolor} rounded-lg font-semibold uppercase text-base-100 text-xs tracking-wider px-3 items-center"
+              class="no-hover-effect flex bg-{startcolor} rounded-lg font-semibold uppercase text-base-100 text-xs tracking-wider px-3 items-center"
             >
               <Loader size="18" class="animate-spin mr-1.5" />
               {starttext}
