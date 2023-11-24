@@ -59,18 +59,17 @@
           );
           data.body = data.body.replaceAll("http://", "https://");
 
-          let newDimensions = '"height="304" width="542"';
-          if (window.innerWidth < 768) {
-            newDimensions = '"height="198" width="380"';
-          }
-          data.body = data.body.replaceAll(
-            'height="358" width="638"',
-            newDimensions
-          );
-          data.body = data.body.replaceAll(
-            'height="360" width="640"',
-            newDimensions
-          );
+        //change the width of youtube videos to fit the screen
+        let width = document.getElementsByClassName("modal-box")[0].offsetWidth;
+        let newDimensions = '"height="' + (width / 1.77) + '" width="' + (width*0.76) + '"';
+        data.body = data.body.replaceAll(
+          'height="358" width="638"',
+          newDimensions
+        );
+        data.body = data.body.replaceAll(
+          'height="360" width="640"',
+          newDimensions
+        );
           //make all links open in a new tab
           data.body = data.body.replaceAll(
             "href=",
@@ -115,12 +114,17 @@
             "https://www.youtube-nocookie.com/embed"
           );
           data = data.replaceAll("http://", "https://");
-          let newDimensions = '"height="304" width="542"';
-          if (window.innerWidth < 768) {
-            newDimensions = '"height="198" width="380"';
-          }
-          data = data.replaceAll('height="358" width="638"', newDimensions);
-          data = data.replaceAll('height="360" width="640"', newDimensions);
+        //change the width of youtube videos to fit the screen
+        let width = document.getElementsByClassName("modal-box")[0].offsetWidth;
+        let newDimensions = '"height="' + (width / 1.77) + '" width="' + (width*0.76) + '"';
+        data = data.replaceAll(
+          'height="358" width="638"',
+          newDimensions
+        );
+        data = data.replaceAll(
+          'height="360" width="640"',
+          newDimensions
+        );
           //make all links open in a new tab
           data = data.replaceAll(
             "href=",

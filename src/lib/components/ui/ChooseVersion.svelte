@@ -53,10 +53,10 @@
           "https://www.youtube-nocookie.com/embed"
         );
         data.body = data.body.replaceAll("http://", "https://");
-        let newDimensions = '"height="304" width="542"';
-        if (window.innerWidth < 768) {
-          newDimensions = '"height="198" width="380"';
-        }
+
+        //change the width of youtube videos to fit the screen
+        let width = document.getElementsByClassName("modal-box")[0].offsetWidth;
+        let newDimensions = '"height="' + (width / 1.77) + '" width="' + (width*0.76) + '"';
         data.body = data.body.replaceAll(
           'height="358" width="638"',
           newDimensions
