@@ -153,7 +153,7 @@
           class="flex justify-between place-items-center max-w-full relative"
         >
           <div class="flex space-x-3 flex-shrink-0 w-minus-7">
-            <a href="https://modrinth.com/plugin/{id}" target="_blank">
+            <a class="shrink-0" href="https://modrinth.com/plugin/{id}" target="_blank">
               <img
                 id="pluginIcon"
                 src={icon}

@@ -245,7 +245,7 @@
         >
           <div class="flex space-x-3 flex-shrink-0 w-minus-7">
             {#if platform == "mr"}
-              <a href="https://modrinth.com/plugin/{slug}" target="_blank">
+              <a class="shrink-0" href="https://modrinth.com/plugin/{slug}" target="_blank">
                 <img
                   id="pluginIcon"
                   src={icon}
@@ -278,6 +278,7 @@
               </div>
             {:else if platform == "cf"}
               <a
+              class="shrink-0" 
                 href="https://curseforge.com/minecraft/mc-mods/{slug}"
                 target="_blank"
               >
