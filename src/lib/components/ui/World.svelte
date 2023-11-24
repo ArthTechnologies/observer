@@ -5,7 +5,7 @@
   import { apiurl } from "$lib/scripts/req";
   import { AlertTriangle, Download, Loader, Map } from "lucide-svelte";
   import Helper from "./Helper.svelte";
-  import { downloadProgressShort, fileSizeShort } from "$lib/scripts/numShort";
+  import { downloadProgressShort, fileSizeShort } from "$lib/scripts/utils";
   let areWorldgenMods = false;
   let tab = "upload";
   let id = -1;

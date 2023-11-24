@@ -4,7 +4,7 @@
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
-  import { numShort } from "$lib/scripts/numShort";
+  import { numShort } from "$lib/scripts/utils";
   import { onMount } from "svelte";
   import ResultSkele from "$lib/components/ui/ResultSkele.svelte";
   let promise;

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { numShort } from "$lib/scripts/numShort";
+  import { numShort } from "$lib/scripts/utils";
   import { searchMods } from "$lib/scripts/req";
   import ModResult from "./ModResult.svelte";
   import { t } from "$lib/scripts/i18n";

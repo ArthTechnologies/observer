@@ -4,7 +4,7 @@
   import ModpackResult from "./ModpackResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
-  import { numShort } from "$lib/scripts/numShort";
+  import { numShort } from "$lib/scripts/utils";
   import { onMount } from "svelte";
   import { Plus } from "lucide-svelte";
   import ResultSkele from "./ResultSkele.svelte";

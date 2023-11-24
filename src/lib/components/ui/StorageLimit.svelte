@@ -3,7 +3,7 @@
     import {
         downloadProgressShort,
         fileSizeShort,
-    } from "$lib/scripts/numShort";
+    } from "$lib/scripts/utils";
     import { apiurl, usingOcelot } from "$lib/scripts/req";
     import { HardDrive } from "lucide-svelte";
     import { t } from "$lib/scripts/i18n";
