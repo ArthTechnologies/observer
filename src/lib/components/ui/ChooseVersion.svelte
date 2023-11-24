@@ -101,7 +101,7 @@
           version.game_versions.includes(sVersion)
         ) {
           vname = version.name;
-          console.log(version.name + vname);
+          console.log(version);
           new Version({
             target: document.getElementById("list" + suffix),
             props: {

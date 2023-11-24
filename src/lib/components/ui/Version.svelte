@@ -2,7 +2,7 @@
   import { apiurl, sendVersion } from "$lib/scripts/req";
 
   import { browser } from "$app/environment";
-  import { AlertCircle, Check, Clock, Plus } from "lucide-svelte";
+  import { AlertCircle, Check, Clock, InfoIcon, Plus } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
 
   export let name: string;
@@ -65,7 +65,7 @@
           <p class="text-warning">{type}</p>
         </div>
       </div>
-      <div class="flex gap-2 flex-wrap mt-2">
+      <div class="flex gap-2 flex-wrap mt-2 w-[15rem]">
         <div
           class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
         >
@@ -77,8 +77,18 @@
           <div
             class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
           >
+
+            {#if dependency.dependency_type == "optional"}
+            <InfoIcon class="mr-1.5" size="16" />
+              {$t("worksWith")}
+            {:else if dependency.dependency_type == "incompatible"}
+            <AlertCircle class="mr-1.5" size="16" />
+              {$t("incompatibleWith")}
+            {:else}
             <AlertCircle class="mr-1.5" size="16" />
             {$t("requires")}
+            {/if}
+
             {dependency.name}
           </div>
         {/each}
