@@ -26,6 +26,10 @@
   let time = new Date(date).toLocaleString();
   let serverId = "";
   let promise;
+  let prefixToHandleFlexOnSM = "";
+  if ((platform == "cf" || platform == "lr")) {
+    prefixToHandleFlexOnSM = "sm:";
+  }
   if (browser) {
     serverId = localStorage.getItem("serverID");
     //if screen is small, only say the date
@@ -145,8 +149,8 @@
   <div
     class="px-3 py-2 rounded-t-lg bg-base-300 flex justify-between items-center"
   >
-    <div class="sm:flex items-center gap-1 break-all">
-      <div class="flex mr-1 items-center">
+    <div class="{prefixToHandleFlexOnSM}flex items-center gap-1 break-all">
+      <div class="flex mr-1 items-center max-{prefixToHandleFlexOnSM}mb-1">
         {name}
         {#if platform == "lr"}
           <img
@@ -179,16 +183,16 @@
         {/if}
       </div>
 
-      <div class="flex items-center space-x-1 max-sm:mt-0.5">
+      <div class="flex items-center space-x-1">
         <button
           on:click={() => {
             del(filename);
           }}
-          class="btn btn-xs btn-error mt-0.5 btn-square"
+          class="btn btn-xs btn-error btn-square"
         >
           <Trash2 size="15" /></button
         >
-        <button class="btn btn-xs btn-ghost mt-0.5" on:click={toggleDisable}>
+        <button class="btn btn-xs btn-ghost" on:click={toggleDisable}>
           {disableText}
         </button>
 

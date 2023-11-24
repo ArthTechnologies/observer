@@ -225,7 +225,7 @@
   <label
     for="versions{suffix}"
     on:click={get}
-    class="btn btn-xs btn-neutral mt-0.5">{$t("versions")}</label
+    class="btn btn-xs btn-neutral">{$t("versions")}</label
   >
 {/if}
 
