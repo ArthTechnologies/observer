@@ -525,8 +525,8 @@
         <div class="flex space-x-2 mb-2 mt-4">
           <EditInfo type="fullBtn" /><StorageLimit />
         </div>
-        <div class="flex space-x-2">
-          <a class="btn btn-primary" href="/server/{parseInt(id) + 10000}/files"
+        <div class="flex">
+          <a class="btn btn-primary mr-2" href="/server/{parseInt(id) + 10000}/files"
             ><FolderClosed class="mr-1.5" />{$t("button.files")}</a
           ><Versions />
         </div>
