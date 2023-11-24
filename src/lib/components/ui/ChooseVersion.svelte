@@ -6,6 +6,7 @@
   import PluginResult from "./PluginResult.svelte";
   import { marked } from "marked";
   import { t } from "$lib/scripts/i18n";
+  import { handleDesc } from "$lib/scripts/utils";
 
   export let id: string;
   export let name: string;
@@ -47,30 +48,8 @@
       .then((response) => response.json())
 
       .then((data) => {
-        //change youtube.com to youtube-nocookie.com
-        data.body = data.body.replaceAll(
-          "https://www.youtube.com/embed",
-          "https://www.youtube-nocookie.com/embed"
-        );
-        data.body = data.body.replaceAll("http://", "https://");
-
-        //change the width of youtube videos to fit the screen
-        let width = document.getElementsByClassName("modal-box")[0].offsetWidth;
-        let newDimensions = '"height="' + (width / 1.77) + '" width="' + (width*0.76) + '"';
-        data.body = data.body.replaceAll(
-          'height="358" width="638"',
-          newDimensions
-        );
-        data.body = data.body.replaceAll(
-          'height="360" width="640"',
-          newDimensions
-        );
-        //make all links open in a new tab
-        data.body = data.body.replaceAll(
-          "href=",
-          'target="_blank" rel="noreferrer" href='
-        );
-        document.getElementById("body" + suffix).innerHTML = marked(data.body);
+        document.getElementById("body" + suffix).innerHTML = marked(data);
+          document.getElementById("body" + suffix).innerHTML = handleDesc(marked(data));
         document.getElementById("pluginTitle").innerHTML = data.title;
 
         document.getElementById("pluginDesc").innerHTML = data.description;

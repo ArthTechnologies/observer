@@ -43,3 +43,37 @@ if (total < 1024 * 100) { // For kilobytes (kB)
 
 
 }
+
+export function handleDesc(desc: string) {
+  let newDesc = desc;
+        //change youtube.com to youtube-nocookie.com
+        newDesc = newDesc.replaceAll(
+          "https://www.youtube.com/embed",
+          "https://www.youtube-nocookie.com/embed"
+        );
+        newDesc = newDesc.replaceAll("http://", "https://");
+
+      //change the width of youtube videos to fit the screen
+      let width = document.getElementById("body").offsetWidth;
+      let divideAmount = 1.87;
+      if (window.innerWidth < 768) divideAmount = 1.8;
+      let newDimensions = 'class="w-full" style="height: '+(Math.round(width / divideAmount))+'px;"';
+      newDesc = newDesc.replaceAll(
+        'height: 150px',
+        'height: ' + (width / 1.77) + 'px'
+      );
+      newDesc = newDesc.replaceAll(
+        'height="358" width="638"',
+        newDimensions
+      );
+      newDesc = newDesc.replaceAll(
+        'height="360" width="640"',
+        newDimensions
+      );
+        //make all links open in a new tab
+        newDesc = newDesc.replaceAll(
+          "href=",
+          'target="_blank" rel="noreferrer" href='
+        );
+  return newDesc;
+}
