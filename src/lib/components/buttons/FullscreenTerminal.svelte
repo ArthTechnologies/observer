@@ -71,12 +71,12 @@
   class="modal bg-base-100 h-screen w-screen max-sm:items-start items-center"
 >
   <div
-    class="flex flex-col space-y-3 items-center m-2.5 md:m-5 w-full px-[1rem] md:px-[5rem] md:py-[2rem]"
+    class="flex flex-col space-y-3 items-center my-5 md:py-[2rem]"
   >
-    <div id="terminalContainerContainer2" class="relative w-full">
+    <div id="terminalContainerContainer2" class="relative">
       <div
         id="terminalContainer2"
-        class="p-5 bg-base-300 rounded-xl shadow-xl overflow-auto h-[80vh] md:h-[85vh] rounded-xl"
+        class="p-5 bg-base-300 rounded-xl shadow-xl overflow-auto h-[80vh] md:h-[85vh] rounded-xl w-[90vw]"
       >
         <label
           for="fullscreenTerminal"
