@@ -65,7 +65,7 @@
           <p class="text-warning">{type}</p>
         </div>
       </div>
-      <div class="flex gap-2 flex-wrap mt-2 w-[15rem]">
+      <div class="flex gap-2 flex-wrap mt-2 md:w-[15rem]">
         <div
           class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
         >

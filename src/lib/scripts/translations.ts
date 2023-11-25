@@ -194,6 +194,7 @@ export default {
     "noVersionsModpack": "This modpack currently doesn't support this version of Minecraft.",
     "button.addmod": "Add Mod",
     "button.managemods": "Manage Mods",
+    "button.goToDesc": "Go to Description", 
   },
   "es-ES": {
     "homepage.title": "Sus servidores",
@@ -392,6 +393,7 @@ export default {
     "noVersionsModpack": "Este modpack actualmente no es compatible con esta versión de Minecraft.",
     "button.addmod": "Añadir Mod",
     "button.managemods": "Administrar Mods",
+    "button.goToDesc": "Ir a la Descripción",
 
   },
 };

@@ -43,8 +43,8 @@
         .then((response) => response.json())
 
         .then((data) => {
-          document.getElementById("body" + suffix).innerHTML = marked(data);
-          document.getElementById("body" + suffix).innerHTML = handleDesc(marked(data));
+          document.getElementById("body").innerHTML = marked(data.body);
+          document.getElementById("body").innerHTML = handleDesc(marked(data.body));
           document.getElementById("pluginTitle").innerHTML = data.title;
 
           document.getElementById("pluginDesc").innerHTML = data.description;
@@ -183,7 +183,7 @@
                     id="pluginTitle"
                     href="https://modrinth.com/plugin/{slug}"
                     target="_blank"
-                    class="flex hover:link text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+                    class="flex hover:link text-xl font-bold w-minus-7 md:w-auto break-all sm:break-works"
                     >{name}</a
                   >
                   <div class="flex space-x-1 place-items-end">
@@ -200,7 +200,7 @@
                     id="pluginTitle"
                     href="https://curseforge.com/minecraft/modpacks/{slug}"
                     target="_blank"
-                    class="flex hover:link text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+                    class="flex hover:link text-xl font-bold w-minus-7 md:w-auto break-all sm:break-works"
                     >{name}</a
                   >
                   <div class="flex space-x-1 place-items-end">
@@ -231,7 +231,10 @@
         </div>
 
         <div class="">
-          <h3 class="font-bold text-2xl mb-4">{$t("versions")}</h3>
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-2xl">{$t("versions")}</h3>
+            <a href="#body" class="md:hidden btn btn-sm btn-neutral">{$t("button.goToDesc")}</a>
+          </div>
           <div id="list" class="space-y-2 mb-5" />
         </div>
       </div>
