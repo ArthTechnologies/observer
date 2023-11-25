@@ -13,7 +13,7 @@
   export let id: string;
   export let client: string;
   export let downloads: number;
-  export let versions: string[] = [];
+
   export let slug: string;
 
   function get() {
@@ -119,7 +119,7 @@
       </div>
     </div>
     <ChooseModVersion
-      {versions}
+
       {platform}
       {id}
       {name}

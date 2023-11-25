@@ -13,7 +13,7 @@
   export let client: string;
   export let downloads: number;
   export let platform: string;
-  export let versions: string[] = [];
+
   export let slug: string;
   console.log(client);
   switch (client) {
@@ -121,7 +121,7 @@
       </div>
     </div>
     <ChooseVersionModpack
-      {versions}
+
       {platform}
       {id}
       {name}

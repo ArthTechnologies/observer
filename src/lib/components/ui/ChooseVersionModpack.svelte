@@ -14,7 +14,6 @@
   export let desc: string;
   export let icon: string;
   export let platform: string;
-  export let versions: string[] = [];
   export let slug: string;
   var software = "";
   var sVersion = "";
@@ -85,8 +84,9 @@
     }
     let vname = "undefined";
     if (platform == "mr") {
+      document.getElementById("list").innerHTML = "";
       getVersions(id).then((data) => {
-        document.getElementById("list").innerHTML = "";
+
         data.forEach((version) => {
           if (
             version.name != vname &&
@@ -115,7 +115,18 @@
         }
       });
     } else if (platform == "cf") {
-      versions.forEach((version) => {
+      document.getElementById("list").innerHTML = "";
+      fetch(apiurl + "curseforge/" + id + "/versions", {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+
+      data.forEach((version) => {
         new ModpackVersion({
           target: document.getElementById("list"),
           props: {
@@ -129,6 +140,11 @@
             dependencies: version.dependencies,
           },
         });
+      });
+      if (document.getElementById("list").innerHTML == "") {
+          document.getElementById("list").innerHTML =
+            "<p class='text-center'>" + $t("noVersionsModpack") + "</p>";
+        }
       });
     }
   }
