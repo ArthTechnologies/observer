@@ -69,7 +69,8 @@
     if (areWorldgenMods) {
       serverAddons.forEach((item) => {
         let worldgenMod = jarsIndex[item.toLowerCase()];
-        worldgenMod.forEach((x) => {
+        if (worldgenMod != undefined) {
+          worldgenMod.forEach((x) => {
           if (x.version == version) {
             updateReady = true;
             /* This doesnt work for some reason if you add the grayscale class to every image by default.
@@ -79,6 +80,7 @@
             */
           }
         });
+        }
       });
     } else {
       updateReady = true;
