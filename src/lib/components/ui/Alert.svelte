@@ -14,12 +14,12 @@
 
 {#if visible}
   <div
-    class="break-keep w-1/2 fixed z-50 right-2 top-2 alert alert-error shadow-lg"
+    class="alert flex gap-3 alert-error w-2/3 md:w-1/3 fixed z-50 right-2 top-2  shadow-lg"
     transition:fade
   >
-    <div>
+
       <AlertCircle />
-      <span>{detail}</span>
-    </div>
+     {detail}
+
   </div>
 {/if}
