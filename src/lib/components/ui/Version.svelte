@@ -14,6 +14,7 @@
   export let modtype: string;
   export let dependencies: string[] = [];
   export let platform: string = "mr";
+  let uniqueId = Math.random().toString(36).substr(2, 9);
   if (type == "release") {
     type = "";
   } else if (type == "beta") {
@@ -33,6 +34,11 @@
     pluginName = pluginName.replace(/[\(\)]/g, "");
     pluginName = pluginName.replace(/[\s_]/g, "-");
     sendVersion(url, id, pluginId, pluginName, modtype);
+    setTimeout(() => {
+      if (browser) {
+        document.getElementById("addBtn" + uniqueId).checked = false;
+      }
+    }, 2500);
   }
   console.log(dependencies);
   for (let i in dependencies) {
@@ -96,10 +102,11 @@
     </div>
     <div class="flex place-items-center space-x-2">
       <label
+     
         on:click={submit}
         class="btn btn-circle btn-ghost swap swap-rotate"
       >
-        <input type="checkbox" /><Plus class="swap-off" /><Check
+        <input type="checkbox"  id="addBtn{uniqueId}"/><Plus class="swap-off" /><Check
           class="swap-on"
         /></label
       >
