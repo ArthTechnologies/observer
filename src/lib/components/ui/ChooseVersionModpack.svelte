@@ -177,41 +177,41 @@
               </a>
             {/if}
             <div class="max-w-full w-minus-7">
-              <div class="sm:flex gap-1 max-w-full">
+              <div>
                 {#if platform == "mr"}
                   <a
                     id="pluginTitle"
                     href="https://modrinth.com/plugin/{slug}"
                     target="_blank"
-                    class="flex hover:link text-xl font-bold w-minus-7 md:w-auto break-all sm:break-works"
+                    class=" hover:link text-xl font-bold md:w-auto break-all sm:break-works"
                     >{name}</a
                   >
-                  <div class="flex space-x-1 place-items-end">
-                    <p>{$t("by")}</p>
+
+                    {$t("by")}
                     <a
                       id="pluginAuthor"
                       href="https://modrinth.com/user/{author}"
                       target="_blank"
                       class="hover:link">{author}</a
                     >
-                  </div>
+
                 {:else if platform == "cf"}
                   <a
                     id="pluginTitle"
                     href="https://curseforge.com/minecraft/modpacks/{slug}"
                     target="_blank"
-                    class="flex hover:link text-xl font-bold w-minus-7 md:w-auto break-all sm:break-works"
+                    class=" hover:link text-xl font-bold md:w-auto break-all sm:break-works"
                     >{name}</a
                   >
-                  <div class="flex space-x-1 place-items-end">
-                    <p>{$t("by")}</p>
+
+                    {$t("by")}
                     <a
                       id="pluginAuthor"
                       href="https://curseforge.com/members/{author}"
                       target="_blank"
                       class="hover:link">{author}</a
                     >
-                  </div>
+
                 {/if}
               </div>
               <p class="w-minus-7" id="pluginDesc">

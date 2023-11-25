@@ -142,23 +142,23 @@
               />
             </a>
             <div class="max-w-full w-minus-7">
-              <div class="sm:flex gap-1 max-w-full">
+              <div>
                 <a
                   id="pluginTitle"
                   href="https://modrinth.com/plugin/{id}"
                   target="_blank"
-                  class="flex hover:link text-xl font-bold w-minus-7 md:w-auto break-all sm:break-works"
+                  class=" hover:link text-xl font-bold w-minus-7 md:w-auto break-all sm:break-works"
                   >{name}</a
                 >
-                <div class="flex space-x-1 place-items-end">
-                  <p>{$t("by")}</p>
+
+                  {$t("by")}
                   <a
                     id="pluginAuthor"
                     href="https://curseforge.com/member/{author}"
                     target="_blank"
                     class="hover:link">{author}</a
                   >
-                </div>
+
               </div>
               <p class="w-minus-7" id="pluginDesc">
                 {desc}

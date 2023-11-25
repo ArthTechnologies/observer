@@ -211,23 +211,23 @@
                 />
               </a>
               <div class="max-w-full w-minus-7">
-                <div class="sm:flex gap-1 max-w-full">
+                <div>
                   <a
                     id="pluginTitle"
                     href="https://modrinth.com/plugin/{slug}"
                     target="_blank"
-                    class="flex hover:link text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+                    class=" hover:link text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
                     >{name}</a
                   >
-                  <div class="flex space-x-1 place-items-end">
-                    <p>{$t("by")}</p>
+
+                    {$t("by")}
                     <a
                       id="pluginAuthor"
                       href="https://modrinth.com/user/{author}"
                       target="_blank"
                       class="hover:link">{author}</a
                     >
-                  </div>
+
                 </div>
                 <p class="w-minus-7" id="pluginDesc">
                   {desc}
@@ -247,7 +247,7 @@
                 />
               </a>
               <div class="max-w-full w-minus-7">
-                <div class="">
+                <div>
                   <a
                     id="pluginTitle"
                     href="https://curseforge.com/minecraft/mc-mods/{slug}"
