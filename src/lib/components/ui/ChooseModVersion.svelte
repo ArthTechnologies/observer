@@ -207,7 +207,7 @@
                   id="pluginIcon"
                   src={icon}
                   alt="noicon"
-                  class="w-14 h-14 bg-base-300 rounded-lg text-sm"
+                  class="w-16 h-16 bg-base-300 rounded-lg text-sm"
                 />
               </a>
               <div class="max-w-full w-minus-7">
@@ -243,7 +243,7 @@
                   id="pluginIcon"
                   src={icon}
                   alt="noicon"
-                  class="w-14 h-14 bg-base-300 rounded-lg text-sm"
+                  class="w-16 h-16 bg-base-300 rounded-lg text-sm"
                 />
               </a>
               <div class="max-w-full w-minus-7">
