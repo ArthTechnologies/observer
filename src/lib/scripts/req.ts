@@ -1,11 +1,11 @@
 import accountEmail from "$lib/stores/accountEmail";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
-export let apiurl = "https://us-dallas-1.arthmc.xyz/";
+export let apiurl = "http://localhost:4000/";
 export let usingOcelot = false;
-export const lrurl = "https://api.modrinth.com/v2/";
-export let stripePaymentLink = "https://buy.stripe.com/dR63fv4bX3qjc1i28a";
-export let usingCurseForge = true;
+export let lrurl = "https://api.modrinth.com/v2/";
+export let stripePaymentLink = "/error                                                  ";
+export let usingCurseForge = false;
 
 //set apiurl & usingOcelot to the enviroment variable if it exists
 if (browser) {
@@ -13,13 +13,16 @@ if (browser) {
     apiurl = import.meta.env.VITE_API_URL;
   }
   if (import.meta.env.VITE_USING_OCELOT) {
-    usingOcelot = import.meta.env.VITE_USING_OCELOT;
+    usingOcelot = JSON.parse(import.meta.env.VITE_USING_OCELOT);
+  }
+  if (import.meta.env.VITE_LR_URL) {
+    lrurl = import.meta.env.VITE_LR_URL;
   }
   if (import.meta.env.VITE_STRIPE_PAYMENT_LINK) {
     stripePaymentLink = import.meta.env.VITE_STRIPE_PAYMENT_LINK;
   }
   if (import.meta.env.VITE_USING_CURSEFORGE) {
-    usingCurseForge = import.meta.env.VITE_USING_CURSEFORGE;
+    usingCurseForge = JSON.parse(import.meta.env.VITE_USING_CURSEFORGE);
   }
 }
 
