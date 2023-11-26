@@ -37,9 +37,7 @@
             areWorldgenMods = true;
           }
         }
-      });
-
-    promise = fetch(apiurl + "server/" + id + "/file/world*datapacks", {
+        promise = fetch(apiurl + "server/" + id + "/file/world*datapacks", {
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),
@@ -48,25 +46,45 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        for (let i in data) {
-          if (
-            data[i] == "terralith.zip" ||
-            data[i] == "incendium.zip" ||
-            data[i] == "nullscape.zip" ||
-            data[i] == "structory.zip"
-          ) {
-            document.getElementById(data[i].split(".")[0]).checked = true;
-            worldgenFiles.push(data[i].split(".")[0]);
-          }
+
+
+        if (data.content.includes("terralith")) {
+          worldgenFiles.push("terralith");
+          if (document.getElementById("terralithWorld") != null)
+          document.getElementById("terralithWorld").checked = true;
+
         }
+
+        if (data.content.includes("incendium")) {
+          worldgenFiles.push("incendium");
+          if (document.getElementById("incendiumWorld") != null)
+          document.getElementById("incendiumWorld").checked = true;
+
+        }
+        if (data.content.includes("nullscape")) {
+          worldgenFiles.push("nullscape");
+          if (document.getElementById("nullscapeWorld") != null)
+          document.getElementById("nullscapeWorld").checked = true;
+
+        }
+        if (data.content.includes("structory")) {
+          worldgenFiles.push("structory");
+          if (document.getElementById("structoryWorld") != null)
+          document.getElementById("structoryWorld").checked = true;
+
+        }
+
 
         if (worldgenFiles.length == 0) {
           worldgenModsText = worldgenModsText + " None";
         } else {
           worldgenModsText =
-            worldgenModsText + " " + worldgenFiles.join(", ") + ".";
+            worldgenModsText + " " + worldgenFiles.join(", ");
         }
       });
+      });
+
+
   }
 
   function download() {
@@ -261,9 +279,12 @@
     })
       .then((response) => response.json())
       .then((data) => {
+
         let worldgenMods = ["terralith", "incendium", "nullscape", "structory"];
         for (let i in worldgenMods) {
-          if (data.includes(worldgenMods[i] + "-" + serverVersion + ".zip")) {
+
+          if (JSON.stringify(data.includes(worldgenMods[i] + "-" + serverVersion + ".zip"))) {
+
             areWorldgenMods = true;
           }
         }
@@ -279,7 +300,7 @@
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="world" class="modal-toggle" />
 <div class="modal" style="margin:0rem;">
-  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative overflow-x-hidden">
     <label
       for="world"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
