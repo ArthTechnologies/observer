@@ -3,7 +3,6 @@
 ### Warnings
 
 - Arth Panel is in beta and should not be used in production yet.
-- There are some issues with the docker image and we reccomend running observer directly for now.
 
 # About Observer
 
@@ -13,25 +12,6 @@ Observer is a frontend for Arth Panel, a lightweight self-hosted Minecraft serve
 
 The main panels currently used for running Minecraft servers are bulky, slow, hard to setup, and hard to understand. It could be quite time-consuming to figure out where your servers actually are if you ever choose to ditch a panel like pufferpanel or pterodactyl. So Arth Panel was built from the ground up, with simplicity, design, and performance in mind. It doesn't use docker to contain your servers, so they're right there in the "servers" folder if you ever have a problem with Arth Panel and need to run them directly.
 
-## How to run without docker
-
-1. Grab the source code with `git clone https://codeberg.org/arth/observer`
-2. Inside the quartz folder, Install packages with `npm i`
-3. Build the source code with `CI= npm run build`
-4. Run with `node build`
-
-You can update observer by running the `git pull` command inside your observer folder.
-
-## How to configure without docker
-
-- Go into `src/lib/scripts/req.ts` and change `apiurl` to the url of your quartz instance.
-- Advanced: If you have setup an ocelot master-backend instance, go into `src/lib.scripts/req.ts` and change `useOcelot` to `true` and set `apiurl` to the url of your ocelot instance.
-- WARNING: Whenever you update quartz, you may need to change the values in `req.ts` that you modified back to their original values. We apologize for the inconvenience and hope to fix this soon.
-
-## Other Requirements
-
-- By default, observer will connect to Arth's quartz backend. To create your own functioning service you will need to set up a [quartz](https://github.com/arthmc/quartz) backend and replace the address at the top of src/lib/scripts/req.ts.
-
 ## How to Run with Docker
 
 1. Download the image from docker hub with the command `sudo docker pull arthmc/observer:latest`
@@ -39,8 +19,43 @@ You can update observer by running the `git pull` command inside your observer f
 
 If you are using an ARM-based machine (Like a Mac or Raspberry Pi):
 1. Grab the source code with `git clone https://codeberg.org/arth/observer`
-2. Inside the quartz folder, run `docker buildx build --platform linux/arm64 . -t arthmc/observer:latest`
-2. Run the image with `sudo docker run -p 3000:3000 arthmc/observer:latest`. To change the port, replace the first 3000 with the port number you want.
+2. Inside the observer folder, run `docker buildx build --platform linux/arm64 . -t arthmc/observer:latest`
+3. Run the image with `sudo docker run -p 3000:3000 [Set variables here, see "how to configure"] arthmc/observer:latest`. To change the port, replace the first 3000 with the port number you want.
+
+## How to configure with Docker
+
+In the indicated are in the run command, you can enter enviroment variables to point it to your quartz instance and configure other settings. Each variable is added in this format: `-e VITE_EXAMPLEVARIABLE=true`.
+
+- `VITE_API_URL`: The address of your quartz instance.
+- `VITE_USING_CURSEFORGE`: Eether to let users add mods from curseforge, not just modrinth. Only enable this if you've set up curseforge on your quartz instance.
+- `VITE_STRIPE_PAYMENT_LINK`: The payment link that users will be sent to after making an account IF you've enabled payments and setup stripe on your quartz instance.
+- `VITE_USING_OCELOT` (Advanced): Set this to true if you're using ocelot, the system that links multiple quartz instances together.
+- `VITE_LR_URL` (Advanced): 
+Labrinth is the open-source software behing Modrith, a site where you can download mods and such. If you know another site that is running Labrinth and for some reason want to use that instead of Modrinth, you can tell observer to use that site instead of modrinth via this variable.
+
+
+## How to run without docker
+
+1. Grab the source code with `git clone https://codeberg.org/arth/observer`
+2. Inside the observer folder, Install packages with `npm i`
+3. Build the source code with `CI= npm run build`
+4. Run with `node build`
+
+You can update observer by running the `git pull` command inside your observer folder.
+
+## How to configure without docker
+
+You'll need to create a file called `.env` inside your observer folder. For each variable, create a new line and format it like this: `VITE_EXAMPLEVARIABLE=true`.
+- `VITE_API_URL`: The address of your quartz instance.
+- `VITE_USING_CURSEFORGE`: Eether to let users add mods from curseforge, not just modrinth. Only enable this if you've set up curseforge on your quartz instance.
+- `VITE_STRIPE_PAYMENT_LINK`: The payment link that users will be sent to after making an account IF you've enabled payments and setup stripe on your quartz instance.
+- `VITE_USING_OCELOT` (Advanced): Set this to true if you're using ocelot, the system that links multiple quartz instances together.
+- `VITE_LR_URL` (Advanced): 
+Labrinth is the open-source software behing Modrith, a site where you can download mods and such. If you know another site that is running Labrinth and for some reason want to use that instead of Modrinth, you can tell observer to use that site instead of modrinth via this variable.
+
+## Other Requirements
+
+- By default, observer will connect to Arth's quartz backend. To create your own functioning service you will need to set up a [quartz](https://github.com/arthmc/quartz) backend and replace the address at the top of src/lib/scripts/req.ts.
 
 # Contributing
 
