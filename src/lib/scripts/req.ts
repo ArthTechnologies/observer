@@ -15,6 +15,12 @@ if (browser) {
   if (import.meta.env.VITE_USING_OCELOT) {
     usingOcelot = import.meta.env.VITE_USING_OCELOT;
   }
+  if (import.meta.env.VITE_STRIPE_PAYMENT_LINK) {
+    stripePaymentLink = import.meta.env.VITE_STRIPE_PAYMENT_LINK;
+  }
+  if (import.meta.env.VITE_USING_CURSEFORGE) {
+    usingCurseForge = import.meta.env.VITE_USING_CURSEFORGE;
+  }
 }
 
 let lock = false;
