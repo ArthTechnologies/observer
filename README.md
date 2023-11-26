@@ -26,7 +26,7 @@ If you are using an ARM-based machine (Like a Mac or Raspberry Pi):
 
 In the indicated are in the run command, you can enter enviroment variables to point it to your quartz instance and configure other settings. Each variable is added in this format: `-e VITE_EXAMPLEVARIABLE=true`.
 
-- `VITE_API_URL`: The address of your quartz instance.
+- `VITE_API_URL`: The address of your quartz instance. Make sure the url ends with a `/`.
 - `VITE_USING_CURSEFORGE`: Eether to let users add mods from curseforge, not just modrinth. Only enable this if you've set up curseforge on your quartz instance.
 - `VITE_STRIPE_PAYMENT_LINK`: The payment link that users will be sent to after making an account IF you've enabled payments and setup stripe on your quartz instance.
 - `VITE_USING_OCELOT` (Advanced): Set this to true if you're using ocelot, the system that links multiple quartz instances together.
