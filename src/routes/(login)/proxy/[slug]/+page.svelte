@@ -383,8 +383,9 @@
 
   function readCmd() {
     let rt;
+    if (browser) {
     readTerminal(id).then((response) => {
-      if (browser) {
+
         const terminalContainer = document.getElementById("terminalContainer");
         const terminal = document.getElementById("terminal");
         const filteredResponse = response
@@ -423,9 +424,10 @@
           ) {
             scrollCorrected = true;
           }
-        }
+
       }
     });
+  }
     //set terminal's text to rt
   }
   readCmd();
