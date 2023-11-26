@@ -1,7 +1,7 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { numShort } from "$lib/scripts/utils";
-  import { searchMods } from "$lib/scripts/req";
+  import { searchMods, usingCurseForge } from "$lib/scripts/req";
   import ModResult from "./ModResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
@@ -25,12 +25,12 @@
     version = localStorage.getItem("serverVersion");
   }
   onMount(() => {
-    if (software.toLowerCase() == "forge") {
+    if (software.toLowerCase() == "forge" && usingCurseForge) {
       cf();
     }
   });
   search("mr");
-  search("cf");
+  if (usingCurseForge) search("cf");
   function search(platform: string, loadMore: boolean = false) {
     if (loadMore) {
       skeletonsLength = offset + 15;
@@ -150,7 +150,9 @@
 
       <div class="tabs tabs-boxed">
         <button id="mr" class="tab tab-active" on:click={mr}>Modrinth</button>
+        {#if usingCurseForge}
         <button id="cf" class="tab" on:click={cf}>Curseforge</button>
+        {/if}
       </div>
     </div>
 

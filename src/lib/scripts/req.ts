@@ -5,6 +5,7 @@ export let apiurl = "http://localhost:4000/";
 export let usingOcelot = false;
 export const lrurl = "https://api.modrinth.com/v2/";
 export let stripePaymentLink = "https://buy.stripe.com/dR63fv4bX3qjc1i28a";
+export let usingCurseForge = false;
 
 //set apiurl & usingOcelot to the enviroment variable if it exists
 if (browser) {

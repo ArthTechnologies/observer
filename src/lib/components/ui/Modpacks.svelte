@@ -1,6 +1,6 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { searchMods, searchPlugins } from "$lib/scripts/req";
+  import { searchMods, searchPlugins, usingCurseForge } from "$lib/scripts/req";
   import ModpackResult from "./ModpackResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
@@ -21,9 +21,14 @@
   onMount(() => {
     if (browser) {
       search("mr");
-      search("cf");
+      if (usingCurseForge) search("cf");
+      else document.getElementById("mr").classList.add("tab-active");
+    
     }
   });
+  if (browser) {
+    if (!usingCurseForge) tab="mr";
+  }
   function search(platform: string, loadMore: boolean = false) {
     console.error("searching" + platform);
     if (platform != "cf" && platform != "mr") {
@@ -61,8 +66,9 @@
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
+          let results = []
           response.hits.forEach((item) => {
-            mrResults.push({
+            results.push({
               name: item.title,
               desc: item.description,
               icon: item.icon_url,
@@ -74,8 +80,10 @@
               versions: [],
               slug: item.slug,
             });
-            console.log(mrResults);
+
           });
+          mrResults = results;
+          console.log(mrResults);
         } else if (platform == "cf") {
           skeletonsLength = response.data.length;
           response.data.forEach((item) => {
@@ -112,6 +120,7 @@
       document.getElementById("mr").classList.remove("tab-active");
     }
   }
+
 </script>
 
 <label for="my-modal-5" class="btn btn-block btn-primary">Use Modpack</label>
@@ -130,9 +139,13 @@
       >
 
       <div class="tabs tabs-boxed">
+
         <button id="mr" on:click={mr} class="tab">Modrinth</button>
+        {#if usingCurseForge}
         <button id="cf" on:click={cf} class="tab tab-active">Curseforge</button>
+        {/if}
       </div>
+
     </div>
     <div class="flex justify-between space-x-2">
       <input
@@ -155,26 +168,34 @@
         >
       </div>
     </div>
-    {#await promise}
+
+
+      {#await promise}
+      <div class="space-y-2">
       {#each Array.from({ length: skeletonsLength }) as _}
         <ResultSkele />
       {/each}
+      </div>
     {:then}
+    <div id="modpacks" class="space-y-2">
+ 
       {#if tab == "mr"}
-        <div id="modpacks" class="space-y-2">
+
           {#each mrResults as result}
             <ModpackResult {...result} />
           {/each}
-        </div>
+
       {:else if tab == "cf"}
-        <div class="space-y-2">
-          <div id="modpacks" class="space-y-2">
+
+
             {#each cfResults as result}
               <ModpackResult {...result} />
             {/each}
-          </div>
-        </div>
+
+
       {/if}
+
+      </div>
       <div class="flex place-content-center">
         {#if allowLoadMore}
           <p
@@ -187,6 +208,7 @@
           </p>
         {/if}
       </div>
-    {/await}
+      {/await}
+ 
   </div>
 </div>
