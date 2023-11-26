@@ -15,8 +15,8 @@ The main panels currently used for running Minecraft servers are bulky, slow, ha
 
 ## How to run without docker
 
-1. Grab the source code with `git clone https://codeberg.org/arth/quartz`
-2. Install packages with `npm i`
+1. Grab the source code with `git clone https://codeberg.org/arth/observer`
+2. Inside the quartz folder, Install packages with `npm i`
 3. Build the source code with `CI= npm run build`
 4. Run with `node build`
 
@@ -26,7 +26,7 @@ You can update observer by running the `git pull` command inside your observer f
 
 - Go into `src/lib/scripts/req.ts` and change `apiurl` to the url of your quartz instance.
 - Advanced: If you have setup an ocelot master-backend instance, go into `src/lib.scripts/req.ts` and change `useOcelot` to `true` and set `apiurl` to the url of your ocelot instance.
-- WARNING: Whenever you update quartz, you may need to change the values in `req.ts` that you changes back to their origional values. We apologize for the inconvenience and hope to fix this soon.
+- WARNING: Whenever you update quartz, you may need to change the values in `req.ts` that you modified back to their original values. We apologize for the inconvenience and hope to fix this soon.
 
 ## Other Requirements
 
@@ -35,6 +35,11 @@ You can update observer by running the `git pull` command inside your observer f
 ## How to Run with Docker
 
 1. Download the image from docker hub with the command `sudo docker pull arthmc/observer:latest`
+2. Run the image with `sudo docker run -p 3000:3000 arthmc/observer:latest`. To change the port, replace the first 3000 with the port number you want.
+
+If you are using an ARM-based machine (Like a Mac or Raspberry Pi):
+1. Grab the source code with `git clone https://codeberg.org/arth/observer`
+2. Inside the quartz folder, run `docker buildx build --platform linux/arm64 . -t arthmc/observer:latest`
 2. Run the image with `sudo docker run -p 3000:3000 arthmc/observer:latest`. To change the port, replace the first 3000 with the port number you want.
 
 # Contributing
