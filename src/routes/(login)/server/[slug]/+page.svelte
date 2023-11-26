@@ -48,7 +48,6 @@
   let id = 0;
   let lock = false;
   let desc: string = "";
-  let restarting = false;
   let email: string = "";
   let state = "false";
   let icon = "/images/placeholder.webp";
@@ -205,8 +204,8 @@
       //set state to response
       state = response.state;
 
-      if (restarting && state == "starting") {
-        restarting = false;
+      if (state == "starting") {
+
         console.log("unlocking");
         lock = false;
       }
@@ -219,7 +218,7 @@
       if (state == "true") {
         changeServerState("restart", id, email);
 
-        restarting = true;
+ 
       } else if (state == "false") {
         changeServerState("start", id, email);
       }
@@ -348,22 +347,11 @@
     </div>
     <!-- TODO: these should be on the right, add an if for not reaching the backend -->
     <div class="space-x-2 space-y-2 flex flex-col items-center md:block">
-      {#if state == "true" && !restarting}
+      {#if state == "true"}
         <button on:click={start} class="btn btn-success"
           ><Repeat class="mr-1.5" />{$t("button.restart")}</button
         >
         <button on:click={stop} class="btn btn-error"
-          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
-        >
-      {:else if restarting}
-        <div
-          class="inline-flex pointer-events-none bg-success flex items-center px-4 py-3 text-center text-sm font-semibold text-black uppercase rounded-md"
-        >
-          <Loader class="animate-spin mr-1.5" />
-          {$t("button.restarting")}
-        </div>
-
-        <button class="btn btn-disabled"
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "false"}
