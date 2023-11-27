@@ -43,7 +43,9 @@
 
         .then((data) => {
           document.getElementById("body").innerHTML = marked(data.body);
-          document.getElementById("body").innerHTML = handleDesc(marked(data.body));
+          document.getElementById("body").innerHTML = handleDesc(
+            marked(data.body)
+          );
           document.getElementById("pluginTitle").innerHTML = data.title;
 
           document.getElementById("pluginDesc").innerHTML = data.description;
@@ -86,7 +88,6 @@
     if (platform == "mr") {
       document.getElementById("list").innerHTML = "";
       getVersions(id).then((data) => {
-
         data.forEach((version) => {
           if (
             version.name != vname &&
@@ -125,27 +126,29 @@
       })
         .then((response) => response.json())
         .then((data) => {
-
-      data.forEach((version) => {
-        new ModpackVersion({
-          target: document.getElementById("list"),
-          props: {
-            name: version.displayName,
-            date: version.fileDate,
-            type: "release",
-            url: version.downloadUrl,
-            id: id,
-            pluginName: name,
-            modtype: "mod",
-            dependencies: version.dependencies,
-          },
+          data.forEach((version) => {
+            let type = "release";
+            if (version.releaseType == 1) type = "beta";
+            else if (version.releaseType == 0) type = "alpha";
+            new ModpackVersion({
+              target: document.getElementById("list"),
+              props: {
+                name: version.displayName,
+                date: version.fileDate,
+                type: type,
+                url: version.downloadUrl,
+                id: id,
+                pluginName: name,
+                modtype: "mod",
+                dependencies: version.dependencies,
+              },
+            });
+          });
+          if (document.getElementById("list").innerHTML == "") {
+            document.getElementById("list").innerHTML =
+              "<p class='text-center'>" + $t("noVersionsModpack") + "</p>";
+          }
         });
-      });
-      if (document.getElementById("list").innerHTML == "") {
-          document.getElementById("list").innerHTML =
-            "<p class='text-center'>" + $t("noVersionsModpack") + "</p>";
-        }
-      });
     }
   }
 </script>
@@ -170,7 +173,11 @@
         >
           <div class="flex space-x-3 flex-shrink-0 w-minus-7">
             {#if platform == "mr"}
-              <a class="shrink-0" href="https://modrinth.com/plugin/{slug}" target="_blank">
+              <a
+                class="shrink-0"
+                href="https://modrinth.com/plugin/{slug}"
+                target="_blank"
+              >
                 <img
                   id="pluginIcon"
                   src={icon}
@@ -180,7 +187,7 @@
               </a>
             {:else if platform == "cf"}
               <a
-              class="shrink-0" 
+                class="shrink-0"
                 href="https://curseforge.com/minecraft/modpacks/{slug}"
                 target="_blank"
               >
@@ -203,14 +210,13 @@
                     >{name}</a
                   >
 
-                    {$t("by")}
-                    <a
-                      id="pluginAuthor"
-                      href="https://modrinth.com/user/{author}"
-                      target="_blank"
-                      class="hover:link">{author}</a
-                    >
-
+                  {$t("by")}
+                  <a
+                    id="pluginAuthor"
+                    href="https://modrinth.com/user/{author}"
+                    target="_blank"
+                    class="hover:link">{author}</a
+                  >
                 {:else if platform == "cf"}
                   <a
                     id="pluginTitle"
@@ -220,14 +226,13 @@
                     >{name}</a
                   >
 
-                    {$t("by")}
-                    <a
-                      id="pluginAuthor"
-                      href="https://curseforge.com/members/{author}"
-                      target="_blank"
-                      class="hover:link">{author}</a
-                    >
-
+                  {$t("by")}
+                  <a
+                    id="pluginAuthor"
+                    href="https://curseforge.com/members/{author}"
+                    target="_blank"
+                    class="hover:link">{author}</a
+                  >
                 {/if}
               </div>
               <p class="w-minus-7" id="pluginDesc">
@@ -249,7 +254,9 @@
         <div class="">
           <div class="flex justify-between items-center mb-4">
             <h3 class="font-bold text-2xl">{$t("versions")}</h3>
-            <a href="#body" class="md:hidden btn btn-sm btn-neutral">{$t("button.goToDesc")}</a>
+            <a href="#body" class="md:hidden btn btn-sm btn-neutral"
+              >{$t("button.goToDesc")}</a
+            >
           </div>
           <div id="list" class="space-y-2 mb-5" />
         </div>
