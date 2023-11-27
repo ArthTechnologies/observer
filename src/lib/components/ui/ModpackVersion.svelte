@@ -11,6 +11,8 @@
   export let modpackId: string;
   export let versionId: string;
 
+  let uniqueId = Math.random().toString(36).substr(2, 9);
+
   if (type == "release") {
     type = "";
   } else if (type == "beta") {
@@ -25,6 +27,11 @@
     if (browser) {
       id = localStorage.getItem("serverID");
       localStorage.setItem("modpackURL", url);
+      setTimeout(() => {
+        if (browser) {
+          document.getElementById("addBtn" + uniqueId).checked = false;
+        }
+      }, 2500);
     }
   }
 </script>
@@ -52,9 +59,9 @@
         on:click={submit}
         class="btn btn-circle btn-ghost swap swap-rotate"
       >
-        <input type="checkbox" /><Plus class="swap-off" /><Check
-          class="swap-on"
-        /></label
+        <input id="addBtn{uniqueId}" type="checkbox" /><Plus
+          class="swap-off"
+        /><Check class="swap-on" /></label
       >
     </div>
   </div>
