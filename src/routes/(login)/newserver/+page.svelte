@@ -96,25 +96,31 @@
 
     console.log(browser && name != "");
     if (browser && name != "") {
-      modpackURL = localStorage.getItem("modpackURL");
-
-      console.log("creating" + sSoftware + "server...");
-      createServer(name, sSoftware, sVersion, addons, cmd, modpackURL).then(
-        (res) => {
-          localStorage.setItem("modpackURL", "");
-          localStorage.setItem("modpackVersion", "");
-          if (res == true) {
-            console.log("redricting to homepage...");
-            goto("/");
-          } else {
-            msg = res;
-            visible = true;
-            setTimeout(() => {
-              visible = false;
-            }, 3500);
-          }
+      let modpackURL = localStorage.getItem("modpackURL");
+      let modpackID = localStorage.getItem("modpackID");
+      createServer(
+        name,
+        sSoftware,
+        sVersion,
+        addons,
+        cmd,
+        modpackURL,
+        modpackID
+      ).then((res) => {
+        localStorage.setItem("modpackURL", "");
+        localStorage.setItem("modpackID", "");
+        localStorage.setItem("modpackVersion", "");
+        if (res == true) {
+          console.log("redricting to homepage...");
+          goto("/");
+        } else {
+          msg = res;
+          visible = true;
+          setTimeout(() => {
+            visible = false;
+          }, 3500);
         }
-      );
+      });
     } else if (browser) {
       alert("Please give your server a name");
     } else {

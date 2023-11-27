@@ -8,9 +8,9 @@
   export let date: string;
   export let type: string;
   export let url: string;
-  export let modpackId: string;
+  export let id: string;
   export let versionId: string;
-
+  let modpackId = id;
   let uniqueId = Math.random().toString(36).substr(2, 9);
 
   if (type == "release") {
@@ -27,6 +27,7 @@
     if (browser) {
       id = localStorage.getItem("serverID");
       localStorage.setItem("modpackURL", url);
+      localStorage.setItem("modpackID", modpackId);
       setTimeout(() => {
         if (browser) {
           document.getElementById("addBtn" + uniqueId).checked = false;
