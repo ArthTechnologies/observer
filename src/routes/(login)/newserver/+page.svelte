@@ -7,6 +7,7 @@
   import Modpacks from "$lib/components/ui/Modpacks.svelte";
   import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
   import Alert from "$lib/components/ui/Alert.svelte";
+  import ModpackVersion from "$lib/components/ui/ModpackVersion.svelte";
   let version = "1.19.4";
   export let software = "Paper";
   let name = "";
@@ -98,6 +99,7 @@
     if (browser && name != "") {
       let modpackURL = localStorage.getItem("modpackURL");
       let modpackID = localStorage.getItem("modpackID");
+      let versionID = localStorage.getItem("modpackVersionID");
       createServer(
         name,
         sSoftware,
@@ -105,11 +107,12 @@
         addons,
         cmd,
         modpackURL,
-        modpackID
+        modpackID,
+        versionID
       ).then((res) => {
         localStorage.setItem("modpackURL", "");
         localStorage.setItem("modpackID", "");
-        localStorage.setItem("modpackVersion", "");
+        localStorage.setItem("modpackVersionID", "");
         if (res == true) {
           console.log("redricting to homepage...");
           goto("/");

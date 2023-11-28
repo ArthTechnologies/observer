@@ -2,11 +2,12 @@
   import ModpackVersion from "./ModpackVersion.svelte";
   import { apiurl, getVersions, lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
-  import { Plus } from "lucide-svelte";
+  import { AlertTriangle, Plus } from "lucide-svelte";
   import PluginResult from "./PluginResult.svelte";
   import { marked } from "marked";
   import { t } from "$lib/scripts/i18n";
   import { handleDesc } from "$lib/scripts/utils";
+  import { fromJSON } from "postcss";
 
   export let id: string;
   export let name: string;
@@ -14,13 +15,20 @@
   export let desc: string;
   export let icon: string;
   export let platform: string;
-  export let slug: string;
+  export let slug: string = "/";
+  export let buttonType: string = "default";
   var software = "";
   var sVersion = "";
 
   if (browser) {
-    software = document.getElementById("softwareDropdown").value;
-    sVersion = document.getElementById("versionDropdown").value;
+    //if on the /newserver page
+    if (buttonType == "default") {
+      software = document.getElementById("softwareDropdown").value;
+      sVersion = document.getElementById("versionDropdown").value;
+    } else {
+      software = localStorage.getItem("serverSoftware");
+      sVersion = localStorage.getItem("serverVersion");
+    }
 
     software = software.toLowerCase();
 
@@ -42,8 +50,10 @@
         .then((response) => response.json())
 
         .then((data) => {
-          document.getElementById("body").innerHTML = marked(data.body);
-          document.getElementById("body").innerHTML = handleDesc(
+          document.getElementById("body" + buttonType).innerHTML = marked(
+            data.body
+          );
+          document.getElementById("body" + buttonType).innerHTML = handleDesc(
             marked(data.body)
           );
           document.getElementById("pluginTitle").innerHTML = data.title;
@@ -76,8 +86,10 @@
       })
         .then((response) => response.json())
         .then((data) => {
-          document.getElementById("body").innerHTML = marked(data);
-          document.getElementById("body").innerHTML = handleDesc(marked(data));
+          document.getElementById("body" + buttonType).innerHTML = marked(data);
+          document.getElementById("body" + buttonType).innerHTML = handleDesc(
+            marked(data)
+          );
           document.getElementById("pluginTitle").innerHTML = name;
           document.getElementById("pluginDesc").innerHTML = desc;
           document.getElementById("pluginIcon").src = icon;
@@ -86,18 +98,20 @@
     }
     let vname = "undefined";
     if (platform == "mr") {
-      document.getElementById("list").innerHTML = "";
+      document.getElementById("list" + suffix).innerHTML = "";
       getVersions(id).then((data) => {
         data.forEach((version) => {
+          let from = "modal";
+          if (buttonType == "default") from = "serverpage";
           if (
             version.name != vname &&
             version.loaders.includes(software) &&
             version.game_versions.includes(sVersion)
           ) {
             vname = version.name;
-            console.log(version.name + vname);
+
             new ModpackVersion({
-              target: document.getElementById("list"),
+              target: document.getElementById("list" + suffix),
               props: {
                 name: version.name,
                 date: version.date_published,
@@ -105,18 +119,22 @@
                 url: version.files[0].url,
                 modpackId: id,
                 versionId: version.id,
+                alreadyInstalled:
+                  version.id == localStorage.getItem("modpackVersionID") &&
+                  buttonType != "default",
+                from: from,
               },
             });
           }
         });
 
-        if (document.getElementById("list").innerHTML == "") {
-          document.getElementById("list").innerHTML =
+        if (document.getElementById("list" + buttonType).innerHTML == "") {
+          document.getElementById("list" + buttonType).innerHTML =
             "<p class='text-center'>" + $t("noVersionsModpack") + "</p>";
         }
       });
     } else if (platform == "cf") {
-      document.getElementById("list").innerHTML = "";
+      document.getElementById("list" + buttonType).innerHTML = "";
       fetch(apiurl + "curseforge/" + id + "/versions", {
         method: "GET",
 
@@ -127,25 +145,38 @@
         .then((response) => response.json())
         .then((data) => {
           data.forEach((version) => {
-            let type = "release";
-            if (version.releaseType == 1) type = "beta";
-            else if (version.releaseType == 0) type = "alpha";
-            new ModpackVersion({
-              target: document.getElementById("list"),
-              props: {
-                name: version.displayName,
-                date: version.fileDate,
-                type: type,
-                url: version.downloadUrl,
-                id: id,
-                pluginName: name,
-                modtype: "mod",
-                dependencies: version.dependencies,
-              },
-            });
+            let from = "modal";
+            if (buttonType == "default") from = "serverpage";
+            if (
+              version.name != vname &&
+              version.gameVersions.includes(sVersion)
+            ) {
+              let type = "release";
+              if (version.releaseType == 1) type = "beta";
+              else if (version.releaseType == 0) type = "alpha";
+              console.log(version);
+              new ModpackVersion({
+                target: document.getElementById("list" + buttonType),
+                props: {
+                  name: version.displayName,
+                  date: version.fileDate,
+                  type: type,
+                  url: version.downloadUrl,
+                  id: id,
+                  pluginName: name,
+                  modtype: "mod",
+                  dependencies: version.dependencies,
+                  versionId: version.id,
+                  alreadyInstalled:
+                    version.id == localStorage.getItem("modpackVersionID") &&
+                    buttonType != "default",
+                  from: from,
+                },
+              });
+            }
           });
-          if (document.getElementById("list").innerHTML == "") {
-            document.getElementById("list").innerHTML =
+          if (document.getElementById("list" + buttonType).innerHTML == "") {
+            document.getElementById("list" + buttonType).innerHTML =
               "<p class='text-center'>" + $t("noVersionsModpack") + "</p>";
           }
         });
@@ -153,14 +184,22 @@
   }
 </script>
 
-<label
-  for="versions"
-  on:click={get}
-  class="btn btn-circle btn-ghost absolute right-0"><Plus /></label
->
+{#if buttonType == "default"}
+  <label
+    for="versions{buttonType}"
+    on:click={get}
+    class="btn btn-circle btn-ghost absolute right-0"><Plus /></label
+  >
+{:else if buttonType == "2"}
+  <label
+    for="versions{buttonType}"
+    on:click={get}
+    class="btn btn-xs btn-neutral">{$t("versions")}</label
+  >
+{/if}
 
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id="versions" class="modal-toggle" />
+<input type="checkbox" id="versions{buttonType}" class="modal-toggle" />
 <div class="modal flex flex-col justify-center" style="margin:0rem;">
   <div
     class="modal-box bg-opacity-[.975] backdrop-blur w-[97%] h-[97%] max-w-5xl space-y-5"
@@ -248,24 +287,27 @@
       >
         <div class="">
           <h3 class="font-bold text-2xl mb-4">{$t("description")}</h3>
-          <article id="body" class="mb-5 prose bg-base-200 rounded-lg p-3" />
+          <article
+            id="body{buttonType}"
+            class="mb-5 prose bg-base-200 rounded-lg p-3"
+          />
         </div>
 
         <div class="">
           <div class="flex justify-between items-center mb-4">
             <h3 class="font-bold text-2xl">{$t("versions")}</h3>
-            <a href="#body" class="md:hidden btn btn-sm btn-neutral"
+            <a href="#body{buttonType}" class="md:hidden btn btn-sm btn-neutral"
               >{$t("button.goToDesc")}</a
             >
           </div>
-          <div id="list" class="space-y-2 mb-5" />
+          <div id="list{buttonType}" class="space-y-2 mb-5" />
         </div>
       </div>
     </div>
 
     <div class="modal-action">
       <label
-        for="versions"
+        for="versions{buttonType}"
         class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2 mb-5"
         >✕</label
       >

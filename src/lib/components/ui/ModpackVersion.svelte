@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sendVersion } from "$lib/scripts/req";
+  import { apiurl, sendVersion } from "$lib/scripts/req";
 
   import { browser } from "$app/environment";
   import { AlertCircle, Check, Clock, Plus } from "lucide-svelte";
@@ -10,6 +10,8 @@
   export let url: string;
   export let id: string;
   export let versionId: string;
+  export let alreadyInstalled: boolean = false;
+  export let from: string = "serverpage";
   let modpackId = id;
   let uniqueId = Math.random().toString(36).substr(2, 9);
 
@@ -28,10 +30,33 @@
       id = localStorage.getItem("serverID");
       localStorage.setItem("modpackURL", url);
       localStorage.setItem("modpackID", modpackId);
+      localStorage.setItem("modpackVersionID", versionId);
+      console.log("test");
+      if (from == "modal") {
+        console.log("test");
+        fetch(
+          apiurl +
+            "server/" +
+            id +
+            "/modpack?modpackURL=" +
+            url +
+            "&modpackID=" +
+            modpackId +
+            "&versionID=" +
+            versionId,
+          {
+            method: "POST",
+            headers: {
+              token: localStorage.getItem("token"),
+              email: localStorage.getItem("accountEmail"),
+            },
+          }
+        ).then((res) => {
+          console.log(res);
+        });
+      }
       setTimeout(() => {
-        if (browser) {
-          document.getElementById("addBtn" + uniqueId).checked = false;
-        }
+        document.getElementById("addBtn" + uniqueId).checked = false;
       }, 2500);
     }
   }
@@ -40,11 +65,10 @@
 <div class="bg-base-200 rounded-lg p-3">
   <div class="flex justify-between place-items-center items-center">
     <div>
-      <div class="flex space-x-1">
-        <p class="text-xl font-bold">{name}</p>
-        <div class="flex space-x-1 place-items-end">
-          <p class="text-warning">{type}</p>
-        </div>
+      <div>
+        <span class="text-xl font-bold">{name}</span>
+
+        <span class="text-warning mt-1">{type}</span>
       </div>
       <div class="flex gap-2 flex-wrap mt-2">
         <div
@@ -56,14 +80,20 @@
       </div>
     </div>
     <div class="flex place-items-center space-x-2">
-      <label
-        on:click={submit}
-        class="btn btn-circle btn-ghost swap swap-rotate"
-      >
-        <input id="addBtn{uniqueId}" type="checkbox" /><Plus
-          class="swap-off"
-        /><Check class="swap-on" /></label
-      >
+      {#if alreadyInstalled}
+        <div class="w-[3rem] h-[3rem] flex items-center justify-center">
+          <Check />
+        </div>
+      {:else}
+        <label
+          on:click={submit}
+          class="btn btn-circle btn-ghost swap swap-rotate"
+        >
+          <input id="addBtn{uniqueId}" type="checkbox" /><Plus
+            class="swap-off"
+          /><Check class="swap-on" /></label
+        >
+      {/if}
     </div>
   </div>
 </div>

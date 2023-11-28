@@ -521,7 +521,8 @@ export function createServer(
   a: any[],
   c: any[],
   mURL: string,
-  mID: string
+  mID: string,
+  vID: string
 ) {
   if(browser) {
 
@@ -549,6 +550,7 @@ export function createServer(
       cmds: c,
       modpackURL: mURL,
       modpackID: mID,
+      modpackVersionID: vID,
     }),
   };
 
