@@ -14,6 +14,7 @@
   export let modtype: string;
   export let dependencies: string[] = [];
   export let platform: string = "mr";
+  export let alreadyInstalled: boolean = false;
   let uniqueId = Math.random().toString(36).substr(2, 9);
   if (type == "release") {
     type = "";
@@ -65,11 +66,10 @@
 <div class="bg-base-200 rounded-lg p-3">
   <div class="flex justify-between place-items-center items-center">
     <div>
-      <div class="flex space-x-1">
-        <p class="text-xl font-bold">{name}</p>
-        <div class="flex space-x-1 place-items-end">
-          <p class="text-warning">{type}</p>
-        </div>
+      <div>
+        <span class="text-xl font-bold">{name}</span>
+
+        <span class="text-warning">{type}</span>
       </div>
       <div class="flex gap-2 flex-wrap mt-2 md:w-[15rem]">
         <div
@@ -83,16 +83,15 @@
           <div
             class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
           >
-
             {#if dependency.dependency_type == "optional"}
-            <InfoIcon class="mr-1.5" size="16" />
+              <InfoIcon class="mr-1.5" size="16" />
               {$t("worksWith")}
             {:else if dependency.dependency_type == "incompatible"}
-            <AlertCircle class="mr-1.5" size="16" />
+              <AlertCircle class="mr-1.5" size="16" />
               {$t("incompatibleWith")}
             {:else}
-            <AlertCircle class="mr-1.5" size="16" />
-            {$t("requires")}
+              <AlertCircle class="mr-1.5" size="16" />
+              {$t("requires")}
             {/if}
 
             {dependency.name}
@@ -100,16 +99,21 @@
         {/each}
       </div>
     </div>
-    <div class="flex place-items-center space-x-2">
-      <label
-     
-        on:click={submit}
-        class="btn btn-circle btn-ghost swap swap-rotate"
-      >
-        <input type="checkbox"  id="addBtn{uniqueId}"/><Plus class="swap-off" /><Check
-          class="swap-on"
-        /></label
-      >
-    </div>
+    {#if alreadyInstalled}
+      <div class="w-[3rem] h-[3rem] flex items-center justify-center">
+        <Check />
+      </div>
+    {:else}
+      <div class="flex place-items-center space-x-2">
+        <label
+          on:click={submit}
+          class="btn btn-circle btn-ghost swap swap-rotate"
+        >
+          <input type="checkbox" id="addBtn{uniqueId}" /><Plus
+            class="swap-off"
+          /><Check class="swap-on" /></label
+        >
+      </div>
+    {/if}
   </div>
 </div>
