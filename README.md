@@ -15,7 +15,7 @@ The main panels currently used for running Minecraft servers are bulky, slow, ha
 ## How to Run with Docker
 
 1. Download the image from docker hub with the command `sudo docker pull arthmc/observer:latest`
-2. Run the image with `sudo docker run -p 3000:3000 arthmc/observer:latest`. To change the port, replace the first 3000 with the port number you want.
+2. Run the image with `sudo docker run -p 3000:3000 [Set variables here, see "how to configure"] arthmc/observer:latest`. To change the port, replace the first 3000 with the port number you want.
 
 If you are using an ARM-based machine (Like a Mac or Raspberry Pi):
 1. Grab the source code with `git clone https://codeberg.org/arth/observer`
