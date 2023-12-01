@@ -43,6 +43,7 @@
               url: version.files[0].url,
               pluginId: id,
               pluginName: pluginName,
+              versionId: version.id,
             },
           });
         }

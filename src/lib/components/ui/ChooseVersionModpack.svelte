@@ -51,10 +51,10 @@
 
         .then((data) => {
           document.getElementById("body" + buttonType).innerHTML = marked(
-            data.body
+            data.body,
           );
           document.getElementById("body" + buttonType).innerHTML = handleDesc(
-            marked(data.body)
+            marked(data.body),
           );
           document.getElementById("pluginTitle").innerHTML = data.title;
 
@@ -88,7 +88,7 @@
         .then((data) => {
           document.getElementById("body" + buttonType).innerHTML = marked(data);
           document.getElementById("body" + buttonType).innerHTML = handleDesc(
-            marked(data)
+            marked(data),
           );
           document.getElementById("pluginTitle").innerHTML = name;
           document.getElementById("pluginDesc").innerHTML = desc;
@@ -123,6 +123,8 @@
                   version.id == localStorage.getItem("modpackVersionID") &&
                   buttonType != "default",
                 from: from,
+                changelog: version.changelog,
+                platform: "mr",
               },
             });
           }
@@ -149,6 +151,9 @@
             if (buttonType == "default") from = "serverpage";
             if (
               version.name != vname &&
+              version.gameVersions.includes(
+                software.charAt(0).toUpperCase() + software.slice(1),
+              ) &&
               version.gameVersions.includes(sVersion)
             ) {
               let type = "release";
@@ -171,6 +176,7 @@
                     version.id == localStorage.getItem("modpackVersionID") &&
                     buttonType != "default",
                   from: from,
+                  platform: "cf",
                 },
               });
             }

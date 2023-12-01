@@ -1,7 +1,7 @@
 <script lang="ts">
   import { apiurl, sendVersion } from "$lib/scripts/req";
 
-  import { browser } from "$app/environment";
+  import { browser, version } from "$app/environment";
   import {
     AlertCircle,
     Check,
@@ -24,6 +24,8 @@
   export let platform: string = "mr";
   export let alreadyInstalled: boolean = false;
   export let changelog: string = "";
+
+  export let versionId: string = "";
   let uniqueId = Math.random().toString(36).substr(2, 9);
   if (type == "release") {
     type = "";
@@ -106,8 +108,8 @@
             {dependency.name}
           </div>
         {/each}
-        {#if changelog != ""}
-          <Changelog {changelog} />
+        {#if changelog != "" || platform == "cf"}
+          <Changelog {changelog} {platform} {versionId} {pluginId} />
         {/if}
       </div>
     </div>

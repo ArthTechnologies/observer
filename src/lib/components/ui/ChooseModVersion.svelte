@@ -53,10 +53,10 @@
 
         .then((data) => {
           document.getElementById("body" + suffix).innerHTML = marked(
-            data.body
+            data.body,
           );
           document.getElementById("body" + suffix).innerHTML = handleDesc(
-            marked(data.body)
+            marked(data.body),
           );
 
           document.getElementById("pluginTitle").innerHTML = data.title;
@@ -90,7 +90,7 @@
         .then((data) => {
           document.getElementById("body" + suffix).innerHTML = marked(data);
           document.getElementById("body" + suffix).innerHTML = handleDesc(
-            marked(data)
+            marked(data),
           );
           document.getElementById("pluginTitle").innerHTML = name;
           document.getElementById("pluginDesc").innerHTML = desc;
@@ -123,6 +123,7 @@
                 modtype: "mod",
                 dependencies: version.dependencies,
                 changelog: version.changelog,
+                versionId: version.id,
               },
             });
           }
@@ -149,6 +150,9 @@
           data.forEach((version) => {
             if (
               version.name != vname &&
+              version.gameVersions.includes(
+                software.charAt(0).toUpperCase() + software.slice(1),
+              ) &&
               version.gameVersions.includes(sVersion)
             ) {
               vname = version.displayName;
@@ -168,6 +172,7 @@
                   modtype: "mod",
                   dependencies: version.dependencies,
                   platform: "cf",
+                  versionId: version.id,
                 },
               });
             }

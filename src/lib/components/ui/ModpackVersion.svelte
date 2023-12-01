@@ -3,6 +3,7 @@
 
   import { browser } from "$app/environment";
   import { AlertCircle, Check, Clock, Plus } from "lucide-svelte";
+  import Changelog from "./Changelog.svelte";
 
   export let name: string;
   export let date: string;
@@ -12,6 +13,8 @@
   export let versionId: string;
   export let alreadyInstalled: boolean = false;
   export let from: string = "serverpage";
+  export let changelog: string = "";
+  export let platform: string = "cf";
   let modpackId = id;
   let uniqueId = Math.random().toString(36).substr(2, 9);
 
@@ -50,7 +53,7 @@
               token: localStorage.getItem("token"),
               email: localStorage.getItem("accountEmail"),
             },
-          }
+          },
         ).then((res) => {
           console.log(res);
         });
@@ -77,6 +80,9 @@
           <Clock size="16" class="mr-1.5" />
           {time}
         </div>
+        {#if changelog != "" || platform == "cf"}
+          <Changelog {changelog} {platform} {versionId} pluginId={modpackId} />
+        {/if}
       </div>
     </div>
     <div class="flex place-items-center space-x-2">

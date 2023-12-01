@@ -40,7 +40,7 @@ module.exports = {
           "--rounded-box": "0.55rem",
           "--rounded-btn": "0.35rem",
           "--rounded-badge": "0.55rem",
-          "--tab-radius": "0.2rem",
+          "--tab-radius": "0.35rem",
         },
       },
     ],
