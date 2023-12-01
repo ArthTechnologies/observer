@@ -43,9 +43,13 @@
 </script>
 
 {#if loginStatus === true}
-  <div class="flex-none gap-2" id="navbtn">
+  <div class=" flex-none gap-2" id="navbtn">
     <details class="dropdown dropdown-end z-50" id="profileDropdown">
-      <summary tabindex="0" class="btn btn-ghost btn-circle">
+      <summary
+        tabindex="0"
+        id="account"
+        class="hover:text-gray-200 btn btn-ghost btn-circle"
+      >
         <User />
       </summary>
       <ul

@@ -15,6 +15,7 @@
 
   let enablePay = true;
   let enableAuth = "true";
+
   //sends user to /signin if localstorage token is ""
   if (browser) {
     enablePay = localStorage.getItem("enablePay");
@@ -59,67 +60,84 @@
   });
 
   function check() {
-    setTimeout(function () {
-      switch (window.location.pathname) {
-        case "/":
-          document
-            .getElementById("servers")
-            .classList.add("text-accent-content");
-          document
-            .getElementById("servers2")
-            .classList.add("text-accent-content");
+    if (browser) {
+      setTimeout(() => {
+        switch (window.location.pathname) {
+          case "/":
+            document.getElementById("servers").classList.add("text-gray-200");
+            document.getElementById("servers2").classList.add("text-gray-200");
 
-          document
-            .getElementById("pay")
-            .classList.remove("text-accent-content");
-          document
-            .getElementById("newserver")
-            .classList.remove("text-accent-content");
-          break;
-        case "/billing":
-          document
-            .getElementById("billing")
-            .classList.add("text-accent-content");
+            document
+              .getElementById("newserver")
+              .classList.remove("text-gray-200");
+            document
+              .getElementById("account")
+              .classList.remove("text-gray-200");
+            break;
+          case "/billing":
+            document.getElementById("billing").classList.add("text-gray-200");
 
-          document
-            .getElementById("servers")
-            .classList.remove("text-accent-content");
-          document
-            .getElementById("servers2")
-            .classList.remove("text-accent-content");
-          document
-            .getElementById("newserver")
-            .classList.remove("text-accent-content");
-          break;
-        case "/newserver":
-          document
-            .getElementById("newserver")
-            .classList.add("text-accent-content");
+            document
+              .getElementById("servers")
+              .classList.remove("text-gray-200");
+            document
+              .getElementById("servers2")
+              .classList.remove("text-gray-200");
+            document
+              .getElementById("newserver")
+              .classList.remove("text-gray-200");
+            document
+              .getElementById("account")
+              .classList.remove("text-gray-200");
+            break;
+          case "/newserver":
+            document.getElementById("newserver").classList.add("text-gray-200");
 
-          document
-            .getElementById("servers")
-            .classList.remove("text-accent-content");
-          document
-            .getElementById("servers2")
-            .classList.remove("text-accent-content");
-          document
-            .getElementById("pay")
-            .classList.remove("text-accent-content");
-          break;
-      }
-    }, 100);
+            document
+              .getElementById("servers")
+              .classList.remove("text-gray-200");
+            document
+              .getElementById("servers2")
+              .classList.remove("text-gray-200");
+            document
+              .getElementById("account")
+              .classList.remove("text-gray-200");
+            break;
+          case "/account":
+            document.getElementById("account").classList.add("text-gray-200");
+
+            document
+              .getElementById("servers")
+              .classList.remove("text-gray-200");
+            document
+              .getElementById("servers2")
+              .classList.remove("text-gray-200");
+            document
+              .getElementById("newserver")
+              .classList.remove("text-gray-200");
+            document
+              .getElementById("billing")
+              .classList.remove("text-gray-200");
+            break;
+        }
+      }, 50);
+    }
   }
+  check();
 </script>
 
 {#if navType === "default"}
-  <div class="navbar bg-base-300 px-4 max-sm:pl-2">
+  <div class="navbar bg-base-300 px-4 max-sm:pl-2" on:click={check}>
     <div class="flex-1 h-[3rem]">
       <a class="btn btn-ghost normal-case text-xl" href="/"
         ><img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" /></a
       >
     </div>
     <div class="flex-1 md:flex-none space-x-2 navbar-end">
-      <a href="/" class="btn btn-ghost rounded-lg hidden md:flex"
+      <a
+        id="servers"
+        href="/"
+        class="hover:text-gray-200 btn btn-ghost rounded-lg hidden md:flex"
         >{$t("navbar.servers")}</a
       >
 
@@ -128,6 +146,9 @@
       <NewServer />
       {#if enablePay == "true"}
         <Billing />
+      {:else}
+        <div id="billing"></div>
+        <!-- This is to prevent errors in the check function-->
       {/if}
 
       <ThemeToggle />

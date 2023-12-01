@@ -3,7 +3,7 @@
   import { Moon, Sun } from "lucide-svelte";
 </script>
 
-<label class="btn btn-circle btn-ghost swap swap-rotate">
+<label class="hover:text-gray-200 btn btn-circle btn-ghost swap swap-rotate">
   <!-- this hidden checkbox controls the state -->
   <input
     data-toggle-theme="light,dark"
