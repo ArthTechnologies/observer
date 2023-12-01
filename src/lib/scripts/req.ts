@@ -1,6 +1,8 @@
 import accountEmail from "$lib/stores/accountEmail";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
+import { env } from '$env/dynamic/public'
+
 export let apiurl = "http://localhost:4000/";
 export let usingOcelot = false;
 export let lrurl = "https://api.modrinth.com/v2/";
@@ -9,20 +11,20 @@ export let usingCurseForge = false;
 
 //set apiurl & usingOcelot to the enviroment variable if it exists
 if (browser) {
-  if (import.meta.env.VITE_API_URL) {
-    apiurl = import.meta.env.VITE_API_URL;
+  if (env.PUBLIC_API_URL) {
+    apiurl = env.PUBLIC_API_URL;
   }
-  if (import.meta.env.VITE_USING_OCELOT) {
-    usingOcelot = JSON.parse(import.meta.env.VITE_USING_OCELOT);
+  if (env.PUBLIC_USING_OCELOT) {
+    usingOcelot = JSON.parse(env.PUBLIC_USING_OCELOT);
   }
-  if (import.meta.env.VITE_LR_URL) {
-    lrurl = import.meta.env.VITE_LR_URL;
+  if (env.PUBLIC_LR_URL) {
+    lrurl = env.PUBLIC_LR_URL;
   }
-  if (import.meta.env.VITE_STRIPE_PAYMENT_LINK) {
-    stripePaymentLink = import.meta.env.VITE_STRIPE_PAYMENT_LINK;
+  if (env.PUBLIC_STRIPE_PAYMENT_LINK) {
+    stripePaymentLink = env.PUBLIC_STRIPE_PAYMENT_LINK;
   }
-  if (import.meta.env.VITE_USING_CURSEFORGE) {
-    usingCurseForge = JSON.parse(import.meta.env.VITE_USING_CURSEFORGE);
+  if (env.PUBLIC_USING_CURSEFORGE) {
+    usingCurseForge = JSON.parse(env.PUBLIC_USING_CURSEFORGE);
   }
 }
 

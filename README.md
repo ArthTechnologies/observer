@@ -24,13 +24,13 @@ If you are using an ARM-based machine (Like a Mac or Raspberry Pi):
 
 ## How to configure with Docker
 
-In the indicated are in the run command, you can enter enviroment variables to point it to your quartz instance and configure other settings. Each variable is added in this format: `-e VITE_EXAMPLEVARIABLE=true`.
+In the indicated are in the run command, you can enter enviroment variables to point it to your quartz instance and configure other settings. Each variable is added in this format: `-e PUBLIC_EXAMPLEVARIABLE=true`.
 
-- `VITE_API_URL`: The address of your quartz instance. Make sure the url ends with a `/`.
-- `VITE_USING_CURSEFORGE`: Eether to let users add mods from curseforge, not just modrinth. Only enable this if you've set up curseforge on your quartz instance.
-- `VITE_STRIPE_PAYMENT_LINK`: The payment link that users will be sent to after making an account IF you've enabled payments and setup stripe on your quartz instance.
-- `VITE_USING_OCELOT` (Advanced): Set this to true if you're using ocelot, the system that links multiple quartz instances together.
-- `VITE_LR_URL` (Advanced): 
+- `PUBLIC_API_URL`: The address of your quartz instance. Make sure the url ends with a `/`.
+- `PUBLIC_USING_CURSEFORGE`: Eether to let users add mods from curseforge, not just modrinth. Only enable this if you've set up curseforge on your quartz instance.
+- `PUBLIC_STRIPE_PAYMENT_LINK`: The payment link that users will be sent to after making an account IF you've enabled payments and setup stripe on your quartz instance.
+- `PUBLIC_USING_OCELOT` (Advanced): Set this to true if you're using ocelot, the system that links multiple quartz instances together.
+- `PUBLIC_LR_URL` (Advanced): 
 Labrinth is the open-source software behing Modrith, a site where you can download mods and such. If you know another site that is running Labrinth and for some reason want to use that instead of Modrinth, you can tell observer to use that site instead of modrinth via this variable.
 
 
@@ -45,12 +45,12 @@ You can update observer by running the `git pull` command inside your observer f
 
 ## How to configure without docker
 
-You'll need to create a file called `.env` inside your observer folder. For each variable, create a new line and format it like this: `VITE_EXAMPLEVARIABLE=true`.
-- `VITE_API_URL`: The address of your quartz instance.
-- `VITE_USING_CURSEFORGE`: Eether to let users add mods from curseforge, not just modrinth. Only enable this if you've set up curseforge on your quartz instance.
-- `VITE_STRIPE_PAYMENT_LINK`: The payment link that users will be sent to after making an account IF you've enabled payments and setup stripe on your quartz instance.
-- `VITE_USING_OCELOT` (Advanced): Set this to true if you're using ocelot, the system that links multiple quartz instances together.
-- `VITE_LR_URL` (Advanced): 
+You'll need to create a file called `.env` inside your observer folder. For each variable, create a new line and format it like this: `PUBLIC_EXAMPLEVARIABLE=true`.
+- `PUBLIC_API_URL`: The address of your quartz instance.
+- `PUBLIC_USING_CURSEFORGE`: Eether to let users add mods from curseforge, not just modrinth. Only enable this if you've set up curseforge on your quartz instance.
+- `PUBLIC_STRIPE_PAYMENT_LINK`: The payment link that users will be sent to after making an account IF you've enabled payments and setup stripe on your quartz instance.
+- `PUBLIC_USING_OCELOT` (Advanced): Set this to true if you're using ocelot, the system that links multiple quartz instances together.
+- `PUBLIC_LR_URL` (Advanced): 
 Labrinth is the open-source software behing Modrith, a site where you can download mods and such. If you know another site that is running Labrinth and for some reason want to use that instead of Modrinth, you can tell observer to use that site instead of modrinth via this variable.
 
 ## Other Requirements
