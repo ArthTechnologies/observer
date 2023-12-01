@@ -205,7 +205,6 @@
       state = response.state;
 
       if (state == "starting") {
-
         console.log("unlocking");
         lock = false;
       }
@@ -217,8 +216,6 @@
     if (!lock) {
       if (state == "true") {
         changeServerState("restart", id, email);
-
- 
       } else if (state == "false") {
         changeServerState("start", id, email);
       }
@@ -411,7 +408,7 @@
         <FullscreenTerminal />
         <div
           id="terminalContainer"
-          class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
+          class="bg-base-300 h-96 rounded-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
         >
           <div class="p-5 sm:text-xs xl:text-base font-mono relative">
             <p id="terminal" />
@@ -514,7 +511,9 @@
           <EditInfo type="fullBtn" /><StorageLimit />
         </div>
         <div class="flex">
-          <a class="btn btn-primary mr-2" href="/server/{parseInt(id) + 10000}/files"
+          <a
+            class="btn btn-primary mr-2"
+            href="/server/{parseInt(id) + 10000}/files"
             ><FolderClosed class="mr-1.5" />{$t("button.files")}</a
           ><Versions />
         </div>
