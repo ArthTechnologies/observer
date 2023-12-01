@@ -3,7 +3,7 @@
   import { apiurl, getVersions, lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
   import { Plus } from "lucide-svelte";
-  import {handleDesc} from "$lib/scripts/utils";
+  import { handleDesc } from "$lib/scripts/utils";
   import { marked } from "marked";
   import { t } from "$lib/scripts/i18n";
 
@@ -52,9 +52,12 @@
         .then((response) => response.json())
 
         .then((data) => {
-    
-          document.getElementById("body" + suffix).innerHTML = marked(data.body);
-          document.getElementById("body" + suffix).innerHTML = handleDesc(marked(data.body));
+          document.getElementById("body" + suffix).innerHTML = marked(
+            data.body
+          );
+          document.getElementById("body" + suffix).innerHTML = handleDesc(
+            marked(data.body)
+          );
 
           document.getElementById("pluginTitle").innerHTML = data.title;
 
@@ -85,9 +88,10 @@
       })
         .then((response) => response.json())
         .then((data) => {
-          
           document.getElementById("body" + suffix).innerHTML = marked(data);
-          document.getElementById("body" + suffix).innerHTML = handleDesc(marked(data));
+          document.getElementById("body" + suffix).innerHTML = handleDesc(
+            marked(data)
+          );
           document.getElementById("pluginTitle").innerHTML = name;
           document.getElementById("pluginDesc").innerHTML = desc;
           document.getElementById("pluginIcon").src = icon;
@@ -118,6 +122,7 @@
                 pluginName: name,
                 modtype: "mod",
                 dependencies: version.dependencies,
+                changelog: version.changelog,
               },
             });
           }
@@ -140,6 +145,7 @@
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           data.forEach((version) => {
             if (
               version.name != vname &&
@@ -183,10 +189,8 @@
     class="btn btn-circle btn-ghost absolute right-0"><Plus /></label
   >
 {:else if buttonType == "2"}
-  <label
-    for="versions{suffix}"
-    on:click={get}
-    class="btn btn-xs btn-neutral">{$t("versions")}</label
+  <label for="versions{suffix}" on:click={get} class="btn btn-xs btn-neutral"
+    >{$t("versions")}</label
   >
 {/if}
 
@@ -202,7 +206,11 @@
         >
           <div class="flex space-x-3 flex-shrink-0 w-minus-7">
             {#if platform == "mr"}
-              <a class="shrink-0" href="https://modrinth.com/plugin/{slug}" target="_blank">
+              <a
+                class="shrink-0"
+                href="https://modrinth.com/plugin/{slug}"
+                target="_blank"
+              >
                 <img
                   id="pluginIcon"
                   src={icon}
@@ -220,14 +228,13 @@
                     >{name}</a
                   >
 
-                    {$t("by")}
-                    <a
-                      id="pluginAuthor"
-                      href="https://modrinth.com/user/{author}"
-                      target="_blank"
-                      class="hover:link">{author}</a
-                    >
-
+                  {$t("by")}
+                  <a
+                    id="pluginAuthor"
+                    href="https://modrinth.com/user/{author}"
+                    target="_blank"
+                    class="hover:link">{author}</a
+                  >
                 </div>
                 <p class="w-minus-7" id="pluginDesc">
                   {desc}
@@ -235,7 +242,7 @@
               </div>
             {:else if platform == "cf"}
               <a
-              class="shrink-0" 
+                class="shrink-0"
                 href="https://curseforge.com/minecraft/mc-mods/{slug}"
                 target="_blank"
               >
@@ -256,14 +263,13 @@
                     >{name}</a
                   >
 
-                    {$t("by")}
-                    <a
-                      id="pluginAuthor"
-                      href="https://curseforge.com/members/{author}"
-                      target="_blank"
-                      class="hover:link">{author}</a
-                    >
-
+                  {$t("by")}
+                  <a
+                    id="pluginAuthor"
+                    href="https://curseforge.com/members/{author}"
+                    target="_blank"
+                    class="hover:link">{author}</a
+                  >
                 </div>
                 <p class="w-minus-7" id="pluginDesc">
                   {desc}
@@ -288,7 +294,9 @@
         <div class="">
           <div class="flex justify-between items-center mb-4">
             <h3 class="font-bold text-2xl">{$t("versions")}</h3>
-            <a href="#body{suffix}" class="md:hidden btn btn-sm btn-neutral">{$t("button.goToDesc")}</a>
+            <a href="#body{suffix}" class="md:hidden btn btn-sm btn-neutral"
+              >{$t("button.goToDesc")}</a
+            >
           </div>
           <div id="list{suffix}" class="space-y-2 mb-5" />
         </div>

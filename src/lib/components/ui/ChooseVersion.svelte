@@ -48,9 +48,10 @@
       .then((response) => response.json())
 
       .then((data) => {
-
         document.getElementById("body" + suffix).innerHTML = marked(data.body);
-          document.getElementById("body" + suffix).innerHTML = handleDesc(marked(data.body));
+        document.getElementById("body" + suffix).innerHTML = handleDesc(
+          marked(data.body)
+        );
         document.getElementById("pluginTitle").innerHTML = data.title;
 
         document.getElementById("pluginDesc").innerHTML = data.description;
@@ -93,6 +94,7 @@
               pluginName: name,
               dependencies: version.dependencies,
               modtype: "plugin",
+              changelog: version.changelog,
             },
           });
         }
@@ -113,10 +115,8 @@
     class="btn btn-circle btn-ghost absolute right-0"><Plus /></label
   >
 {:else}
-  <label
-    for="versionsmanage"
-    on:click={get}
-    class="btn btn-xs btn-neutral">{$t("versions")}</label
+  <label for="versionsmanage" on:click={get} class="btn btn-xs btn-neutral"
+    >{$t("versions")}</label
   >
 {/if}
 <!-- Put this part before </body> tag -->
@@ -133,7 +133,11 @@
           class="flex justify-between place-items-center max-w-full relative"
         >
           <div class="flex space-x-3 flex-shrink-0 w-minus-7">
-            <a class="shrink-0" href="https://modrinth.com/plugin/{id}" target="_blank">
+            <a
+              class="shrink-0"
+              href="https://modrinth.com/plugin/{id}"
+              target="_blank"
+            >
               <img
                 id="pluginIcon"
                 src={icon}
@@ -151,14 +155,13 @@
                   >{name}</a
                 >
 
-                  {$t("by")}
-                  <a
-                    id="pluginAuthor"
-                    href="https://curseforge.com/member/{author}"
-                    target="_blank"
-                    class="hover:link">{author}</a
-                  >
-
+                {$t("by")}
+                <a
+                  id="pluginAuthor"
+                  href="https://curseforge.com/member/{author}"
+                  target="_blank"
+                  class="hover:link">{author}</a
+                >
               </div>
               <p class="w-minus-7" id="pluginDesc">
                 {desc}
@@ -182,7 +185,9 @@
         <div class="">
           <div class="flex justify-between items-center mb-4">
             <h3 class="font-bold text-2xl">{$t("versions")}</h3>
-            <a href="#body{suffix}" class="md:hidden btn btn-sm btn-neutral">{$t("button.goToDesc")}</a>
+            <a href="#body{suffix}" class="md:hidden btn btn-sm btn-neutral"
+              >{$t("button.goToDesc")}</a
+            >
           </div>
           <div id="list{suffix}" class="space-y-2 mb-5" />
         </div>

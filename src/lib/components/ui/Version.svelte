@@ -2,8 +2,16 @@
   import { apiurl, sendVersion } from "$lib/scripts/req";
 
   import { browser } from "$app/environment";
-  import { AlertCircle, Check, Clock, InfoIcon, Plus } from "lucide-svelte";
+  import {
+    AlertCircle,
+    Check,
+    ClipboardList,
+    Clock,
+    InfoIcon,
+    Plus,
+  } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
+  import Changelog from "./Changelog.svelte";
 
   export let name: string;
   export let date: string;
@@ -15,6 +23,7 @@
   export let dependencies: string[] = [];
   export let platform: string = "mr";
   export let alreadyInstalled: boolean = false;
+  export let changelog: string = "";
   let uniqueId = Math.random().toString(36).substr(2, 9);
   if (type == "release") {
     type = "";
@@ -97,6 +106,9 @@
             {dependency.name}
           </div>
         {/each}
+        {#if changelog != ""}
+          <Changelog {changelog} />
+        {/if}
       </div>
     </div>
     {#if alreadyInstalled}
