@@ -38,53 +38,44 @@
           }
         }
         promise = fetch(apiurl + "server/" + id + "/file/world*datapacks", {
-      method: "GET",
-      headers: {
-        token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
+          method: "GET",
+          headers: {
+            token: localStorage.getItem("token"),
+            email: localStorage.getItem("accountEmail"),
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.content.includes("terralith")) {
+              worldgenFiles.push("terralith");
+              if (document.getElementById("terralithWorld") != null)
+                document.getElementById("terralithWorld").checked = true;
+            }
 
+            if (data.content.includes("incendium")) {
+              worldgenFiles.push("incendium");
+              if (document.getElementById("incendiumWorld") != null)
+                document.getElementById("incendiumWorld").checked = true;
+            }
+            if (data.content.includes("nullscape")) {
+              worldgenFiles.push("nullscape");
+              if (document.getElementById("nullscapeWorld") != null)
+                document.getElementById("nullscapeWorld").checked = true;
+            }
+            if (data.content.includes("structory")) {
+              worldgenFiles.push("structory");
+              if (document.getElementById("structoryWorld") != null)
+                document.getElementById("structoryWorld").checked = true;
+            }
 
-        if (data.content.includes("terralith")) {
-          worldgenFiles.push("terralith");
-          if (document.getElementById("terralithWorld") != null)
-          document.getElementById("terralithWorld").checked = true;
-
-        }
-
-        if (data.content.includes("incendium")) {
-          worldgenFiles.push("incendium");
-          if (document.getElementById("incendiumWorld") != null)
-          document.getElementById("incendiumWorld").checked = true;
-
-        }
-        if (data.content.includes("nullscape")) {
-          worldgenFiles.push("nullscape");
-          if (document.getElementById("nullscapeWorld") != null)
-          document.getElementById("nullscapeWorld").checked = true;
-
-        }
-        if (data.content.includes("structory")) {
-          worldgenFiles.push("structory");
-          if (document.getElementById("structoryWorld") != null)
-          document.getElementById("structoryWorld").checked = true;
-
-        }
-
-
-        if (worldgenFiles.length == 0) {
-          worldgenModsText = worldgenModsText + " None";
-        } else {
-          worldgenModsText =
-            worldgenModsText + " " + worldgenFiles.join(", ");
-        }
+            if (worldgenFiles.length == 0) {
+              worldgenModsText = worldgenModsText + " None";
+            } else {
+              worldgenModsText =
+                worldgenModsText + " " + worldgenFiles.join(", ");
+            }
+          });
       });
-      });
-
-
   }
 
   function download() {
@@ -105,13 +96,26 @@
           const downloadBtn = document.querySelector(".downloadBtn");
 
           downloadBtn.style.width = "250px";
-          downloadBtn.style.background = `linear-gradient(
+          //if its dark theme, gradient needs to be 90% transparency
+          //to 0% transparency, where light should be from 90% to 70%.
+          let theme = localStorage.getItem("theme");
+          if (theme == "dark") {
+            downloadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.0) ${percentComplete}%,
-  #088587 ${percentComplete}%,
+  rgba(0, 0, 0, 0.0) ${(data.used / data.limit) * 100}%,
+  #088587 ${(data.used / data.limit) * 100}%,
   #088587 100%
 )`;
+          } else if (theme == "light") {
+            downloadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.7) ${(data.used / data.limit) * 100}%,
+  #088587 ${(data.used / data.limit) * 100}%,
+  #088587 100%
+)`;
+          }
         }
       }
     });
@@ -172,13 +176,26 @@
           console.log(`Percent complete: ${percentComplete.toFixed(2)}%`);
           // You can update a progress bar or display the percentage to the user
           if (percentComplete < 100) {
-            uploadBtn.style.background = `linear-gradient(
+            //if its dark theme, gradient needs to be 90% transparency
+            //to 0% transparency, where light should be from 90% to 70%.
+            let theme = localStorage.getItem("theme");
+            if (theme == "dark") {
+              uploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.0) ${percentComplete}%,
-  #088587 ${percentComplete}%,
+  rgba(0, 0, 0, 0.0) ${(data.used / data.limit) * 100}%,
+  #088587 ${(data.used / data.limit) * 100}%,
   #088587 100%
 )`;
+            } else if (theme == "light") {
+              uploadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.7) ${(data.used / data.limit) * 100}%,
+  #088587 ${(data.used / data.limit) * 100}%,
+  #088587 100%
+)`;
+            }
           }
         }
       });
@@ -199,13 +216,26 @@
 
       //when response is recieved...
       xhr.onload = function () {
-        uploadBtn.style.background = `linear-gradient(
+        //if its dark theme, gradient needs to be 90% transparency
+        //to 0% transparency, where light should be from 90% to 70%.
+        let theme = localStorage.getItem("theme");
+        if (theme == "dark") {
+          uploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.0) 100%,
   #088587 100%,
   #088587 100%
 )`;
+        } else if (theme == "light") {
+          uploadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.7) 100}%,
+  #088587 100%,
+  #088587 100%
+)`;
+        }
       };
     }
   }
@@ -279,12 +309,13 @@
     })
       .then((response) => response.json())
       .then((data) => {
-
         let worldgenMods = ["terralith", "incendium", "nullscape", "structory"];
         for (let i in worldgenMods) {
-
-          if (JSON.stringify(data.includes(worldgenMods[i] + "-" + serverVersion + ".zip"))) {
-
+          if (
+            JSON.stringify(
+              data.includes(worldgenMods[i] + "-" + serverVersion + ".zip")
+            )
+          ) {
             areWorldgenMods = true;
           }
         }
