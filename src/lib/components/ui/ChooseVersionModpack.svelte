@@ -98,7 +98,7 @@
     }
     let vname = "undefined";
     if (platform == "mr") {
-      document.getElementById("list" + suffix).innerHTML = "";
+      document.getElementById("list" + buttonType).innerHTML = "";
       getVersions(id).then((data) => {
         data.forEach((version) => {
           let from = "modal";
@@ -111,7 +111,7 @@
             vname = version.name;
 
             new ModpackVersion({
-              target: document.getElementById("list" + suffix),
+              target: document.getElementById("list" + buttonType),
               props: {
                 name: version.name,
                 date: version.date_published,
