@@ -84,13 +84,13 @@
             class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
           >
             {#if dependency.dependency_type == "optional"}
-              <InfoIcon class="mr-1.5" size="16" />
+              <InfoIcon class="mr-1.5 shrink-0" size="16" />
               {$t("worksWith")}
             {:else if dependency.dependency_type == "incompatible"}
-              <AlertCircle class="mr-1.5" size="16" />
+              <AlertCircle class="mr-1.5 shrink-0" size="16" />
               {$t("incompatibleWith")}
             {:else}
-              <AlertCircle class="mr-1.5" size="16" />
+              <AlertCircle class="mr-1.5 shrink-0" size="16" />
               {$t("requires")}
             {/if}
 
