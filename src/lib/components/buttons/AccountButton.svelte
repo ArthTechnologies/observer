@@ -6,7 +6,7 @@
   import { browser } from "$app/environment";
   import { ChevronUp, User } from "lucide-svelte";
   export let loginStatus: boolean;
-
+  let highlightColor = "gray-200";
   function signOut() {
     localStorage.setItem("token", "");
     localStorage.setItem("loggedIn", "false");
@@ -17,6 +17,10 @@
   let accountEmailChopped = "noemail";
   onMount(() => {
     if (browser) {
+      if (localStorage.getItem("theme") == "light") {
+        highlightColor = "primary";
+      }
+
       accountEmail = localStorage.getItem("accountEmail");
 
       if (accountEmail.length > 18) {
@@ -48,7 +52,7 @@
       <summary
         tabindex="0"
         id="account"
-        class="hover:text-gray-200 btn btn-ghost btn-circle"
+        class="hover:text-{highlightColor} btn btn-ghost btn-circle"
       >
         <User />
       </summary>

@@ -12,6 +12,7 @@
   import { url } from "inspector";
   import { setDefaultResultOrder } from "dns";
   export let navType: NavType;
+  let highlightColor = "gray-200";
 
   let enablePay = true;
   let enableAuth = "true";
@@ -20,6 +21,9 @@
   if (browser) {
     enablePay = localStorage.getItem("enablePay");
     enableAuth = localStorage.getItem("enableAuth");
+    if (localStorage.getItem("theme") == "light") {
+      highlightColor = "primary";
+    }
   }
 
   let login = false;
@@ -64,60 +68,70 @@
       setTimeout(() => {
         switch (window.location.pathname) {
           case "/":
-            document.getElementById("servers").classList.add("text-gray-200");
-            document.getElementById("servers2").classList.add("text-gray-200");
+            document
+              .getElementById("servers")
+              .classList.add("text-" + highlightColor);
+            document
+              .getElementById("servers2")
+              .classList.add("text-" + highlightColor);
 
             document
               .getElementById("newserver")
-              .classList.remove("text-gray-200");
+              .classList.remove("text-" + highlightColor);
             document
               .getElementById("account")
-              .classList.remove("text-gray-200");
+              .classList.remove("text-" + highlightColor);
             break;
           case "/billing":
-            document.getElementById("billing").classList.add("text-gray-200");
-
-            document
-              .getElementById("servers")
-              .classList.remove("text-gray-200");
-            document
-              .getElementById("servers2")
-              .classList.remove("text-gray-200");
-            document
-              .getElementById("newserver")
-              .classList.remove("text-gray-200");
-            document
-              .getElementById("account")
-              .classList.remove("text-gray-200");
-            break;
-          case "/newserver":
-            document.getElementById("newserver").classList.add("text-gray-200");
-
-            document
-              .getElementById("servers")
-              .classList.remove("text-gray-200");
-            document
-              .getElementById("servers2")
-              .classList.remove("text-gray-200");
-            document
-              .getElementById("account")
-              .classList.remove("text-gray-200");
-            break;
-          case "/account":
-            document.getElementById("account").classList.add("text-gray-200");
-
-            document
-              .getElementById("servers")
-              .classList.remove("text-gray-200");
-            document
-              .getElementById("servers2")
-              .classList.remove("text-gray-200");
-            document
-              .getElementById("newserver")
-              .classList.remove("text-gray-200");
             document
               .getElementById("billing")
-              .classList.remove("text-gray-200");
+              .classList.add("text-" + highlightColor);
+
+            document
+              .getElementById("servers")
+              .classList.remove("text-" + highlightColor);
+            document
+              .getElementById("servers2")
+              .classList.remove("text-" + highlightColor);
+            document
+              .getElementById("newserver")
+              .classList.remove("text-" + highlightColor);
+            document
+              .getElementById("account")
+              .classList.remove("text-" + highlightColor);
+            break;
+          case "/newserver":
+            document
+              .getElementById("newserver")
+              .classList.add("text-" + highlightColor);
+
+            document
+              .getElementById("servers")
+              .classList.remove("text-" + highlightColor);
+            document
+              .getElementById("servers2")
+              .classList.remove("text-" + highlightColor);
+            document
+              .getElementById("account")
+              .classList.remove("text-" + highlightColor);
+            break;
+          case "/account":
+            document
+              .getElementById("account")
+              .classList.add("text-" + highlightColor);
+
+            document
+              .getElementById("servers")
+              .classList.remove("text-" + highlightColor);
+            document
+              .getElementById("servers2")
+              .classList.remove("text-" + highlightColor);
+            document
+              .getElementById("newserver")
+              .classList.remove("text-" + highlightColor);
+            document
+              .getElementById("billing")
+              .classList.remove("text-" + highlightColor);
             break;
         }
       }, 50);
@@ -137,7 +151,7 @@
       <a
         id="servers"
         href="/"
-        class="hover:text-gray-200 btn btn-ghost rounded-lg hidden md:flex"
+        class="hover:text-{highlightColor} btn btn-ghost rounded-lg hidden md:flex"
         >{$t("navbar.servers")}</a
       >
 
