@@ -152,7 +152,7 @@
             token: localStorage.getItem("token"),
             email: localStorage.getItem("accountEmail"),
           },
-        }
+        },
       )
         .then((response) => response.json())
         .then((data) => {
@@ -289,8 +289,7 @@
 
       //set state to response
       state = response.state;
-      if ( state == "starting") {
-
+      if (state == "starting") {
         console.log("unlocking");
         lock = false;
       }
@@ -321,8 +320,6 @@
     if (!lock) {
       if (state == "true") {
         changeServerState("restart", id, email);
-
-      
       } else if (state == "false") {
         changeServerState("start", id, email);
       }
@@ -384,8 +381,7 @@
   function readCmd() {
     let rt;
     if (browser) {
-    readTerminal(id).then((response) => {
-
+      readTerminal(id).then((response) => {
         const terminalContainer = document.getElementById("terminalContainer");
         const terminal = document.getElementById("terminal");
         const filteredResponse = response
@@ -424,10 +420,9 @@
           ) {
             scrollCorrected = true;
           }
-
-      }
-    });
-  }
+        }
+      });
+    }
     //set terminal's text to rt
   }
   readCmd();
@@ -451,7 +446,6 @@
         <button on:click={stop} class="btn btn-error"
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
-
       {:else if state == "false"}
         <button on:click={start} class="btn btn-success"
           ><PlayCircle class="mr-1.5" />{$t("button.start")}</button
@@ -507,7 +501,7 @@
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div
         id="terminalContainer"
-        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[19rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
+        class="bg-base-300 h-96 rounded-xl overflow-auto w-[19rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem] mb-1.5"
       >
         <div class="p-5 sm:text-xs xl:text-base font-mono relative">
           <FullscreenTerminal />
@@ -641,7 +635,7 @@
               </div>
             </div></code
           >{$t("proxy.forwardingSecret2")}{hostName}{$t(
-            "proxy.forwardingSecret3"
+            "proxy.forwardingSecret3",
           )}
           <code class="bg-gray-500 rounded p-0.5 mr-1"
             >config/paper-global.yml</code
@@ -655,7 +649,9 @@
           <EditInfo type="fullBtn" /><StorageLimit />
         </div>
         <div class="flex space-x-2">
-          <a class="btn btn-primary mr-2" href="/server/{parseInt(id) + 10000}/files"
+          <a
+            class="btn btn-primary mr-2"
+            href="/server/{parseInt(id) + 10000}/files"
             ><FolderClosed class="mr-1.5" />{$t("button.files")}</a
           ><Versions />
         </div>

@@ -311,7 +311,7 @@
           }
         } else {
           terminal.innerHTML = filteredResponse.substring(
-            filteredResponse.length - 100000
+            filteredResponse.length - 100000,
           );
         }
 
@@ -404,7 +404,7 @@
     class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10"
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
-      <div id="terminalContainerContainer" class="relative">
+      <div id="terminalContainerContainer" class="relative mb-1.5">
         <FullscreenTerminal />
         <div
           id="terminalContainer"
