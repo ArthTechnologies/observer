@@ -6,7 +6,7 @@
   import { browser } from "$app/environment";
   import { ChevronUp, User } from "lucide-svelte";
   export let loginStatus: boolean;
-  let highlightColor = "gray-200";
+
   function signOut() {
     localStorage.setItem("token", "");
     localStorage.setItem("loggedIn", "false");
@@ -18,7 +18,6 @@
   onMount(() => {
     if (browser) {
       if (localStorage.getItem("theme") == "light") {
-        highlightColor = "primary";
       }
 
       accountEmail = localStorage.getItem("accountEmail");
@@ -49,11 +48,7 @@
 {#if loginStatus === true}
   <div class=" flex-none gap-2" id="navbtn">
     <details class="dropdown dropdown-end z-50" id="profileDropdown">
-      <summary
-        tabindex="0"
-        id="account"
-        class="hover:text-{highlightColor} btn btn-ghost btn-circle"
-      >
+      <summary tabindex="0" id="account" class=" btn btn-ghost btn-circle">
         <User />
       </summary>
       <ul
