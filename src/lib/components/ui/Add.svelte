@@ -83,19 +83,20 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-neutral btn-block" on:click={search}
+<label for="addPluginModal" class="btn btn-neutral btn-block" on:click={search}
   >{$t("button.addplugin")}</label
 >
 
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id="my-modal-5" class="modal-toggle" />
+<input type="checkbox" id="addPluginModal" class="modal-toggle" />
 <div class="modal" style="margin:0rem;">
   <div
+    id="addPluginModalScroll"
     class="modal-box bg-opacity-95 backdrop-blur relative w-11/12 max-w-5xl space-y-5 h-[50rem]"
   >
     <div class="flex justify-between">
       <label
-        for="my-modal-5"
+        for="addPluginModal"
         class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
         >✕</label
       >

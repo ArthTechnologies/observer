@@ -130,20 +130,21 @@
 </script>
 
 <label
-  for="my-modal-5"
+  for="addModModal"
   class="btn btn-neutral btn-block"
   on:click={() => search(tab)}>{$t("button.addmod")}</label
 >
 
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id="my-modal-5" class="modal-toggle" />
+<input type="checkbox" id="addModModal" class="modal-toggle" />
 <div class="modal" style="margin:0rem;">
   <div
+    id="addModModalScroll"
     class="modal-box bg-opacity-95 backdrop-blur relative w-11/12 max-w-5xl space-y-5 h-[61.5rem]"
   >
     <div class="flex justify-between">
       <label
-        for="my-modal-5"
+        for="addModModal"
         class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
         >✕</label
       >
@@ -151,7 +152,7 @@
       <div class="tabs tabs-boxed">
         <button id="mr" class="tab tab-active" on:click={mr}>Modrinth</button>
         {#if usingCurseForge}
-        <button id="cf" class="tab" on:click={cf}>Curseforge</button>
+          <button id="cf" class="tab" on:click={cf}>Curseforge</button>
         {/if}
       </div>
     </div>

@@ -39,6 +39,9 @@
     }
   }
   function get() {
+    //this disables the scrollbar of the modal below this one
+    document.getElementById("addModpackModalScroll").style.overflow = "hidden";
+
     if (platform == "mr") {
       fetch(lrurl + "project/" + id, {
         method: "GET",
@@ -51,10 +54,10 @@
 
         .then((data) => {
           document.getElementById("body" + buttonType).innerHTML = marked(
-            data.body,
+            data.body
           );
           document.getElementById("body" + buttonType).innerHTML = handleDesc(
-            marked(data.body),
+            marked(data.body)
           );
           document.getElementById("pluginTitle").innerHTML = data.title;
 
@@ -88,7 +91,7 @@
         .then((data) => {
           document.getElementById("body" + buttonType).innerHTML = marked(data);
           document.getElementById("body" + buttonType).innerHTML = handleDesc(
-            marked(data),
+            marked(data)
           );
           document.getElementById("pluginTitle").innerHTML = name;
           document.getElementById("pluginDesc").innerHTML = desc;
@@ -152,7 +155,7 @@
             if (
               version.name != vname &&
               version.gameVersions.includes(
-                software.charAt(0).toUpperCase() + software.slice(1),
+                software.charAt(0).toUpperCase() + software.slice(1)
               ) &&
               version.gameVersions.includes(sVersion)
             ) {
@@ -188,6 +191,11 @@
         });
     }
   }
+
+  function close() {
+    //this function is for re-enabling the scrollbar of the modal below this one
+    document.getElementById("addModpackModalScroll").style.overflow = "auto";
+  }
 </script>
 
 {#if buttonType == "default"}
@@ -208,6 +216,7 @@
 <input type="checkbox" id="versions{buttonType}" class="modal-toggle" />
 <div class="modal flex flex-col justify-center" style="margin:0rem;">
   <div
+    id="chooseVersionsModalScroll"
     class="modal-box bg-opacity-[.975] backdrop-blur w-[97%] h-[97%] max-w-5xl space-y-5"
   >
     <div class="pt-6">
@@ -315,7 +324,7 @@
       <label
         for="versions{buttonType}"
         class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2 mb-5"
-        >✕</label
+        on:click={close}>✕</label
       >
     </div>
   </div>

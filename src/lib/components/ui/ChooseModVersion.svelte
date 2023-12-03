@@ -40,6 +40,8 @@
     }
   }
   function get() {
+    //this disables the scrollbar of the modal below this one
+    document.getElementById("addModModalScroll").style.overflow = "hidden";
     //get description
     if (platform == "mr") {
       fetch(lrurl + "project/" + id, {
@@ -53,10 +55,10 @@
 
         .then((data) => {
           document.getElementById("body" + suffix).innerHTML = marked(
-            data.body,
+            data.body
           );
           document.getElementById("body" + suffix).innerHTML = handleDesc(
-            marked(data.body),
+            marked(data.body)
           );
 
           document.getElementById("pluginTitle").innerHTML = data.title;
@@ -90,7 +92,7 @@
         .then((data) => {
           document.getElementById("body" + suffix).innerHTML = marked(data);
           document.getElementById("body" + suffix).innerHTML = handleDesc(
-            marked(data),
+            marked(data)
           );
           document.getElementById("pluginTitle").innerHTML = name;
           document.getElementById("pluginDesc").innerHTML = desc;
@@ -151,7 +153,7 @@
             if (
               version.name != vname &&
               version.gameVersions.includes(
-                software.charAt(0).toUpperCase() + software.slice(1),
+                software.charAt(0).toUpperCase() + software.slice(1)
               ) &&
               version.gameVersions.includes(sVersion)
             ) {
@@ -185,6 +187,9 @@
         });
     }
   }
+  function close() {
+    document.getElementById("addModModalScroll").style.overflow = "auto";
+  }
 </script>
 
 {#if buttonType == "default"}
@@ -202,7 +207,10 @@
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="versions{suffix}" class="modal-toggle" />
 <div class="modal flex flex-col justify-center" style="margin:0rem;">
-  <div class="modal-box w-[97%] h-[97%] max-w-5xl space-y-5">
+  <div
+    id="chooseVersionsModalScroll"
+    class="modal-box w-[97%] h-[97%] max-w-5xl space-y-5"
+  >
     <div class="pt-6">
       <!-- Plugin Result cannot be imported due to a bug where it always says 'Simple Voice Chat'-->
       <div class="bg-base-200 rounded-lg p-3">
@@ -312,7 +320,7 @@
       <label
         for="versions{suffix}"
         class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2 mb-5"
-        >✕</label
+        on:click={close}>✕</label
       >
     </div>
   </div>

@@ -23,6 +23,9 @@
     }
   }
   function get() {
+    //this disables the scrollbar of the modal below this one
+    document.getElementById("addPluginModalScroll").style.overflow = "hidden";
+
     let vname = "undefined";
     getVersions(id).then((data) => {
       document.getElementById("listAlt").innerHTML = "";
@@ -65,6 +68,7 @@
 <input type="checkbox" id="versionsAlt" class="modal-toggle" />
 <div class="modal flex flex-col justify-center" style="margin:0rem;">
   <div
+    id="chooseVersionsModalScroll"
     class="modal-box bg-opacity-[.975] backdrop-blur w-[97%] h-[97%] max-w-5xl space-y-5"
   >
     <div class="flex justify-between">

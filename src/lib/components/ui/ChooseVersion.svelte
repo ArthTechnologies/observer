@@ -38,6 +38,9 @@
     }
   }
   function get() {
+    //this disables the scrollbar of the modal below this one
+    document.getElementById("addPluginModalScroll").style.overflow = "hidden";
+
     fetch(lrurl + "project/" + id, {
       method: "GET",
 
@@ -107,6 +110,11 @@
       }
     });
   }
+
+  function close() {
+    //this function is for re-enabling the scrollbar of the modal below this one
+    document.getElementById("addPluginModalScroll").style.overflow = "auto";
+  }
 </script>
 
 {#if buttonType == "default"}
@@ -125,6 +133,7 @@
 
 <div class="modal flex flex-col justify-center" style="margin:0rem;">
   <div
+    id="chooseVersionsModalScroll"
     class="modal-box bg-opacity-[.975] backdrop-blur w-[97%] h-[97%] max-w-5xl space-y-5"
   >
     <div class="pt-6">
@@ -200,7 +209,7 @@
       <label
         for="versions{suffix}"
         class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2 mb-5"
-        >✕</label
+        on:click={close}>✕</label
       >
     </div>
   </div>

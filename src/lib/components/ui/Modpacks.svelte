@@ -23,11 +23,10 @@
       search("mr");
       if (usingCurseForge) search("cf");
       else document.getElementById("mr").classList.add("tab-active");
-    
     }
   });
   if (browser) {
-    if (!usingCurseForge) tab="mr";
+    if (!usingCurseForge) tab = "mr";
   }
   function search(platform: string, loadMore: boolean = false) {
     console.error("searching" + platform);
@@ -66,7 +65,7 @@
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
-          let results = []
+          let results = [];
           response.hits.forEach((item) => {
             results.push({
               name: item.title,
@@ -80,7 +79,6 @@
               versions: [],
               slug: item.slug,
             });
-
           });
           mrResults = results;
           console.log(mrResults);
@@ -120,32 +118,32 @@
       document.getElementById("mr").classList.remove("tab-active");
     }
   }
-
 </script>
 
-<label for="my-modal-5" class="btn btn-block btn-primary">Use Modpack</label>
+<label for="modpacksModal" class="btn btn-block btn-primary">Use Modpack</label>
 
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id="my-modal-5" class="modal-toggle" />
+<input type="checkbox" id="modpacksModal" class="modal-toggle" />
 <div class="modal" style="margin:0rem;">
   <div
+    id="addModpackModalScroll"
     class="modal-box bg-opacity-95 backdrop-blur relative w-11/12 max-w-5xl space-y-5 h-[61.5rem]"
   >
     <div class="flex justify-between">
       <label
-        for="my-modal-5"
+        for="modpacksModal"
         class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
         >✕</label
       >
 
       <div class="tabs tabs-boxed">
-
         <button id="mr" on:click={mr} class="tab">Modrinth</button>
         {#if usingCurseForge}
-        <button id="cf" on:click={cf} class="tab tab-active">Curseforge</button>
+          <button id="cf" on:click={cf} class="tab tab-active"
+            >Curseforge</button
+          >
         {/if}
       </div>
-
     </div>
     <div class="flex justify-between space-x-2">
       <input
@@ -169,32 +167,23 @@
       </div>
     </div>
 
-
-      {#await promise}
+    {#await promise}
       <div class="space-y-2">
-      {#each Array.from({ length: skeletonsLength }) as _}
-        <ResultSkele />
-      {/each}
+        {#each Array.from({ length: skeletonsLength }) as _}
+          <ResultSkele />
+        {/each}
       </div>
     {:then}
-    <div id="modpacks" class="space-y-2">
- 
-      {#if tab == "mr"}
-
+      <div id="modpacks" class="space-y-2">
+        {#if tab == "mr"}
           {#each mrResults as result}
             <ModpackResult {...result} />
           {/each}
-
-      {:else if tab == "cf"}
-
-
-            {#each cfResults as result}
-              <ModpackResult {...result} />
-            {/each}
-
-
-      {/if}
-
+        {:else if tab == "cf"}
+          {#each cfResults as result}
+            <ModpackResult {...result} />
+          {/each}
+        {/if}
       </div>
       <div class="flex place-content-center">
         {#if allowLoadMore}
@@ -208,7 +197,6 @@
           </p>
         {/if}
       </div>
-      {/await}
- 
+    {/await}
   </div>
 </div>
