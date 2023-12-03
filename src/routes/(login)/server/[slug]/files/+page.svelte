@@ -102,8 +102,10 @@
       <div class="flex space-x-2 mb-2">
         <div id="filepath" class="hidden" />
         <h1 class="text-xl font-bold" id="filename">{$t("file")}</h1>
-        <button class="btn btn-sm btn-disabled" id="saveButton" on:click={save}
-          >{$t("save")}</button
+        <button
+          class="btn btn-sm btn-neutral btn-disabled"
+          id="saveButton"
+          on:click={save}>{$t("save")}</button
         >
       </div>
       <!--<HistoryButton />-->
