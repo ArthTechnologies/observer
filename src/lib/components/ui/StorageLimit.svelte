@@ -4,54 +4,70 @@
   import { apiurl, usingOcelot } from "$lib/scripts/req";
   import { HardDrive } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
+  import { onMount } from "svelte";
   let storageRatio = "0/0mB";
-  if (browser) {
-    let baseurl = apiurl;
-    if (usingOcelot)
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[
-          localStorage.getItem("serverID")
-        ] + "/";
-    fetch(
-      baseurl + "server/" + localStorage.getItem("serverID") + "/storageInfo",
-      {
-        method: "GET",
-        headers: {
-          email: localStorage.getItem("accountEmail"),
-          token: localStorage.getItem("token"),
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.limit == -1) {
-          storageRatio = fileSizeShort(data.used);
-        } else {
-          storageRatio = downloadProgressShort(data.used, data.limit);
-          const ratioVisualizer = document.getElementById("ratioVisualizer");
-          //if its dark theme, gradient needs to be 90% transparency
-          //to 0% transparency, where light should be from 90% to 70%.
-          let theme = localStorage.getItem("theme");
-          if (theme == "dark") {
-            ratioVisualizer.style.background = `linear-gradient(
-  to right,
-  rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.0) ${(data.used / data.limit) * 100}%,
-  #088587 ${(data.used / data.limit) * 100}%,
-  #088587 100%
-)`;
-          } else if (theme == "light") {
-            ratioVisualizer.style.background = `linear-gradient(
-  to right,
-  rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.7) ${(data.used / data.limit) * 100}%,
-  #088587 ${(data.used / data.limit) * 100}%,
-  #088587 100%
-)`;
-          }
-        }
+  let theme = "dark";
+  let res = {};
+  onMount(() => {
+    if (browser) {
+      //this listens for whenever the theme is changed
+      window.addEventListener("refreshTheme", () => {
+        setTimeout(() => {
+          setGradient();
+        });
       });
+      let baseurl = apiurl;
+      if (usingOcelot)
+        baseurl =
+          JSON.parse(localStorage.getItem("serverNodes"))[
+            localStorage.getItem("serverID")
+          ] + "/";
+      fetch(
+        baseurl + "server/" + localStorage.getItem("serverID") + "/storageInfo",
+        {
+          method: "GET",
+          headers: {
+            email: localStorage.getItem("accountEmail"),
+            token: localStorage.getItem("token"),
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          res = data;
+          if (data.limit == -1) {
+            storageRatio = fileSizeShort(data.used);
+          } else {
+            storageRatio = downloadProgressShort(data.used, data.limit);
+
+            setGradient();
+          }
+        });
+    }
+  });
+
+  function setGradient() {
+    if (browser) {
+      const ratioVisualizer = document.getElementById("ratioVisualizer");
+      theme = localStorage.getItem("theme");
+      console.log("refreshing theme" + theme);
+      if (theme == "dark") {
+        ratioVisualizer.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.0) ${(res.used / res.limit) * 100}%,
+  #088587 ${(res.used / res.limit) * 100}%,
+  #088587 100%
+)`;
+      } else if (theme == "light") {
+        ratioVisualizer.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.7) ${(res.used / res.limit) * 100}%,
+  #088587 ${(res.used / res.limit) * 100}%,
+  #088587 100%)`;
+      }
+    }
   }
 </script>
 

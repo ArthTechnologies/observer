@@ -8,6 +8,17 @@
       highlightColor = "primary";
     }
   }
+
+  function refreshTheme() {
+    if (browser) {
+      window.dispatchEvent(new CustomEvent("refreshTheme", { detail: {} }));
+      if (localStorage.getItem("theme") == "light") {
+        highlightColor = "primary";
+      } else if (localStorage.getItem("theme") == "dark") {
+        highlightColor = "gray-200";
+      }
+    }
+  }
 </script>
 
 <label
@@ -19,6 +30,7 @@
     data-act-class="ACTIVECLASS"
     type="checkbox"
     bind:value={$darkMode}
+    on:click={refreshTheme}
   />
 
   <Sun class="swap-on" />
