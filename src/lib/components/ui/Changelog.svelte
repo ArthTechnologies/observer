@@ -19,7 +19,7 @@
           pluginId +
           "/version/" +
           versionId +
-          "/changelog",
+          "/changelog"
       )
         .then((response) => response.json())
 
@@ -34,7 +34,7 @@
 
 <label
   for="changelog{uniqueId}"
-  class="btn btn-xs btn-ghost w-[13rem] flex justify-start"
+  class="btn btn-xs btn-ghost w-[13rem] h-[1.625rem] flex justify-start rounded-md"
   on:click={load}
 >
   <ClipboardList size="16" class="mr-1.5" />See Changelog

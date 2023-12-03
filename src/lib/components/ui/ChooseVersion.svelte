@@ -50,7 +50,7 @@
       .then((data) => {
         document.getElementById("body" + suffix).innerHTML = marked(data.body);
         document.getElementById("body" + suffix).innerHTML = handleDesc(
-          marked(data.body),
+          marked(data.body)
         );
         document.getElementById("pluginTitle").innerHTML = data.title;
 
@@ -175,22 +175,23 @@
       <div
         class="flex max-md:flex-col-reverse justify-between gap-2 lg:gap-5 mt-5"
       >
-        <div class="">
+        <div class="md:w-[36.6rem]">
           <h3 class="font-bold text-2xl mb-4">{$t("description")}</h3>
+
           <article
             id="body{suffix}"
-            class="mb-5 prose bg-base-200 rounded-lg p-3"
+            class="mb-5 prose bg-base-200 rounded-lg p-3 min-h-[50rem]"
           />
         </div>
 
-        <div class="">
+        <div class="md:w-[21.6rem]">
           <div class="flex justify-between items-center mb-4">
             <h3 class="font-bold text-2xl">{$t("versions")}</h3>
             <a href="#body{suffix}" class="md:hidden btn btn-sm btn-neutral"
               >{$t("button.goToDesc")}</a
             >
           </div>
-          <div id="list{suffix}" class="space-y-2 mb-5" />
+          <div id="list{suffix}" class="space-y-2 mb-5"></div>
         </div>
       </div>
     </div>
