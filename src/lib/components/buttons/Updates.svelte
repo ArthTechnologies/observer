@@ -42,7 +42,7 @@
           x.includes(
             serverSoftware.toLowerCase() +
               "-" +
-              serverVersion.toLowerCase() +
+              latestUpdate.toLowerCase() +
               ".jar"
           )
         ) {
