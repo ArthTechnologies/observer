@@ -17,6 +17,7 @@
   let worldgenModsText = "Worldgen Mods:";
   let downloading = false;
   let downloadProgress = "0/0MB";
+  let theme = "dark";
   if (browser) {
     serverName = localStorage.getItem("serverName");
     serverVersion = localStorage.getItem("serverVersion");
@@ -98,21 +99,21 @@
           downloadBtn.style.width = "250px";
           //if its dark theme, gradient needs to be 90% transparency
           //to 0% transparency, where light should be from 90% to 70%.
-          let theme = localStorage.getItem("theme");
+          theme = localStorage.getItem("theme");
           if (theme == "dark") {
             downloadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.0) ${(data.used / data.limit) * 100}%,
-  #088587 ${(data.used / data.limit) * 100}%,
+  rgba(0, 0, 0, 0.0) ${(event.loaded / event.total) * 100}%,
+  #088587 ${(event.loaded / event.total) * 100}%,
   #088587 100%
 )`;
           } else if (theme == "light") {
             downloadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.7) ${(data.used / data.limit) * 100}%,
-  #088587 ${(data.used / data.limit) * 100}%,
+  rgba(0, 0, 0, 0.7) ${(event.loaded / event.total) * 100}%,
+  #088587 ${(event.loaded / event.total) * 100}%,
   #088587 100%
 )`;
           }
@@ -183,16 +184,16 @@
               uploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.0) ${(data.used / data.limit) * 100}%,
-  #088587 ${(data.used / data.limit) * 100}%,
+  rgba(0, 0, 0, 0.0) ${(event.loaded / event.total) * 100}%,
+  #088587 ${(event.loaded / event.total) * 100}%,
   #088587 100%
 )`;
             } else if (theme == "light") {
               uploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.7) ${(data.used / data.limit) * 100}%,
-  #088587 ${(data.used / data.limit) * 100}%,
+  rgba(0, 0, 0, 0.7) ${(event.loaded / event.total) * 100}%,
+  #088587 ${(event.loaded / event.total) * 100}%,
   #088587 100%
 )`;
             }
