@@ -152,7 +152,7 @@
             token: localStorage.getItem("token"),
             email: localStorage.getItem("accountEmail"),
           },
-        },
+        }
       )
         .then((response) => response.json())
         .then((data) => {
@@ -499,13 +499,15 @@
     class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10"
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
-      <div
-        id="terminalContainer"
-        class="bg-base-300 h-96 rounded-xl overflow-auto w-[19rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem] mb-1.5"
-      >
-        <div class="p-5 sm:text-xs xl:text-base font-mono relative">
-          <FullscreenTerminal />
-          <p id="terminal" />
+      <div id="terminalContainerContainer" class="relative">
+        <FullscreenTerminal />
+        <div
+          id="terminalContainer"
+          class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
+        >
+          <div class="p-5 sm:text-xs xl:text-base font-mono relative">
+            <p id="terminal" />
+          </div>
         </div>
       </div>
       <input
@@ -635,7 +637,7 @@
               </div>
             </div></code
           >{$t("proxy.forwardingSecret2")}{hostName}{$t(
-            "proxy.forwardingSecret3",
+            "proxy.forwardingSecret3"
           )}
           <code class="bg-gray-500 rounded p-0.5 mr-1"
             >config/paper-global.yml</code
