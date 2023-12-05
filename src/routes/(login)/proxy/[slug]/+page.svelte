@@ -499,11 +499,11 @@
     class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10"
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
-      <div id="terminalContainerContainer" class="relative">
+      <div id="terminalContainerContainer" class="relative mb-1.5">
         <FullscreenTerminal />
         <div
           id="terminalContainer"
-          class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
+          class="bg-base-300 h-96 rounded-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
         >
           <div class="p-5 sm:text-xs xl:text-base font-mono relative">
             <p id="terminal" />
