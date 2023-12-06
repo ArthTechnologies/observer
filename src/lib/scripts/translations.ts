@@ -197,6 +197,8 @@ export default {
     "button.goToDesc": "Go to Description", 
     uploading: "Uploading",
     scanningForViruses: "Scanning for viruses",
+    uploaded: "Uploaded",
+    "alert.virusDetected": "Virus Detected. Please try again with a different file."
   },
   "es-ES": {
     "homepage.title": "Sus servidores",
@@ -398,6 +400,8 @@ export default {
     "button.goToDesc": "Ir a la Descripción",
     uploading: "Subiendo",
     scanningForViruses: "Escaneando en busca de virus",
+    uploaded: "Subido",
+    "alert.virusDetected": "Virus detectado. Inténtalo de nuevo con un archivo diferente."
 
   },
 };

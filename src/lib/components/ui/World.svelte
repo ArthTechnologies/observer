@@ -174,13 +174,15 @@
       //display estimated progress
       let intervalId = setInterval(() => {
         counter++;
-        let visualPercent = (percentComplete * counter) / 100;
+        let visualPercent = (percentComplete + counter / 2) / 3;
         let virusScanningEnabled = localStorage.getItem("enableVirusScan");
         let theme = localStorage.getItem("theme");
-        //this prevents it hanging twords the end
-        if (visualPercent > 90) {
-          visualPercent += 0.02;
-        }
+
+        //We estimate uploading the file takes up only a third of the time,
+        //so after this point, itll just keep going at the same speed.
+        if (visualPercent >= 33) percentComplete += 100 / counter;
+
+        if (requestFinished) percentComplete += 2.5;
 
         if (visualPercent < 100) {
           uploadBtn.innerHTML = $t("uploading");
@@ -212,21 +214,19 @@
             if (theme == "dark") uploadBtn.classList.add("bg-[#112100]");
             if (theme == "light") uploadBtn.classList.add("bg-[#143f04]");
             uploadBtn.classList.add("skeleton");
-            if (requestFinished) {
+            visualPercent++;
+            if (requestFinished && visualPercent > 108) {
               if (theme == "dark") uploadBtn.classList.remove("bg-[#112100]");
               if (theme == "light") uploadBtn.classList.remove("bg-[#143f04]");
               uploadBtn.classList.remove("skeleton");
-              clearInterval(intervalId);
-              uploadBtn.innerHTML = $t("button.upload");
+
               uploadBtn.classList.remove("text-lime-500");
             }
           } else if (requestFinished) {
             uploadBtn.style.background = ``;
-            clearInterval(intervalId);
-            uploadBtn.innerHTML = $t("button.upload");
           }
         }
-      }, 100);
+      }, 30);
       xhr.upload.addEventListener("progress", (event) => {
         if (event.lengthComputable) {
           percentComplete = (event.loaded / event.total) * 100;
@@ -234,7 +234,13 @@
       });
 
       xhr.addEventListener("load", (e) => {
-        console.log(e);
+        console.log(e.target.response);
+        if (e.target.response.indexOf("No Viruses Detected") == -1) {
+          alert($t("alert.virusDetected"));
+        } else {
+          uploadBtn.innerHTML = $t("uploaded");
+        }
+        clearInterval(intervalId);
         requestFinished = true;
       });
 
@@ -324,7 +330,7 @@
             token: localStorage.getItem("token"),
             email: localStorage.getItem("accountEmail"),
           },
-        }
+        },
       );
     }
   }
@@ -346,7 +352,7 @@
         for (let i in worldgenMods) {
           if (
             JSON.stringify(
-              data.includes(worldgenMods[i] + "-" + serverVersion + ".zip")
+              data.includes(worldgenMods[i] + "-" + serverVersion + ".zip"),
             )
           ) {
             areWorldgenMods = true;
@@ -384,7 +390,7 @@
             </div>{/if}
           <p class="ml-1.5">
             {#if downloading}{downloadProgress}{:else}{$t(
-                "button.download"
+                "button.download",
               )}{/if}
           </p></button
         >
