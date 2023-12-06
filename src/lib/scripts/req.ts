@@ -352,6 +352,7 @@ export function getSettings() {
         localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
         localStorage.setItem("address", JSON.parse(input).address);
         localStorage.setItem("latestVersion", JSON.parse(input).latestVersion);
+        localStorage.setItem("enableVirusScan", JSON.parse(input).enableVirusScan);
 
         if (JSON.parse(input).enableAuth == false) {
           localStorage.setItem("accountEmail", "guest");

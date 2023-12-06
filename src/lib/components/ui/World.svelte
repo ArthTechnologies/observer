@@ -94,7 +94,7 @@
         // You can update a progress bar or display the percentage to the user
         if (percentComplete < 100 && window.location.href == lhref) {
           downloadProgress = downloadProgressShort(event.loaded, event.total);
-          const downloadBtn = document.querySelector(".downloadBtn");
+          const downloadBtn = document.getElementById("downloadBtn");
 
           downloadBtn.style.width = "250px";
           //if its dark theme, gradient needs to be 90% transparency
@@ -165,45 +165,77 @@
 
     console.error("uploading");
     if (browser) {
-      const uploadBtn = document.querySelector(".uploadBtn");
+      const uploadBtn = document.getElementById("uploadBtn");
       //we normally use fetch, but we have to use XMLHttpRequest for this because fetch doesnt give progress of uploads.
       const xhr = new XMLHttpRequest();
+      let percentComplete = 0;
+      let counter = 0;
+      let requestFinished = false;
+      //display estimated progress
+      let intervalId = setInterval(() => {
+        counter++;
+        let visualPercent = (percentComplete * counter) / 100;
+        let virusScanningEnabled = localStorage.getItem("enableVirusScan");
+        let theme = localStorage.getItem("theme");
+        //this prevents it hanging twords the end
+        if (visualPercent > 90) {
+          visualPercent += 0.02;
+        }
 
+        if (visualPercent < 100) {
+          uploadBtn.innerHTML = $t("uploading");
+          //if its dark theme, gradient needs to be 90% transparency
+          //to 0% transparency, where light should be from 90% to 70%.
+
+          if (theme == "dark") {
+            uploadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.0) ${visualPercent}%,
+  #088587 ${visualPercent}%,
+  #088587 100%
+)`;
+          } else if (theme == "light") {
+            uploadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.7) ${visualPercent}%,
+  #088587 ${visualPercent}%,
+  #088587 100%
+)`;
+          }
+        } else {
+          if (virusScanningEnabled == "true") {
+            uploadBtn.innerHTML = $t("scanningForViruses");
+            uploadBtn.classList.add("text-lime-500");
+            uploadBtn.style.background = ``;
+            if (theme == "dark") uploadBtn.classList.add("bg-[#112100]");
+            if (theme == "light") uploadBtn.classList.add("bg-[#143f04]");
+            uploadBtn.classList.add("skeleton");
+            if (requestFinished) {
+              if (theme == "dark") uploadBtn.classList.remove("bg-[#112100]");
+              if (theme == "light") uploadBtn.classList.remove("bg-[#143f04]");
+              uploadBtn.classList.remove("skeleton");
+              clearInterval(intervalId);
+              uploadBtn.innerHTML = $t("button.upload");
+              uploadBtn.classList.remove("text-lime-500");
+            }
+          } else if (requestFinished) {
+            uploadBtn.style.background = ``;
+            clearInterval(intervalId);
+            uploadBtn.innerHTML = $t("button.upload");
+          }
+        }
+      }, 100);
       xhr.upload.addEventListener("progress", (event) => {
         if (event.lengthComputable) {
-          let percentComplete = (event.loaded / event.total) * 100;
-
-          percentComplete = percentComplete * 0.7;
-          console.log(`Percent complete: ${percentComplete.toFixed(2)}%`);
-          // You can update a progress bar or display the percentage to the user
-          if (percentComplete < 100) {
-            //if its dark theme, gradient needs to be 90% transparency
-            //to 0% transparency, where light should be from 90% to 70%.
-            let theme = localStorage.getItem("theme");
-            if (theme == "dark") {
-              uploadBtn.style.background = `linear-gradient(
-  to right,
-  rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.0) ${(event.loaded / event.total) * 100}%,
-  #088587 ${(event.loaded / event.total) * 100}%,
-  #088587 100%
-)`;
-            } else if (theme == "light") {
-              uploadBtn.style.background = `linear-gradient(
-  to right,
-  rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.7) ${(event.loaded / event.total) * 100}%,
-  #088587 ${(event.loaded / event.total) * 100}%,
-  #088587 100%
-)`;
-            }
-          }
+          percentComplete = (event.loaded / event.total) * 100;
         }
       });
 
-      xhr.addEventListener("load", () => {
-        // Upload complete
-        console.error("Upload complete");
+      xhr.addEventListener("load", (e) => {
+        console.log(e);
+        requestFinished = true;
       });
 
       xhr.addEventListener("error", (error) => {
@@ -467,7 +499,10 @@
             class="file-input file-input-bordered file-input-secondary max-w-xs"
             on:change={handleFileSelect}
           />
-          <button on:click={upload} class="btn btn-neutral uploadBtn"
+          <button
+            on:click={upload}
+            id="uploadBtn"
+            class="btn btn-neutral rounded-lg relative"
             >{$t("button.upload")}</button
           >
         </div>

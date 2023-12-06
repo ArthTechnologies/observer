@@ -195,6 +195,8 @@ export default {
     "button.addmod": "Add Mod",
     "button.managemods": "Manage Mods",
     "button.goToDesc": "Go to Description", 
+    uploading: "Uploading",
+    scanningForViruses: "Scanning for viruses",
   },
   "es-ES": {
     "homepage.title": "Sus servidores",
@@ -394,6 +396,8 @@ export default {
     "button.addmod": "Añadir Mod",
     "button.managemods": "Administrar Mods",
     "button.goToDesc": "Ir a la Descripción",
+    uploading: "Subiendo",
+    scanningForViruses: "Escaneando en busca de virus",
 
   },
 };
