@@ -17,7 +17,7 @@
             JSON.parse(localStorage.getItem("serverNodes"))[id.toString()],
           {
             method: "POST",
-          }
+          },
         );
       }
     });

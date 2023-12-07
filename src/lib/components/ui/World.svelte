@@ -4,8 +4,11 @@
   import { browser } from "$app/environment";
   import { apiurl } from "$lib/scripts/req";
   import { AlertTriangle, Download, Loader, Map } from "lucide-svelte";
+  import Alert from "./Alert.svelte";
+
   import Helper from "./Helper.svelte";
-  import { downloadProgressShort, fileSizeShort } from "$lib/scripts/utils";
+  import { downloadProgressShort, alert } from "$lib/scripts/utils";
+
   let areWorldgenMods = false;
   let tab = "upload";
   let id = -1;
@@ -18,6 +21,9 @@
   let downloading = false;
   let downloadProgress = "0/0MB";
   let theme = "dark";
+
+  let visible = false;
+  let type = "error";
   if (browser) {
     serverName = localStorage.getItem("serverName");
     serverVersion = localStorage.getItem("serverVersion");
@@ -171,6 +177,7 @@
       let percentComplete = 0;
       let counter = 0;
       let requestFinished = false;
+      let virusDetected = false;
       //display estimated progress
       let intervalId = setInterval(() => {
         counter++;
@@ -221,9 +228,17 @@
               uploadBtn.classList.remove("skeleton");
 
               uploadBtn.classList.remove("text-lime-500");
+
+              uploadBtn.innerHTML = $t("button.upload");
+
+              clearInterval(intervalId);
             }
           } else if (requestFinished) {
             uploadBtn.style.background = ``;
+
+            uploadBtn.innerHTML = $t("button.upload");
+
+            clearInterval(intervalId);
           }
         }
       }, 30);
@@ -235,12 +250,12 @@
 
       xhr.addEventListener("load", (e) => {
         console.log(e.target.response);
+
         if (e.target.response.indexOf("No Viruses Detected") == -1) {
           alert($t("alert.virusDetected"));
         } else {
-          uploadBtn.innerHTML = $t("uploaded");
+          alert("World Uploaded", "success");
         }
-        clearInterval(intervalId);
         requestFinished = true;
       });
 

@@ -6,13 +6,12 @@
   import { browser } from "$app/environment";
   import Modpacks from "$lib/components/ui/Modpacks.svelte";
   import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
-  import Alert from "$lib/components/ui/Alert.svelte";
-  import ModpackVersion from "$lib/components/ui/ModpackVersion.svelte";
+
+  import { alert } from "$lib/scripts/utils";
   let version = "1.19.4";
   export let software = "Paper";
   let name = "";
   let visible = false;
-  let msg = "";
   let gamemode: string;
   let admin = "";
   let modpacks = false;
@@ -108,7 +107,7 @@
         cmd,
         modpackURL,
         modpackID,
-        versionID
+        versionID,
       ).then((res) => {
         localStorage.setItem("modpackURL", "");
         localStorage.setItem("modpackID", "");
@@ -117,11 +116,7 @@
           console.log("redricting to homepage...");
           goto("/");
         } else {
-          msg = res;
-          visible = true;
-          setTimeout(() => {
-            visible = false;
-          }, 3500);
+          alert(res);
         }
       });
     } else if (browser) {
@@ -326,4 +321,3 @@
     </div>
   </div>
 </div>
-<Alert detail={msg} {visible} />

@@ -1,3 +1,5 @@
+import Alert from "$lib/components/ui/Alert.svelte";
+
 export function numShort(num: number) {
 
   if (num < 1000) return num.toString();
@@ -76,4 +78,21 @@ export function handleDesc(desc: string) {
           'target="_blank" rel="noreferrer" href='
         );
   return newDesc;
+}
+
+export function alert(msg: string, type: string = "error") {
+
+  let alert = new Alert({
+    target: document.body,
+    props: {
+
+      type: type,
+      msg: msg,
+    },
+  });
+  //4.5 seconds for showing the alert, 2 seconds for the fade animation
+  setTimeout(() => {
+    alert.$destroy();
+
+  }, 6500);
 }

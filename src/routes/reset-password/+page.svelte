@@ -3,6 +3,8 @@
   import { t } from "$lib/scripts/i18n";
   import Navbar from "$lib/components/layout/Navbar.svelte";
   import { ArrowLeft } from "lucide-svelte";
+  import { apiurl } from "$lib/scripts/req";
+  import { alert } from "$lib/scripts/utils";
   let enablePay = true;
   let backurl = "/signin";
   if (browser) {
@@ -20,7 +22,8 @@
       alert("Passwords do not match");
     } else {
       fetch(
-        "https://api.arthmc.xyz/accounts/email/resetPassword?password=" +
+        apiurl +
+          "accounts/email/resetPassword?password=" +
           password +
           "&confirmPassword=" +
           confPassword +
@@ -30,7 +33,7 @@
           cc,
         {
           method: "POST",
-        }
+        },
       )
         .then((res) => res.json())
         .then((data) => {

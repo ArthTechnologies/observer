@@ -1,10 +1,15 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
+  import { apiurl } from "$lib/scripts/req";
+  import Alert from "../ui/Alert.svelte";
+  import { alert } from "$lib/scripts/utils";
+
   function del() {
     if (browser) {
       fetch(
-        "https://api.arthmc.xyz/accounts/email?email=" +
+        apiurl +
+          "accounts/email?email=" +
           localStorage.getItem("accountEmail") +
           "&password=" +
           document.getElementById("password").value,
@@ -15,16 +20,16 @@
             token: localStorage.getItem("token"),
             email: localStorage.getItem("accountEmail"),
           },
-        }
+        },
       )
         .then((res) => res.json())
         .then((data) => {
           console.log("data" + JSON.stringify(data));
           if (!data.success) {
-            alert("Wrong password.");
+            alert("Wrong Password");
           } else {
             localStorage.clear();
-            window.location.href = "https://servers.arthmc.xyz/signin";
+            window.location.href = "/signin";
           }
         });
     }

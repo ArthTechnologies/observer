@@ -8,8 +8,9 @@
   import Alert from "$lib/components/ui/Alert.svelte";
   import { Eye, EyeOff } from "lucide-svelte";
   import { stripePaymentLink } from "$lib/scripts/req";
+  import { alert } from "$lib/scripts/utils";
   let visible = false;
-  let msg = "";
+
   let goodPwd = true;
   let matchPwd = true;
 
@@ -77,7 +78,7 @@
       if (goodPwd && matchPwd) {
         const res = signupEmail(
           document.getElementById("email").value,
-          document.getElementById("pwd").value
+          document.getElementById("pwd").value,
         ).then((x) => {
           if (x === true) {
             console.log("redricting...");
@@ -87,25 +88,20 @@
                 stripePaymentLink +
                   "?prefilled_email=" +
                   document.getElementById("email").value +
-                  "&prefilled_promo_code=2023"
+                  "&prefilled_promo_code=2023",
               );
             } else {
               goto("/");
             }
           } else {
-            visible = true;
-            msg = x;
-
-            setTimeout(() => {
-              visible = false;
-            }, 3500);
+            alert(x);
           }
         });
       }
     } else if (sign == "in") {
       const res = loginEmail(
         document.getElementById("email").value,
-        document.getElementById("pwd").value
+        document.getElementById("pwd").value,
       ).then((x) => {
         console.log("x: " + x);
         if (x === true) {
@@ -116,7 +112,7 @@
           msg = "Invalid email or password";
           setTimeout(() => {
             visible = false;
-          }, 3500);
+          }, 4500);
         }
       });
     }
@@ -127,14 +123,14 @@
     setTimeout(() => {
       visible = false;
       matchPwd = true;
-    }, 3500);
+    }, 4500);
   } else if (!goodPwd) {
     msg = "Password must be at least 7 characters long";
     visible = true;
     setTimeout(() => {
       visible = false;
       goodPwd = true;
-    }, 3500);
+    }, 4500);
   }
 </script>
 
@@ -228,4 +224,3 @@
     </div>
   </div>
 {/if}
-<Alert detail={msg} {visible} />

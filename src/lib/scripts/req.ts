@@ -2,6 +2,8 @@ import accountEmail from "$lib/stores/accountEmail";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 import { env } from '$env/dynamic/public'
+import Alert from "$lib/components/ui/Alert.svelte";
+import { alert } from "./utils";
 
 export let apiurl = "http://localhost:4000/";
 export let usingOcelot = false;
@@ -109,7 +111,7 @@ export function setInfo(
             console.log("Response Recieved: " + input);
 
             if (input.indexOf("400") > -1) {
-              alert("wrong password.");
+
               return "error";
             } else {
               setDescText(desc);
@@ -118,7 +120,8 @@ export function setInfo(
           })
           .catch((err) => console.error(err));
       } else {
-        alert("Image can't be taller than it is wide.");
+       
+        alert("Error setting server icon. Try again with a square image.", "error");
       }
     };
   } else {
