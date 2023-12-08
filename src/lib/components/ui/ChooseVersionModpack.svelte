@@ -40,7 +40,10 @@
   }
   function get() {
     //this disables the scrollbar of the modal below this one
-    document.getElementById("addModpackModalScroll").style.overflow = "hidden";
+    if (document.getElementById("addModpackModalScroll") != null) {
+      document.getElementById("addModpackModalScroll").style.overflow =
+        "hidden";
+    }
 
     if (platform == "mr") {
       fetch(lrurl + "project/" + id, {
