@@ -3,7 +3,6 @@
     <div class="flex space-x-3">
       <img
         src="https://cdn.modrinth.com/data/zmwYECuH/icon.png"
-        alt="noicon"
         class="w-14 h-14 bg-base-300 rounded-lg text-sm"
       />
       <div>

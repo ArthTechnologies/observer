@@ -48,7 +48,6 @@
       >
         <img
           src={icon}
-          alt="noicon"
           class="w-16 h-16 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm"
         /></a
       >

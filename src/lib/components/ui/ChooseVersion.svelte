@@ -151,7 +151,6 @@
               <img
                 id="pluginIcon"
                 src={icon}
-                alt="noicon"
                 class="w-14 h-14 bg-base-300 rounded-lg text-sm"
               />
             </a>
