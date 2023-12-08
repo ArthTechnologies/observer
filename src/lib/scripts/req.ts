@@ -667,6 +667,8 @@ export function deleteServer(id: number, password: string) {
           (parseInt(localStorage.getItem("amountOfServers")) - 1).toString()
         );
         goto("/");
+                      //this tells the navbar to update the icon that is highligted
+                      window.dispatchEvent(new Event("redrict"));
         //return input as json
         return JSON.parse(input);
       }

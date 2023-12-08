@@ -107,7 +107,7 @@
         cmd,
         modpackURL,
         modpackID,
-        versionID,
+        versionID
       ).then((res) => {
         localStorage.setItem("modpackURL", "");
         localStorage.setItem("modpackID", "");
@@ -115,6 +115,8 @@
         if (res == true) {
           console.log("redricting to homepage...");
           goto("/");
+          //this tells the navbar to update the icon that is highligted
+          window.dispatchEvent(new Event("redrict"));
         } else {
           alert(res);
         }

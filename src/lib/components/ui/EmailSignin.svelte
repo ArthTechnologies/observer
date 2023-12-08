@@ -78,7 +78,7 @@
       if (goodPwd && matchPwd) {
         const res = signupEmail(
           document.getElementById("email").value,
-          document.getElementById("pwd").value,
+          document.getElementById("pwd").value
         ).then((x) => {
           if (x === true) {
             console.log("redricting...");
@@ -88,10 +88,12 @@
                 stripePaymentLink +
                   "?prefilled_email=" +
                   document.getElementById("email").value +
-                  "&prefilled_promo_code=2023",
+                  "&prefilled_promo_code=2023"
               );
             } else {
               goto("/");
+              //this tells the navbar to update the icon that is highligted
+              window.dispatchEvent(new Event("redrict"));
             }
           } else {
             alert(x);
@@ -101,12 +103,14 @@
     } else if (sign == "in") {
       const res = loginEmail(
         document.getElementById("email").value,
-        document.getElementById("pwd").value,
+        document.getElementById("pwd").value
       ).then((x) => {
         console.log("x: " + x);
         if (x === true) {
           console.log("REDIRECTING...");
           goto("/");
+          //this tells the navbar to update the icon that is highligted
+          window.dispatchEvent(new Event("redrict"));
         } else {
           visible = true;
           msg = "Invalid email or password";

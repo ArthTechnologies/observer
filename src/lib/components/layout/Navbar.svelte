@@ -46,8 +46,12 @@
   console.log(login);
 
   onMount(async () => {
-    setTimeout(function () {
-      if (browser) {
+    if (browser) {
+      //this listens for redricts
+      window.addEventListener("redrict", function (e) {
+        checkPage();
+      });
+      setTimeout(function () {
         enableAuth = localStorage.getItem("enableAuth");
         console.log(enableAuth + "authd");
         if (
@@ -57,11 +61,11 @@
         ) {
           goto("/signin");
         }
-      }
-    }, 500);
+      }, 500);
+    }
   });
 
-  function check() {
+  function checkPage() {
     if (browser) {
       setTimeout(() => {
         switch (window.location.pathname) {
@@ -113,11 +117,11 @@
       }, 50);
     }
   }
-  check();
+  checkPage();
 </script>
 
 {#if navType === "default"}
-  <div class="navbar bg-base-300 px-4 max-sm:pl-2" on:click={check}>
+  <div class="navbar bg-base-300 px-4 max-sm:pl-2" on:click={checkPage}>
     <div class="flex-1 h-[3rem]">
       <a class="btn btn-ghost normal-case text-xl" href="/"
         ><img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" /></a
@@ -135,7 +139,7 @@
         <Billing />
       {:else}
         <div id="billing"></div>
-        <!-- This is to prevent errors in the check function-->
+        <!-- This is to prevent errors in the checkPage function-->
       {/if}
 
       <ThemeToggle />

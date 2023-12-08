@@ -26,6 +26,8 @@
           goto(stripePaymentLink + "?prefilled_email=" + data.email);
         } else {
           goto("/");
+          //this tells the navbar to update the icon that is highligted
+          window.dispatchEvent(new Event("redrict"));
         }
       });
   }
