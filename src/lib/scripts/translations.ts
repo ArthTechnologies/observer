@@ -3,7 +3,6 @@ export default {
     "homepage.title": "Your Servers",
     "navbar.webname": "Your Servers",
     "site.webtitle": "Your Servers",
-    "software.paper": "Paper",
     "version.latest": "Latest",
     "button.terminal": "Terminal",
     "button.start": "Start",
@@ -218,12 +217,16 @@ export default {
     "alert.wrongLast4digits": "Wrong last 4 digits. ",
     "alert.wrongLast4digits2": " attempts left.",
     "button.modpacks": "Use Modpack",
+    "software.paper": "Paper - A fast software for non-modded servers. Supports Geyser™ Crossplay.",
+    "software.forge": "Forge - The most popular software for modded servers.",
+    "software.fabric": "Fabric - A lightweight software for modded servers.",
+    "software.quilt": "Quilt - A faster version of fabric.",
+    "software.velocity": "Velocity - A \"proxy\", used for connecting multiple servers together."
   },
   "es-ES": {
     "homepage.title": "Sus servidores",
     "navbar.webname": "Sus servidores",
     "site.webtitle": "Sus servidores",
-    "software.paper": "Papel",
     "version.latest": "Último",
     "button.terminal": "Terminal",
     "button.start": "Iniciar",
@@ -440,6 +443,11 @@ export default {
     "alert.wrongLast4digits": "Últimos 4 dígitos incorrectos. ",
     "alert.wrongLast4digits2": " intentos restantes.",
     "button.modpacks": "Usar Modpack",
+    "software.paper": "Paper - Un software para servidores no modificados. Soporta Geyser™.",
+    "software.forge": "Forge - El software más popular para servidores modificados.",
+    "software.fabric": "Fabric - Un software ligero para servidores modificados.",
+    "software.quilt": "Quilt - Una versión más rápida de Fabric.",
+    "software.velocity": "Velocity - Un \"proxy\", utilizado para conectar varios servidores entre sí."
 
 
 

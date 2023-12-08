@@ -9,7 +9,7 @@
 
   import { alert } from "$lib/scripts/utils";
   let version = "1.19.4";
-  export let software = "Paper";
+  export let software = $t("software.paper");
   let name = "";
   let visible = false;
   let gamemode: string;
@@ -64,16 +64,8 @@
   function send() {
     let addons = [];
     let cmd = [];
-    let sSoftware = software;
-    let sVersion: string;
-    switch (sSoftware) {
-      case "Paper (Reccomended)":
-        sSoftware = "paper";
-        break;
-    }
-
-    sSoftware = sSoftware.charAt(0).toLowerCase() + sSoftware.slice(1);
-    sVersion = version.charAt(0).toLowerCase() + version.slice(1);
+    let sSoftware = software.toLowerCase().split(" - ")[0];
+    let sVersion: string = version.toLowerCase();
 
     //for all 3 checkboxes, if checked, add their ids to the addons array
     if (document.getElementById("terralith").checked) {
@@ -243,11 +235,11 @@
             tabindex="0"
             class="select select-primary p-2 bg-base-100"
           >
-            <option>Paper</option>
-            <option>Forge</option>
-            <option>Fabric</option>
-            <option>Quilt</option>
-            <option>Velocity</option>
+            <option>{$t("software.paper")}</option>
+            <option>{$t("software.forge")} </option>
+            <option>{$t("software.fabric")}</option>
+            <option>{$t("software.quilt")}</option>
+            <option>{$t("software.velocity")}</option>
           </select>
 
           <label class="label" for="softwareDropdown"
