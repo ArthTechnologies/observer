@@ -44,6 +44,9 @@
       document.getElementById("addModpackModalScroll").style.overflow =
         "hidden";
     }
+    if (document.getElementById("manageScroll") != null) {
+      document.getElementById("manageScroll").style.overflow = "hidden";
+    }
 
     if (platform == "mr") {
       fetch(lrurl + "project/" + id, {
@@ -57,10 +60,10 @@
 
         .then((data) => {
           document.getElementById("body" + buttonType).innerHTML = marked(
-            data.body
+            data.body,
           );
           document.getElementById("body" + buttonType).innerHTML = handleDesc(
-            marked(data.body)
+            marked(data.body),
           );
           document.getElementById("pluginTitle").innerHTML = data.title;
 
@@ -94,7 +97,7 @@
         .then((data) => {
           document.getElementById("body" + buttonType).innerHTML = marked(data);
           document.getElementById("body" + buttonType).innerHTML = handleDesc(
-            marked(data)
+            marked(data),
           );
           document.getElementById("pluginTitle").innerHTML = name;
           document.getElementById("pluginDesc").innerHTML = desc;
@@ -158,7 +161,7 @@
             if (
               version.name != vname &&
               version.gameVersions.includes(
-                software.charAt(0).toUpperCase() + software.slice(1)
+                software.charAt(0).toUpperCase() + software.slice(1),
               ) &&
               version.gameVersions.includes(sVersion)
             ) {
@@ -197,7 +200,11 @@
 
   function close() {
     //this function is for re-enabling the scrollbar of the modal below this one
-    document.getElementById("addModpackModalScroll").style.overflow = "auto";
+    if (document.getElementById("addModpackModalScroll") != null)
+      document.getElementById("addModpackModalScroll").style.overflow = "auto";
+
+    if (document.getElementById("manageScroll") != null)
+      document.getElementById("manageScroll").style.overflow = "auto";
   }
 </script>
 

@@ -37,7 +37,7 @@
           if (response.modpack.platform == "mr") {
             fetch(
               "https://api.modrinth.com/api/v1/mod/" +
-                response.modpack.projectID
+                response.modpack.projectID,
             )
               .then((response) => response.json())
               .then((data) => {
@@ -114,6 +114,7 @@
 <input type="checkbox" id="manage" class="modal-toggle" />
 <div class="modal" style="margin:0rem;">
   <div
+    id="manageScroll"
     class="modal-box bg-opacity-95 backdrop-blur relative w-11/12 max-w-5xl space-y-2 h-[50rem] overflow-x-hidden"
   >
     <div class="md:flex items-center md:space-x-3 justify-between">
