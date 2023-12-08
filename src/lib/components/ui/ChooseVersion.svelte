@@ -53,7 +53,7 @@
       .then((data) => {
         document.getElementById("body" + suffix).innerHTML = marked(data.body);
         document.getElementById("body" + suffix).innerHTML = handleDesc(
-          marked(data.body)
+          marked(data.body),
         );
         document.getElementById("pluginTitle").innerHTML = data.title;
 
