@@ -37,6 +37,19 @@
         files = data;
         console.log(data);
       });
+
+    document.addEventListener("keydown", function (event) {
+      // Check if the event key is 's' and the Ctrl/Cmd key is pressed
+      if (
+        (event.key === "s" || event.key === "S") &&
+        (event.ctrlKey || event.metaKey)
+      ) {
+        // Prevent the default browser behavior (saving the page)
+        event.preventDefault();
+
+        save();
+      }
+    });
   }
 
   function save() {
@@ -57,7 +70,7 @@
         body: JSON.stringify({
           content: document.getElementById("textEditor").value,
         }),
-      }
+      },
     )
       .then((response) => response.json())
       .then((data) => {
