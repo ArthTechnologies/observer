@@ -287,11 +287,6 @@
         const filteredResponse = response
           .replace(/\x1B\[[0-9;]*[mG]/g, "")
           .replace(/\n/g, "<p>");
-        console.log(
-          "line difference: " +
-            (filteredResponse.split("<p>").length -
-              terminal.innerHTML.split("<p>").length)
-        );
         //scroll down the height of the new lines added
         if (
           terminal.innerHTML.split("<p>").length <

@@ -52,10 +52,20 @@
 
       promise = null;
       if (document.getElementById("sortByDropdown") != null) {
-        sortBy = document.getElementById("sortByDropdown").value.toLowerCase();
+        sortBy = document.getElementById("sortByDropdown").value;
       }
-      if (sortBy == "last update") {
-        sortBy = "updated";
+      switch (sortBy) {
+        case $t("dropdown.sortBy.relevance"):
+          sortBy = "relevance";
+          break;
+
+        case $t("dropdown.sortBy.downloads"):
+          sortBy = "downloads";
+          break;
+
+        case $t("dropdown.sortBy.lastUpdated"):
+          sortBy = "updated";
+          break;
       }
       promise = searchMods(
         platform,
@@ -167,7 +177,7 @@
         id="search"
       />
       <div class="flex items-center">
-        Sort By<select
+        {$t("sortBy")}<select
           id="sortByDropdown"
           class="select select-sm ml-2 bg-base-300"
           on:change={() => search(tab)}

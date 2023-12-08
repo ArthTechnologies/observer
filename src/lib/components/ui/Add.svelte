@@ -38,10 +38,20 @@
         version = localStorage.getItem("latestVersion");
       }
       if (document.getElementById("sortByDropdown") != null) {
-        sortBy = document.getElementById("sortByDropdown").value.toLowerCase();
+        sortBy = document.getElementById("sortByDropdown").value;
       }
-      if (sortBy == "last update") {
-        sortBy = "updated";
+      switch (sortBy) {
+        case $t("dropdown.sortBy.relevance"):
+          sortBy = "relevance";
+          break;
+
+        case $t("dropdown.sortBy.downloads"):
+          sortBy = "downloads";
+          break;
+
+        case $t("dropdown.sortBy.lastUpdated"):
+          sortBy = "updated";
+          break;
       }
 
       promise = searchPlugins(software, version, query, offset, sortBy).then(
@@ -119,16 +129,16 @@
           id="search"
         />
         <div class="flex items-center">
-          Sort By<select
+          {$t("sortBy")}<select
             id="sortByDropdown"
             class="select select-sm ml-2 bg-base-300"
             on:change={() => {
               search(false);
             }}
           >
-            <option>Relevance</option>
-            <option>Downloads</option>
-            <option>Last Update</option></select
+            <option>{$t("dropdown.sortBy.relevance")}</option>
+            <option>{$t("dropdown.sortBy.downloads")}</option>
+            <option>{$t("dropdown.sortBy.lastUpdated")}</option></select
           >
         </div>
       </div>

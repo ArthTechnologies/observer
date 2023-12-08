@@ -198,7 +198,12 @@ export default {
     uploading: "Uploading",
     scanningForViruses: "Scanning for viruses",
     uploaded: "Uploaded",
-    "alert.virusDetected": "Virus Detected. Please try again with a different file."
+    "alert.virusDetected": "Virus Detected. Please try again with a different file.",
+    sortBy: "Sort By",
+    "dropdown.sortBy.relevance": "Relevance",
+    "dropdown.sortBy.downloads": "Downloads",
+    "dropdown.sortBy.lastUpdated": "Last Updated",
+
   },
   "es-ES": {
     "homepage.title": "Sus servidores",
@@ -401,7 +406,11 @@ export default {
     uploading: "Subiendo",
     scanningForViruses: "Escaneando en busca de virus",
     uploaded: "Subido",
-    "alert.virusDetected": "Virus detectado. Inténtalo de nuevo con un archivo diferente."
+    "alert.virusDetected": "Virus detectado. Inténtalo de nuevo con un archivo diferente.",
+    sortBy: "Ordenar por",
+    "dropdown.sortBy.relevance": "Relevancia",
+    "dropdown.sortBy.downloads": "Descargas",
+    "dropdown.sortBy.lastUpdated": "Última actualización",
 
   },
 };

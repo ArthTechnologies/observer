@@ -394,7 +394,7 @@
           filteredResponse.split("<p>").length
         ) {
           terminalContainer.scrollTop +=
-            12 *
+            150 *
             (filteredResponse.split("<p>").length -
               terminal.innerHTML.split("<p>").length);
         }
