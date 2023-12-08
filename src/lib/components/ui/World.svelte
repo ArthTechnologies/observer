@@ -105,6 +105,14 @@
           downloadProgress = downloadProgressShort(event.loaded, event.total);
 
           downloadBtn.style.width = "200px";
+          if (theme == "dark") {
+            downloadBtn.classList.add("text-accent-content");
+            downloadBtn.classList.remove("text-white");
+          } else if (theme == "light") {
+            downloadBtn.classList.add("text-white");
+            downloadBtn.classList.remove("text-accent-content");
+          }
+          downloadBtn.classList.add("pointer-events-none");
           //if its dark theme, gradient needs to be 90% transparency
           //to 0% transparency, where light should be from 90% to 70%.
           theme = localStorage.getItem("theme");
@@ -114,8 +122,8 @@
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.0) ${(event.loaded / event.total) * 100}%,
-  #088587 ${(event.loaded / event.total) * 100}%,
-  #088587 100%
+  ${gradientBackground} ${(event.loaded / event.total) * 100}%,
+  ${gradientBackground} 100%
 )`;
           } else if (theme == "light") {
             gradientBackground = "#88c0d0";
@@ -123,8 +131,8 @@
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.7) ${(event.loaded / event.total) * 100}%,
-  #088587 ${(event.loaded / event.total) * 100}%,
-  #088587 100%
+  ${gradientBackground} ${(event.loaded / event.total) * 100}%,
+  ${gradientBackground} 100%
 )`;
           }
         } else if (percentComplete >= 100) {
@@ -132,6 +140,10 @@
 
           downloadBtn.style.width = ``;
           downloadBtn.style.background = ``;
+          downloadBtn.classList.remove("pointer-events-none");
+          if (theme == "dark")
+            downloadBtn.classList.remove("text-accent-content");
+          else if (theme == "light") downloadBtn.classList.remove("text-white");
         }
       }
     });
@@ -303,16 +315,16 @@
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.0) 100%,
-  #088587 100%,
-  #088587 100%
+  ${gradientBackground} 100%,
+  ${gradientBackground} 100%
 )`;
         } else if (theme == "light") {
           uploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.7) 100}%,
-  #088587 100%,
-  #088587 100%
+  ${gradientBackground} 100%,
+  ${gradientBackground} 100%
 )`;
         }
       };
