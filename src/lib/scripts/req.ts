@@ -661,9 +661,11 @@ export function deleteServer(id: number, password: string) {
   return fetch(url, DELETE)
     .then((res) => res.text())
     .then((input: string) => {
-      if (input.indexOf("400") > -1) {
-        return "error";
-      } else {
+      console.error(input);
+      if (input.indexOf("Invalid credentials") > -1) {
+        alert("Wrong password")
+        return "wrong password";
+      }else {
         localStorage.setItem(
           "servers",
           (parseInt(localStorage.getItem("amountOfServers")) - 1).toString()
