@@ -243,7 +243,7 @@
               uploadBtn.innerHTML = $t("button.upload");
 
               //re-enable clicks to the button
-              uploadBtn.classList.remove("pointer-events-all");
+              uploadBtn.classList.remove("pointer-events-none");
               clearInterval(intervalId);
             }
           } else if (requestFinished) {
@@ -252,7 +252,7 @@
             uploadBtn.innerHTML = $t("button.upload");
 
             //re-enable clicks to the button
-            uploadBtn.classList.remove("pointer-events-all");
+            uploadBtn.classList.remove("pointer-events-none");
 
             clearInterval(intervalId);
           }
@@ -361,7 +361,7 @@
             token: localStorage.getItem("token"),
             email: localStorage.getItem("accountEmail"),
           },
-        }
+        },
       );
     }
   }
@@ -383,7 +383,7 @@
         for (let i in worldgenMods) {
           if (
             JSON.stringify(
-              data.includes(worldgenMods[i] + "-" + serverVersion + ".zip")
+              data.includes(worldgenMods[i] + "-" + serverVersion + ".zip"),
             )
           ) {
             areWorldgenMods = true;
@@ -424,7 +424,7 @@
             </div>{/if}
           <p class="ml-1.5">
             {#if downloading}{downloadProgress}{:else}{$t(
-                "button.download"
+                "button.download",
               )}{/if}
           </p></button
         >
