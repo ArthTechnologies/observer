@@ -3,13 +3,16 @@
 
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { Mail } from "lucide-svelte";
+  import LanguageSwitcher from "../buttons/LanguageSwitcher.svelte";
   type NavType = "default" | "welcome";
 
   export let navType: NavType;
 </script>
 
-<footer class=" items-center p-4 fixed bottom-0 right-0 z-50">
-  <div class="items-center grid-flow-col" />
+<footer
+  class="flex justify-between items-center p-4 fixed bottom-0 w-full z-50"
+>
+  <LanguageSwitcher />
   <label
     for="support-modal"
     style="margin:0rem;"
