@@ -217,6 +217,7 @@ export default {
     "alert.tooManyAttempts": "Too many attempts.",
     "alert.wrongLast4digits": "Wrong last 4 digits. ",
     "alert.wrongLast4digits2": " attempts left.",
+    "button.modpacks": "Use Modpack",
   },
   "es-ES": {
     "homepage.title": "Sus servidores",
@@ -437,8 +438,8 @@ export default {
     "alert.subscribe": "No estás suscrito. Póngase en contacto con el soporte si se trata de un error.",
     "alert.tooManyAttempts": "Demasiados intentos.",
     "alert.wrongLast4digits": "Últimos 4 dígitos incorrectos. ",
-
     "alert.wrongLast4digits2": " intentos restantes.",
+    "button.modpacks": "Usar Modpack",
 
 
 

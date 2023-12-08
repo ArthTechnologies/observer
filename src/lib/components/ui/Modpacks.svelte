@@ -71,7 +71,7 @@
         query,
         "modpack",
         offset,
-        sortBy
+        sortBy,
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
@@ -130,7 +130,9 @@
   }
 </script>
 
-<label for="modpacksModal" class="btn btn-block btn-primary">Use Modpack</label>
+<label for="modpacksModal" class="btn btn-block btn-primary"
+  >{$t("button.modpacks")}</label
+>
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="modpacksModal" class="modal-toggle" />
