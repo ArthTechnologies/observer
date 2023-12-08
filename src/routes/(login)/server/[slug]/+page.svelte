@@ -369,7 +369,7 @@
         >
       {:else if state == "installing"}
         <div
-          class="inline-flex pointer-events-none bg-accent flex items-center px-4 py-3 text-center text-sm font-semibold text-white uppercase rounded-md"
+          class="inline-flex pointer-events-none bg-accent flex items-center px-4 py-3 text-center text-sm font-semibold text-base-300 uppercase rounded-md"
         >
           <Loader class="animate-spin mr-1.5" />
           {$t("button.installing")}
