@@ -19,7 +19,7 @@
     let confPassword = document.getElementById("confirmPassword").value;
 
     if (password != confPassword) {
-      alert("Passwords do not match");
+      alert($t("alert.passwordsDontMatch"));
     } else {
       fetch(
         apiurl +
@@ -38,9 +38,18 @@
         .then((res) => res.json())
         .then((data) => {
           if (!data.success) {
-            alert(data.reason);
+            if (data.reason.includes("Wrong last 4"))
+              alert($t("alert.wrongLast4digits"));
+            else if (data.reason.includes("Too many attempts"))
+              alert(
+                $t("alert.tooManyAttempts") +
+                  5 -
+                  data.attempts +
+                  $t("alert.tooManyAttempts2"),
+              );
+            else alert(data.reason);
           } else {
-            alert("Password reset successfully");
+            alert($t("alert.passwordResetSuccess"));
             window.location.href = "/signin";
           }
         });

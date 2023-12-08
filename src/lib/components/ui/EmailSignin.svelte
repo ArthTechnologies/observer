@@ -78,7 +78,7 @@
       if (goodPwd && matchPwd) {
         const res = signupEmail(
           document.getElementById("email").value,
-          document.getElementById("pwd").value
+          document.getElementById("pwd").value,
         ).then((x) => {
           if (x === true) {
             console.log("redricting...");
@@ -88,7 +88,7 @@
                 stripePaymentLink +
                   "?prefilled_email=" +
                   document.getElementById("email").value +
-                  "&prefilled_promo_code=2023"
+                  "&prefilled_promo_code=2023",
               );
             } else {
               goto("/");
@@ -96,14 +96,18 @@
               window.dispatchEvent(new Event("redrict"));
             }
           } else {
-            alert(x);
+            if (x.includes("Email already exists"))
+              alert($t("alert.emailAlreadyExists"));
+            else if (x.inclues("Password is too short"))
+              alert($t("alert.passwordIsTooShort"));
+            else alert(x);
           }
         });
       }
     } else if (sign == "in") {
       const res = loginEmail(
         document.getElementById("email").value,
-        document.getElementById("pwd").value
+        document.getElementById("pwd").value,
       ).then((x) => {
         console.log("x: " + x);
         if (x === true) {

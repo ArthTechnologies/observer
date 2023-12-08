@@ -203,7 +203,20 @@ export default {
     "dropdown.sortBy.relevance": "Relevance",
     "dropdown.sortBy.downloads": "Downloads",
     "dropdown.sortBy.lastUpdated": "Last Updated",
-
+    "alert.wrongPassword": "Wrong Password",
+    "alert.worldUploaded": "World Uploaded",
+    "alert.errorSettingServerIcon": "Error setting server icon. Try again with a square image.",
+    "alert.pleaseGiveYourServerAName": "Please give your server a name.",
+    "alert.passwordsDontMatch": "Passwords do not match.",
+    "alert.passwordResetSuccess": "Password reset successfully.",
+    "alert.emailAreadyExists": "Email already exists.",
+    "alert.passwordIsTooShort": "Password is too short.",
+    "alert.maximumServersReached.": "Maximum servers reached.",
+    "alert.makeANewSubscription": "If you want another server, make a new subscription.",
+    "alert.subscribe": "You are not subscribed. Contact support if this is an error.",
+    "alert.tooManyAttempts": "Too many attempts.",
+    "alert.wrongLast4digits": "Wrong last 4 digits. ",
+    "alert.wrongLast4digits2": " attempts left.",
   },
   "es-ES": {
     "homepage.title": "Sus servidores",
@@ -411,6 +424,23 @@ export default {
     "dropdown.sortBy.relevance": "Relevancia",
     "dropdown.sortBy.downloads": "Descargas",
     "dropdown.sortBy.lastUpdated": "Última actualización",
+    "alert.wrongPassword": "Contraseña incorrecta",
+    "alert.worldUploaded": "Mundo subido",
+    "alert.errorSettingServerIcon": "Error al establecer el icono del servidor. Inténtalo de nuevo con una imagen cuadrada.",
+    "alert.pleaseGiveYourServerAName": "Por favor, ponga un nombre a su servidor.",
+    "alert.passwordsDontMatch": "Las contraseñas no coinciden.",
+    "alert.passwordResetSuccess": "Restablecimiento de contraseña exitoso.",
+    "alert.emailAreadyExists": "El correo electrónico ya existe.",
+    "alert.passwordIsTooShort": "La contraseña es demasiado corta.",
+    "alert.maximumServersReached.": "Máximo servidores alcanzados.",
+    "alert.makeANewSubscription": "Si desea otro servidor, haga una nueva suscripción.",
+    "alert.subscribe": "No estás suscrito. Póngase en contacto con el soporte si se trata de un error.",
+    "alert.tooManyAttempts": "Demasiados intentos.",
+    "alert.wrongLast4digits": "Últimos 4 dígitos incorrectos. ",
+
+    "alert.wrongLast4digits2": " intentos restantes.",
+
+
 
   },
 };

@@ -26,7 +26,7 @@
         .then((data) => {
           console.log("data" + JSON.stringify(data));
           if (!data.success) {
-            alert("Wrong Password");
+            alert($t("alert.wrongPassword"));
           } else {
             localStorage.clear();
             window.location.href = "/signin";

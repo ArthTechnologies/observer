@@ -107,7 +107,7 @@
         cmd,
         modpackURL,
         modpackID,
-        versionID
+        versionID,
       ).then((res) => {
         localStorage.setItem("modpackURL", "");
         localStorage.setItem("modpackID", "");
@@ -118,13 +118,17 @@
           //this tells the navbar to update the icon that is highligted
           window.dispatchEvent(new Event("redrict"));
         } else {
-          alert(res);
+          if (res.includes("Maximum servers"))
+            alert($t("alert.maximumServersReached"));
+          else if (res.includes("If you want another"))
+            alert($t("alert.makeANewSubscription"));
+          else if (res.includes("You are not subscribed"))
+            alert($t("alert.subscribe"));
+          else alert(res);
         }
       });
     } else if (browser) {
-      alert("Please give your server a name");
-    } else {
-      alert("Not in browser");
+      alert($t("Please give your server a name."));
     }
   }
   function checkV() {

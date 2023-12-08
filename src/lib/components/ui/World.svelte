@@ -291,7 +291,7 @@
         if (e.target.response.indexOf("No Viruses Detected") == -1) {
           alert($t("alert.virusDetected"));
         } else {
-          alert("World Uploaded", "success");
+          alert($t("alert.worldUploaded", "success");
         }
         requestFinished = true;
       });
