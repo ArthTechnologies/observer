@@ -22,6 +22,8 @@
   let downloadProgress = "0/0MB";
   let theme = "dark";
 
+  let gradientBackground = "#1fb2a5";
+
   let visible = false;
   let type = "error";
   if (browser) {
@@ -107,6 +109,7 @@
           //to 0% transparency, where light should be from 90% to 70%.
           theme = localStorage.getItem("theme");
           if (theme == "dark") {
+            gradientBackground = "#1fb2a5";
             downloadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
@@ -115,6 +118,7 @@
   #088587 100%
 )`;
           } else if (theme == "light") {
+            gradientBackground = "#88c0d0";
             downloadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
@@ -201,30 +205,35 @@
         }
 
         if (visualPercent < 100) {
-          uploadBtn.classList.add("text-accent-content");
+          if (theme == "dark") uploadBtn.classList.add("text-accent-content");
+          else if (theme == "light") uploadBtn.classList.add("text-white");
+
           uploadBtn.innerHTML = $t("uploading");
           //if its dark theme, gradient needs to be 90% transparency
           //to 0% transparency, where light should be from 90% to 70%.
 
           if (theme == "dark") {
+            gradientBackground = "#1fb2a5";
             uploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.0) ${visualPercent}%,
-  #1fb2a5 ${visualPercent}%,
-  #1fb2a5 100%
+  ${gradientBackground} ${visualPercent}%,
+  ${gradientBackground} 100%
 )`;
           } else if (theme == "light") {
+            gradientBackground = "#88c0d0";
             uploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.7) ${visualPercent}%,
-  #1fb2a5 ${visualPercent}%,
-  #1fb2a5 100%
+  ${gradientBackground} ${visualPercent}%,
+  ${gradientBackground} 100%
 )`;
           }
         } else {
           uploadBtn.classList.remove("text-accent-content");
+          uploadBtn.classList.remove("text-white");
           if (virusScanningEnabled == "true") {
             uploadBtn.innerHTML = $t("scanningForViruses");
             uploadBtn.classList.add("text-lime-500");
