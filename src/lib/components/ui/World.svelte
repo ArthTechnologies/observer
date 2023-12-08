@@ -195,8 +195,13 @@
         if (visualPercent >= 33) percentComplete += 100 / counter;
 
         if (requestFinished) percentComplete += 2.5;
+        else {
+          //disable clicks to the button
+          uploadBtn.classList.add("pointer-events-none");
+        }
 
         if (visualPercent < 100) {
+          uploadBtn.classList.add("text-accent-content");
           uploadBtn.innerHTML = $t("uploading");
           //if its dark theme, gradient needs to be 90% transparency
           //to 0% transparency, where light should be from 90% to 70%.
@@ -206,19 +211,20 @@
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.0) ${visualPercent}%,
-  #088587 ${visualPercent}%,
-  #088587 100%
+  #1fb2a5 ${visualPercent}%,
+  #1fb2a5 100%
 )`;
           } else if (theme == "light") {
             uploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.7) ${visualPercent}%,
-  #088587 ${visualPercent}%,
-  #088587 100%
+  #1fb2a5 ${visualPercent}%,
+  #1fb2a5 100%
 )`;
           }
         } else {
+          uploadBtn.classList.remove("text-accent-content");
           if (virusScanningEnabled == "true") {
             uploadBtn.innerHTML = $t("scanningForViruses");
             uploadBtn.classList.add("text-lime-500");
@@ -236,12 +242,17 @@
 
               uploadBtn.innerHTML = $t("button.upload");
 
+              //re-enable clicks to the button
+              uploadBtn.classList.remove("pointer-events-all");
               clearInterval(intervalId);
             }
           } else if (requestFinished) {
             uploadBtn.style.background = ``;
 
             uploadBtn.innerHTML = $t("button.upload");
+
+            //re-enable clicks to the button
+            uploadBtn.classList.remove("pointer-events-all");
 
             clearInterval(intervalId);
           }
