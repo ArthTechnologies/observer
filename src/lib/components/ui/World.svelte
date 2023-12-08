@@ -93,6 +93,7 @@
     xhr.setRequestHeader("email", localStorage.getItem("accountEmail"));
     xhr.responseType = "blob";
     let lhref = window.location.href;
+    const downloadBtn = document.getElementById("downloadBtn");
     xhr.addEventListener("progress", (event) => {
       if (event.lengthComputable && browser) {
         const percentComplete = (event.loaded / event.total) * 100;
@@ -100,9 +101,8 @@
         // You can update a progress bar or display the percentage to the user
         if (percentComplete < 100 && window.location.href == lhref) {
           downloadProgress = downloadProgressShort(event.loaded, event.total);
-          const downloadBtn = document.getElementById("downloadBtn");
 
-          downloadBtn.style.width = "250px";
+          downloadBtn.style.width = "200px";
           //if its dark theme, gradient needs to be 90% transparency
           //to 0% transparency, where light should be from 90% to 70%.
           theme = localStorage.getItem("theme");
@@ -123,6 +123,11 @@
   #088587 100%
 )`;
           }
+        } else if (percentComplete >= 100) {
+          downloadProgress = "0/0MB";
+
+          downloadBtn.style.width = ``;
+          downloadBtn.style.background = ``;
         }
       }
     });
@@ -345,7 +350,7 @@
             token: localStorage.getItem("token"),
             email: localStorage.getItem("accountEmail"),
           },
-        },
+        }
       );
     }
   }
@@ -367,7 +372,7 @@
         for (let i in worldgenMods) {
           if (
             JSON.stringify(
-              data.includes(worldgenMods[i] + "-" + serverVersion + ".zip"),
+              data.includes(worldgenMods[i] + "-" + serverVersion + ".zip")
             )
           ) {
             areWorldgenMods = true;
@@ -397,7 +402,10 @@
         <div class="flex flex-col justify-center">
           <p class="font-bold md:text-lg">{$t("currentWorld")}</p>
         </div>
-        <button class="downloadBtn btn btn-accent btn-sm" on:click={download}
+        <button
+          id="downloadBtn"
+          class="btn btn-accent btn-sm"
+          on:click={download}
           >{#if !downloading}<Download size="18" />{:else}<div
               class="animate-spin"
             >
@@ -405,7 +413,7 @@
             </div>{/if}
           <p class="ml-1.5">
             {#if downloading}{downloadProgress}{:else}{$t(
-                "button.download",
+                "button.download"
               )}{/if}
           </p></button
         >
