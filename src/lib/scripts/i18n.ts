@@ -8,9 +8,9 @@ export const locales = Object.keys(translations);
 function translate(locale: string, key: string, vars: string) {
   if (!key) throw new Error("no key provided to $t()");
   if (!locale) throw new Error(`no translation for key "${key}"`);
-  console.error("locale1 = " + locale);
+
   if (browser) if (localStorage.getItem("lang") != null) locale = localStorage.getItem("lang");
-  console.error("locale2 = " + locale);
+
   let text;
   if (Object.keys(translations).includes(locale)) {
     text = translations[locale][key]; 
