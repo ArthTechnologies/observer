@@ -19,7 +19,7 @@
           pluginId +
           "/version/" +
           versionId +
-          "/changelog"
+          "/changelog",
       )
         .then((response) => response.json())
 
@@ -42,7 +42,10 @@
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="changelog{uniqueId}" class="modal-toggle" />
-<div class="modal p-3" style="margin:0rem;">
+<div
+  class="modal p-3 h-[999vh] flex flex-col justify-start"
+  style="margin:0rem;"
+>
   <div
     class="modal-box bg-opacity-[.975] backdrop-blur relative w-11/12 max-w-5xl space-y-5 h-full"
   >
