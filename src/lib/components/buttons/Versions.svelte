@@ -71,15 +71,15 @@
         let worldgenMod = jarsIndex[item.toLowerCase()];
         if (worldgenMod != undefined) {
           worldgenMod.forEach((x) => {
-          if (x.version == version) {
-            updateReady = true;
-            /* This doesnt work for some reason if you add the grayscale class to every image by default.
+            if (x.version == version) {
+              updateReady = true;
+              /* This doesnt work for some reason if you add the grayscale class to every image by default.
           document
             .getElementById(item + "Versions")
             .classList.remove("grayscale");
             */
-          }
-        });
+            }
+          });
         }
       });
     } else {
@@ -144,12 +144,12 @@
       </select>
     </div>
     <div
-      class="bg-warning w-86 rounded-lg text-black p-2 py-0.5 flex items-center mb-2 space-x-2"
+      class="bg-warning w-86 rounded-lg text-black p-2 py-0.5 flex items-center mb-3 space-x-2"
     >
       <AlertTriangle size="48" />
       <span class="text-sm">{$t("warning.changeVersion")}</span>
     </div>
-    <div class="flex">
+    <div class="flex my-2">
       {#if areWorldgenMods}
         {#each serverAddons as addon}
           {#if updateReady}
