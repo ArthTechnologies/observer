@@ -21,7 +21,7 @@
 
 {#if visible}
   <div
-    class="alert flex gap-3 alert-{type} w-2/3 md:w-1/3 fixed z-[1000] right-2 top-2 shadow-lg"
+    class="alert flex gap-3 bg-{type} text-black w-2/3 md:w-1/3 fixed z-[1000] right-2 top-2 shadow-lg"
     transition:fade
   >
     {#if type === "error"}
