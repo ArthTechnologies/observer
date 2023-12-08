@@ -225,6 +225,7 @@ export function searchPlugins(
   offset: number,
   sortBy: string
 ) {
+  sortBy = sortBy.toLowerCase();
   if(browser) {
   if (version == "Latest") {
     version = "1.19.3";
@@ -270,6 +271,7 @@ export function searchMods(
   offset: number,
   sortBy: string
 ) {
+  sortBy = sortBy.toLowerCase();
   if(browser) {
       if (version == "Latest") {
     version = "1.19.3";
