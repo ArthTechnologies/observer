@@ -194,14 +194,14 @@
     const modpackElement = document.getElementById("modpacks");
     findVersions();
 
-    if (software == "Paper") {
+    if (software.split(" - ")[0] == "Paper") {
       worldgen.classList.remove("hidden");
       modpackElement.classList.add("hidden");
       modpacks = false;
     } else if (
-      software == "Quilt" ||
-      software == "Fabric" ||
-      software == "Forge"
+      software.split(" - ")[0] == "Quilt" ||
+      software.split(" - ")[0] == "Fabric" ||
+      software.split(" - ")[0] == "Forge"
     ) {
       worldgen.classList.add("hidden");
       modpackElement.classList.remove("hidden");
