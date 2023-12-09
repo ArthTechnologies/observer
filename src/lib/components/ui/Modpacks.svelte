@@ -45,7 +45,8 @@
     if (browser) {
       let software = document
         .getElementById("softwareDropdown")
-        .value.toLowerCase();
+        .value.split(" - ")[0]
+        .toLowerCase();
       let version = document.getElementById("versionDropdown").value;
       if (document.getElementById("sortByDropdown") != null) {
         sortBy = document.getElementById("sortByDropdown").value;
@@ -71,7 +72,7 @@
         query,
         "modpack",
         offset,
-        sortBy,
+        sortBy
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;

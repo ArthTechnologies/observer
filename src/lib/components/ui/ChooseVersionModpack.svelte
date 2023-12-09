@@ -25,7 +25,8 @@
     if (buttonType == "default") {
       software = document
         .getElementById("softwareDropdown")
-        .value.split(" - ")[0];
+        .value.split(" - ")[0]
+        .toLowerCase();
       sVersion = document.getElementById("versionDropdown").value;
     } else {
       software = localStorage.getItem("serverSoftware");
