@@ -23,7 +23,9 @@
   if (browser) {
     //if on the /newserver page
     if (buttonType == "default") {
-      software = document.getElementById("softwareDropdown").value;
+      software = document
+        .getElementById("softwareDropdown")
+        .value.split(" - ")[0];
       sVersion = document.getElementById("versionDropdown").value;
     } else {
       software = localStorage.getItem("serverSoftware");
@@ -60,10 +62,10 @@
 
         .then((data) => {
           document.getElementById("body" + buttonType).innerHTML = marked(
-            data.body,
+            data.body
           );
           document.getElementById("body" + buttonType).innerHTML = handleDesc(
-            marked(data.body),
+            marked(data.body)
           );
           document.getElementById("pluginTitle").innerHTML = data.title;
 
@@ -97,7 +99,7 @@
         .then((data) => {
           document.getElementById("body" + buttonType).innerHTML = marked(data);
           document.getElementById("body" + buttonType).innerHTML = handleDesc(
-            marked(data),
+            marked(data)
           );
           document.getElementById("pluginTitle").innerHTML = name;
           document.getElementById("pluginDesc").innerHTML = desc;
@@ -161,7 +163,7 @@
             if (
               version.name != vname &&
               version.gameVersions.includes(
-                software.charAt(0).toUpperCase() + software.slice(1),
+                software.charAt(0).toUpperCase() + software.slice(1)
               ) &&
               version.gameVersions.includes(sVersion)
             ) {
