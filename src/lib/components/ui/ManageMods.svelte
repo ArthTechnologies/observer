@@ -31,13 +31,21 @@
         res = response;
         for (let i in res.mods) {
           res.mods[i].time = new Date(res.mods[i].date).toLocaleString();
+          //this helps sort this alphabetically
+          for (let j in res.mods) {
+            if (res.mods[i].name < res.mods[j].name) {
+              let temp = res.mods[i];
+              res.mods[i] = res.mods[j];
+              res.mods[j] = temp;
+            }
+          }
         }
         if (response.modpack != undefined) {
           localStorage.setItem("modpackVersionID", response.modpack.versionID);
           if (response.modpack.platform == "mr") {
             fetch(
               "https://api.modrinth.com/api/v1/mod/" +
-                response.modpack.projectID,
+                response.modpack.projectID
             )
               .then((response) => response.json())
               .then((data) => {

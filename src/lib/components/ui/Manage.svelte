@@ -27,6 +27,14 @@
           res = response;
           for (let i in res.mods) {
             res.mods[i].time = new Date(res.mods[i].date).toLocaleString();
+            //this helps sort this alphabetically
+            for (let j in res.mods) {
+              if (res.mods[i].name < res.mods[j].name) {
+                let temp = res.mods[i];
+                res.mods[i] = res.mods[j];
+                res.mods[j] = temp;
+              }
+            }
           }
           console.log(res);
         });
