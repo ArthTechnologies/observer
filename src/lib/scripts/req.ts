@@ -512,13 +512,7 @@ export function changeServerState(reqstate: string, id: number, em: string) {
   if (usingOcelot)
     baseurl =
       JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
-
-      let lang = window.navigator.language;
-      if (document.getElementById("lang") != null) {
-        lang = document.getElementById("lang").innerHTML;
-      }
-
-  const url = baseurl + "server/" + id + "/state/" + reqstate + "?email=" + em + "&lang=" + lang;
+  const url = baseurl + "server/" + id + "/state/" + reqstate + "?email=" + em;
   const response = fetch(url, POST)
     .then((res) => res.text())
     .then((text) => console.log("Response Recieved: " + text))
@@ -547,12 +541,7 @@ export function createServer(
       localStorage.getItem("accountEmail") +
       "&accountId=" +
       localStorage.getItem("accountId");
-    
-      let lang = window.navigator.language;
-      if (document.getElementById("lang") != null) {
-        lang = document.getElementById("lang").innerHTML;
-      }
-
+  
   //get file from id worldFile
   const req = {
     method: "POST",
@@ -570,7 +559,6 @@ export function createServer(
       modpackURL: mURL,
       modpackID: mID,
       modpackVersionID: vID,
-      lang: lang,
     }),
   };
 
