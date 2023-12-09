@@ -99,7 +99,7 @@
         cmd,
         modpackURL,
         modpackID,
-        versionID,
+        versionID
       ).then((res) => {
         localStorage.setItem("modpackURL", "");
         localStorage.setItem("modpackID", "");
@@ -161,7 +161,7 @@
   }
 
   function findVersions() {
-    let CVS = software.toLowerCase();
+    let CVS = software.split(" - ")[0].toLowerCase();
     let versionOptions = [];
 
     index[CVS].forEach((item) => {
@@ -252,7 +252,10 @@
             tabindex="0"
             class="select select-primary p-2 bg-base-100"
           >
-            <option>{latestVersion}</option>
+            {#if JSON.stringify(jarsList).includes(software + "-" + latestVersion)}<option
+                >{latestVersion}</option
+              >
+            {/if}
             <option>1.19.4</option>
             <option>1.18.2</option>
             <option>1.17.1</option>
