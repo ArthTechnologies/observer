@@ -1,8 +1,9 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { apiurl, getMods, usingOcelot } from "$lib/scripts/req";
-  import PluginResult from "./PluginResult.svelte";
+
   import { t } from "$lib/scripts/i18n";
+  import ManagePluginSkele from "./ManagePluginSkele.svelte";
   import ManagePlugin from "./ManagePlugin.svelte";
   import { ChevronDown, ChevronUp, Clock, Trash2 } from "lucide-svelte";
   import ChooseVersionModpack from "./ChooseVersionModpack.svelte";
@@ -29,22 +30,86 @@
       promise = null;
       promise = getMods(id, "mods").then((response) => {
         res = response;
+
+        let mrRequestIds = [];
+        let cfPromiseList = ["haventStartedYet"];
         for (let i in res.mods) {
           res.mods[i].time = new Date(res.mods[i].date).toLocaleString();
-          //this helps sort this alphabetically
-          for (let j in res.mods) {
-            if (res.mods[i].name < res.mods[j].name) {
-              let temp = res.mods[i];
-              res.mods[i] = res.mods[j];
-              res.mods[j] = temp;
-            }
+
+          if (res.mods[i].platform == "mr") {
+            mrRequestIds.push(res.mods[i].id);
+          } else if (res.mods[i].platform == "cf") {
+            cfPromiseList.push(res.mods[i].id);
+
+            fetch(apiurl + "curseforge/" + res.mods[i].id)
+              .then((response) => response.json())
+              .then((data) => {
+                if (cfPromiseList[0] == "haventStartedYet")
+                  cfPromiseList.splice(0, 1);
+                cfPromiseList.splice(cfPromiseList.indexOf(res.mods[i].id), 1);
+
+                if (cfPromiseList.length == 0) {
+                  //sort alphabetically
+                  for (let i in res.mods) {
+                    for (let j in res.mods) {
+                      if (
+                        res.mods[j].name != "CFMod" &&
+                        res.mods[j].name != res.mods[j].id
+                      ) {
+                        if (res.mods[i].name < res.mods[j].name) {
+                          let temp = res.mods[i];
+                          res.mods[i] = res.mods[j];
+                          res.mods[j] = temp;
+                        }
+                      }
+                    }
+                  }
+                }
+                res.mods[i].desc = data.summary;
+                res.mods[i].slug = data.slug;
+                res.mods[i].name = data.name;
+                res.mods[i].author = data.authors[0].name;
+                res.mods[i].icon = data.logo.thumbnailUrl;
+              });
           }
         }
+        if (mrRequestIds.length > 0) {
+          fetch(
+            "https://api.modrinth.com/api/v2/projects?ids=[" +
+              mrRequestIds.join(",") +
+              "]"
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              for (let i in res.mods) {
+                for (let j in data) {
+                  if (res.mods[i].id == data[j].id) {
+                    res.mods[i].desc = data.description;
+                    res.mods[i].slug = data.slug;
+                    res.mods[i].name = data.title;
+                    res.mods[i].icon = data.icon_url;
+                  } else {
+                    if (
+                      res.mods[i].name != "CFMod" &&
+                      res.mods[i].name != res.mods[i].id
+                    ) {
+                      if (res.mods[i].name < data[j].name) {
+                        let temp = res.mods[i];
+                        res.mods[i] = data[j];
+                        data[j] = temp;
+                      }
+                    }
+                  }
+                }
+              }
+            });
+        }
+
         if (response.modpack != undefined) {
           localStorage.setItem("modpackVersionID", response.modpack.versionID);
           if (response.modpack.platform == "mr") {
             fetch(
-              "https://api.modrinth.com/api/v1/mod/" +
+              "https://api.modrinth.com/api/v2/mod/" +
                 response.modpack.projectID
             )
               .then((response) => response.json())
@@ -167,71 +232,49 @@
 
     <div class="space-y-2">
       {#await promise}
-        <div class="flex flex-col">
-          <div
-            class="flex items-center justify-between bg-base-300 rounded-t-lg w-full h-[2.75rem] pr-3 py-2 pl-2.5 space-x-1"
-          >
-            <div class="flex items-center space-x-1">
-              <div
-                class="bg-slate-700 rounded-lg w-[13rem] h-[1.5rem] animate-pulse"
-              />
-              <div
-                class="bg-slate-700 rounded-lg w-[1.5rem] h-[1.5rem] animate-pulse"
-              />
-            </div>
-            <div class="flex space-x-1 items-center">
-              <div
-                class="bg-slate-700 rounded-lg w-[13rem] h-[1.75rem] animate-pulse hidden sm:block"
-              />
-              <button class="btn btn-xs btn-disabled animate-pulse"
-                ><ChevronUp /></button
-              >
-            </div>
-          </div>
-          <div
-            class="h-[4.5rem] bg-base-200 rounded-b-lg px-3 pt-[1.125rem] pb-[.75rem] flex flex-col justify-between"
-          >
-            <div class="flex space-x-1 items-end">
-              <div class="bg-slate-700 rounded-lg w-[5rem] h-4 animate-pulse" />
-              <div class="bg-slate-700 rounded-lg w-[6rem] h-3 animate-pulse" />
-            </div>
-            <div
-              class="bg-slate-700 rounded-lg w-[13rem] h-3.5 animate-pulse"
-            />
-          </div>
-        </div>
+        <ManagePluginSkele />
       {:then}
         {#each res.mods as mod}
-          {#if mod.id != undefined}
-            <ManagePlugin
-              name={mod.name.split(".disabled")[0]}
-              id={mod.id}
-              platform={mod.platform}
-              filename={mod.filename.split(".disabled")[0]}
-              date={mod.date}
-              modtype="mod"
-              disabled={mod.filename.includes(".disabled")}
-            />
-          {:else}
-            <div class="px-3 py-2 rounded-lg bg-base-300 flex justify-between">
-              <div class="flex items-center space-x-1 break-all">
-                <p>{mod.filename}</p>
-                <button
-                  on:click={() => {
-                    del(mod.filename);
-                  }}
-                  class="btn btn-xs btn-error mt-0.5 btn-square"
-                >
-                  <Trash2 size="15" /></button
-                >
-              </div>
+          {#if mod.name != "CFMod" && mod.name != mod.id}
+            {#if mod.id != undefined}
+              <ManagePlugin
+                name={mod.name.split(".disabled")[0]}
+                id={mod.id}
+                platform={mod.platform}
+                filename={mod.filename.split(".disabled")[0]}
+                date={mod.date}
+                modtype="mod"
+                disabled={mod.filename.includes(".disabled")}
+                desc={mod.desc}
+                slug={mod.slug}
+                icon={mod.icon}
+                author={mod.author}
+              />
+            {:else}
               <div
-                class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+                class="px-3 py-2 rounded-lg bg-base-300 flex justify-between"
               >
-                <Clock size="16" class="mr-1.5" />
-                {mod.time}
+                <div class="flex items-center space-x-1 break-all">
+                  <p>{mod.filename}</p>
+                  <button
+                    on:click={() => {
+                      del(mod.filename);
+                    }}
+                    class="btn btn-xs btn-error mt-0.5 btn-square"
+                  >
+                    <Trash2 size="15" /></button
+                  >
+                </div>
+                <div
+                  class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+                >
+                  <Clock size="16" class="mr-1.5" />
+                  {mod.time}
+                </div>
               </div>
-            </div>
+            {/if}
+          {:else}
+            <ManagePluginSkele />
           {/if}
         {/each}
       {/await}

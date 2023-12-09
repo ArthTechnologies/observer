@@ -14,20 +14,21 @@
   export let filename;
   export let date;
   export let disabled;
+  export let desc = "";
+  export let icon = "";
+  export let slug = id;
+  export let author = "";
   let showInfo = true;
   let disableText = $t("disable");
   if (disabled) {
     disableText = $t("enable");
   }
-  let author;
-  let desc;
-  let icon;
-  let slug = id;
+
   let time = new Date(date).toLocaleString();
   let serverId = "";
-  let promise;
+
   let prefixToHandleFlexOnSM = "";
-  if ((platform == "cf" || platform == "lr")) {
+  if (platform == "cf" || platform == "lr") {
     prefixToHandleFlexOnSM = "sm:";
   }
   if (browser) {
@@ -39,6 +40,7 @@
   }
 
   if (platform == "lr") {
+    /*
     name = name.replace(/-/g, " ");
 
     promise = fetch(lrurl + "project/" + id)
@@ -49,13 +51,15 @@
         name = data.title;
         icon = data.icon_url;
       });
-
+      
     fetch(lrurl + "project/" + id + "/members")
       .then((response) => response.json())
       .then((data) => {
         author = data[0].user.username;
       });
+      */
   } else if (platform == "cf") {
+    /*
     promise = fetch(apiurl + "curseforge/" + id)
       .then((response) => response.json())
       .then((data) => {
@@ -65,6 +69,7 @@
         author = data.authors[0].name;
         icon = data.logo.thumbnailUrl;
       });
+      */
   } else if (platform == "gh") {
     author = id.split("/")[0];
     fetch("https://api.github.com/repos/" + id)
@@ -196,26 +201,20 @@
           {disableText}
         </button>
 
-        {#await promise}
-          <div
-            class="bg-slate-700 animate-pulse h-[1.5rem] w-[4.82rem] rounded-lg"
+        {#if modtype == "plugin" && (platform == "cf" || platform == "lr")}
+          <ChooseVersion {id} {name} {author} {desc} {icon} buttonType="2" />
+        {:else if modtype == "mod"}
+          <ChooseModVersion
+            {id}
+            {name}
+            {author}
+            {desc}
+            {icon}
+            {platform}
+            {slug}
+            buttonType="2"
           />
-        {:then}
-          {#if modtype == "plugin" && (platform == "cf" || platform == "lr")}
-            <ChooseVersion {id} {name} {author} {desc} {icon} buttonType="2" />
-          {:else if modtype == "mod"}
-            <ChooseModVersion
-              {id}
-              {name}
-              {author}
-              {desc}
-              {icon}
-              {platform}
-              {slug}
-              buttonType="2"
-            />
-          {/if}
-        {/await}
+        {/if}
       </div>
     </div>
 
