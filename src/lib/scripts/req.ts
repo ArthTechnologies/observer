@@ -10,6 +10,8 @@ export let usingOcelot = false;
 export let lrurl = "https://api.modrinth.com/v2/";
 export let stripePaymentLink = "/error                                                  ";
 export let usingCurseForge = false;
+export let cloudflareVerify = false;
+export let cloudflareVerifyKey = "";
 
 //set apiurl & usingOcelot to the enviroment variable if it exists
 if (browser) {
@@ -27,6 +29,12 @@ if (browser) {
   }
   if (env.PUBLIC_USING_CURSEFORGE) {
     usingCurseForge = JSON.parse(env.PUBLIC_USING_CURSEFORGE);
+  }
+  if (env.PUBLIC_CLOUDFLARE_VERIFY) {
+    cloudflareVerify = JSON.parse(env.PUBLIC_CLOUDFLARE_VERIFY);
+  }
+  if (env.PUBLIC_CLOUDFLARE_VERIFY_KEY) {
+    cloudflareVerifyKey = env.PUBLIC_CLOUDFLARE_VERIFY_KEY;
   }
 }
 
@@ -400,7 +408,7 @@ export function getServers(em: string) {
 }
 }
 
-export function signupEmail(em: string, pwd: string) {
+export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:string = "") {
   if(browser) {
   console.log("Request Sent");
   localStorage.setItem("accountEmail", em);
@@ -411,6 +419,7 @@ export function signupEmail(em: string, pwd: string) {
         email: em,
         password: pwd,
         confirmPassword: pwd,
+        cloudflareVerifyToken: cloudflareVerifyToken
       }),
     POST
   )
@@ -451,7 +460,7 @@ export function signupEmail(em: string, pwd: string) {
 }
 }
 
-export function loginEmail(em: string, pwd: string) {
+export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string = "") {
   if(browser) {
   return fetch(
     apiurl +
@@ -459,6 +468,7 @@ export function loginEmail(em: string, pwd: string) {
       new URLSearchParams({
         email: em,
         password: pwd,
+        cloudflareVerifyToken: cloudflareVerifyToken
       }),
     POST
   )

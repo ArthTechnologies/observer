@@ -49,6 +49,7 @@ You'll need to create a file called `.env` inside your observer folder. For each
 - `PUBLIC_API_URL`: The address of your quartz instance.
 - `PUBLIC_USING_CURSEFORGE`: Eether to let users add mods from curseforge, not just modrinth. Only enable this if you've set up curseforge on your quartz instance.
 - `PUBLIC_STRIPE_PAYMENT_LINK`: The payment link that users will be sent to after making an account IF you've enabled payments and setup stripe on your quartz instance.
+- `PUBLIC_CLOUDFLARE_VERIFY` && `PUBLIC_CLOUDFLARE_VERIFY_KEY`: If you want to enable cloudflare's turnstile system, which is a way to reduce bot traffic without making users solve CAPTCHAS, set `PUBLIC_CLOUDFLARE_VERIFY` to `true`. You'll need to make a cloudflare account, and once you setup up turnstile on their website, set `PUBLIC_CLOUDFLARE_VERIFY_KEY` to the sitekey. You'll also need to follow the steps in quartz's config to get this fully setup.
 - `PUBLIC_USING_OCELOT` (Advanced): Set this to true if you're using ocelot, the system that links multiple quartz instances together.
 - `PUBLIC_LR_URL` (Advanced): 
 Labrinth is the open-source software behing Modrith, a site where you can download mods and such. If you know another site that is running Labrinth and for some reason want to use that instead of Modrinth, you can tell observer to use that site instead of modrinth via this variable.

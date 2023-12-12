@@ -5,16 +5,18 @@
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
-  import Alert from "$lib/components/ui/Alert.svelte";
+  import { fade } from "svelte/transition";
   import { Eye, EyeOff } from "lucide-svelte";
   import { stripePaymentLink } from "$lib/scripts/req";
   import { alert } from "$lib/scripts/utils";
+  import { Turnstile } from "svelte-turnstile";
+  import { cloudflareVerify, cloudflareVerifyKey } from "$lib/scripts/req";
   let visible = false;
 
   let goodPwd = true;
   let matchPwd = true;
-  let verifyHuman = true;
-  let sitekey = "0x4AAAAAAAOeEUTBzNF16gtO";
+  let cloudflareVerified = false;
+  let cloudflareVerifyToken = "";
   let sign = "up";
   let pwdVisible = "password";
   function pwdVisibility() {
@@ -79,7 +81,8 @@
       if (goodPwd && matchPwd) {
         const res = signupEmail(
           document.getElementById("email").value,
-          document.getElementById("pwd").value
+          document.getElementById("pwd").value,
+          cloudflareVerifyToken,
         ).then((x) => {
           if (x === true) {
             console.log("redricting...");
@@ -89,7 +92,7 @@
                 stripePaymentLink +
                   "?prefilled_email=" +
                   document.getElementById("email").value +
-                  "&prefilled_promo_code=2023"
+                  "&prefilled_promo_code=2023",
               );
             } else {
               goto("/");
@@ -108,7 +111,8 @@
     } else if (sign == "in") {
       const res = loginEmail(
         document.getElementById("email").value,
-        document.getElementById("pwd").value
+        document.getElementById("pwd").value,
+        cloudflareVerifyToken,
       ).then((x) => {
         console.log("x: " + x);
         if (x === true) {
@@ -141,6 +145,13 @@
       goodPwd = true;
     }, 4500);
   }
+
+  function cloudflareVerifyCallback(event) {
+    setTimeout(() => {
+      cloudflareVerified = true;
+      cloudflareVerifyToken = event.detail.token;
+    }, 600);
+  }
 </script>
 
 <div class="tabs ml-2 tabs-lifted flex items-start">
@@ -150,24 +161,18 @@
   >
 </div>
 <div class="relative">
-  {#if verifyHuman}
+  {#if cloudflareVerify && !cloudflareVerified}
     <div
+      transition:fade={{ duration: 1000 }}
       class="w-96 bg-base-200 absolute h-[27rem] -top-8 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
     >
-      <script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        async
-        defer
-      ></script>
-      <div class="flex flex-col gap-2 items-center">
-        <p class="text-xl font-bold">
-          We're experiencing high traffic, please verify that you're human.
-        </p>
-        <div
-          class="cf-turnstile"
-          data-sitekey={sitekey}
-          data-callback="javascriptCallback"
-        ></div>
+      <div class="flex flex-col gap-4 items-center -mt-24">
+        <div class="bg-base-300 w-[18.75rem] h-[4rem] skeleton rounded-none">
+          <Turnstile
+            on:turnstile-callback={cloudflareVerifyCallback}
+            siteKey={cloudflareVerifyKey}
+          />
+        </div>
       </div>
     </div>
   {/if}
@@ -203,11 +208,7 @@
                 </label>
               </div>
             </div>
-            <div
-              class="cf-turnstile"
-              data-sitekey="yourSitekey"
-              data-callback="javascriptCallback"
-            ></div>
+
             <button on:click={submit} class="btn btn-primary"
               >{$t("continue")}</button
             >
