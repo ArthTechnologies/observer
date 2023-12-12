@@ -13,7 +13,8 @@
 
   let goodPwd = true;
   let matchPwd = true;
-
+  let verifyHuman = true;
+  let sitekey = "0x4AAAAAAAOeEUTBzNF16gtO";
   let sign = "up";
   let pwdVisible = "password";
   function pwdVisibility() {
@@ -78,7 +79,7 @@
       if (goodPwd && matchPwd) {
         const res = signupEmail(
           document.getElementById("email").value,
-          document.getElementById("pwd").value,
+          document.getElementById("pwd").value
         ).then((x) => {
           if (x === true) {
             console.log("redricting...");
@@ -88,7 +89,7 @@
                 stripePaymentLink +
                   "?prefilled_email=" +
                   document.getElementById("email").value +
-                  "&prefilled_promo_code=2023",
+                  "&prefilled_promo_code=2023"
               );
             } else {
               goto("/");
@@ -107,7 +108,7 @@
     } else if (sign == "in") {
       const res = loginEmail(
         document.getElementById("email").value,
-        document.getElementById("pwd").value,
+        document.getElementById("pwd").value
       ).then((x) => {
         console.log("x: " + x);
         if (x === true) {
@@ -148,19 +149,83 @@
     >{$t("signup")}</a
   >
 </div>
-{#if sign === "in"}
-  <div class="bg-base-300 border-4 border-base-100 rounded-xl w-96">
-    <div class="text-center p-6">
-      <div class="max-w-md space-y-5">
-        <div class="space-x-2 space-y-5">
-          <p class="text-xl">{$t("signin.h.email")}</p>
+<div class="relative">
+  {#if verifyHuman}
+    <div
+      class="w-96 bg-base-200 absolute h-[27rem] -top-8 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
+    >
+      <script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        async
+        defer
+      ></script>
+      <div class="flex flex-col gap-2 items-center">
+        <p class="text-xl font-bold">
+          We're experiencing high traffic, please verify that you're human.
+        </p>
+        <div
+          class="cf-turnstile"
+          data-sitekey={sitekey}
+          data-callback="javascriptCallback"
+        ></div>
+      </div>
+    </div>
+  {/if}
+
+  {#if sign === "in"}
+    <div class="bg-base-300 border-4 border-base-100 rounded-xl w-96">
+      <div class="text-center p-6">
+        <div class="max-w-md space-y-5">
+          <div class="space-x-2 space-y-5">
+            <p class="text-xl">{$t("signin.h.email")}</p>
+            <input
+              id="email"
+              type="text"
+              placeholder={$t("signin.l.email")}
+              class="input w-full max-w-xs"
+            />
+
+            <div class="w-full flex space-x-2">
+              <div class="w-full flex space-x-2">
+                <input
+                  type={pwdVisible}
+                  id="pwd"
+                  placeholder={$t("signin.l.pwd")}
+                  class="input w-full max-w-xs"
+                />
+                <label class="btn btn-circle swap swap-rotate btn-ghost">
+                  <!-- this hidden checkbox controls the state -->
+                  <input type="checkbox" on:click={pwdVisibility} />
+
+                  <Eye size="28" class="swap-off" />
+
+                  <EyeOff size="28" class="swap-on" />
+                </label>
+              </div>
+            </div>
+            <div
+              class="cf-turnstile"
+              data-sitekey="yourSitekey"
+              data-callback="javascriptCallback"
+            ></div>
+            <button on:click={submit} class="btn btn-primary"
+              >{$t("continue")}</button
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  {:else}
+    <div class="bg-base-300 border-4 border-base-100 rounded-xl w-96 pl-2">
+      <div class="p-6 text-center">
+        <div class="max-w-md space-y-5">
+          <p class="text-xl">{$t("signin.h.signupEmail")}</p>
           <input
             id="email"
             type="text"
             placeholder={$t("signin.l.email")}
             class="input w-full max-w-xs"
           />
-
           <div class="w-full flex space-x-2">
             <div class="w-full flex space-x-2">
               <input
@@ -180,55 +245,20 @@
             </div>
           </div>
 
-          <button on:click={submit} class="btn btn-primary"
-            >{$t("continue")}</button
-          >
-        </div>
-      </div>
-    </div>
-  </div>
-{:else}
-  <div class="bg-base-300 border-4 border-base-100 rounded-xl w-96 pl-2">
-    <div class="p-6 text-center">
-      <div class="max-w-md space-y-5">
-        <p class="text-xl">{$t("signin.h.signupEmail")}</p>
-        <input
-          id="email"
-          type="text"
-          placeholder={$t("signin.l.email")}
-          class="input w-full max-w-xs"
-        />
-        <div class="w-full flex space-x-2">
-          <div class="w-full flex space-x-2">
+          <div class="space-y-5">
             <input
-              type={pwdVisible}
-              id="pwd"
-              placeholder={$t("signin.l.pwd")}
+              type="password"
+              id="confPwd"
+              placeholder={$t("signin.l.cpwd")}
               class="input w-full max-w-xs"
             />
-            <label class="btn btn-circle swap swap-rotate btn-ghost">
-              <!-- this hidden checkbox controls the state -->
-              <input type="checkbox" on:click={pwdVisibility} />
 
-              <Eye size="28" class="swap-off" />
-
-              <EyeOff size="28" class="swap-on" />
-            </label>
+            <button on:click={submit} class="btn btn-primary"
+              >{$t("continue")}</button
+            >
           </div>
-        </div>
-
-        <div class="space-y-5">
-          <input
-            type="password"
-            id="confPwd"
-            placeholder={$t("signin.l.cpwd")}
-            class="input w-full max-w-xs"
-          />
-          <button on:click={submit} class="btn btn-primary"
-            >{$t("continue")}</button
-          >
         </div>
       </div>
     </div>
-  </div>
-{/if}
+  {/if}
+</div>
