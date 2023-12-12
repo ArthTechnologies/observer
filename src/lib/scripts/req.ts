@@ -419,7 +419,7 @@ export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:strin
         email: em,
         password: pwd,
         confirmPassword: pwd,
-        cloudflareVerifyToken: cloudflareVerifyToken
+        cloudflareVerifyToken: encodeURIComponent(cloudflareVerifyToken)
       }),
     POST
   )
