@@ -10,13 +10,13 @@
 </script>
 
 <footer
-  class="flex justify-between items-center p-4 fixed bottom-0 w-full z-50"
+  class="flex justify-between items-center p-4 fixed bottom-0 w-full z-50 pointer-events-none"
 >
   <LanguageSwitcher />
   <label
     for="support-modal"
     style="margin:0rem;"
-    class="btn btn-sm btn-ghost flex items-center justify-self-end"
+    class="btn btn-sm btn-ghost flex items-center justify-self-end pointer-events-auto"
   >
     <HelpCircle class="mr-1.5 mt-[0.05rem]" size="18" />
     {$t("help")}
