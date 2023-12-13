@@ -5,11 +5,21 @@
   import World from "./World.svelte";
   import { AlertTriangle, Trash2 } from "lucide-svelte";
   let id = -1;
+  let accountType = "email";
   if (browser) {
     id = localStorage.getItem("serverID");
+    if (localStorage.getItem("accountEmail").includes("@")) {
+      accountType = "email";
+    } else {
+      accountType = localStorage.getItem("accountEmail").split(":")[0];
+    }
   }
   function del() {
-    deleteServer(id, document.getElementById("password").value).then(() => {
+    let password = "";
+    if (accountType === "email") {
+      password = document.getElementById("password").value;
+    }
+    deleteServer(id, password).then(() => {
       if (usingOcelot) {
         fetch(
           apiurl +
@@ -17,7 +27,7 @@
             JSON.parse(localStorage.getItem("serverNodes"))[id.toString()],
           {
             method: "POST",
-          },
+          }
         );
       }
     });
@@ -44,12 +54,14 @@
       <AlertTriangle size="48" />
       <span class="text-sm">{$t("server.delete.desc")}</span>
     </div>
-    <input
-      type="password"
-      id="password"
-      class="input input-bordered input-error mr-1"
-      placeholder="Type your password"
-    />
+    {#if accountType == "email"}
+      <input
+        type="password"
+        id="password"
+        class="input input-bordered input-error mr-1"
+        placeholder={$t("typeYourPassword")}
+      />
+    {/if}
     <button class="btn btn-error" on:click={del}>{$t("button.delete")}</button>
   </div>
 </div>

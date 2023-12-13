@@ -66,7 +66,17 @@
         </button>-->
 
         <p class="px-4 py-2">
-          {accountEmailChopped}
+          {#if accountEmailChopped.includes("discord:")}
+            <div class="flex gap-2 font-semibold">
+              <img
+                alt="microsoft logo"
+                style="width:2.5ch"
+                src="discord.svg"
+              />{accountEmailChopped.slice(8)}
+            </div>
+          {:else}
+            {accountEmailChopped}
+          {/if}
         </p>
 
         <li>

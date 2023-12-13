@@ -2,6 +2,15 @@
   import { fade } from "svelte/transition";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import DeleteAccount from "$lib/components/buttons/DeleteAccount.svelte";
+  import { browser } from "$app/environment";
+  let accountType = "email";
+  if (browser) {
+    if (localStorage.getItem("accountEmail").includes("@")) {
+      accountType = "email";
+    } else {
+      accountType = localStorage.getItem("accountEmail").split(":")[0];
+    }
+  }
 </script>
 
 <div class="flex place-content-center">
@@ -14,11 +23,14 @@
         class="btn btn-neutral grow md:grow sm:w-44 ml-1 md:m-0"
         >{$t("account.button.managePayments")}</a
       >
-      <a
-        href="/reset-password?backurl=/account"
-        class="btn btn-secondary grow md:grow sm:w-44 ml-1 md:m-0"
-        >{$t("account.button.resetPassword")}</a
-      >
+      {#if accountType == "email"}
+        <a
+          href="/reset-password?backurl=/account"
+          class="btn btn-secondary grow md:grow sm:w-44 ml-1 md:m-0"
+          >{$t("account.button.resetPassword")}</a
+        >
+      {/if}
+
       <DeleteAccount />
     </div>
   </div>

@@ -6,6 +6,7 @@
   import { stripePaymentLink } from "$lib/scripts/req";
 
   import PocketBase from "pocketbase";
+  import { compute_rest_props } from "svelte/internal";
 
   if (browser) {
     //take the code from the url (DONT USE .search)
@@ -19,10 +20,11 @@
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         localStorage.setItem("token", data.token);
         localStorage.setItem("accountId", data.accountId);
-        localStorage.setItem("email", data.email);
-        if (localStorage.getItem("enablePay") == "true") {
+        localStorage.setItem("accountEmail", "discord:" + data.username);
+        if (localStorage.getItem("enablePay") == "true" && data.firstTime) {
           goto(stripePaymentLink + "?prefilled_email=" + data.email);
         } else {
           goto("/");

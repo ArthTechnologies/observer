@@ -10,20 +10,22 @@
   >
     <div class="bg-base-100 animate-pulse rounded-lg w-[7rem] h-[2.5rem]" />
     <div class="flex space-x-2">
-      <button class="btn btn-disabled">
+      <button
+        class="btn btn-ghost pointer-events-none animate-pulse text-slate-700"
+      >
         {$t("navbar.servers")}
       </button>
-      <button class="btn btn-disabled btn-circle">
-        <Plus />
+      <button class="btn btn-ghost pointer-events-none btn-circle">
+        <Plus class="animate-pulse" color="#2f3c4d" />
       </button>
-      <button class="btn btn-disabled btn-circle">
-        <ShoppingCart />
+      <button class="btn btn-ghost pointer-events-none btn-circle">
+        <ShoppingCart class="animate-pulse" color="#2f3c4d" />
       </button>
-      <button class="btn btn-disabled btn-circle">
-        <Moon />
+      <button class="btn btn-ghost pointer-events-none btn-circle">
+        <Moon class="animate-pulse" color="#2f3c4d" />
       </button>
-      <button class="btn btn-disabled btn-circle">
-        <User />
+      <button class="btn btn-ghost pointer-events-none btn-circle">
+        <User class="animate-pulse" color="#2f3c4d" />
       </button>
     </div>
   </div>

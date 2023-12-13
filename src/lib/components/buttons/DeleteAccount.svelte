@@ -4,34 +4,65 @@
   import { apiurl } from "$lib/scripts/req";
   import Alert from "../ui/Alert.svelte";
   import { alert } from "$lib/scripts/utils";
-
+  let accountType = "email";
+  if (browser) {
+    if (localStorage.getItem("accountEmail").includes("@")) {
+      accountType = "email";
+    } else {
+      accountType = localStorage.getItem("accountEmail").split(":")[0];
+    }
+  }
   function del() {
     if (browser) {
-      fetch(
-        apiurl +
-          "accounts/email?email=" +
-          localStorage.getItem("accountEmail") +
-          "&password=" +
-          document.getElementById("password").value,
+      if (accountType == "email") {
+        fetch(
+          apiurl +
+            "accounts/email?email=" +
+            localStorage.getItem("accountEmail") +
+            "&password=" +
+            document.getElementById("password").value,
 
-        {
-          method: "DELETE",
-          headers: {
-            token: localStorage.getItem("token"),
-            email: localStorage.getItem("accountEmail"),
-          },
-        },
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("data" + JSON.stringify(data));
-          if (!data.success) {
-            alert($t("alert.wrongPassword"));
-          } else {
-            localStorage.clear();
-            window.location.href = "/signin";
+          {
+            method: "DELETE",
+            headers: {
+              token: localStorage.getItem("token"),
+              email: localStorage.getItem("accountEmail"),
+            },
           }
-        });
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("data" + JSON.stringify(data));
+            if (!data.success) {
+              alert($t("alert.wrongPassword"));
+            } else {
+              localStorage.clear();
+              window.location.href = "/signin";
+            }
+          });
+      } else if (accountType == "discord") {
+        fetch(
+          apiurl + "accounts/discord",
+
+          {
+            method: "DELETE",
+            headers: {
+              token: localStorage.getItem("token"),
+              email: localStorage.getItem("accountEmail").split(":")[1],
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("data" + JSON.stringify(data));
+            if (!data.success) {
+              alert($t("alert.wrongPassword"));
+            } else {
+              localStorage.clear();
+              window.location.href = "/signin";
+            }
+          });
+      }
     }
   }
 </script>
@@ -52,12 +83,14 @@
     <p class="py-4">
       {$t("account.delete.desc")}
     </p>
-    <input
-      type="password"
-      id="password"
-      class="input input-bordered input-error mr-1"
-      placeholder={$t("typeYourPassword")}
-    />
+    {#if accountType == "email"}
+      <input
+        type="password"
+        id="password"
+        class="input input-bordered input-error mr-1"
+        placeholder={$t("typeYourPassword")}
+      />
+    {/if}
 
     <button class="btn btn-error" on:click={del}>{$t("button.delete2")}</button>
   </div>
