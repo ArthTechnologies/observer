@@ -50,6 +50,9 @@ if (browser) {
     localStorage.setItem("x", "false");
     localStorage.setItem("loggedIn", "false");
   }
+  if (localStorage.getItem("theme") == undefined) {
+    localStorage.setItem("theme", "dark");
+  }
   GET = {
     method: "GET",
     headers: {
