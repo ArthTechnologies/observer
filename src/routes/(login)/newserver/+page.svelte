@@ -36,6 +36,7 @@
         clearInterval(intervalID);
       }
     }, 100);
+
     latestVersion = localStorage.getItem("latestVersion");
     version = latestVersion;
     fetch("https://api.jarsmc.xyz/jars/arthHosting", {
@@ -46,6 +47,7 @@
         index = res;
         index["quilt"] = index["paper"];
         findVersions();
+        checkV();
       });
     fetch(apiurl + "servers/jars", {
       method: "GET",
