@@ -167,19 +167,40 @@
 </div>
 <div class="relative">
   {#if cloudflareVerify && !cloudflareVerified}
-    <div
-      transition:fade={{ duration: 1000 }}
-      class="w-96 bg-base-200 absolute h-[27rem] -top-8 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
-    >
-      <div class="flex flex-col gap-4 items-center -mt-24">
-        <div class="bg-base-300 w-[18.75rem] h-[4rem] skeleton rounded-none">
-          <Turnstile
-            on:turnstile-callback={cloudflareVerifyCallback}
-            language={lang}
-            siteKey={cloudflareVerifyKey}
-          />
+    <div transition:fade={{ duration: 1000 }}>
+      {#if sign == "in"}
+        <div
+          class="ml-2 w-[23rem] bg-base-300 absolute h-[13rem] top-16 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
+        >
+          <div class="flex flex-col gap-4 items-center -mt-24">
+            <div
+              class="bg-base-300 w-[18.75rem] h-[4rem] skeleton rounded-none mt-8"
+            >
+              <Turnstile
+                on:turnstile-callback={cloudflareVerifyCallback}
+                language={lang}
+                siteKey={cloudflareVerifyKey}
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      {:else if sign == "up"}
+        <div
+          class="ml-2 w-[23rem] bg-base-300 absolute h-[18rem] top-16 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
+        >
+          <div class="flex flex-col gap-4 items-center -mt-24">
+            <div
+              class="bg-base-300 w-[18.75rem] h-[4rem] skeleton rounded-none"
+            >
+              <Turnstile
+                on:turnstile-callback={cloudflareVerifyCallback}
+                language={lang}
+                siteKey={cloudflareVerifyKey}
+              />
+            </div>
+          </div>
+        </div>
+      {/if}
     </div>
   {/if}
 
