@@ -19,6 +19,7 @@
   let cloudflareVerifyToken = "";
   let sign = "up";
   let pwdVisible = "password";
+  let lang = "us";
   function pwdVisibility() {
     if (pwdVisible == "password") {
       pwdVisible = "text";
@@ -28,6 +29,10 @@
   }
 
   if (browser) {
+    lang = navigator.language;
+    if (localStorage.getItem("lang") != null) {
+      lang = localStorage.getItem("lang");
+    }
     document.addEventListener("keyup", function (event) {
       if (event.keyCode === 13) {
         submit();
@@ -82,7 +87,7 @@
         const res = signupEmail(
           document.getElementById("email").value,
           document.getElementById("pwd").value,
-          cloudflareVerifyToken,
+          cloudflareVerifyToken
         ).then((x) => {
           if (x === true) {
             console.log("redricting...");
@@ -92,7 +97,7 @@
                 stripePaymentLink +
                   "?prefilled_email=" +
                   document.getElementById("email").value +
-                  "&prefilled_promo_code=2023",
+                  "&prefilled_promo_code=2023"
               );
             } else {
               goto("/");
@@ -112,7 +117,7 @@
       const res = loginEmail(
         document.getElementById("email").value,
         document.getElementById("pwd").value,
-        cloudflareVerifyToken,
+        cloudflareVerifyToken
       ).then((x) => {
         console.log("x: " + x);
         if (x === true) {
@@ -170,6 +175,7 @@
         <div class="bg-base-300 w-[18.75rem] h-[4rem] skeleton rounded-none">
           <Turnstile
             on:turnstile-callback={cloudflareVerifyCallback}
+            language={lang}
             siteKey={cloudflareVerifyKey}
           />
         </div>
