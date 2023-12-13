@@ -15,12 +15,15 @@
   }
   let accountEmail = "noemail";
   let accountEmailChopped = "noemail";
+  let accountType = "email";
   onMount(() => {
     if (browser) {
       if (localStorage.getItem("theme") == "light") {
       }
 
       accountEmail = localStorage.getItem("accountEmail");
+      accountEmail = accountEmail.split(":")[1];
+      accountType = localStorage.getItem("accountEmail").split(":")[0];
 
       if (accountEmail.length > 18) {
         accountEmailChopped = accountEmail.slice(0, 18) + "...";
@@ -66,13 +69,13 @@
         </button>-->
 
         <p class="px-4 py-2">
-          {#if accountEmailChopped.includes("discord:")}
+          {#if accountType == "discord"}
             <div class="flex gap-2 font-semibold">
               <img
                 alt="microsoft logo"
                 style="width:2.5ch"
                 src="discord.svg"
-              />{accountEmailChopped.slice(8)}
+              />{accountEmailChopped}
             </div>
           {:else}
             {accountEmailChopped}
