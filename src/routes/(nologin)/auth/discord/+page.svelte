@@ -2,7 +2,7 @@
   import { browser } from "$app/environment";
   import { disableScrollHandling, goto } from "$app/navigation";
   import EmailSignin from "$lib/components/ui/EmailSignin.svelte";
-  import { apiurl } from "$lib/scripts/req";
+  import { apiurl, updateReqTemplates } from "$lib/scripts/req";
   import { stripePaymentLink } from "$lib/scripts/req";
 
   import PocketBase from "pocketbase";
@@ -24,6 +24,7 @@
         localStorage.setItem("token", data.token);
         localStorage.setItem("accountId", data.accountId);
         localStorage.setItem("accountEmail", "discord:" + data.username);
+        updateReqTemplates();
         if (localStorage.getItem("enablePay") == "true" && data.firstTime) {
           goto(stripePaymentLink + "?prefilled_email=" + data.email);
         } else {

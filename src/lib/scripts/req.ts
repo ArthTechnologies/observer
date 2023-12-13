@@ -43,6 +43,7 @@ let lock = false;
 let GET = {};
 let POST = {};
 let DELETE = {};
+export function updateReqTemplates() {
 //set email from local storage to variable
 if (browser) {
   accountEmail.set(localStorage.getItem("accountEmail"));
@@ -75,6 +76,8 @@ if (browser) {
     },
   };
 }
+}
+updateReqTemplates();
 
 export function setInfo(
   id,
@@ -433,27 +436,7 @@ export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:strin
       localStorage.setItem("loggedIn", "true");
       localStorage.setItem("token", JSON.parse(input).token);
       localStorage.setItem("accountId", JSON.parse(input).accountId);
-      GET = {
-        method: "GET",
-        headers: {
-          token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
-        },
-      };
-      POST = {
-        method: "POST",
-        headers: {
-          token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
-        },
-      };
-      DELETE = {
-        method: "DELETE",
-        headers: {
-          token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
-        },
-      };
+      updateReqTemplates();
       if (JSON.parse(input).token == -1) {
         return JSON.parse(input).reason;
       }
@@ -490,27 +473,7 @@ export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string
           localStorage.setItem("accountEmail", em);
           localStorage.setItem("loggedIn", "true");
           localStorage.setItem("accountId", JSON.parse(input).accountId);
-          GET = {
-            method: "GET",
-            headers: {
-              token: localStorage.getItem("token"),
-              email: localStorage.getItem("accountEmail"),
-            },
-          };
-          POST = {
-            method: "POST",
-            headers: {
-              token: localStorage.getItem("token"),
-              email: localStorage.getItem("accountEmail"),
-            },
-          };
-          DELETE = {
-            method: "DELETE",
-            headers: {
-              token: localStorage.getItem("token"),
-              email: localStorage.getItem("accountEmail"),
-            },
-          };
+          updateReqTemplates();
         }
         return true;
       }
