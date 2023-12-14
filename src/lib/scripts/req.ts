@@ -10,8 +10,7 @@ export let usingOcelot = false;
 export let lrurl = "https://api.modrinth.com/v2/";
 export let stripePaymentLink = "/error                                                  ";
 export let usingCurseForge = false;
-export let cloudflareVerify = false;
-export let cloudflareVerifyKey = "";
+
 
 //set apiurl & usingOcelot to the enviroment variable if it exists
 if (browser) {
@@ -30,12 +29,7 @@ if (browser) {
   if (env.PUBLIC_USING_CURSEFORGE) {
     usingCurseForge = JSON.parse(env.PUBLIC_USING_CURSEFORGE);
   }
-  if (env.PUBLIC_CLOUDFLARE_VERIFY) {
-    cloudflareVerify = JSON.parse(env.PUBLIC_CLOUDFLARE_VERIFY);
-  }
-  if (env.PUBLIC_CLOUDFLARE_VERIFY_KEY) {
-    cloudflareVerifyKey = env.PUBLIC_CLOUDFLARE_VERIFY_KEY;
-  }
+
 
   //Migration from old email-only account system to new multi-type account system
   if (localStorage.getItem("accountEmail") != null && localStorage.getItem("accountEmail").split(":")[1] == undefined) {
@@ -377,6 +371,8 @@ export function getSettings() {
         localStorage.setItem("address", JSON.parse(input).address);
         localStorage.setItem("latestVersion", JSON.parse(input).latestVersion);
         localStorage.setItem("enableVirusScan", JSON.parse(input).enableVirusScan);
+        localStorage.setItem("enableCloudflareVerify", JSON.parse(input).enableCloudflareVerify);
+        localStorage.setItem("cloudflareVerifySiteKey", JSON.parse(input).cloudflareVerifySiteKey);
 
         if (JSON.parse(input).enableAuth == false) {
           localStorage.setItem("accountEmail", "guest");

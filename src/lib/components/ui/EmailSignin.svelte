@@ -10,13 +10,16 @@
   import { stripePaymentLink } from "$lib/scripts/req";
   import { alert } from "$lib/scripts/utils";
   import { Turnstile } from "svelte-turnstile";
-  import { cloudflareVerify, cloudflareVerifyKey } from "$lib/scripts/req";
+
   let visible = false;
 
   let goodPwd = true;
   let matchPwd = true;
   let cloudflareVerified = false;
   let cloudflareVerifyToken = "";
+  let cloudflareVerify = true;
+  let cloudflareVerifyKey = "";
+  let checkingIfCloudflareVerify = true;
   let sign = "up";
   let pwdVisible = "password";
   let lang = "us";
@@ -29,6 +32,17 @@
   }
 
   if (browser) {
+    let intervalId = setInterval(() => {
+      if (localStorage.getItem("enableCloudflareVerify") != undefined) {
+        cloudflareVerify = JSON.parse(
+          localStorage.getItem("enableCloudflareVerify"),
+        );
+        cloudflareVerifyKey = localStorage.getItem("cloudflareVerifySiteKey");
+        checkingIfCloudflareVerify = false;
+        clearInterval(intervalId);
+      }
+    }, 50);
+
     lang = navigator.language;
     if (localStorage.getItem("lang") != null) {
       lang = localStorage.getItem("lang");
@@ -87,7 +101,7 @@
         const res = signupEmail(
           document.getElementById("email").value,
           document.getElementById("pwd").value,
-          cloudflareVerifyToken
+          cloudflareVerifyToken,
         ).then((x) => {
           if (x === true) {
             console.log("redricting...");
@@ -97,7 +111,7 @@
                 stripePaymentLink +
                   "?prefilled_email=" +
                   document.getElementById("email").value +
-                  "&prefilled_promo_code=2023"
+                  "&prefilled_promo_code=2023",
               );
             } else {
               goto("/");
@@ -117,7 +131,7 @@
       const res = loginEmail(
         document.getElementById("email").value,
         document.getElementById("pwd").value,
-        cloudflareVerifyToken
+        cloudflareVerifyToken,
       ).then((x) => {
         console.log("x: " + x);
         if (x === true) {
@@ -174,13 +188,15 @@
         >
           <div class="flex flex-col gap-4 items-center -mt-24">
             <div
-              class="bg-base-300 w-[18.75rem] h-[4rem] skeleton rounded-none mt-8"
+              class="bg-base-200 w-[18.75rem] h-[4rem] skeleton rounded-none mt-8"
             >
-              <Turnstile
-                on:turnstile-callback={cloudflareVerifyCallback}
-                language={lang}
-                siteKey={cloudflareVerifyKey}
-              />
+              {#if !checkingIfCloudflareVerify}
+                <Turnstile
+                  on:turnstile-callback={cloudflareVerifyCallback}
+                  language={lang}
+                  siteKey={cloudflareVerifyKey}
+                />
+              {/if}
             </div>
           </div>
         </div>
@@ -190,13 +206,15 @@
         >
           <div class="flex flex-col gap-4 items-center -mt-24">
             <div
-              class="bg-base-300 w-[18.75rem] h-[4rem] skeleton rounded-none"
+              class="bg-base-200 w-[18.75rem] h-[4rem] skeleton rounded-none"
             >
-              <Turnstile
-                on:turnstile-callback={cloudflareVerifyCallback}
-                language={lang}
-                siteKey={cloudflareVerifyKey}
-              />
+              {#if !checkingIfCloudflareVerify}
+                <Turnstile
+                  on:turnstile-callback={cloudflareVerifyCallback}
+                  language={lang}
+                  siteKey={cloudflareVerifyKey}
+                />
+              {/if}
             </div>
           </div>
         </div>
