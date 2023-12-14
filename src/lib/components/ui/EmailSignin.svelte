@@ -184,7 +184,7 @@
     <div transition:fade={{ duration: 1000 }}>
       {#if sign == "in"}
         <div
-          class="ml-2 w-[23rem] bg-base-300 absolute h-[13rem] top-16 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
+          class="ml-2 w-[20.3rem] md:w-[23rem] bg-base-300 absolute h-[13rem] top-16 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
         >
           <div class="flex flex-col gap-4 items-center -mt-24">
             <div
@@ -202,7 +202,7 @@
         </div>
       {:else if sign == "up"}
         <div
-          class="ml-2 w-[23rem] bg-base-300 absolute h-[18rem] top-16 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
+          class="ml-2 w-[20.3rem] md:w-[23rem] bg-base-300 absolute h-[18rem] top-16 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
         >
           <div class="flex flex-col gap-4 items-center -mt-24">
             <div
@@ -223,7 +223,7 @@
   {/if}
 
   {#if sign === "in"}
-    <div class="bg-base-300 border-4 border-base-100 rounded-xl w-96">
+    <div class="bg-base-300 border-4 border-base-100 rounded-xl md:w-96">
       <div class="text-center p-6">
         <div class="max-w-md space-y-5">
           <div class="space-x-2 space-y-5">
@@ -262,7 +262,7 @@
       </div>
     </div>
   {:else}
-    <div class="bg-base-300 border-4 border-base-100 rounded-xl w-96 pl-2">
+    <div class="bg-base-300 border-4 border-base-100 rounded-xl md:w-96 pl-2">
       <div class="p-6 text-center">
         <div class="max-w-md space-y-5">
           <p class="text-xl">{$t("signin.h.signupEmail")}</p>
