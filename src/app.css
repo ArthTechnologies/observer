@@ -6,30 +6,7 @@
 the oklch format. */
 @supports not (color: oklch(0 0 0)) {
     :root {
-      color-scheme: light;
-      --fallback-p: #0aa6a8;
-      --fallback-pc: #ffffff;
-      --fallback-s: #cc4304;
-      --fallback-sc: #fff9fc;
-      --fallback-a: #1FB2A5;
-      --fallback-ac: #ffffff;
-      --fallback-n: #191D24;
-      --fallback-nc: #A6ADBB;
-      --fallback-b1: #2A303C;
-      --fallback-b2: #242933;
-      --fallback-b3: #e5e6e6;
-      --fallback-bc: #20252E;
-      --fallback-in: #00b3f0;
-      --fallback-inc: #000000;
-      --fallback-su: #00ca92;
-      --fallback-suc: #000000;
-      --fallback-wa: #ffc22d;
-      --fallback-wac: #000000;
-      --fallback-er: #ff6f70;
-      --fallback-erc: #000000;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
+     
         color-scheme: dark;
         --fallback-p: #088385;
         --fallback-pc: #ffffff;
@@ -51,6 +28,7 @@ the oklch format. */
         --fallback-wac: #000000;
         --fallback-er: #ff6f70;
         --fallback-erc: #000000;
-      }
+    
+
     }
   }
