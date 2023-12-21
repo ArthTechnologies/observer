@@ -2,7 +2,7 @@
   import ModpackVersion from "./ModpackVersion.svelte";
   import { apiurl, getVersions, lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
-  import { AlertTriangle, Plus } from "lucide-svelte";
+  import { AlertTriangle, InfoIcon, Plus } from "lucide-svelte";
   import PluginResult from "./PluginResult.svelte";
   import { marked } from "marked";
   import { t } from "$lib/scripts/i18n";
@@ -158,6 +158,10 @@
       })
         .then((response) => response.json())
         .then((data) => {
+          document
+            .getElementById("noSoftwareSpecifiedWarning")
+            .classList.add("hidden");
+          console.error(data);
           data.forEach((version) => {
             let from = "modal";
             if (buttonType == "default") from = "serverpage";
@@ -174,6 +178,40 @@
               console.log(version);
               new ModpackVersion({
                 target: document.getElementById("list" + buttonType),
+                props: {
+                  name: version.displayName,
+                  date: version.fileDate,
+                  type: type,
+                  url: version.downloadUrl,
+                  id: id,
+                  pluginName: name,
+                  modtype: "mod",
+                  dependencies: version.dependencies,
+                  versionId: version.id,
+                  alreadyInstalled:
+                    version.id == localStorage.getItem("modpackVersionID") &&
+                    buttonType != "default",
+                  from: from,
+                  platform: "cf",
+                },
+              });
+            } else if (
+              version.name != vname &&
+              version.gameVersions.includes(sVersion)
+            ) {
+              //if there is no server software listed (rlcraft does this sometimes) put it
+              //in a special section
+              document
+                .getElementById("noSoftwareSpecifiedWarning")
+                .classList.remove("hidden");
+              let type = "release";
+              if (version.releaseType == 1) type = "beta";
+              else if (version.releaseType == 0) type = "alpha";
+              console.log(version);
+              new ModpackVersion({
+                target: document.getElementById(
+                  "noSoftwareSpecifiedList" + buttonType
+                ),
                 props: {
                   name: version.displayName,
                   date: version.fileDate,
@@ -327,6 +365,16 @@
             >
           </div>
           <div id="list{buttonType}" class="space-y-2 mb-5" />
+          <div id="noSoftwareSpecifiedWarning" class="mb-3 mt-6">
+            <div role="alert" class="alert">
+              <InfoIcon />
+              <span>{$t("warning.noSoftwareSpecified")}</span>
+            </div>
+          </div>
+          <div
+            id="noSoftwareSpecifiedList{buttonType}"
+            class="space-y-2 mb-5"
+          />
         </div>
       </div>
     </div>

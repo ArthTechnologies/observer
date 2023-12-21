@@ -221,7 +221,8 @@ export default {
     "software.forge": "Forge - The most popular software for modded servers.",
     "software.fabric": "Fabric - A lightweight software for modded servers.",
     "software.quilt": "Quilt - A faster version of fabric.",
-    "software.velocity": "Velocity - A \"proxy\", used for connecting multiple servers together."
+    "software.velocity": "Velocity - A \"proxy\", used for connecting multiple servers together.",
+    "warning.noSoftwareSpecified": "The author didn't specify which server software these versions support, so some versions may not work."
   },
   "es-ES": {
     "homepage.title": "Sus servidores",
@@ -447,9 +448,7 @@ export default {
     "software.forge": "Forge - El software más popular para servidores modificados.",
     "software.fabric": "Fabric - Un software ligero para servidores modificados.",
     "software.quilt": "Quilt - Una versión más rápida de Fabric.",
-    "software.velocity": "Velocity - Un \"proxy\", utilizado para conectar varios servidores entre sí."
-
-
-
+    "software.velocity": "Velocity - Un \"proxy\", utilizado para conectar varios servidores entre sí.",
+    "warning.noSoftwareSpecified": "El autor no especificó qué software de servidor admiten estas versiones, por lo que algunas versiones pueden no funcionar."
   },
 };
