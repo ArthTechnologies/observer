@@ -193,6 +193,7 @@
                     buttonType != "default",
                   from: from,
                   platform: "cf",
+                  alternateFileId: version.alternateFileId,
                 },
               });
             } else if (
@@ -227,6 +228,7 @@
                     buttonType != "default",
                   from: from,
                   platform: "cf",
+                  alternateFileId: version.alternateFileId,
                 },
               });
             }

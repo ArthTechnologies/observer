@@ -3,6 +3,7 @@
 
   import { browser } from "$app/environment";
   import { AlertCircle, Check, Clock, Plus } from "lucide-svelte";
+  import { t } from "$lib/scripts/i18n";
   import Changelog from "./Changelog.svelte";
 
   export let name: string;
@@ -15,6 +16,7 @@
   export let from: string = "serverpage";
   export let changelog: string = "";
   export let platform: string = "cf";
+  export let alternateFileId: string = "0";
   let modpackId = id;
   let uniqueId = Math.random().toString(36).substr(2, 9);
 
@@ -27,14 +29,49 @@
   }
   let time = new Date(date).toLocaleString();
 
+  let alternateFile = {
+    enabled: false,
+    name: "",
+    loaded: false,
+    downloadUrl: "",
+  };
+
+  if (browser) {
+    console.error("alternateVersionId", alternateFileId);
+    if (alternateFileId != "0") {
+      fetch(
+        apiurl + "curseforge/" + modpackId + "/version/" + alternateFileId,
+        {
+          method: "GET",
+          headers: {
+            token: localStorage.getItem("token"),
+            email: localStorage.getItem("accountEmail"),
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.displayName.split("").length > 45) {
+            alternateFile.name =
+              res.displayName.split("").slice(0, 43).join("") + "...";
+          } else {
+            alternateFile.name = res.displayName;
+          }
+          alternateFile.downloadUrl = res.downloadUrl;
+          alternateFile.loaded = true;
+        });
+    }
+  }
+
   function submit() {
     let id = "";
     if (browser) {
       id = localStorage.getItem("serverID");
-      localStorage.setItem("modpackURL", url);
-      localStorage.setItem("modpackID", modpackId);
-      localStorage.setItem("modpackVersionID", versionId);
-      console.log("test");
+
+      let downloadUrl = url;
+      if (alternateFile.enabled) {
+        downloadUrl = alternateFile.downloadUrl;
+      }
       if (from == "modal") {
         console.log("test");
         fetch(
@@ -42,7 +79,7 @@
             "server/" +
             id +
             "/modpack?modpackURL=" +
-            url +
+            downloadUrl +
             "&modpackID=" +
             modpackId +
             "&versionID=" +
@@ -53,10 +90,14 @@
               token: localStorage.getItem("token"),
               email: localStorage.getItem("accountEmail"),
             },
-          },
+          }
         ).then((res) => {
           console.log(res);
         });
+      } else {
+        localStorage.setItem("modpackURL", downloadUrl);
+        localStorage.setItem("modpackID", modpackId);
+        localStorage.setItem("modpackVersionID", versionId);
       }
       setTimeout(() => {
         document.getElementById("addBtn" + uniqueId).checked = false;
@@ -80,6 +121,26 @@
           <Clock size="16" class="mr-1.5" />
           {time}
         </div>
+        {#if alternateFile.loaded}
+          <div
+            class="btn px-2.5 text-xs btn-ghost w-[13rem] h-[1.625rem] flex justify-start rounded-md text-left"
+            on:click={() => {
+              alternateFile.enabled = !alternateFile.enabled;
+              if (alternateFile.enabled) {
+                versionId = alternateFileId;
+                localStorage.setItem("modpackVersionID", alternateFileId);
+              } else {
+                versionId = id;
+                localStorage.setItem("modpackVersionID", id);
+              }
+            }}
+          >
+            {#if alternateFile.enabled}
+              {$t("switchToTheOriginalVersion")}
+            {:else}{$t("switchTo")} "{alternateFile.name}"
+            {/if}
+          </div>
+        {/if}
         {#if changelog != "" || platform == "cf"}
           <Changelog {changelog} {platform} {versionId} pluginId={modpackId} />
         {/if}
