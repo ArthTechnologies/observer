@@ -3,7 +3,6 @@
   import { disableScrollHandling, goto } from "$app/navigation";
   import EmailSignin from "$lib/components/ui/EmailSignin.svelte";
   import { apiurl, updateReqTemplates } from "$lib/scripts/req";
-  import { stripePaymentLink } from "$lib/scripts/req";
 
   import PocketBase from "pocketbase";
   import { compute_rest_props } from "svelte/internal";
@@ -26,7 +25,7 @@
         localStorage.setItem("accountEmail", "discord:" + data.username);
         updateReqTemplates();
         if (localStorage.getItem("enablePay") == "true" && data.firstTime) {
-          goto(stripePaymentLink + "?prefilled_email=" + data.email);
+          goto("/checkout");
         } else {
           goto("/");
           //this tells the navbar to update the icon that is highligted

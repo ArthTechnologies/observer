@@ -8,7 +8,7 @@ import { alert } from "./utils";
 export let apiurl = "http://localhost:4000/";
 export let usingOcelot = false;
 export let lrurl = "https://api.modrinth.com/v2/";
-export let stripePaymentLink = "/error                                                  ";
+export let stripeKey = "";
 export let usingCurseForge = false;
 
 
@@ -23,8 +23,8 @@ if (browser) {
   if (env.PUBLIC_LR_URL) {
     lrurl = env.PUBLIC_LR_URL;
   }
-  if (env.PUBLIC_STRIPE_PAYMENT_LINK) {
-    stripePaymentLink = env.PUBLIC_STRIPE_PAYMENT_LINK;
+  if (env.PUBLIC_STRIPE_KEY) {
+    stripeKey = env.PUBLIC_STRIPE_KEY;
   }
   if (env.PUBLIC_USING_CURSEFORGE) {
     usingCurseForge = JSON.parse(env.PUBLIC_USING_CURSEFORGE);

@@ -48,7 +48,7 @@ You can update observer by running the `git pull` command inside your observer f
 You'll need to create a file called `.env` inside your observer folder. For each variable, create a new line and format it like this: `PUBLIC_EXAMPLEVARIABLE=true`.
 - `PUBLIC_API_URL`: The address of your quartz instance.
 - `PUBLIC_USING_CURSEFORGE`: Eether to let users add mods from curseforge, not just modrinth. Only enable this if you've set up curseforge on your quartz instance.
-- `PUBLIC_STRIPE_PAYMENT_LINK`: The payment link that users will be sent to after making an account IF you've enabled payments and setup stripe on your quartz instance.
+- `PUBLIC_STRIPE_KEY`: If you want to make people pay for servers via stripe, enter the public stripe key found in the dashboard. This will require some setup on the backend as well.
 - `PUBLIC_USING_OCELOT` (Advanced): Set this to true if you're using ocelot, the system that links multiple quartz instances together.
 - `PUBLIC_LR_URL` (Advanced): 
 Labrinth is the open-source software behing Modrith, a site where you can download mods and such. If you know another site that is running Labrinth and for some reason want to use that instead of Modrinth, you can tell observer to use that site instead of modrinth via this variable.

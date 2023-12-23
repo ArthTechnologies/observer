@@ -7,7 +7,7 @@
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
   import { Eye, EyeOff } from "lucide-svelte";
-  import { stripePaymentLink } from "$lib/scripts/req";
+
   import { alert } from "$lib/scripts/utils";
   import { Turnstile } from "svelte-turnstile";
 
@@ -35,7 +35,7 @@
     let intervalId = setInterval(() => {
       if (localStorage.getItem("enableCloudflareVerify") != undefined) {
         cloudflareVerify = JSON.parse(
-          localStorage.getItem("enableCloudflareVerify"),
+          localStorage.getItem("enableCloudflareVerify")
         );
         cloudflareVerifyKey = localStorage.getItem("cloudflareVerifySiteKey");
         checkingIfCloudflareVerify = false;
@@ -101,18 +101,13 @@
         const res = signupEmail(
           document.getElementById("email").value,
           document.getElementById("pwd").value,
-          cloudflareVerifyToken,
+          cloudflareVerifyToken
         ).then((x) => {
           if (x === true) {
             console.log("redricting...");
             if (localStorage.getItem("enablePay") == "true") {
               //change this to your own stripe checkout link
-              goto(
-                stripePaymentLink +
-                  "?prefilled_email=" +
-                  document.getElementById("email").value +
-                  "&prefilled_promo_code=2023",
-              );
+              goto("/checkout");
             } else {
               goto("/");
               //this tells the navbar to update the icon that is highligted
@@ -131,7 +126,7 @@
       const res = loginEmail(
         document.getElementById("email").value,
         document.getElementById("pwd").value,
-        cloudflareVerifyToken,
+        cloudflareVerifyToken
       ).then((x) => {
         console.log("x: " + x);
         if (x === true) {
