@@ -25,7 +25,7 @@
         localStorage.setItem("accountEmail", "discord:" + data.username);
         updateReqTemplates();
         if (localStorage.getItem("enablePay") == "true" && data.firstTime) {
-          goto("/checkout");
+          goto("/subscribe");
         } else {
           goto("/");
           //this tells the navbar to update the icon that is highligted
