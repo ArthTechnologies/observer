@@ -1,6 +1,7 @@
 <script lang="ts">
   import Footer from "$lib/components/layout/Footer.svelte";
   import Navbar from "$lib/components/layout/Navbar.svelte";
+  import { basicPlanPrice, moddedPlanPrice } from "$lib/scripts/req";
   import {
     AlertTriangleIcon,
     Check,
@@ -64,7 +65,7 @@
       <div class="flex flex-col gap-2">
         Basic
         <div class="flex gap-2">
-          <p class="text-accent-content text-4xl font-bold">$4.00</p>
+          <p class="text-accent-content text-4xl font-bold">{basicPlanPrice}</p>
 
           <p class="w-5 text-sm">per month</p>
         </div>
@@ -102,7 +103,9 @@
       <div class="flex flex-col gap-2">
         Modded
         <div class="flex gap-2">
-          <p class="text-accent-content text-4xl font-bold">$6.00</p>
+          <p class="text-accent-content text-4xl font-bold">
+            {moddedPlanPrice}
+          </p>
 
           <p class="w-5 text-sm">per month</p>
         </div>
