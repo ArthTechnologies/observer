@@ -17,12 +17,16 @@
         <div class="grow space-x-1.5 flex">
           <button
             type="submit"
-            class="btn bg-base-100 btn-sm h-9 w-[3.75rem]"
+            class="btn bg-base-100 btn-sm h-9 w-[3.75rem] pointer-events-none"
           />
-          <button type="submit" class="btn bg-base-100 btn-sm h-9"
+          <button
+            type="submit"
+            class="btn bg-base-100 btn-sm h-9 pointer-events-none"
             ><p class="invisible">{$t("button.start")}</p></button
           >
-          <button type="submit" class="btn bg-base-100 btn-sm h-9"
+          <button
+            type="submit"
+            class="btn bg-base-100 btn-sm h-9 pointer-events-none"
             ><p class="invisible">{$t("button.stop")}</p></button
           >
         </div>
