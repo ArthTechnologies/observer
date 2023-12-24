@@ -344,6 +344,10 @@ export default {
     "warning.updateModded":
       "Su mundo y mods pueden no funcionar en esta versión. Considere descargar su mundo de antemano.",
     "update.worldgenReady": "Todos sus mods de worldgen están listos para ",
+    "update.worldgenNotReady": "No todos sus mods de worldgen se han actualizado a ",
+    "update.worldgenNotReady2": " todavía. Vuelve en unos días.", 
+    "changeVersion.worldgenNotReady": "Los mods de worldgen no están disponibles en ",
+    "changeVersion.worldgenNotReady2": " todavía. Puede restablecer su mundo a uno sin mods de worldgen para cambiar a ",
     "button.changeVersion": "Cambiar Versión",
     save: "Salvar",
     description: "Descripción",
