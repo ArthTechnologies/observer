@@ -3,9 +3,10 @@
   import { t } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   import World from "./World.svelte";
-  import { AlertTriangle, Trash2 } from "lucide-svelte";
+  import { AlertTriangle, Loader, Trash2 } from "lucide-svelte";
   let id = -1;
   let accountType = "email";
+  let loading = false;
   if (browser) {
     id = localStorage.getItem("serverID");
     if (localStorage.getItem("accountEmail").includes("@")) {
@@ -15,6 +16,11 @@
     }
   }
   function del() {
+    let delButton = document.getElementById("delButton");
+
+    loading = true;
+    delButton.innerHTML == "Deleting";
+
     let password = "";
     if (accountType === "email") {
       password = document.getElementById("password").value;
@@ -62,6 +68,9 @@
         placeholder={$t("typeYourPassword")}
       />
     {/if}
-    <button class="btn btn-error" on:click={del}>{$t("button.delete")}</button>
+    <button id="delButton" class="btn btn-error" on:click={del}>
+      {#if loading}
+        <Loader class="mr-1.5 animate-spin" />{/if}{$t("button.delete")}</button
+    >
   </div>
 </div>

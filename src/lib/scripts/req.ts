@@ -655,10 +655,12 @@ export function deleteServer(id: number, password: string) {
         alert("Wrong password")
         return "wrong password";
       }else {
+        console.log("redring1...")
         localStorage.setItem(
           "servers",
           (parseInt(localStorage.getItem("amountOfServers")) - 1).toString()
         );
+        console.log("redring2...")
         goto("/");
                       //this tells the navbar to update the icon that is highligted
                       window.dispatchEvent(new Event("redrict"));
