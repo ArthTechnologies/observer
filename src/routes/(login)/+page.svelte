@@ -93,10 +93,10 @@
         {/each}
       {:then}
         {#each servers as server}
-          {#if server != "null"}
+          {#if !JSON.stringify(server).includes("not created yet")}
             <ServerCard {...server} />
           {:else}
-            <UncreatedServerCard />
+            <UncreatedServerCard id={server.split(":")[0]} />
           {/if}
         {/each}
       {/await}

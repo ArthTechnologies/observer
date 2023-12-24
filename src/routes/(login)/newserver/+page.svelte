@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { apiurl, createServer } from "$lib/scripts/req";
+  import { apiurl, createServer, getServers } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import Helper from "$lib/components/ui/Helper.svelte";
   import { goto } from "$app/navigation";
@@ -8,6 +8,7 @@
   import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
 
   import { alert } from "$lib/scripts/utils";
+
   let version = "1.19.4";
   export let software = $t("software.paper");
   let name = "";
@@ -26,8 +27,25 @@
   ];
   let worldgen = null;
   let jarsList = [];
+  let id = -1;
 
   if (browser) {
+    let email = localStorage.getItem("accountEmail");
+    if (document.location.href.includes("?id=")) {
+      id = parseInt(document.location.href.split("?id=")[1].split("&")[0]);
+    } else {
+      getServers(email).then((response) => {
+        if (browser) {
+          for (let i in response) {
+            if (response[i].includes("not created yet")) {
+              id = i;
+              break;
+            }
+          }
+          if (id == -1) alert($t("alert.makeANewSubscription"));
+        }
+      });
+    }
     worldgen = document.getElementById("worldgen");
     let intervalID = setInterval(() => {
       if (worldgen == null) {
@@ -94,6 +112,7 @@
       let modpackID = localStorage.getItem("modpackID");
       let versionID = localStorage.getItem("modpackVersionID");
       createServer(
+        id,
         name,
         sSoftware,
         sVersion,
@@ -122,7 +141,7 @@
         }
       });
     } else if (browser) {
-      alert($t("Please give your server a name."));
+      alert($t("alert.enterName"));
     }
   }
   function checkV() {

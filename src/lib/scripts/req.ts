@@ -510,6 +510,7 @@ export function changeServerState(reqstate: string, id: number, em: string) {
 }
 
 export function createServer(
+  id: number,
   n: string,
   s: string,
   v: string,
@@ -517,13 +518,14 @@ export function createServer(
   c: any[],
   mURL: string,
   mID: string,
-  vID: string
+  vID: string,
+
 ) {
   if(browser) {
 
     const url =
       apiurl +
-      "server/new?" +
+      "server/new/"+id+"?" +
       "email=" +
       localStorage.getItem("accountEmail") +
       "&accountId=" +
