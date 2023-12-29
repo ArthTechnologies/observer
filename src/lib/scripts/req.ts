@@ -447,6 +447,7 @@ export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:strin
       localStorage.setItem("loggedIn", "true");
       localStorage.setItem("token", JSON.parse(input).token);
       localStorage.setItem("accountId", JSON.parse(input).accountId);
+      localStorage.setItem("avatar", "");
       updateReqTemplates();
       if (JSON.parse(input).token == -1) {
         return JSON.parse(input).reason;
@@ -484,6 +485,7 @@ export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string
           localStorage.setItem("accountEmail", "email:" + em);
           localStorage.setItem("loggedIn", "true");
           localStorage.setItem("accountId", JSON.parse(input).accountId);
+          localStorage.setItem("avatar", "");
           updateReqTemplates();
         }
         return true;
