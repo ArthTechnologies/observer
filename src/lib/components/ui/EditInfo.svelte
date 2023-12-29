@@ -29,7 +29,7 @@
       headers: {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
@@ -104,7 +104,7 @@
         fetch(apiurl + "server/" + id + "/rename?newName=" + name, {
           method: "POST",
           headers: {
-            email: localStorage.getItem("accountEmail"),
+            username: localStorage.getItem("accountEmail"),
             token: localStorage.getItem("token"),
           },
         })

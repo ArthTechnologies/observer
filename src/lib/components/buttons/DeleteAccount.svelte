@@ -26,7 +26,7 @@
             method: "DELETE",
             headers: {
               token: localStorage.getItem("token"),
-              email: localStorage.getItem("accountEmail"),
+              username: localStorage.getItem("accountEmail"),
             },
           }
         )
@@ -48,7 +48,7 @@
             method: "DELETE",
             headers: {
               token: localStorage.getItem("token"),
-              email: localStorage.getItem("accountEmail").split(":")[1],
+              username: localStorage.getItem("accountEmail").split(":")[1],
             },
           }
         )

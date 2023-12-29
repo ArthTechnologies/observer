@@ -105,7 +105,7 @@
       method: "DELETE",
       headers: {
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     });
   }
@@ -135,7 +135,7 @@
       method: "POST",
       headers: {
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.text())

@@ -35,7 +35,7 @@
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
@@ -50,7 +50,7 @@
           method: "GET",
           headers: {
             token: localStorage.getItem("token"),
-            email: localStorage.getItem("accountEmail"),
+            username: localStorage.getItem("accountEmail"),
           },
         })
           .then((response) => response.json())
@@ -380,9 +380,9 @@
           method: "POST",
           headers: {
             token: localStorage.getItem("token"),
-            email: localStorage.getItem("accountEmail"),
+            username: localStorage.getItem("accountEmail"),
           },
-        },
+        }
       );
     }
   }
@@ -395,7 +395,7 @@
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
@@ -404,7 +404,7 @@
         for (let i in worldgenMods) {
           if (
             JSON.stringify(
-              data.includes(worldgenMods[i] + "-" + serverVersion + ".zip"),
+              data.includes(worldgenMods[i] + "-" + serverVersion + ".zip")
             )
           ) {
             areWorldgenMods = true;
@@ -445,7 +445,7 @@
             </div>{/if}
           <p class="ml-1.5">
             {#if downloading}{downloadProgress}{:else}{$t(
-                "button.download",
+                "button.download"
               )}{/if}
           </p></button
         >

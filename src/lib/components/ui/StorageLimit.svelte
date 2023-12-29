@@ -27,7 +27,7 @@
         {
           method: "GET",
           headers: {
-            email: localStorage.getItem("accountEmail"),
+            username: localStorage.getItem("accountEmail"),
             token: localStorage.getItem("token"),
           },
         }

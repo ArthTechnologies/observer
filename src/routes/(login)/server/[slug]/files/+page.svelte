@@ -29,7 +29,7 @@
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
@@ -65,12 +65,12 @@
         headers: {
           "Content-Type": "application/json",
           token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
+          username: localStorage.getItem("accountEmail"),
         },
         body: JSON.stringify({
           content: document.getElementById("textEditor").value,
         }),
-      },
+      }
     )
       .then((response) => response.json())
       .then((data) => {

@@ -67,21 +67,21 @@ if (browser) {
     method: "GET",
     headers: {
       token: localStorage.getItem("token"),
-      email: localStorage.getItem("accountEmail"),
+      username: localStorage.getItem("accountEmail"),
     },
   };
   POST = {
     method: "POST",
     headers: {
       token: localStorage.getItem("token"),
-      email: localStorage.getItem("accountEmail"),
+      username: localStorage.getItem("accountEmail"),
     },
   };
   DELETE = {
     method: "DELETE",
     headers: {
       token: localStorage.getItem("token"),
-      email: localStorage.getItem("accountEmail"),
+      username: localStorage.getItem("accountEmail"),
     },
   };
 }
@@ -111,7 +111,7 @@ export function setInfo(
     headers: {
       "Content-Type": "application/json",
       token: localStorage.getItem("token"),
-      email: localStorage.getItem("accountEmail"),
+      username: localStorage.getItem("accountEmail"),
     },
     body: JSON.stringify({
       desc: desc,
@@ -537,7 +537,7 @@ export function createServer(
     headers: {
       "Content-Type": "application/json",
       token: localStorage.getItem("token"),
-      email: localStorage.getItem("accountEmail"),
+      username: localStorage.getItem("accountEmail"),
     },
     body: JSON.stringify({
       name: n,
