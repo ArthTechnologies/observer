@@ -433,7 +433,7 @@ export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:strin
     apiurl +
       "accounts/email/signup?" +
       new URLSearchParams({
-        email: em,
+        username: em,
         password: pwd,
         confirmPassword: pwd,
         cloudflareVerifyToken: encodeURIComponent(cloudflareVerifyToken)
@@ -463,7 +463,7 @@ export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string
     apiurl +
       "accounts/email/signin?" +
       new URLSearchParams({
-        email: em,
+        username: em,
         password: pwd,
         cloudflareVerifyToken: cloudflareVerifyToken
       }),
