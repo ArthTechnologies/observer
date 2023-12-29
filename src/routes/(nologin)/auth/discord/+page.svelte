@@ -20,6 +20,8 @@
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        localStorage.setItem("avatar", data.avatar);
+        localStorage.setItem("bannerColor", data.bannerColor);
         localStorage.setItem("token", data.token);
         localStorage.setItem("accountId", data.accountId);
         localStorage.setItem("accountEmail", "discord:" + data.username);

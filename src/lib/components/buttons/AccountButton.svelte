@@ -6,6 +6,11 @@
   import { browser } from "$app/environment";
   import { ChevronUp, User } from "lucide-svelte";
   export let loginStatus: boolean;
+  let avatarUrl: string = "";
+
+  if (browser) {
+    avatarUrl = localStorage.getItem("avatar");
+  }
 
   function signOut() {
     localStorage.setItem("token", "");
@@ -52,7 +57,11 @@
   <div class=" flex-none gap-2" id="navbtn">
     <details class="dropdown dropdown-end z-50" id="profileDropdown">
       <summary tabindex="0" id="account" class=" btn btn-ghost btn-circle">
-        <User />
+        {#if avatarUrl == ""}
+          <User />
+        {:else}
+          <img src={avatarUrl} class="rounded-full w-[2.19rem] h-[2.19rem]" />
+        {/if}
       </summary>
       <ul
         tabindex="0"
