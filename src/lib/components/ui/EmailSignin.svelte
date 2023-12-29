@@ -107,7 +107,7 @@
             console.log("redricting...");
             if (localStorage.getItem("enablePay") == "true") {
               //change this to your own stripe checkout link
-              goto("/subscribe");
+              goto("/subscribe/basic");
             } else {
               goto("/");
               //this tells the navbar to update the icon that is highligted
