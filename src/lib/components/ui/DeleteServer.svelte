@@ -4,6 +4,7 @@
   import { browser } from "$app/environment";
   import World from "./World.svelte";
   import { AlertTriangle, Loader, Trash2 } from "lucide-svelte";
+  import { getDefaultSettings } from "http2";
   let id = -1;
   let accountType = "email";
   let loading = false;
@@ -19,13 +20,13 @@
     let delButton = document.getElementById("delButton");
 
     loading = true;
-    delButton.innerHTML == "Deleting";
 
     let password = "";
     if (accountType === "email") {
       password = document.getElementById("password").value;
     }
     deleteServer(id, password).then(() => {
+      loading = false;
       if (usingOcelot) {
         fetch(
           apiurl +
@@ -60,17 +61,21 @@
       <AlertTriangle size="48" />
       <span class="text-sm">{$t("server.delete.desc")}</span>
     </div>
-    {#if accountType == "email"}
-      <input
-        type="password"
-        id="password"
-        class="input input-bordered input-error mr-1"
-        placeholder={$t("typeYourPassword")}
-      />
-    {/if}
-    <button id="delButton" class="btn btn-error" on:click={del}>
-      {#if loading}
-        <Loader class="mr-1.5 animate-spin" />{/if}{$t("button.delete")}</button
-    >
+    <div class="flex gap-1">
+      {#if accountType == "email"}
+        <input
+          type="password"
+          id="password"
+          class="input input-bordered input-error mr-1"
+          placeholder={$t("typeYourPassword")}
+        />
+      {/if}
+      <button id="delButton" class="btn btn-error" on:click={del}>
+        {#if loading}
+          <Loader class="mr-1.5 animate-spin" />Deleting
+        {:else}
+          {$t("button.delete")}{/if}</button
+      >
+    </div>
   </div>
 </div>
