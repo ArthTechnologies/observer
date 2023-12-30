@@ -92,7 +92,7 @@
     const xhr = new XMLHttpRequest();
     xhr.open("GET", apiurl + "server/" + id + "/world", true);
     xhr.setRequestHeader("token", localStorage.getItem("token"));
-    xhr.setRequestHeader("email", localStorage.getItem("accountEmail"));
+    xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
     xhr.responseType = "blob";
     let lhref = window.location.href;
     const downloadBtn = document.getElementById("downloadBtn");
@@ -302,7 +302,7 @@
 
       xhr.open("POST", apiurl + "server/" + id + "/world", true);
       xhr.setRequestHeader("token", localStorage.getItem("token"));
-      xhr.setRequestHeader("email", localStorage.getItem("accountEmail"));
+      xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
       xhr.send(formData);
 
       //when response is recieved...
