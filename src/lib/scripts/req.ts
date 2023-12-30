@@ -501,7 +501,7 @@ export function changeServerState(reqstate: string, id: number, em: string) {
   if (usingOcelot)
     baseurl =
       JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
-  const url = baseurl + "server/" + id + "/state/" + reqstate + "?email=" + em;
+  const url = baseurl + "server/" + id + "/state/" + reqstate + "?username=" + em;
   const response = fetch(url, POST)
     .then((res) => res.text())
     .then((text) => console.log("Response Recieved: " + text))
@@ -644,7 +644,7 @@ export function deleteServer(id: number, password: string) {
     baseurl +
     "server/" +
     id +
-    "?email=" +
+    "?username=" +
     localStorage.getItem("accountEmail") +
     "&password=" +
     password;

@@ -17,7 +17,7 @@
       if (accountType == "email") {
         fetch(
           apiurl +
-            "accounts/email?email=" +
+            "accounts/email?username=" +
             localStorage.getItem("accountEmail") +
             "&password=" +
             document.getElementById("password").value,
