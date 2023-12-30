@@ -168,6 +168,10 @@
         worldgen.classList.remove("hidden");
       } else {
         worldgen.classList.add("hidden");
+        document.getElementById("terralith").checked = false;
+        document.getElementById("incendium").checked = false;
+        document.getElementById("nullscape").checked = false;
+        document.getElementById("structory").checked = false;
       }
     } else {
       worldgen.classList.add("hidden");
