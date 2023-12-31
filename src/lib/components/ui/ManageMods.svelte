@@ -93,7 +93,10 @@
                       res.mods[i].name != "CFMod" &&
                       res.mods[i].name != res.mods[i].id
                     ) {
-                      if (res.mods[i].name < data[j].name) {
+                      if (
+                        res.mods[i].name.toLowerCase() <
+                        data[j].name.toLowerCase()
+                      ) {
                         let temp = res.mods[i];
                         res.mods[i] = data[j];
                         data[j] = temp;
@@ -235,7 +238,7 @@
         <ManagePluginSkele />
       {:then}
         {#each res.mods as mod}
-          {#if mod.name != "CFMod" && mod.name != mod.id}
+          {#if mod.name != "CFMod" && (mod.name != mod.id || mod.id == undefined)}
             {#if mod.id != undefined}
               <ManagePlugin
                 name={mod.name.split(".disabled")[0]}
