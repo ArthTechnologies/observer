@@ -22,6 +22,7 @@
   import FullscreenTerminal from "$lib/components/buttons/FullscreenTerminal.svelte";
   import {
     ArrowLeft,
+    ClipboardList,
     FolderClosed,
     HelpCircle,
     Info,
@@ -620,30 +621,27 @@
           </button>
         </div>
       </div>
+      <button
+        class="btn btn-xs btn-ghost mt-4 mb-2"
+        on:click={() => {
+          navigator.clipboard.writeText(fSecret);
+        }}
+        ><ClipboardList size="16" class="mr-1" />
+        {$t("button.copyForwardingSecret")}</button
+      >
       <div
-        class="bg-primary w-[19rem] lg:w-[22.5rem] rounded-lg text-black p-2 flex items-center mb-2 space-x-2 mt-4"
+        class="bg-primary w-[19rem] lg:w-[22.5rem] rounded-lg text-black p-2 flex items-center mb-2 space-x-2"
       >
         <Info />
-        <span class="text-sm w-[19rem] lg:w-[22.5rem] flex flex-wrap"
-          >{$t("proxy.forwardingSecret1")}
-          <code class="bg-gray-500 rounded p-0.5 flex ml-1"
-            ><div class="dropdown">
-              <label tabindex="0" class="">{$t("proxy.showSecret")}</label>
-              <div
-                tabindex="0"
-                class="dropdown-content bg-gray-600 rounded p-1"
-              >
-                {fSecret}
-              </div>
-            </div></code
-          >{$t("proxy.forwardingSecret2")}{hostName}{$t(
+        <span class="text-sm w-[19rem] lg:w-[22.5rem] flex flex-wrap">
+          {$t("proxy.forwardingSecret2")}{hostName}{$t(
             "proxy.forwardingSecret3"
           )}
           <code class="bg-gray-500 rounded p-0.5 mr-1"
             >config/paper-global.yml</code
           >
-          {$t("proxy.forwardingSecret4")}</span
-        >
+          {$t("proxy.forwardingSecret4")}
+        </span>
       </div>
 
       <div class="w-[20rem] flex flex-col items-center">

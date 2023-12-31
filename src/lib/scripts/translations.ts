@@ -231,6 +231,7 @@ export default {
     "button.deepL": "In English via DeepL",
     "button.deepL.back": "Show original text",
     "button.copyToClipboard": "Copy to Clipboard",
+    "button.copyForwardingSecret": "Copy Forwarding Secret",
 
   },
   "es-ES": {
@@ -471,5 +472,6 @@ export default {
     "button.deepL": "En español con DeepL",
     "button.deepL.back": "Mostrar texto original",
     "button.copyToClipboard": "Copiar al portapapeles",
+    "button.copyForwardingSecret": "Copiar Secreto de Reenvío",
   },
 };
