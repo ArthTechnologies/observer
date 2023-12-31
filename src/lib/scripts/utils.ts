@@ -46,7 +46,7 @@ if (total < 1024 * 100) { // For kilobytes (kB)
 
 }
 
-export function handleDesc(desc: string) {
+export function handleDesc(desc: string, suffix: string = "") {
   let newDesc = desc;
         //change youtube.com to youtube-nocookie.com
         newDesc = newDesc.replaceAll(
@@ -56,7 +56,7 @@ export function handleDesc(desc: string) {
         newDesc = newDesc.replaceAll("http://", "https://");
 
       //change the width of youtube videos to fit the screen
-      let width = document.getElementById("body").offsetWidth;
+      let width = document.getElementById("body" + suffix).offsetWidth;
       let divideAmount = 1.87;
       if (window.innerWidth < 768) divideAmount = 1.8;
       let newDimensions = 'class="w-full" style="height: '+(Math.round(width / divideAmount))+'px;"';

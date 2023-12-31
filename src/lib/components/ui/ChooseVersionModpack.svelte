@@ -89,6 +89,7 @@
         });
     } else if (platform == "cf") {
       console.error(id);
+
       fetch(apiurl + "curseforge/" + id + "/description", {
         method: "GET",
 
@@ -99,9 +100,13 @@
         .then((response) => response.json())
         .then((data) => {
           document.getElementById("body" + buttonType).innerHTML = marked(data);
+
           document.getElementById("body" + buttonType).innerHTML = handleDesc(
-            marked(data)
+            marked(data),
+            buttonType
           );
+          console.log("name + " + name);
+
           document.getElementById("pluginTitle").innerHTML = name;
           document.getElementById("pluginDesc").innerHTML = desc;
           document.getElementById("pluginIcon").src = icon;
