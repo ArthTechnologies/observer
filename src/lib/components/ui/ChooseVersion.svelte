@@ -2,7 +2,7 @@
   import Version from "./Version.svelte";
   import { getVersions, lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
-  import { Plus } from "lucide-svelte";
+  import { ClipboardList, Plus } from "lucide-svelte";
   import PluginResult from "./PluginResult.svelte";
   import { marked } from "marked";
   import { t } from "$lib/scripts/i18n";
