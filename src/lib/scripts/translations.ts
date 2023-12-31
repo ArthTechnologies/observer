@@ -226,6 +226,12 @@ export default {
     "warning.noSoftwareSpecified": "The author didn't specify which server software these versions support, so some versions may not work.",
     "switchTo": "Switch to",
     "switchToTheOriginalVersion": "Switch to the original version",
+    "deleting": "Deleting",
+    "translating": "Translating...",
+    "button.deepL": "In English via DeepL",
+    "button.deepL.back": "Show original text",
+    "button.copyToClipboard": "Copy to Clipboard",
+
   },
   "es-ES": {
     "homepage.title": "Sus servidores",
@@ -460,5 +466,10 @@ export default {
     "warning.noSoftwareSpecified": "El autor no especificó qué software de servidor admiten estas versiones, por lo que algunas versiones pueden no funcionar.",
     "switchTo": "Cambiar a",
     "switchToTheOriginalVersion": "Cambiar a la versión original",
+    "deleting": "Eliminando",
+    "translating": "Traduciendo...",
+    "button.deepL": "En español con DeepL",
+    "button.deepL.back": "Mostrar texto original",
+    "button.copyToClipboard": "Copiar al portapapeles",
   },
 };

@@ -383,6 +383,7 @@ export function getSettings() {
         localStorage.setItem("enableVirusScan", JSON.parse(input).enableVirusScan);
         localStorage.setItem("enableCloudflareVerify", JSON.parse(input).enableCloudflareVerify);
         localStorage.setItem("cloudflareVerifySiteKey", JSON.parse(input).cloudflareVerifySiteKey);
+        localStorage.setItem("enableDeepL", JSON.parse(input).enableDeepL);
 
         if (JSON.parse(input).enableAuth == false) {
           localStorage.setItem("accountEmail", "guest");

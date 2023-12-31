@@ -6,6 +6,7 @@
   import { ChevronDown, ChevronUp, Clock, Trash, Trash2 } from "lucide-svelte";
   import ChooseVersion from "./ChooseVersion.svelte";
   import ChooseModVersion from "./ChooseModVersion.svelte";
+  import TranslateableText from "./TranslateableText.svelte";
 
   export let name;
   export let id;
@@ -380,7 +381,7 @@
         {/if}
 
         <div class="max-md:mb-5">
-          {desc}
+          <TranslateableText text={desc} />
         </div>
       </div>
 

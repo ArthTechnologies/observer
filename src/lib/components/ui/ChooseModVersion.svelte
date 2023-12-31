@@ -2,10 +2,11 @@
   import Version from "./Version.svelte";
   import { apiurl, getVersions, lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
-  import { Plus } from "lucide-svelte";
+  import { ArrowUpRight, ClipboardList, Plus } from "lucide-svelte";
   import { handleDesc } from "$lib/scripts/utils";
   import { marked } from "marked";
   import { t } from "$lib/scripts/i18n";
+  import TranslateableText from "./TranslateableText.svelte";
 
   export let id: string;
   export let name: string;
@@ -22,8 +23,16 @@
   }
   var software = "";
   var sVersion = "";
+  let fullDesc = "";
+  let lang = "en";
 
   if (browser) {
+    lang = window.navigator.language;
+    if (localStorage.getItem("lang") != null) {
+      lang = localStorage.getItem("lang");
+    }
+    lang = lang.split("-")[0];
+    lang = lang.split("_")[0];
     software = localStorage.getItem("serverSoftware");
     sVersion = localStorage.getItem("serverVersion");
     switch (software) {
@@ -55,11 +64,16 @@
 
         .then((data) => {
           document.getElementById("body" + suffix).innerHTML = marked(
-            data.body,
+            data.body
           );
           document.getElementById("body" + suffix).innerHTML = handleDesc(
-            marked(data.body),
+            marked(data.body)
           );
+
+          fullDesc = data.body
+            .replace(/<[^>]*>?/gm, "")
+            .replace(/&nbsp;/g, "\n")
+            .replace(/\n/g, "  ");
 
           document.getElementById("pluginTitle").innerHTML = data.title;
 
@@ -92,8 +106,14 @@
         .then((data) => {
           document.getElementById("body" + suffix).innerHTML = marked(data);
           document.getElementById("body" + suffix).innerHTML = handleDesc(
-            marked(data),
+            marked(data)
           );
+          fullDesc = data
+            .replace(/<[^>]*>?/gm, "")
+            .replace(/&nbsp;/g, "\n")
+            .replace(/\n/g, "  ");
+
+          console.log(fullDesc);
           document.getElementById("pluginTitle").innerHTML = name;
           document.getElementById("pluginDesc").innerHTML = desc;
           document.getElementById("pluginIcon").src = icon;
@@ -153,7 +173,7 @@
             if (
               version.name != vname &&
               version.gameVersions.includes(
-                software.charAt(0).toUpperCase() + software.slice(1),
+                software.charAt(0).toUpperCase() + software.slice(1)
               ) &&
               version.gameVersions.includes(sVersion)
             ) {
@@ -249,7 +269,7 @@
                   >
                 </div>
                 <p class="w-minus-7" id="pluginDesc">
-                  {desc}
+                  <TranslateableText text={desc} />
                 </p>
               </div>
             {:else if platform == "cf"}
@@ -283,7 +303,7 @@
                   >
                 </div>
                 <p class="w-minus-7" id="pluginDesc">
-                  {desc}
+                  <TranslateableText text={desc} />
                 </p>
               </div>
             {/if}
@@ -295,7 +315,19 @@
         class="flex max-md:flex-col-reverse justify-between gap-2 lg:gap-5 mt-5"
       >
         <div class="md:w-[36.6rem]">
-          <h3 class="font-bold text-2xl mb-4">{$t("description")}</h3>
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-2xl mb-4">{$t("description")}</h3>
+            {#if lang.toLowerCase() != "en"}
+              <button
+                class="btn btn-xs btn-ghost"
+                on:click={() => {
+                  navigator.clipboard.writeText(fullDesc);
+                }}
+                ><ClipboardList size="16" class="mr-1" />
+                {$t("button.copyToClipboard")}</button
+              >
+            {/if}
+          </div>
           <article
             id="body{suffix}"
             class="mb-5 prose bg-base-200 rounded-lg p-3 min-h-[50rem]"

@@ -5,6 +5,7 @@
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
   import { Download, Monitor } from "lucide-svelte";
+  import TranslateableText from "./TranslateableText.svelte";
   export let platform: string;
   export let name: string;
   export let author: string;
@@ -87,7 +88,7 @@
         </div>
 
         <p class="w-minus-7">
-          {desc}
+          <TranslateableText text={desc} />
         </p>
         <div
           class="md:flex space-x-0 md:space-x-2 space-y-1.5 md:space-y-0 items-start mt-1.5"

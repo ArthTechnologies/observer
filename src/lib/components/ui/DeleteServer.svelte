@@ -72,7 +72,7 @@
       {/if}
       <button id="delButton" class="btn btn-error" on:click={del}>
         {#if loading}
-          <Loader class="mr-1.5 animate-spin" />Deleting
+          <Loader class="mr-1.5 animate-spin" />{$t("deleting")}
         {:else}
           {$t("button.delete")}{/if}</button
       >

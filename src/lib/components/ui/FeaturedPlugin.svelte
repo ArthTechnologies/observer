@@ -5,6 +5,7 @@
   import Helper from "./Helper.svelte";
   import { t } from "$lib/scripts/i18n";
   import { Check, Info, Plus } from "lucide-svelte";
+  import TranslateableText from "./TranslateableText.svelte";
   export let name: string;
   export let author: string;
   export let desc: string;
@@ -72,7 +73,7 @@
           </div>
         </div>
         <p class="w-minus-7">
-          {desc}
+          <TranslateableText text={desc} />
         </p>
       </div>
     </div>

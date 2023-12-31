@@ -2,12 +2,20 @@
   import ModpackVersion from "./ModpackVersion.svelte";
   import { apiurl, getVersions, lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
-  import { AlertTriangle, InfoIcon, Plus } from "lucide-svelte";
+  import {
+    AlertTriangle,
+    ArrowUpRight,
+    ClipboardIcon,
+    ClipboardList,
+    InfoIcon,
+    Plus,
+  } from "lucide-svelte";
   import PluginResult from "./PluginResult.svelte";
   import { marked } from "marked";
   import { t } from "$lib/scripts/i18n";
   import { handleDesc } from "$lib/scripts/utils";
   import { fromJSON } from "postcss";
+  import TranslateableText from "./TranslateableText.svelte";
 
   export let id: string;
   export let name: string;
@@ -17,10 +25,18 @@
   export let platform: string;
   export let slug: string = "/";
   export let buttonType: string = "default";
+  let fullDesc = "";
+  let lang = "en";
   var software = "";
   var sVersion = "";
 
   if (browser) {
+    lang = window.navigator.language;
+    if (localStorage.getItem("lang") != null) {
+      lang = localStorage.getItem("lang");
+    }
+    lang = lang.split("-")[0];
+    lang = lang.split("_")[0];
     //if on the /newserver page
     if (buttonType == "default") {
       software = document
@@ -68,6 +84,10 @@
           document.getElementById("body" + buttonType).innerHTML = handleDesc(
             marked(data.body)
           );
+          fullDesc = data.body
+            .replace(/<[^>]*>?/gm, "")
+            .replace(/&nbsp;/g, "\n")
+            .replace(/\n/g, "  ");
           document.getElementById("pluginTitle").innerHTML = data.title;
 
           document.getElementById("pluginDesc").innerHTML = data.description;
@@ -105,6 +125,11 @@
             marked(data),
             buttonType
           );
+          fullDesc = data
+            .replace(/<[^>]*>?/gm, "")
+            .replace(/&nbsp;/g, "\n")
+            .replace(/\n/g, "  ");
+
           console.log("name + " + name);
 
           document.getElementById("pluginTitle").innerHTML = name;
@@ -346,7 +371,7 @@
                 {/if}
               </div>
               <p class="w-minus-7" id="pluginDesc">
-                {desc}
+                <TranslateableText text={desc} />
               </p>
             </div>
           </div>
@@ -357,7 +382,19 @@
         class="flex max-md:flex-col-reverse justify-between gap-2 lg:gap-5 mt-5"
       >
         <div class="md:w-[36.6rem]">
-          <h3 class="font-bold text-2xl mb-4">{$t("description")}</h3>
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-2xl mb-4">{$t("description")}</h3>
+            {#if lang.toLowerCase() != "en"}
+              <button
+                class="btn btn-xs btn-ghost"
+                on:click={() => {
+                  navigator.clipboard.writeText(fullDesc);
+                }}
+                ><ClipboardList size="16" class="mr-1" />
+                {$t("button.copyToClipboard")}</button
+              >
+            {/if}
+          </div>
           <article
             id="body{buttonType}"
             class="mb-5 prose bg-base-200 rounded-lg p-3 min-h-[50rem]"
