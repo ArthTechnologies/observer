@@ -3,6 +3,7 @@
   import { goto } from "$app/navigation";
   import Footer from "$lib/components/layout/Footer.svelte";
   import Navbar from "$lib/components/layout/Navbar.svelte";
+  import { t } from "$lib/scripts/i18n";
   import { basicPlanPrice, moddedPlanPrice } from "$lib/scripts/req";
   import {
     AlertTriangleIcon,
@@ -60,27 +61,25 @@
     >
       <div role="alert" class="alert alert-error w-96">
         <AlertTriangleIcon />
-        <span
-          >We're sorry. We're at capacity right now, please check back later.</span
-        >
+        <span>{$t("atCapacity")}</span>
       </div>
     </div>
   {/if}
   <div
     class=" md:h-screen px-16 px-[2.5rem] lg:px-[7rem] py-[4.5rem] flex flex-col max-md:place-items-center relative"
   >
-    <p class="text-lg mb-4 font-bold">Pick a plan</p>
+    <p class="text-lg mb-4 font-bold">{$t("subscribe.pickAPlan")}</p>
 
     <div class="flex mb-8">
       <div class="flex flex-col gap-2">
-        Basic
+        {$t("basic")}
         <div class="flex gap-2">
           <p class="text-accent-content text-4xl font-bold">{basicPlanPrice}</p>
 
-          <p class="w-5 text-sm">per month</p>
+          <p class="w-5 text-sm">{$t("perMonth")}</p>
         </div>
         <img
-          src="/images/basicPlan.png"
+          src="/images/basicPlan.webp"
           class="rounded-xl h-[5.75rem] w-[9.5rem]"
         />
 
@@ -92,33 +91,34 @@
           }}
           id="basicSelect"
           class="btn btn-neutral btn-sm my-0.5 w-full"
-          href="/subscribe/basic">Select</a
+          href="/subscribe/basic">{$t("select")}</a
         >
         <p class="flex items-center gap-2 text-[.95rem] w-[9.5rem]">
-          <Check size="16" class="shrink-0" /> Built-in Geyser™ crossplay between
-          editions
+          <Check size="16" class="shrink-0" />
+          {$t("subscribe.list.crossplay")}
         </p>
         <p class="flex items-center gap-2 text-[.95rem] w-[9.5rem]">
-          <Check size="16" class="shrink-0" /> One-click worldgen mods like Terralith
+          <Check size="16" class="shrink-0" />
+          {$t("subscribe.list.worldgen")}
         </p>
         <p class="flex items-center gap-2 text-[.95rem] w-[9.5rem]">
-          <Check size="16" class="shrink-0" /> Thousands of plugins one click away
-          via Modrinth
+          <Check size="16" class="shrink-0" />
+          {$t("subscribe.list.plugins")}
         </p>
       </div>
       <div class="divider divider-horizontal m-0 ml-2 mr-5 h-12 mt-7"></div>
       <div class="flex flex-col gap-2">
-        Modded
+        {$t("modded")}
         <div class="flex gap-2">
           <p class="text-accent-content text-4xl font-bold">
             {moddedPlanPrice}
           </p>
 
-          <p class="w-5 text-sm">per month</p>
+          <p class="w-5 text-sm">{$t("perMonth")}</p>
         </div>
 
         <img
-          src="/images/moddedPlan.png"
+          src="/images/moddedPlan.webp"
           class="rounded-xl h-[5.75rem] w-[9.5rem]"
         />
 
@@ -130,36 +130,33 @@
           }}
           id="moddedSelect"
           class="btn btn-neutral btn-sm my-0.5 w-full"
-          href="/subscribe/modded">Select</a
+          href="/subscribe/modded">{$t("select")}</a
         >
         <p class="flex items-center gap-2 text-[.95rem] w-[9.5rem]">
-          <Check size="16" class="shrink-0" /> Add new enemies, biomes, weapons,
-          and so much more with mods!
+          <Check size="16" class="shrink-0" />
+          {$t("subscribe.list.mods1")}
         </p>
         <p class="flex items-center gap-2 text-[.95rem] w-[9.5rem]">
-          <Check size="16" class="shrink-0" /> Turn Minecraft into a whole new game
-          with modpacks
+          <Check size="16" class="shrink-0" />
+          {$t("subscribe.list.modpacks")}
         </p>
         <p class="flex items-center gap-2 text-[.95rem] w-[9.5rem]">
-          <Check size="16" class="shrink-0" /> Over 10,000 mods available via CurseForge
-          & Modrinth
+          <Check size="16" class="shrink-0" />
+          {$t("subscribe.list.mods2")}
         </p>
       </div>
     </div>
 
     <ul class="list-disc mb-8">
-      <p class="text-lg mb-4 font-bold">Did you know?</p>
+      <p class="text-lg mb-4 font-bold">{$t("subscribe.didYouKnow")}</p>
       <li>
-        Unlike most other services, Geyser™ crossplay is built-in and doesn't
-        require any setup.
+        {$t("subscribe.didYouKnow.geyser")}
       </li>
       <li>
-        Our cheapest plan is half the price of the leading competitor Apex
-        Hosting's cheapest plan.
+        {$t("subscribe.didYouKnow.price")}
       </li>
       <li>
-        Arth Hosting's interface was built from the ground up to be as easy to
-        use as possible.
+        {$t("subscribe.didYouKnow.interface")}
       </li>
     </ul>
     <div>
@@ -180,7 +177,7 @@
           href="https://arthmc.xyz/privacy"
           target="_blank"
           rel="noopener noreferrer"
-          class="hover:link text-[.825rem]">Privacy Policy</a
+          class="hover:link text-[.825rem]">{$t("privacyPolicy")}</a
         >
       </p>
     </div>
