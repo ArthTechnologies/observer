@@ -19,7 +19,7 @@ The main panels currently used for running Minecraft servers are bulky, slow, ha
 
 If you are using an ARM-based machine (Like a Mac or Raspberry Pi):
 1. Grab the source code with `git clone https://codeberg.org/arth/observer`
-2. Inside the observer folder, run `docker buildx build --platform linux/arm64 . -t arthmc/observer:latest`
+2. Inside the observer folder, run `sudo sh dockerbuild.sh`
 3. Run the image with `sudo docker run -p 3000:3000 [Set variables here, see "how to configure"] arthmc/observer:latest`. To change the port, replace the first 3000 with the port number you want.
 
 ## How to configure with Docker
