@@ -136,28 +136,15 @@
           window.dispatchEvent(new Event("redrict"));
         } else {
           visible = true;
-          msg = "Invalid email or password";
-          setTimeout(() => {
-            visible = false;
-          }, 4500);
+          alert("Invalid email or password");
         }
       });
     }
   }
   $: if (!matchPwd) {
-    msg = "Passwords do not match";
-    visible = true;
-    setTimeout(() => {
-      visible = false;
-      matchPwd = true;
-    }, 4500);
+    alert($t("alert.passwordsDontMatch"));
   } else if (!goodPwd) {
-    msg = "Password must be at least 7 characters long";
-    visible = true;
-    setTimeout(() => {
-      visible = false;
-      goodPwd = true;
-    }, 4500);
+    alert($t("alert.passwordIsTooShort"));
   }
 
   function cloudflareVerifyCallback(event) {
