@@ -42,7 +42,7 @@
           x.includes(
             serverSoftware.toLowerCase() +
               "-" +
-              serverVersion.toLowerCase() +
+              latestUpdate.toLowerCase() +
               ".jar"
           )
         ) {
@@ -107,10 +107,11 @@
 {/if}
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="updates" class="modal-toggle" />
-<div class="modal">
-  <div class="modal-box relative">
-    <label for="updates" class="btn btn-sm btn-circle absolute right-2 top-2"
-      >✕</label
+<div class="modal" style="margin:0rem;">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+    <label
+      for="updates"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
     <h3 class="text-xl font-bold mb-2">{latestUpdate} {$t("update")}</h3>
     {#if serverSoftware == "Forge" || serverSoftware == "Quilt" || serverSoftware == "Fabric"}
@@ -153,8 +154,11 @@
         {/if}
       </p>
     {/if}
-    <label on:click={update} for="updates" id="confirmBtn" class="btn"
-      >{$t("button.update")}</label
+    <label
+      on:click={update}
+      for="updates"
+      id="confirmBtn"
+      class="btn btn-neutral">{$t("button.update")}</label
     >
   </div>
 </div>

@@ -1,3 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* These are fallback themes for older browsers that don't support
+the oklch format. */
+@supports not (color: oklch(0 0 0)) {
+    :root {
+     
+        color-scheme: dark;
+        --fallback-p: #088385;
+        --fallback-pc: #ffffff;
+        --fallback-s: #cc4304;
+        --fallback-sc: #ffffff;
+        --fallback-a: #1FB2A5;
+        --fallback-ac: #ffffff;
+        --fallback-n: #191D24;
+        --fallback-nc: #A6ADBB;
+        --fallback-b1: #2A303C;
+        --fallback-b2: #242933;
+        --fallback-b3: #20252E;
+        --fallback-bc: #A6ADBB;
+        --fallback-in: #00b3f0;
+        --fallback-inc: #000000;
+        --fallback-su: #00ca92;
+        --fallback-suc: #000000;
+        --fallback-wa: #ffc22d;
+        --fallback-wac: #000000;
+        --fallback-er: #ff6f70;
+        --fallback-erc: #000000;
+    
+
+    }
+  }

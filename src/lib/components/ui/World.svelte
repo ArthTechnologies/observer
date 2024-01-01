@@ -4,8 +4,11 @@
   import { browser } from "$app/environment";
   import { apiurl } from "$lib/scripts/req";
   import { AlertTriangle, Download, Loader, Map } from "lucide-svelte";
+  import Alert from "./Alert.svelte";
+
   import Helper from "./Helper.svelte";
-  import { downloadProgressShort, fileSizeShort } from "$lib/scripts/numShort";
+  import { downloadProgressShort, alert } from "$lib/scripts/utils";
+
   let areWorldgenMods = false;
   let tab = "upload";
   let id = -1;
@@ -17,6 +20,12 @@
   let worldgenModsText = "Worldgen Mods:";
   let downloading = false;
   let downloadProgress = "0/0MB";
+  let theme = "dark";
+
+  let gradientBackground = "#1fb2a5";
+
+  let visible = false;
+  let type = "error";
   if (browser) {
     serverName = localStorage.getItem("serverName");
     serverVersion = localStorage.getItem("serverVersion");
@@ -26,7 +35,7 @@
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
@@ -37,35 +46,44 @@
             areWorldgenMods = true;
           }
         }
-      });
+        promise = fetch(apiurl + "server/" + id + "/file/world*datapacks", {
+          method: "GET",
+          headers: {
+            token: localStorage.getItem("token"),
+            username: localStorage.getItem("accountEmail"),
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.content.includes("terralith")) {
+              worldgenFiles.push("terralith");
+              if (document.getElementById("terralithWorld") != null)
+                document.getElementById("terralithWorld").checked = true;
+            }
 
-    promise = fetch(apiurl + "server/" + id + "/file/world*datapacks", {
-      method: "GET",
-      headers: {
-        token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        for (let i in data) {
-          if (
-            data[i] == "terralith.zip" ||
-            data[i] == "incendium.zip" ||
-            data[i] == "nullscape.zip" ||
-            data[i] == "structory.zip"
-          ) {
-            document.getElementById(data[i].split(".")[0]).checked = true;
-            worldgenFiles.push(data[i].split(".")[0]);
-          }
-        }
+            if (data.content.includes("incendium")) {
+              worldgenFiles.push("incendium");
+              if (document.getElementById("incendiumWorld") != null)
+                document.getElementById("incendiumWorld").checked = true;
+            }
+            if (data.content.includes("nullscape")) {
+              worldgenFiles.push("nullscape");
+              if (document.getElementById("nullscapeWorld") != null)
+                document.getElementById("nullscapeWorld").checked = true;
+            }
+            if (data.content.includes("structory")) {
+              worldgenFiles.push("structory");
+              if (document.getElementById("structoryWorld") != null)
+                document.getElementById("structoryWorld").checked = true;
+            }
 
-        if (worldgenFiles.length == 0) {
-          worldgenModsText = worldgenModsText + " None";
-        } else {
-          worldgenModsText =
-            worldgenModsText + " " + worldgenFiles.join(", ") + ".";
-        }
+            if (worldgenFiles.length == 0) {
+              worldgenModsText = worldgenModsText + " None";
+            } else {
+              worldgenModsText =
+                worldgenModsText + " " + worldgenFiles.join(", ");
+            }
+          });
       });
   }
 
@@ -74,9 +92,10 @@
     const xhr = new XMLHttpRequest();
     xhr.open("GET", apiurl + "server/" + id + "/world", true);
     xhr.setRequestHeader("token", localStorage.getItem("token"));
-    xhr.setRequestHeader("email", localStorage.getItem("accountEmail"));
+    xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
     xhr.responseType = "blob";
     let lhref = window.location.href;
+    const downloadBtn = document.getElementById("downloadBtn");
     xhr.addEventListener("progress", (event) => {
       if (event.lengthComputable && browser) {
         const percentComplete = (event.loaded / event.total) * 100;
@@ -84,16 +103,47 @@
         // You can update a progress bar or display the percentage to the user
         if (percentComplete < 100 && window.location.href == lhref) {
           downloadProgress = downloadProgressShort(event.loaded, event.total);
-          const downloadBtn = document.querySelector(".downloadBtn");
 
-          downloadBtn.style.width = "250px";
-          downloadBtn.style.background = `linear-gradient(
+          downloadBtn.style.width = "200px";
+          if (theme == "dark") {
+            downloadBtn.classList.add("text-accent-content");
+            downloadBtn.classList.remove("text-white");
+          } else if (theme == "light") {
+            downloadBtn.classList.add("text-white");
+            downloadBtn.classList.remove("text-accent-content");
+          }
+          downloadBtn.classList.add("pointer-events-none");
+          //if its dark theme, gradient needs to be 90% transparency
+          //to 0% transparency, where light should be from 90% to 70%.
+          theme = localStorage.getItem("theme");
+          if (theme == "dark") {
+            gradientBackground = "#1fb2a5";
+            downloadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.0) ${percentComplete}%,
-  #088587 ${percentComplete}%,
-  #088587 100%
+  rgba(0, 0, 0, 0.0) ${(event.loaded / event.total) * 100}%,
+  ${gradientBackground} ${(event.loaded / event.total) * 100}%,
+  ${gradientBackground} 100%
 )`;
+          } else if (theme == "light") {
+            gradientBackground = "#88c0d0";
+            downloadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.7) ${(event.loaded / event.total) * 100}%,
+  ${gradientBackground} ${(event.loaded / event.total) * 100}%,
+  ${gradientBackground} 100%
+)`;
+          }
+        } else if (percentComplete >= 100) {
+          downloadProgress = "0/0MB";
+
+          downloadBtn.style.width = ``;
+          downloadBtn.style.background = ``;
+          downloadBtn.classList.remove("pointer-events-none");
+          if (theme == "dark")
+            downloadBtn.classList.remove("text-accent-content");
+          else if (theme == "light") downloadBtn.classList.remove("text-white");
         }
       }
     });
@@ -142,32 +192,108 @@
 
     console.error("uploading");
     if (browser) {
-      const uploadBtn = document.querySelector(".uploadBtn");
+      const uploadBtn = document.getElementById("uploadBtn");
       //we normally use fetch, but we have to use XMLHttpRequest for this because fetch doesnt give progress of uploads.
       const xhr = new XMLHttpRequest();
+      let percentComplete = 0;
+      let counter = 0;
+      let requestFinished = false;
+      let virusDetected = false;
+      //display estimated progress
+      let intervalId = setInterval(() => {
+        counter++;
+        let visualPercent = (percentComplete + counter / 2) / 3;
+        let virusScanningEnabled = localStorage.getItem("enableVirusScan");
+        let theme = localStorage.getItem("theme");
 
-      xhr.upload.addEventListener("progress", (event) => {
-        if (event.lengthComputable) {
-          let percentComplete = (event.loaded / event.total) * 100;
+        //We estimate uploading the file takes up only a third of the time,
+        //so after this point, itll just keep going at the same speed.
+        if (visualPercent >= 33) percentComplete += 100 / counter;
 
-          percentComplete = percentComplete * 0.7;
-          console.log(`Percent complete: ${percentComplete.toFixed(2)}%`);
-          // You can update a progress bar or display the percentage to the user
-          if (percentComplete < 100) {
+        if (requestFinished) percentComplete += 2.5;
+        else {
+          //disable clicks to the button
+          uploadBtn.classList.add("pointer-events-none");
+        }
+
+        if (visualPercent < 100) {
+          if (theme == "dark") uploadBtn.classList.add("text-accent-content");
+          else if (theme == "light") uploadBtn.classList.add("text-white");
+
+          uploadBtn.innerHTML = $t("uploading");
+          //if its dark theme, gradient needs to be 90% transparency
+          //to 0% transparency, where light should be from 90% to 70%.
+
+          if (theme == "dark") {
+            gradientBackground = "#1fb2a5";
             uploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.0) ${percentComplete}%,
-  #088587 ${percentComplete}%,
-  #088587 100%
+  rgba(0, 0, 0, 0.0) ${visualPercent}%,
+  ${gradientBackground} ${visualPercent}%,
+  ${gradientBackground} 100%
+)`;
+          } else if (theme == "light") {
+            gradientBackground = "#88c0d0";
+            uploadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.7) ${visualPercent}%,
+  ${gradientBackground} ${visualPercent}%,
+  ${gradientBackground} 100%
 )`;
           }
+        } else {
+          uploadBtn.classList.remove("text-accent-content");
+          uploadBtn.classList.remove("text-white");
+          if (virusScanningEnabled == "true") {
+            uploadBtn.innerHTML = $t("scanningForViruses");
+            uploadBtn.classList.add("text-lime-500");
+            uploadBtn.style.background = ``;
+            if (theme == "dark") uploadBtn.classList.add("bg-[#112100]");
+            if (theme == "light") uploadBtn.classList.add("bg-[#143f04]");
+            uploadBtn.classList.add("skeleton");
+            visualPercent++;
+            if (requestFinished && visualPercent > 108) {
+              if (theme == "dark") uploadBtn.classList.remove("bg-[#112100]");
+              if (theme == "light") uploadBtn.classList.remove("bg-[#143f04]");
+              uploadBtn.classList.remove("skeleton");
+
+              uploadBtn.classList.remove("text-lime-500");
+
+              uploadBtn.innerHTML = $t("button.upload");
+
+              //re-enable clicks to the button
+              uploadBtn.classList.remove("pointer-events-none");
+              clearInterval(intervalId);
+            }
+          } else if (requestFinished) {
+            uploadBtn.style.background = ``;
+
+            uploadBtn.innerHTML = $t("button.upload");
+
+            //re-enable clicks to the button
+            uploadBtn.classList.remove("pointer-events-none");
+
+            clearInterval(intervalId);
+          }
+        }
+      }, 30);
+      xhr.upload.addEventListener("progress", (event) => {
+        if (event.lengthComputable) {
+          percentComplete = (event.loaded / event.total) * 100;
         }
       });
 
-      xhr.addEventListener("load", () => {
-        // Upload complete
-        console.error("Upload complete");
+      xhr.addEventListener("load", (e) => {
+        console.log(e.target.response);
+
+        if (e.target.response.indexOf("No Viruses Detected") == -1) {
+          alert($t("alert.virusDetected"));
+        } else {
+          alert($t("alert.worldUploaded"), "success");
+        }
+        requestFinished = true;
       });
 
       xhr.addEventListener("error", (error) => {
@@ -176,18 +302,31 @@
 
       xhr.open("POST", apiurl + "server/" + id + "/world", true);
       xhr.setRequestHeader("token", localStorage.getItem("token"));
-      xhr.setRequestHeader("email", localStorage.getItem("accountEmail"));
+      xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
       xhr.send(formData);
 
       //when response is recieved...
       xhr.onload = function () {
-        uploadBtn.style.background = `linear-gradient(
+        //if its dark theme, gradient needs to be 90% transparency
+        //to 0% transparency, where light should be from 90% to 70%.
+        let theme = localStorage.getItem("theme");
+        if (theme == "dark") {
+          uploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.0) 100%,
-  #088587 100%,
-  #088587 100%
+  ${gradientBackground} 100%,
+  ${gradientBackground} 100%
 )`;
+        } else if (theme == "light") {
+          uploadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.7) 100}%,
+  ${gradientBackground} 100%,
+  ${gradientBackground} 100%
+)`;
+        }
       };
     }
   }
@@ -241,7 +380,7 @@
           method: "POST",
           headers: {
             token: localStorage.getItem("token"),
-            email: localStorage.getItem("accountEmail"),
+            username: localStorage.getItem("accountEmail"),
           },
         }
       );
@@ -256,14 +395,18 @@
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
       .then((data) => {
         let worldgenMods = ["terralith", "incendium", "nullscape", "structory"];
         for (let i in worldgenMods) {
-          if (data.includes(worldgenMods[i] + "-" + serverVersion + ".zip")) {
+          if (
+            JSON.stringify(
+              data.includes(worldgenMods[i] + "-" + serverVersion + ".zip")
+            )
+          ) {
             areWorldgenMods = true;
           }
         }
@@ -278,10 +421,11 @@
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="world" class="modal-toggle" />
-<div class="modal">
-  <div class="modal-box relative">
-    <label for="world" class="btn btn-sm btn-circle absolute right-2 top-2"
-      >✕</label
+<div class="modal" style="margin:0rem;">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative overflow-x-hidden">
+    <label
+      for="world"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
     <div
       class=" w-11/12 md:w-96 bg-base-200 rounded-lg p-1 px-2 py-2 space-y-3"
@@ -290,7 +434,10 @@
         <div class="flex flex-col justify-center">
           <p class="font-bold md:text-lg">{$t("currentWorld")}</p>
         </div>
-        <button class="downloadBtn btn btn-accent btn-sm" on:click={download}
+        <button
+          id="downloadBtn"
+          class="btn btn-accent btn-sm"
+          on:click={download}
           >{#if !downloading}<Download size="18" />{:else}<div
               class="animate-spin"
             >
@@ -401,7 +548,7 @@
           class="input input-bordered max-w-xs mb-2"
           placeholder={$t("world.p.seed")}
         />
-        <label for="world" on:click={regen} class="btn"
+        <label for="world" on:click={regen} class="btn btn-neutral"
           >{$t("button.regenerateWorld")}</label
         >
       {/if}
@@ -413,7 +560,10 @@
             class="file-input file-input-bordered file-input-secondary max-w-xs"
             on:change={handleFileSelect}
           />
-          <button on:click={upload} class="btn uploadBtn"
+          <button
+            on:click={upload}
+            id="uploadBtn"
+            class="btn btn-neutral rounded-lg relative"
             >{$t("button.upload")}</button
           >
         </div>

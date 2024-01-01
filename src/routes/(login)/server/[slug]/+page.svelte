@@ -48,7 +48,6 @@
   let id = 0;
   let lock = false;
   let desc: string = "";
-  let restarting = false;
   let email: string = "";
   let state = "false";
   let icon = "/images/placeholder.webp";
@@ -152,7 +151,7 @@
         headers: {
           "Content-Type": "application/json",
           token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
+          username: localStorage.getItem("accountEmail"),
         },
       })
         .then((response) => response.json())
@@ -205,8 +204,7 @@
       //set state to response
       state = response.state;
 
-      if (restarting && state == "starting") {
-        restarting = false;
+      if (state == "starting") {
         console.log("unlocking");
         lock = false;
       }
@@ -218,8 +216,6 @@
     if (!lock) {
       if (state == "true") {
         changeServerState("restart", id, email);
-
-        restarting = true;
       } else if (state == "false") {
         changeServerState("start", id, email);
       }
@@ -291,14 +287,13 @@
         const filteredResponse = response
           .replace(/\x1B\[[0-9;]*[mG]/g, "")
           .replace(/\n/g, "<p>");
-
         //scroll down the height of the new lines added
         if (
           terminal.innerHTML.split("<p>").length <
           filteredResponse.split("<p>").length
         ) {
           terminalContainer.scrollTop +=
-            12 *
+            150 *
             (filteredResponse.split("<p>").length -
               terminal.innerHTML.split("<p>").length);
         }
@@ -348,20 +343,11 @@
     </div>
     <!-- TODO: these should be on the right, add an if for not reaching the backend -->
     <div class="space-x-2 space-y-2 flex flex-col items-center md:block">
-      {#if state == "true" && !restarting}
+      {#if state == "true"}
         <button on:click={start} class="btn btn-success"
           ><Repeat class="mr-1.5" />{$t("button.restart")}</button
         >
         <button on:click={stop} class="btn btn-error"
-          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
-        >
-      {:else if restarting}
-        <button class="btn btn-success"
-          ><Loader class="animate-spin mr-1.5" />
-          {$t("button.restarting")}</button
-        >
-
-        <button class="btn btn-disabled"
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "false"}
@@ -372,29 +358,35 @@
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</a
         >
       {:else if state == "starting"}
-        <button class="btn btn-success"
-          ><Loader class="animate-spin mr-1.5" />
-          {$t("button.starting")}</button
+        <div
+          class="inline-flex pointer-events-none bg-success flex items-center px-4 py-3 text-center text-sm font-semibold text-black uppercase rounded-md"
         >
+          <Loader class="animate-spin mr-1.5" />
+          {$t("button.starting")}
+        </div>
         <button on:click={stop} class="btn btn-error"
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "installing"}
-        <button class="btn btn-accent"
-          ><Loader class="animate-spin mr-1.5" />
-          {$t("button.installing")}</button
+        <div
+          class="inline-flex pointer-events-none bg-accent flex items-center px-4 py-3 text-center text-sm font-semibold text-base-300 uppercase rounded-md"
         >
+          <Loader class="animate-spin mr-1.5" />
+          {$t("button.installing")}
+        </div>
         <button on:click={stop} class="btn btn-error"
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "stopping"}
-        <button class="btn btn-disabled"
-          ><PlayCircle class="mr-1.5" />{$t("button.start")}</button
+        <button class="btn btn-disabled">
+          <PlayCircle class="mr-1.5" />{$t("button.start")}
+        </button>
+        <div
+          class="inline-flex pointer-events-none bg-error flex items-center px-4 py-3 text-center text-sm font-semibold text-black uppercase rounded-md"
         >
-        <button class="btn btn-error"
-          ><Loader class="animate-spin mr-1.5" />
-          {$t("button.stopping")}</button
-        >
+          <Loader class="animate-spin mr-1.5" />
+          {$t("button.stopping")}
+        </div>
       {/if}
     </div>
   </div>
@@ -411,13 +403,15 @@
     class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10"
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
-      <div
-        id="terminalContainer"
-        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
-      >
-        <div class="p-5 sm:text-xs xl:text-base font-mono relative">
-          <FullscreenTerminal />
-          <p id="terminal" />
+      <div id="terminalContainerContainer" class="relative mb-1.5">
+        <FullscreenTerminal />
+        <div
+          id="terminalContainer"
+          class="bg-base-300 h-96 rounded-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
+        >
+          <div class="p-5 sm:text-xs xl:text-base font-mono relative">
+            <p id="terminal" />
+          </div>
         </div>
       </div>
       <input
@@ -515,8 +509,10 @@
         <div class="flex space-x-2 mb-2 mt-4">
           <EditInfo type="fullBtn" /><StorageLimit />
         </div>
-        <div class="flex space-x-2">
-          <a class="btn btn-primary" href="/server/{parseInt(id) + 10000}/files"
+        <div class="flex">
+          <a
+            class="btn btn-primary mr-2"
+            href="/server/{parseInt(id) + 10000}/files"
             ><FolderClosed class="mr-1.5" />{$t("button.files")}</a
           ><Versions />
         </div>

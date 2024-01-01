@@ -5,6 +5,7 @@
   import Helper from "./Helper.svelte";
   import { t } from "$lib/scripts/i18n";
   import { Check, Info, Plus } from "lucide-svelte";
+  import TranslateableText from "./TranslateableText.svelte";
   export let name: string;
   export let author: string;
   export let desc: string;
@@ -34,18 +35,21 @@
 
     let plId = pluginId.replace(/\//g, "_");
 
-    sendVersion(link, id, "gh_" + plId, name);
+    sendVersion(link, id, "gh_" + plId, name, "plugin");
   }
 </script>
 
 <div class="bg-base-200 rounded-lg p-3">
   <div class="flex justify-between place-items-center max-w-full relative">
     <div class="flex space-x-3 flex-shrink-0 w-minus-7">
-      <a href="https://github.com/{pluginId}/#readme" target="_blank">
+      <a
+        class="shrink-0"
+        href="https://github.com/{pluginId}/#readme"
+        target="_blank"
+      >
         <img
           src={icon}
-          alt="noicon"
-          class="w-[56px] h-[56px] bg-base-300 rounded-lg text-sm"
+          class="w-16 h-16 md:w-20 md:h-20 bg-base-300 rounded-lg text-sm"
         /></a
       >
       <div class="max-w-full w-minus-7">
@@ -53,12 +57,12 @@
           <a
             href="https://github.com/{pluginId}/#readme"
             target="_blank"
-            class="flex link link-hover text-xl font-bold w-[10rem] md:w-auto break-all sm:break-works"
+            class=" flex hover:link text-xl font-bold md:w-auto break-all sm:break-works"
             >{name}
           </a>
           <div class="flex space-x-1 place-items-end">
             <p>{$t("by")}</p>
-            <a href={authorLink} target="_blank" class="flex link link-hover"
+            <a href={authorLink} target="_blank" class="flex hover:link"
               >{author}
             </a>
             {#if disclaimer != ""}
@@ -69,7 +73,7 @@
           </div>
         </div>
         <p class="w-minus-7">
-          {desc}
+          <TranslateableText text={desc} />
         </p>
       </div>
     </div>

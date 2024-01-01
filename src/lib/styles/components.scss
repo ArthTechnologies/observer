@@ -5,14 +5,23 @@
   }
 }
 
+.btn {
+  gap: 0px;
+  text-transform: uppercase;
+}
+
+
 .nav:hover {
   color: white;
 }
 
+.w-minus-21 {
+  width: calc(100% - 12rem);
+}
 .w-minus-7 {
   width: calc(100% - 1.75rem);
 }
 
-.w-minus-14 {
-  width: calc(100% - 3.5rem);
+.w-minus-5 {
+  width: calc(100% - 1.25rem);
 }

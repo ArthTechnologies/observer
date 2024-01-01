@@ -147,37 +147,35 @@
           {#if state == "starting" || state == "installing"}
             <div
               id="start"
-              class="no-hover-effect flex btn-{startcolor} rounded-lg font-semibold uppercase text-base-100 text-xs tracking-wider px-3 items-center"
+              class="no-hover-effect flex bg-{startcolor} rounded-lg font-semibold uppercase text-base-200 text-xs tracking-wider px-3 items-center"
             >
               <Loader size="18" class="animate-spin mr-1.5" />
               {starttext}
             </div>
-            {:else}
-              <button
-                id="start"
-                on:click={start}
-                class="btn btn-{startcolor} btn-sm h-9"
-              >
-                {starttext}
-              </button>
+          {:else}
+            <button
+              id="start"
+              on:click={start}
+              class="btn btn-{startcolor} btn-sm h-9"
+            >
+              {starttext}
+            </button>
           {/if}
           {#if state == "stopping"}
-          <div
-          id="start"
-          class="no-hover-effect flex btn-error rounded-lg font-semibold uppercase text-black text-xs tracking-wider px-3 items-center"
-        >
-          <Loader size="18" class="animate-spin mr-1.5" />
-          {$t("button.stopping")}
-        </div>
-        {:else}
+            <div
+              id="start"
+              class="no-hover-effect flex btn-error rounded-lg font-semibold uppercase text-black text-xs tracking-wider px-3 items-center"
+            >
+              <Loader size="18" class="animate-spin mr-1.5" />
+              {$t("button.stopping")}
+            </div>
+          {:else}
             <button
               on:click={stop}
               class="btn btn-error btn-sm h-9"
-              class:btn-disabled={state != "true"}
-              >{$t("button.stop")}</button
+              class:btn-disabled={state != "true"}>{$t("button.stop")}</button
             >
-            {/if}
-          
+          {/if}
         </div>
         <div class="self-center">
           <div class="badge badge-outline right-4 top-4 absolute">
@@ -192,8 +190,8 @@
 
 <style>
   .no-hover-effect {
-  /* Add any specific styling to prevent hover effect here */
-  pointer-events: none; /* Disable hover interaction */
-  cursor: default;      /* Change cursor to default */
-}
+    /* Add any specific styling to prevent hover effect here */
+    pointer-events: none; /* Disable hover interaction */
+    cursor: default; /* Change cursor to default */
+  }
 </style>

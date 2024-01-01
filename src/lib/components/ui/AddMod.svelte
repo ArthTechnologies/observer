@@ -1,11 +1,13 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { numShort } from "$lib/scripts/numShort";
-  import { searchMods } from "$lib/scripts/req";
+  import { numShort } from "$lib/scripts/utils";
+  import { searchMods, usingCurseForge } from "$lib/scripts/req";
   import ModResult from "./ModResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
   import { onMount } from "svelte";
+  import { Plus } from "lucide-svelte";
+  import ResultSkele from "./ResultSkele.svelte";
   let promise;
   let cfResults = [];
   let mrResults = [];
@@ -13,25 +15,35 @@
   let software;
   let version;
   let tab = "mr";
+  let skeletonsLength = 15;
+  let allowLoadMore = true;
+  let offset = 0;
+  let sortBy = "relevance";
 
   if (browser) {
     software = localStorage.getItem("serverSoftware");
     version = localStorage.getItem("serverVersion");
   }
   onMount(() => {
-    if (software.toLowerCase() == "forge") {
-      //cf();
+    if (software.toLowerCase() == "forge" && usingCurseForge) {
+      cf();
     }
   });
   search("mr");
-  search("cf");
-  function search(platform: string) {
+  if (usingCurseForge) search("cf");
+  function search(platform: string, loadMore: boolean = false) {
+    if (loadMore) {
+      skeletonsLength = offset + 15;
+      offset += 15;
+    } else {
+      if (skeletonsLength > 15) skeletonsLength = 15;
+      if (platform == "cf") cfResults = [];
+      else if (platform == "mr") mrResults = [];
+    }
     if (platform == undefined) {
       platform = tab;
     }
     console.log("searching" + query);
-    if (platform == "cf") cfResults = [];
-    else if (platform == "mr") mrResults = [];
 
     if (browser) {
       if (version == "latest") {
@@ -39,40 +51,75 @@
       }
 
       promise = null;
+      if (document.getElementById("sortByDropdown") != null) {
+        sortBy = document.getElementById("sortByDropdown").value;
+      }
+      switch (sortBy) {
+        case $t("dropdown.sortBy.relevance"):
+          sortBy = "relevance";
+          break;
 
-      promise = searchMods(platform, software, version, query, "mod").then(
-        (response) => {
-          if (platform == "mr") {
-            response.hits.forEach((item) => {
-              console.log(numShort(item.downloads));
-              mrResults.push({
-                name: item.title,
-                desc: item.description,
-                icon: item.icon_url,
-                author: item.author,
-                id: item.project_id,
-                client: item.client_side,
-                downloads: numShort(item.downloads),
-              });
-              console.log(item);
+        case $t("dropdown.sortBy.downloads"):
+          sortBy = "downloads";
+          break;
+
+        case $t("dropdown.sortBy.lastUpdated"):
+          sortBy = "updated";
+          break;
+      }
+      promise = searchMods(
+        platform,
+        software,
+        version,
+        query,
+        "mod",
+        offset,
+        sortBy
+      ).then((response) => {
+        if (platform == "mr") {
+          skeletonsLength = response.hits.length;
+          allowLoadMore = response.hits.length == 15;
+          response.hits.forEach((item) => {
+            console.log(numShort(item.downloads));
+            mrResults.push({
+              platform: "mr",
+              name: item.title,
+              desc: item.description,
+              icon: item.icon_url,
+              author: item.author,
+              id: item.project_id,
+              client: item.client_side,
+              downloads: numShort(item.downloads),
+              versions: [],
+              slug: item.slug,
             });
-          } else if (platform == "cf") {
-            response.data.forEach((item) => {
-              console.log(item);
-              console.log(numShort(item.downloadCount));
-              cfResults.push({
-                name: item.name,
-                desc: item.summary,
-                icon: item.logo.thumbnailUrl,
-                author: item.authors[0].name,
-                id: item.id,
-                client: null,
-                downloads: numShort(item.downloadCount),
-              });
+            console.log(item);
+          });
+        } else if (platform == "cf") {
+          skeletonsLength = response.data.length;
+          allowLoadMore = response.data.length == 15;
+          response.data.forEach((item) => {
+            console.log(item);
+            console.log(numShort(item.downloadCount));
+            let author = "Unknown";
+            if (item.authors[0] != undefined) {
+              author = item.authors[0].name;
+            }
+            cfResults.push({
+              platform: "cf",
+              name: item.name,
+              desc: item.summary,
+              icon: item.logo.thumbnailUrl,
+              author: author,
+              id: item.id,
+              client: null,
+              downloads: numShort(item.downloadCount),
+              versions: item.latestFiles,
+              slug: item.slug,
             });
-          }
+          });
         }
-      );
+      });
     }
   }
 
@@ -92,48 +139,83 @@
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-block" on:click={search}>Add Mod</label>
+<label
+  for="addModModal"
+  class="btn btn-neutral btn-block"
+  on:click={() => search(tab)}>{$t("button.addmod")}</label
+>
 
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id="my-modal-5" class="modal-toggle" />
-<div class="modal">
-  <div class="modal-box relative w-11/12 max-w-5xl space-y-5 h-[50rem]">
+<input type="checkbox" id="addModModal" class="modal-toggle" />
+<div class="modal" style="margin:0rem;">
+  <div
+    id="addModModalScroll"
+    class="modal-box bg-opacity-95 backdrop-blur relative w-11/12 max-w-5xl space-y-5 h-[61.5rem]"
+  >
     <div class="flex justify-between">
       <label
-        for="my-modal-5"
-        class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+        for="addModModal"
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+        >✕</label
       >
 
       <div class="tabs tabs-boxed">
         <button id="mr" class="tab tab-active" on:click={mr}>Modrinth</button>
-        <!--<button id="cf" class="tab" on:click={cf}>Curseforge</button>-->
+        {#if usingCurseForge}
+          <button id="cf" class="tab" on:click={cf}>Curseforge</button>
+        {/if}
       </div>
     </div>
 
-    <div>
+    <div class="flex justify-between space-x-2">
       <input
         bind:value={query}
-        on:keypress={search}
+        on:input={() => search(tab)}
         type="text"
-        placeholder="{$t('search')} Modrinth"
-        class="searchBar input input-bordered input-sm"
+        placeholder={$t("search")}
+        class="searchBar input input-bordered input-sm max-sm:w-32"
         id="search"
       />
+      <div class="flex items-center">
+        {$t("sortBy")}<select
+          id="sortByDropdown"
+          class="select select-sm ml-2 bg-base-300"
+          on:change={() => search(tab)}
+        >
+          <option>Relevance</option>
+          <option>Downloads</option>
+          <option>Last Update</option></select
+        >
+      </div>
     </div>
     <div id="mods" class="space-y-2">
-      {#if tab == "mr"}
-        {#await promise then}
+      {#await promise}
+        {#each Array.from({ length: skeletonsLength }) as _}
+          <ResultSkele />
+        {/each}
+      {:then}
+        {#if tab == "mr"}
           {#each mrResults as result}
             <ModResult {...result} />
           {/each}
-        {/await}
-      {:else if tab == "cf"}
-        {#await promise then}
+        {:else if tab == "cf"}
           {#each cfResults as result}
             <ModResult {...result} />
           {/each}
-        {/await}
-      {/if}
+        {/if}
+        <div class="flex place-content-center">
+          {#if allowLoadMore}
+            <p
+              on:click={() => {
+                search(tab, true);
+              }}
+              class=" hover:link text-primary mt-2"
+            >
+              {$t("loadMore")}
+            </p>
+          {/if}
+        </div>
+      {/await}
     </div>
   </div>
 </div>

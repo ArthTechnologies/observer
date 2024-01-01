@@ -5,15 +5,24 @@
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
-  import Alert from "$lib/components/ui/Alert.svelte";
+  import { fade } from "svelte/transition";
   import { Eye, EyeOff } from "lucide-svelte";
+
+  import { alert } from "$lib/scripts/utils";
+  import { Turnstile } from "svelte-turnstile";
+
   let visible = false;
-  let msg = "";
+
   let goodPwd = true;
   let matchPwd = true;
-
+  let cloudflareVerified = false;
+  let cloudflareVerifyToken = "";
+  let cloudflareVerify = true;
+  let cloudflareVerifyKey = "";
+  let checkingIfCloudflareVerify = true;
   let sign = "up";
   let pwdVisible = "password";
+  let lang = "us";
   function pwdVisibility() {
     if (pwdVisible == "password") {
       pwdVisible = "text";
@@ -23,6 +32,21 @@
   }
 
   if (browser) {
+    let intervalId = setInterval(() => {
+      if (localStorage.getItem("enableCloudflareVerify") != undefined) {
+        cloudflareVerify = JSON.parse(
+          localStorage.getItem("enableCloudflareVerify")
+        );
+        cloudflareVerifyKey = localStorage.getItem("cloudflareVerifySiteKey");
+        checkingIfCloudflareVerify = false;
+        clearInterval(intervalId);
+      }
+    }, 50);
+
+    lang = navigator.language;
+    if (localStorage.getItem("lang") != null) {
+      lang = localStorage.getItem("lang");
+    }
     document.addEventListener("keyup", function (event) {
       if (event.keyCode === 13) {
         submit();
@@ -76,40 +100,46 @@
       if (goodPwd && matchPwd) {
         const res = signupEmail(
           document.getElementById("email").value,
-          document.getElementById("pwd").value
+          document.getElementById("pwd").value,
+          cloudflareVerifyToken
         ).then((x) => {
           if (x === true) {
             console.log("redricting...");
-            goto(
-              "https://buy.stripe.com/dR63fv4bX3qjc1i28a?prefilled_email=" +
-                document.getElementById("email").value +
-                "&prefilled_promo_code=2023"
-            );
+            if (localStorage.getItem("enablePay") == "true") {
+              //change this to your own stripe checkout link
+              goto("/subscribe/basic");
+            } else {
+              goto("/");
+              //this tells the navbar to update the icon that is highligted
+              window.dispatchEvent(new Event("redrict"));
+            }
           } else {
-            visible = true;
-            msg = x;
-
-            setTimeout(() => {
-              visible = false;
-            }, 3500);
+            if (x.includes("Email already exists"))
+              alert($t("alert.emailAlreadyExists"));
+            else if (x.inclues("Password is too short"))
+              alert($t("alert.passwordIsTooShort"));
+            else alert(x);
           }
         });
       }
     } else if (sign == "in") {
       const res = loginEmail(
         document.getElementById("email").value,
-        document.getElementById("pwd").value
+        document.getElementById("pwd").value,
+        cloudflareVerifyToken
       ).then((x) => {
         console.log("x: " + x);
         if (x === true) {
           console.log("REDIRECTING...");
           goto("/");
+          //this tells the navbar to update the icon that is highligted
+          window.dispatchEvent(new Event("redrict"));
         } else {
           visible = true;
           msg = "Invalid email or password";
           setTimeout(() => {
             visible = false;
-          }, 3500);
+          }, 4500);
         }
       });
     }
@@ -120,36 +150,123 @@
     setTimeout(() => {
       visible = false;
       matchPwd = true;
-    }, 3500);
+    }, 4500);
   } else if (!goodPwd) {
     msg = "Password must be at least 7 characters long";
     visible = true;
     setTimeout(() => {
       visible = false;
       goodPwd = true;
-    }, 3500);
+    }, 4500);
+  }
+
+  function cloudflareVerifyCallback(event) {
+    setTimeout(() => {
+      cloudflareVerified = true;
+      cloudflareVerifyToken = event.detail.token;
+    }, 600);
   }
 </script>
 
-<div class="tabs ml-2">
-  <a id="sin" on:click={signIn} class="tab tab-lifted">{$t("signin")}</a>
+<div class="tabs ml-2 tabs-lifted flex items-start">
+  <a id="sin" on:click={signIn} class="tab">{$t("signin")}</a>
   <a id="sup" on:click={signUp} class="tab tab-lifted tab-active"
     >{$t("signup")}</a
   >
 </div>
-{#if sign === "in"}
-  <div class="bg-base-300 border-4 border-base-100 rounded-xl w-96">
-    <div class="text-center p-6">
-      <div class="max-w-md space-y-5">
-        <div class="space-x-2 space-y-5">
-          <p class="text-xl">{$t("signin.h.email")}</p>
+<div class="relative">
+  {#if cloudflareVerify && !cloudflareVerified}
+    <div transition:fade={{ duration: 1000 }}>
+      {#if sign == "in"}
+        <div
+          class="ml-2 w-[20.3rem] md:w-[23rem] bg-base-300 absolute h-[13rem] top-16 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
+        >
+          <div class="flex flex-col gap-4 items-center -mt-24">
+            <div
+              class="bg-base-200 w-[18.75rem] h-[4rem] skeleton rounded-none mt-8"
+            >
+              {#if !checkingIfCloudflareVerify}
+                <Turnstile
+                  on:turnstile-callback={cloudflareVerifyCallback}
+                  language={lang}
+                  siteKey={cloudflareVerifyKey}
+                />
+              {/if}
+            </div>
+          </div>
+        </div>
+      {:else if sign == "up"}
+        <div
+          class="ml-2 w-[20.3rem] md:w-[23rem] bg-base-300 absolute h-[18rem] top-16 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
+        >
+          <div class="flex flex-col gap-4 items-center -mt-24">
+            <div
+              class="bg-base-200 w-[18.75rem] h-[4rem] skeleton rounded-none"
+            >
+              {#if !checkingIfCloudflareVerify}
+                <Turnstile
+                  on:turnstile-callback={cloudflareVerifyCallback}
+                  language={lang}
+                  siteKey={cloudflareVerifyKey}
+                />
+              {/if}
+            </div>
+          </div>
+        </div>
+      {/if}
+    </div>
+  {/if}
+
+  {#if sign === "in"}
+    <div class="bg-base-300 border-4 border-base-100 rounded-xl md:w-96">
+      <div class="text-center p-6">
+        <div class="max-w-md space-y-5">
+          <div class="space-x-2 space-y-5">
+            <p class="text-xl">{$t("signin.h.email")}</p>
+            <input
+              id="email"
+              type="text"
+              placeholder={$t("signin.l.email")}
+              class="input w-full max-w-xs"
+            />
+
+            <div class="w-full flex space-x-2">
+              <div class="w-full flex space-x-2">
+                <input
+                  type={pwdVisible}
+                  id="pwd"
+                  placeholder={$t("signin.l.pwd")}
+                  class="input w-full max-w-xs"
+                />
+                <label class="btn btn-circle swap swap-rotate btn-ghost">
+                  <!-- this hidden checkbox controls the state -->
+                  <input type="checkbox" on:click={pwdVisibility} />
+
+                  <Eye size="28" class="swap-off" />
+
+                  <EyeOff size="28" class="swap-on" />
+                </label>
+              </div>
+            </div>
+
+            <button on:click={submit} class="btn btn-primary"
+              >{$t("continue")}</button
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  {:else}
+    <div class="bg-base-300 border-4 border-base-100 rounded-xl md:w-96 pl-2">
+      <div class="p-6 text-center">
+        <div class="max-w-md space-y-5">
+          <p class="text-xl">{$t("signin.h.signupEmail")}</p>
           <input
             id="email"
             type="text"
             placeholder={$t("signin.l.email")}
             class="input w-full max-w-xs"
           />
-
           <div class="w-full flex space-x-2">
             <div class="w-full flex space-x-2">
               <input
@@ -169,52 +286,20 @@
             </div>
           </div>
 
-          <button on:click={submit} class="btn btn-primary">Submit</button>
-        </div>
-      </div>
-    </div>
-  </div>
-{:else}
-  <div class="bg-base-300 border-4 border-base-100 rounded-xl w-96 pl-2">
-    <div class="p-6 text-center">
-      <div class="max-w-md space-y-5">
-        <p class="text-xl">Sign up via Email:</p>
-        <input
-          id="email"
-          type="text"
-          placeholder={$t("signin.l.email")}
-          class="input w-full max-w-xs"
-        />
-        <div class="w-full flex space-x-2">
-          <div class="w-full flex space-x-2">
+          <div class="space-y-5">
             <input
-              type={pwdVisible}
-              id="pwd"
-              placeholder={$t("signin.l.pwd")}
+              type="password"
+              id="confPwd"
+              placeholder={$t("signin.l.cpwd")}
               class="input w-full max-w-xs"
             />
-            <label class="btn btn-circle swap swap-rotate btn-ghost">
-              <!-- this hidden checkbox controls the state -->
-              <input type="checkbox" on:click={pwdVisibility} />
 
-              <Eye size="28" class="swap-off" />
-
-              <EyeOff size="28" class="swap-on" />
-            </label>
+            <button on:click={submit} class="btn btn-primary"
+              >{$t("continue")}</button
+            >
           </div>
-        </div>
-
-        <div class="space-y-5">
-          <input
-            type="password"
-            id="confPwd"
-            placeholder={$t("signin.l.cpwd")}
-            class="input w-full max-w-xs"
-          />
-          <button on:click={submit} class="btn btn-primary">Continue</button>
         </div>
       </div>
     </div>
-  </div>
-{/if}
-<Alert detail={msg} {visible} />
+  {/if}
+</div>

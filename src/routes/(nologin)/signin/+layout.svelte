@@ -4,6 +4,7 @@
 </script>
 
 <div>
-  <Navbar navType="welcome" />
+  <Navbar navType="welcome" disableButtons="true" />
   <slot />
+  <Footer navType="default" />
 </div>

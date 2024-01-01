@@ -15,10 +15,13 @@
 
   let enablePay = true;
   let enableAuth = "true";
+
   //sends user to /signin if localstorage token is ""
   if (browser) {
     enablePay = localStorage.getItem("enablePay");
     enableAuth = localStorage.getItem("enableAuth");
+    if (localStorage.getItem("theme") == "light") {
+    }
   }
 
   let login = false;
@@ -43,8 +46,12 @@
   console.log(login);
 
   onMount(async () => {
-    setTimeout(function () {
-      if (browser) {
+    if (browser) {
+      //this listens for redricts
+      window.addEventListener("redrict", function (e) {
+        checkPage();
+      });
+      setTimeout(function () {
         enableAuth = localStorage.getItem("enableAuth");
         console.log(enableAuth + "authd");
         if (
@@ -54,86 +61,85 @@
         ) {
           goto("/signin");
         }
-      }
-    }, 500);
+      }, 500);
+    }
   });
 
-  function check() {
-    setTimeout(function () {
-      switch (window.location.pathname) {
-        case "/":
-          document
-            .getElementById("servers")
-            .classList.add("text-accent-content");
-          document
-            .getElementById("servers2")
-            .classList.add("text-accent-content");
+  function checkPage() {
+    if (browser) {
+      setTimeout(() => {
+        switch (window.location.pathname) {
+          case "/":
+            document.getElementById("servers").classList.add("text-primary");
+            document.getElementById("servers2").classList.add("text-primary");
 
-          document
-            .getElementById("pay")
-            .classList.remove("text-accent-content");
-          document
-            .getElementById("newserver")
-            .classList.remove("text-accent-content");
-          break;
-        case "/pay":
-          document.getElementById("pay").classList.add("text-accent-content");
+            document
+              .getElementById("newserver")
+              .classList.remove("text-primary");
+            document.getElementById("account").classList.remove("text-primary");
+            document.getElementById("billing").classList.remove("text-primary");
+            break;
+          case "/billing":
+            document.getElementById("billing").classList.add("text-primary");
 
-          document
-            .getElementById("servers")
-            .classList.remove("text-accent-content");
-          document
-            .getElementById("servers2")
-            .classList.remove("text-accent-content");
-          document
-            .getElementById("newserver")
-            .classList.remove("text-accent-content");
-          break;
-        case "/newserver":
-          document
-            .getElementById("newserver")
-            .classList.add("text-accent-content");
+            document.getElementById("servers").classList.remove("text-primary");
+            document
+              .getElementById("servers2")
+              .classList.remove("text-primary");
+            document
+              .getElementById("newserver")
+              .classList.remove("text-primary");
+            document.getElementById("account").classList.remove("text-primary");
+            break;
+          case "/newserver":
+            document.getElementById("billing").classList.remove("text-primary");
+            document.getElementById("newserver").classList.add("text-primary");
 
-          document
-            .getElementById("servers")
-            .classList.remove("text-accent-content");
-          document
-            .getElementById("servers2")
-            .classList.remove("text-accent-content");
-          document
-            .getElementById("pay")
-            .classList.remove("text-accent-content");
-          break;
-      }
-    }, 100);
+            document.getElementById("servers").classList.remove("text-primary");
+            document
+              .getElementById("servers2")
+              .classList.remove("text-primary");
+            document.getElementById("account").classList.remove("text-primary");
+            break;
+          case "/account":
+            document.getElementById("account").classList.add("text-primary");
+
+            document.getElementById("servers").classList.remove("text-primary");
+            document
+              .getElementById("servers2")
+              .classList.remove("text-primary");
+            document
+              .getElementById("newserver")
+              .classList.remove("text-primary");
+            document.getElementById("billing").classList.remove("text-primary");
+            break;
+        }
+      }, 50);
+    }
   }
+  checkPage();
 </script>
 
 {#if navType === "default"}
-  <div class="navbar bg-base-300 px-4">
-    <div class="hidden sm:block flex-1">
-      <a class="btn btn-ghost normal-case text-xl invisible sm:visible" href="/"
+  <div class="navbar bg-base-300 px-4 max-sm:pl-2" on:click={checkPage}>
+    <div class="flex-1 h-[3rem]">
+      <a class="btn btn-ghost normal-case text-xl" href="/"
         ><img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" /></a
       >
     </div>
     <div class="flex-1 md:flex-none space-x-2 navbar-end">
-      <ul
-        class="invisible md:visible md:space-x-0 menu menu-horizontal p-0"
-        id="servers"
+      <a id="servers" href="/" class=" btn btn-ghost rounded-lg hidden md:flex"
+        >{$t("navbar.servers")}</a
       >
-        <li>
-          <a href="/" class="nav btn btn-ghost rounded-lg"
-            >{$t("navbar.servers")}</a
-          >
-          <!-- todo: get font back to normal and find out why the button is square-->
-        </li>
-      </ul>
 
       <Home />
 
       <NewServer />
       {#if enablePay == "true"}
         <Billing />
+      {:else}
+        <div id="billing"></div>
+        <!-- This is to prevent errors in the checkPage function-->
       {/if}
 
       <ThemeToggle />
@@ -142,10 +148,12 @@
   </div>
 {:else if navType === "welcome"}
   <div class="navbar fixed justify-between px-6">
-    <a class="btn btn-ghost normal-case text-xl invisible sm:visible" href="https://arthmc.xyz/"
-        >
-    <img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" />
-</a>
+    <a
+      class="btn btn-ghost normal-case text-xl invisible sm:visible"
+      href="https://arthmc.xyz/"
+    >
+      <img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" />
+    </a>
     <ThemeToggle />
   </div>
 {/if}

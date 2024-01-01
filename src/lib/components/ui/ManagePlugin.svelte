@@ -2,12 +2,11 @@
   import { apiurl, usingOcelot } from "$lib/scripts/req";
   import { lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
-  import { getHeapSpaceStatistics } from "v8";
   import { t } from "$lib/scripts/i18n";
-  import ChooseVersionAlt from "./ChooseVersionAlt.svelte";
-  import accountEmail from "$lib/stores/accountEmail";
-  import SkeleResult from "./SkeleResult.svelte";
   import { ChevronDown, ChevronUp, Clock, Trash, Trash2 } from "lucide-svelte";
+  import ChooseVersion from "./ChooseVersion.svelte";
+  import ChooseModVersion from "./ChooseModVersion.svelte";
+  import TranslateableText from "./TranslateableText.svelte";
 
   export let name;
   export let id;
@@ -15,29 +14,63 @@
   export let modtype;
   export let filename;
   export let date;
+  export let disabled;
+  export let desc = "";
+  export let icon = "";
+  export let slug = id;
+  export let author = "";
   let showInfo = true;
-  let sendName = name;
-  let author;
-  let desc;
-  let slug = id;
+  let disableText = $t("disable");
+  if (disabled) {
+    disableText = $t("enable");
+  }
+
   let time = new Date(date).toLocaleString();
+  let serverId = "";
+
+  let prefixToHandleFlexOnSM = "";
+  if (platform == "cf" || platform == "lr") {
+    prefixToHandleFlexOnSM = "sm:";
+  }
+  if (browser) {
+    serverId = localStorage.getItem("serverID");
+    //if screen is small, only say the date
+    if (window.innerWidth < 768) {
+      time = new Date(date).toLocaleString().split(",")[0];
+    }
+  }
 
   if (platform == "lr") {
+    /*
     name = name.replace(/-/g, " ");
 
-    fetch(lrurl + "project/" + id)
+    promise = fetch(lrurl + "project/" + id)
       .then((response) => response.json())
       .then((data) => {
         desc = data.description;
         slug = data.slug;
         name = data.title;
+        icon = data.icon_url;
       });
-
+      
     fetch(lrurl + "project/" + id + "/members")
       .then((response) => response.json())
       .then((data) => {
         author = data[0].user.username;
       });
+      */
+  } else if (platform == "cf") {
+    /*
+    promise = fetch(apiurl + "curseforge/" + id)
+      .then((response) => response.json())
+      .then((data) => {
+        desc = data.summary;
+        slug = data.slug;
+        name = data.name;
+        author = data.authors[0].name;
+        icon = data.logo.thumbnailUrl;
+      });
+      */
   } else if (platform == "gh") {
     author = id.split("/")[0];
     fetch("https://api.github.com/repos/" + id)
@@ -63,11 +96,6 @@
     const event = new CustomEvent("refresh");
     document.dispatchEvent(event);
 
-    let serverId = "";
-    if (browser) {
-      serverId = localStorage.getItem("serverID");
-    }
-
     let baseurl = apiurl;
     if (usingOcelot)
       baseurl =
@@ -78,7 +106,7 @@
       method: "DELETE",
       headers: {
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     });
   }
@@ -90,27 +118,110 @@
       showInfo = true;
     }
   }
+
+  function toggleDisable() {
+    let baseurl = apiurl;
+    if (usingOcelot)
+      baseurl =
+        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    const url =
+      baseurl +
+      "server/" +
+      serverId +
+      "/toggleDisable/" +
+      modtype +
+      "?filename=" +
+      filename;
+    fetch(url, {
+      method: "POST",
+      headers: {
+        token: localStorage.getItem("token"),
+        username: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        console.error(data);
+        if (data.includes("disabled")) {
+          disableText = $t("enable");
+        } else if (data.includes("enabled")) {
+          disableText = $t("disable");
+        }
+      });
+  }
 </script>
 
 <div>
   <div
     class="px-3 py-2 rounded-t-lg bg-base-300 flex justify-between items-center"
   >
-    <div class="flex items-center space-x-1">
-      <p>{filename}</p>
-      <button
-        on:click={() => {
-          del(filename);
-        }}
-        class="btn btn-xs btn-error mt-0.5 btn-square"
-      >
-        <Trash2 size="15" /></button
-      >
+    <div class="{prefixToHandleFlexOnSM}flex items-center gap-1 break-all">
+      <div class="flex mr-1 items-center max-{prefixToHandleFlexOnSM}mb-1">
+        {name}
+        {#if platform == "lr"}
+          <img
+            class="ml-1.5 h-6"
+            src="https://github.com/modrinth/art/blob/main/Branding/Mark/mark-dark__32x32.png?raw=true"
+            width="24"
+            height="24"
+          />
+        {:else if platform == "cf"}
+          <img
+            class="ml-1.5 h-6"
+            src="https://static-beta.curseforge.com/images/favicon.ico"
+            width="24"
+            height="24"
+          />
+        {:else if platform == "gh"}
+          <img
+            class="ml-1.5 h-6"
+            src="https://github.githubassets.com/favicons/favicon.svg"
+            width="24"
+            height="24"
+          />
+        {:else if platform == "cx"}
+          <img
+            class="ml-1.5 h-6"
+            src="https://geysermc.org/favicon.ico"
+            width="24"
+            height="24"
+          />
+        {/if}
+      </div>
+
+      <div class="flex items-center space-x-1">
+        <button
+          on:click={() => {
+            del(filename);
+          }}
+          class="btn btn-xs btn-error btn-square"
+        >
+          <Trash2 size="15" /></button
+        >
+        <button class="btn btn-xs btn-ghost" on:click={toggleDisable}>
+          {disableText}
+        </button>
+
+        {#if modtype == "plugin" && (platform == "cf" || platform == "lr")}
+          <ChooseVersion {id} {name} {author} {desc} {icon} buttonType="2" />
+        {:else if modtype == "mod"}
+          <ChooseModVersion
+            {id}
+            {name}
+            {author}
+            {desc}
+            {icon}
+            {platform}
+            {slug}
+            buttonType="2"
+          />
+        {/if}
+      </div>
     </div>
 
     <div class="flex items-center space-x-1">
       <div
-        class="hidden md:flex bg-base-200 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+        class="hidden md:flex bg-base-200 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
       >
         <Clock size="16" class="mr-1.5" />
         {time}
@@ -125,14 +236,19 @@
     </div>
   </div>
   {#if showInfo === true}
-    <div class="bg-base-200 rounded-b-lg px-1.5 pt-2.5 pb-2.5 space-x-1">
+    <div
+      class="bg-base-200 rounded-b-lg px-1.5 pt-2.5 pb-2.5 space-x-1 relative"
+    >
+      <div class="absolute bottom-2 md:top-2 right-2 text-sm text-[#767c87]">
+        {filename}
+      </div>
       <div class="px-1.5">
         {#if platform == "lr"}
           <div class="flex justify-between place-items-center">
             <div class="flex space-x-3">
               <div>
                 <div class="flex space-x-1">
-                  <div class="flex space-x-1.5 place-items-end">
+                  <div>
                     {#if name == id}
                       <div
                         class="h-6 w-16 animate-pulse bg-slate-600 rounded-lg"
@@ -141,28 +257,59 @@
                       <a
                         href="https://modrinth.com/plugin/{slug}"
                         target="_blank"
-                        class="link link-hover text-xl font-bold">{name}</a
+                        class="hover:link text-xl font-bold">{name}</a
                       >
                     {/if}
-                    <div class="flex space-x-1">
-                      <p>by</p>
-                      <a
-                        href="https://modrinth.com/user/{author}"
-                        target="_blank"
-                        class="link link-hover">{author}</a
-                      >
-                    </div>
-                    <img
-                      src="https://github.com/modrinth/art/blob/main/Branding/Mark/mark-dark__32x32.png?raw=true"
-                      width="24"
-                    />
+
+                    {$t("by")}
+                    <a
+                      href="https://modrinth.com/user/{author}"
+                      target="_blank"
+                      class="hover:link"
+                      >{author}
+                    </a>
                   </div>
-                  <div class="" />
                 </div>
               </div>
             </div>
             <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
+            >
+              <Clock size="16" class="mr-1.5" />
+              {time}
+            </div>
+          </div>
+        {:else if platform == "cf"}
+          <div class="flex justify-between place-items-center">
+            <div class="flex space-x-3">
+              <div>
+                <div class="flex space-x-1">
+                  <div>
+                    {#if name == id}
+                      <div
+                        class="h-6 w-16 animate-pulse bg-slate-600 rounded-lg"
+                      />
+                    {:else}
+                      <a
+                        href="https://curseforge.com/minecraft/mc-mods/{slug}"
+                        target="_blank"
+                        class="hover:link text-xl font-bold">{name}</a
+                      >
+                    {/if}
+
+                    {$t("by")}
+                    <a
+                      href="https://curseforge.com/members/{author}"
+                      target="_blank"
+                      class="hover:link"
+                      >{author}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
             >
               <Clock size="16" class="mr-1.5" />
               {time}
@@ -173,27 +320,32 @@
             <div class="flex space-x-3">
               <div>
                 <div class="flex space-x-1">
-                  <a
-                    href="https://github.com/{id}"
-                    target="_blank"
-                    class="link link-hover text-xl font-bold">{name}</a
-                  >
-                  <div class="flex space-x-1.5 place-items-end">
-                    <div class="flex space-x-1">
-                      <p>by</p>
+                  <div>
+                    {#if name == id}
+                      <div
+                        class="h-6 w-16 animate-pulse bg-slate-600 rounded-lg"
+                      />
+                    {:else}
                       <a
-                        href="https://github.com/{author}"
+                        href="https://github.com/{id}"
                         target="_blank"
-                        class="link link-hover">{author}</a
+                        class="hover:link text-xl font-bold">{name}</a
                       >
-                    </div>
-                    <img src="https://github.com/favicon.ico" width="24" />
+                    {/if}
+
+                    {$t("by")}
+                    <a
+                      href="https://github.com/{author}"
+                      target="_blank"
+                      class="hover:link"
+                      >{author}
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
             <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
             >
               <Clock size="16" class="mr-1.5" />
               {time}
@@ -203,33 +355,24 @@
           <div class="flex justify-between place-items-center">
             <div class="flex space-x-3">
               <div>
-                <div class="flex space-x-1">
+                <div>
                   {#if name == "Geyser" || name == "Floodgate"}
-                    <p class="text-xl font-bold">{name}</p>
-                    <div class=" flex space-x-1 place-items-end">
-                      <p>by</p>
-                      <a
-                        href="https://geysermc.org"
-                        target="_blank"
-                        class="link link-hover">GeyserMC</a
-                      >
-                    </div>
+                    <span class="text-xl font-bold">{name}</span>
+
+                    {$t("by")}
+                    <a
+                      href="https://geysermc.org"
+                      target="_blank"
+                      class="hover:link">GeyserMC</a
+                    >
                   {:else}
                     <p class="text-xl font-bold">{name}</p>
-                    <div class=" flex space-x-1 place-items-end" />
                   {/if}
-                  <div class="flex space-x-1.5 place-items-end">
-                    <img
-                      src="https://arthmc.xyz/favicon.png"
-                      width="24"
-                      class="ml-0.5 mb-0.5"
-                    />
-                  </div>
                 </div>
               </div>
             </div>
             <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
+              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
             >
               <Clock size="16" class="mr-1.5" />
               {time}
@@ -237,8 +380,8 @@
           </div>
         {/if}
 
-        <div>
-          {desc}
+        <div class="max-md:mb-5">
+          <TranslateableText text={desc} />
         </div>
       </div>
 

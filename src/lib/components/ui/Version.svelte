@@ -1,9 +1,17 @@
 <script lang="ts">
-  import { sendVersion } from "$lib/scripts/req";
+  import { apiurl, sendVersion } from "$lib/scripts/req";
 
-  import { browser } from "$app/environment";
-  import { AlertCircle, Check, Clock, Plus } from "lucide-svelte";
+  import { browser, version } from "$app/environment";
+  import {
+    AlertCircle,
+    Check,
+    ClipboardList,
+    Clock,
+    InfoIcon,
+    Plus,
+  } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
+  import Changelog from "./Changelog.svelte";
 
   export let name: string;
   export let date: string;
@@ -13,6 +21,12 @@
   export let pluginName: string;
   export let modtype: string;
   export let dependencies: string[] = [];
+  export let platform: string = "mr";
+  export let alreadyInstalled: boolean = false;
+  export let changelog: string = "";
+
+  export let versionId: string = "";
+  let uniqueId = Math.random().toString(36).substr(2, 9);
   if (type == "release") {
     type = "";
   } else if (type == "beta") {
@@ -31,31 +45,44 @@
     pluginName = pluginName.replace(/["']/g, "");
     pluginName = pluginName.replace(/[\(\)]/g, "");
     pluginName = pluginName.replace(/[\s_]/g, "-");
-    sendVersion(url, id, "lr_" + pluginId, pluginName, modtype);
+    sendVersion(url, id, pluginId, pluginName, modtype);
+    setTimeout(() => {
+      if (browser) {
+        document.getElementById("addBtn" + uniqueId).checked = false;
+      }
+    }, 2500);
   }
   console.log(dependencies);
   for (let i in dependencies) {
-    //GET https://api.modrinth.com/v2/project/{depencencies[i].project_id}
+    if (platform == "mr") {
+      //GET https://api.modrinth.com/v2/project/{depencencies[i].project_id}
 
-    fetch("https://api.modrinth.com/v2/project/" + dependencies[i].project_id)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        dependencies[i].name = data.title;
-      });
+      fetch("https://api.modrinth.com/v2/project/" + dependencies[i].project_id)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          dependencies[i].name = data.title;
+        });
+    } else {
+      fetch(apiurl + "curseforge/" + dependencies[i].modId)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          dependencies[i].name = data.name;
+        });
+    }
   }
 </script>
 
 <div class="bg-base-200 rounded-lg p-3">
   <div class="flex justify-between place-items-center items-center">
     <div>
-      <div class="flex space-x-1">
-        <p class="text-xl font-bold">{name}</p>
-        <div class="flex space-x-1 place-items-end">
-          <p class="text-warning">{type}</p>
-        </div>
+      <div>
+        <span class="text-xl font-bold">{name}</span>
+
+        <span class="text-warning">{type}</span>
       </div>
-      <div class="flex gap-2 flex-wrap mt-2">
+      <div class="flex gap-2 flex-wrap mt-2 md:w-[15rem]">
         <div
           class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
         >
@@ -67,22 +94,40 @@
           <div
             class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
           >
-            <AlertCircle class="mr-1.5" size="16" />
-            {$t("requires")}
+            {#if dependency.dependency_type == "optional"}
+              <InfoIcon class="mr-1.5 shrink-0" size="16" />
+              {$t("worksWith")}
+            {:else if dependency.dependency_type == "incompatible"}
+              <AlertCircle class="mr-1.5 shrink-0" size="16" />
+              {$t("incompatibleWith")}
+            {:else}
+              <AlertCircle class="mr-1.5 shrink-0" size="16" />
+              {$t("requires")}
+            {/if}
+
             {dependency.name}
           </div>
         {/each}
+        {#if changelog != "" || platform == "cf"}
+          <Changelog {changelog} {platform} {versionId} {pluginId} />
+        {/if}
       </div>
     </div>
-    <div class="flex place-items-center space-x-2">
-      <label
-        on:click={submit}
-        class="btn btn-circle btn-ghost swap swap-rotate"
-      >
-        <input type="checkbox" /><Plus class="swap-off" /><Check
-          class="swap-on"
-        /></label
-      >
-    </div>
+    {#if alreadyInstalled}
+      <div class="w-[3rem] h-[3rem] flex items-center justify-center">
+        <Check />
+      </div>
+    {:else}
+      <div class="flex place-items-center space-x-2">
+        <label
+          on:click={submit}
+          class="btn btn-circle btn-ghost swap swap-rotate"
+        >
+          <input type="checkbox" id="addBtn{uniqueId}" /><Plus
+            class="swap-off"
+          /><Check class="swap-on" /></label
+        >
+      </div>
+    {/if}
   </div>
 </div>

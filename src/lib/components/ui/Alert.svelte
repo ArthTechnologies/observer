@@ -1,25 +1,36 @@
 <script>
   import { browser } from "$app/environment";
-  import { AlertCircle } from "lucide-svelte";
+  import {
+    AlertCircle,
+    CheckCircle,
+    CheckCircle2,
+    InfoIcon,
+  } from "lucide-svelte";
+  import { onMount } from "svelte";
   import { fade } from "svelte/transition";
-  export let visible = false;
-  export let detail = "";
-  $: if (visible) {
-    console.log("alert visible: " + visible);
+  let visible = false;
+  export let msg = "";
+  export let type = "error";
+  onMount(() => {
+    visible = true;
     setTimeout(() => {
       visible = false;
-    }, 3500);
-  }
+    }, 4500);
+  });
 </script>
 
 {#if visible}
   <div
-    class="break-keep w-1/2 fixed z-50 right-2 top-2 alert alert-error shadow-lg"
+    class="alert flex gap-3 bg-{type} border-0 text-black w-2/3 md:w-1/3 fixed z-[1000] right-2 top-2 shadow-lg"
     transition:fade
   >
-    <div>
+    {#if type === "error"}
       <AlertCircle />
-      <span>{detail}</span>
-    </div>
+    {:else if type == "success"}
+      <CheckCircle2 />
+    {:else}
+      <InfoIcon />
+    {/if}
+    {msg}
   </div>
 {/if}

@@ -1,8 +1,9 @@
 <script lang="ts">
   import ServerCard from "$lib/components/ui/ServerCard.svelte";
+  import UncreatedServerCard from "$lib/components/ui/UncreatedServerCard.svelte";
   import ServerSkele from "$lib/components/ui/ServerSkele.svelte";
   import { t, locale, locales } from "$lib/scripts/i18n";
-  import { getServers } from "$lib/scripts/req";
+  import { apiurl, getServers } from "$lib/scripts/req";
   import { browser, dev } from "$app/environment";
   import { goto } from "$app/navigation";
 
@@ -34,6 +35,33 @@
           id = response.amount;
         }
         servers = response;
+        if (
+          servers.length == 0 ||
+          !JSON.stringify(servers).includes(":not created yet")
+        ) {
+          console.log("claiming an id...");
+          fetch(apiurl + "server/claimId", {
+            method: "GET",
+            headers: {
+              token: localStorage.getItem("token"),
+              username: localStorage.getItem("accountEmail"),
+            },
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              console.log(res);
+              promise = getServers(email).then((response) => {
+                if (browser) {
+                  noserverlock = true;
+                  console.log(response);
+                  if (response.amount != "undefined") {
+                    id = response.amount;
+                  }
+                  servers = response;
+                }
+              });
+            });
+        }
       }
     });
   }
@@ -68,7 +96,11 @@
         {/each}
       {:then}
         {#each servers as server}
-          <ServerCard {...server} />
+          {#if !JSON.stringify(server).includes("not created yet")}
+            <ServerCard {...server} />
+          {:else}
+            <UncreatedServerCard id={server.split(":")[0]} />
+          {/if}
         {/each}
       {/await}
     </div>

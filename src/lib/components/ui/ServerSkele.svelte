@@ -17,17 +17,21 @@
         <div class="grow space-x-1.5 flex">
           <button
             type="submit"
-            class="btn btn-disabled bg-base-100 btn-sm h-9 w-[3.75rem]"
+            class="btn bg-base-100 btn-sm h-9 w-[3.75rem] pointer-events-none"
           />
-          <button type="submit" class="btn btn-disabled bg-base-100 btn-sm h-9"
+          <button
+            type="submit"
+            class="btn bg-base-100 btn-sm h-9 pointer-events-none"
             ><p class="invisible">{$t("button.start")}</p></button
           >
-          <button type="submit" class="btn btn-disabled bg-base-100 btn-sm h-9"
+          <button
+            type="submit"
+            class="btn bg-base-100 btn-sm h-9 pointer-events-none"
             ><p class="invisible">{$t("button.stop")}</p></button
           >
         </div>
 
-        <div class="badge w-20 bg-base-100 right-4 top-4 absolute" />
+        <div class="badge w-24 bg-base-100 right-4 top-4 absolute" />
       </div>
     </div>
   </div>

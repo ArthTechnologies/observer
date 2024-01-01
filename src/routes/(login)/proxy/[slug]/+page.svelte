@@ -22,6 +22,7 @@
   import FullscreenTerminal from "$lib/components/buttons/FullscreenTerminal.svelte";
   import {
     ArrowLeft,
+    ClipboardList,
     FolderClosed,
     HelpCircle,
     Info,
@@ -54,7 +55,7 @@
   let id = 0;
   let lock = false;
   let desc: string = "";
-  let restarting = false;
+
   let email: string = "";
   let state = "false";
   let icon = "";
@@ -150,7 +151,7 @@
           headers: {
             "Content-Type": "application/json",
             token: localStorage.getItem("token"),
-            email: localStorage.getItem("accountEmail"),
+            username: localStorage.getItem("accountEmail"),
           },
         }
       )
@@ -173,7 +174,7 @@
       headers: {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
@@ -208,7 +209,7 @@
       headers: {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
@@ -229,7 +230,7 @@
       headers: {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
@@ -245,7 +246,7 @@
       headers: {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
@@ -289,8 +290,7 @@
 
       //set state to response
       state = response.state;
-      if (restarting && state == "starting") {
-        restarting = false;
+      if (state == "starting") {
         console.log("unlocking");
         lock = false;
       }
@@ -306,7 +306,7 @@
       headers: {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
@@ -321,8 +321,6 @@
     if (!lock) {
       if (state == "true") {
         changeServerState("restart", id, email);
-
-        restarting = true;
       } else if (state == "false") {
         changeServerState("start", id, email);
       }
@@ -383,8 +381,8 @@
 
   function readCmd() {
     let rt;
-    readTerminal(id).then((response) => {
-      if (browser) {
+    if (browser) {
+      readTerminal(id).then((response) => {
         const terminalContainer = document.getElementById("terminalContainer");
         const terminal = document.getElementById("terminal");
         const filteredResponse = response
@@ -397,7 +395,7 @@
           filteredResponse.split("<p>").length
         ) {
           terminalContainer.scrollTop +=
-            12 *
+            150 *
             (filteredResponse.split("<p>").length -
               terminal.innerHTML.split("<p>").length);
         }
@@ -424,8 +422,8 @@
             scrollCorrected = true;
           }
         }
-      }
-    });
+      });
+    }
     //set terminal's text to rt
   }
   readCmd();
@@ -442,20 +440,11 @@
     </div>
     <!-- TODO: these should be on the right, add an if for not reaching the backend -->
     <div class="space-x-2 space-y-2 flex flex-col items-center md:block">
-      {#if state == "true" && !restarting}
+      {#if state == "true"}
         <button on:click={start} class="btn btn-success"
           ><Repeat class="mr-1.5" />{$t("button.restart")}</button
         >
         <button on:click={stop} class="btn btn-error"
-          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
-        >
-      {:else if restarting}
-        <button class="btn btn-success"
-          ><Loader class="animate-spin mr-1.5" />
-          {$t("button.restarting")}</button
-        >
-
-        <button class="btn btn-disabled"
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "false"}
@@ -466,29 +455,35 @@
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</a
         >
       {:else if state == "starting"}
-        <button class="btn btn-success"
-          ><Loader class="mr-1.5 animate-spin" />
-          {$t("button.starting")}</button
+        <div
+          class="inline-flex pointer-events-none bg-success flex items-center px-4 py-3 text-center text-sm font-semibold text-black uppercase rounded-md"
         >
+          <Loader class="animate-spin mr-1.5" />
+          {$t("button.starting")}
+        </div>
         <button on:click={stop} class="btn btn-error"
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "installing"}
-        <button class="btn btn-accent"
-          ><Loader class="mr-1.5 animate-spin" />
-          {$t("button.installing")}</button
+        <div
+          class="inline-flex pointer-events-none bg-accent flex items-center px-4 py-3 text-center text-sm font-semibold text-base-300 uppercase rounded-md"
         >
+          <Loader class="animate-spin mr-1.5" />
+          {$t("button.installing")}
+        </div>
         <button on:click={stop} class="btn btn-error"
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "stopping"}
-        <button class="btn btn-disabled"
-          ><PlayCircle class="mr-1.5" />{$t("button.start")}</button
+        <button class="btn btn-disabled">
+          <PlayCircle class="mr-1.5" />{$t("button.start")}
+        </button>
+        <div
+          class="inline-flex pointer-events-none bg-error flex items-center px-4 py-3 text-center text-sm font-semibold text-black uppercase rounded-md"
         >
-        <button class="btn btn-error"
-          ><Loader class="mr-1.5 animate-spin" />
-          {$t("button.stopping")}</button
-        >
+          <Loader class="animate-spin mr-1.5" />
+          {$t("button.stopping")}
+        </div>
       {/if}
     </div>
   </div>
@@ -505,13 +500,15 @@
     class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10"
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
-      <div
-        id="terminalContainer"
-        class="bg-base-300 h-96 rounded-xl shadow-xl overflow-auto w-[19rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
-      >
-        <div class="p-5 sm:text-xs xl:text-base font-mono relative">
-          <FullscreenTerminal />
-          <p id="terminal" />
+      <div id="terminalContainerContainer" class="relative mb-1.5">
+        <FullscreenTerminal />
+        <div
+          id="terminalContainer"
+          class="bg-base-300 h-96 rounded-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
+        >
+          <div class="p-5 sm:text-xs xl:text-base font-mono relative">
+            <p id="terminal" />
+          </div>
         </div>
       </div>
       <input
@@ -619,35 +616,32 @@
             placeholder="{$t('currently')} '{lobbyName}'"
             type="text"
           />
-          <button class="btn btn-sm" on:click={setLobbyName}>
+          <button class="btn btn-neutral btn-sm" on:click={setLobbyName}>
             {$t("sumbit")}
           </button>
         </div>
       </div>
+      <button
+        class="btn btn-xs btn-ghost mt-4 mb-2"
+        on:click={() => {
+          navigator.clipboard.writeText(fSecret);
+        }}
+        ><ClipboardList size="16" class="mr-1" />
+        {$t("button.copyForwardingSecret")}</button
+      >
       <div
-        class="bg-primary w-[19rem] lg:w-[22.5rem] rounded-lg text-black p-2 flex items-center mb-2 space-x-2 mt-4"
+        class="bg-primary w-[19rem] lg:w-[22.5rem] rounded-lg text-black p-2 flex items-center mb-2 space-x-2"
       >
         <Info />
-        <span class="text-sm w-[19rem] lg:w-[22.5rem] flex flex-wrap"
-          >{$t("proxy.forwardingSecret1")}
-          <code class="bg-gray-500 rounded p-0.5 flex ml-1"
-            ><div class="dropdown">
-              <label tabindex="0" class="">{$t("proxy.showSecret")}</label>
-              <div
-                tabindex="0"
-                class="dropdown-content bg-gray-600 rounded p-1"
-              >
-                {fSecret}
-              </div>
-            </div></code
-          >{$t("proxy.forwardingSecret2")}{hostName}{$t(
+        <span class="text-sm w-[19rem] lg:w-[22.5rem] flex flex-wrap">
+          {$t("proxy.forwardingSecret2")}{hostName}{$t(
             "proxy.forwardingSecret3"
           )}
           <code class="bg-gray-500 rounded p-0.5 mr-1"
             >config/paper-global.yml</code
           >
-          {$t("proxy.forwardingSecret4")}</span
-        >
+          {$t("proxy.forwardingSecret4")}
+        </span>
       </div>
 
       <div class="w-[20rem] flex flex-col items-center">
@@ -655,7 +649,9 @@
           <EditInfo type="fullBtn" /><StorageLimit />
         </div>
         <div class="flex space-x-2">
-          <a class="btn btn-primary" href="/server/{parseInt(id) + 10000}/files"
+          <a
+            class="btn btn-primary mr-2"
+            href="/server/{parseInt(id) + 10000}/files"
             ><FolderClosed class="mr-1.5" />{$t("button.files")}</a
           ><Versions />
         </div>

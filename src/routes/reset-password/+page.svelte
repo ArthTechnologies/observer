@@ -3,6 +3,8 @@
   import { t } from "$lib/scripts/i18n";
   import Navbar from "$lib/components/layout/Navbar.svelte";
   import { ArrowLeft } from "lucide-svelte";
+  import { apiurl } from "$lib/scripts/req";
+  import { alert } from "$lib/scripts/utils";
   let enablePay = true;
   let backurl = "/signin";
   if (browser) {
@@ -17,10 +19,11 @@
     let confPassword = document.getElementById("confirmPassword").value;
 
     if (password != confPassword) {
-      alert("Passwords do not match");
+      alert($t("alert.passwordsDontMatch"));
     } else {
       fetch(
-        "https://api.arthmc.xyz/accounts/email/resetPassword?password=" +
+        apiurl +
+          "accounts/email/resetPassword?password=" +
           password +
           "&confirmPassword=" +
           confPassword +
@@ -30,14 +33,23 @@
           cc,
         {
           method: "POST",
-        }
+        },
       )
         .then((res) => res.json())
         .then((data) => {
           if (!data.success) {
-            alert(data.reason);
+            if (data.reason.includes("Wrong last 4"))
+              alert($t("alert.wrongLast4digits"));
+            else if (data.reason.includes("Too many attempts"))
+              alert(
+                $t("alert.tooManyAttempts") +
+                  5 -
+                  data.attempts +
+                  $t("alert.tooManyAttempts2"),
+              );
+            else alert(data.reason);
           } else {
-            alert("Password reset successfully");
+            alert($t("alert.passwordResetSuccess"));
             window.location.href = "/signin";
           }
         });

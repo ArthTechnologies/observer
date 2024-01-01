@@ -29,7 +29,7 @@
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((response) => response.json())
@@ -37,6 +37,19 @@
         files = data;
         console.log(data);
       });
+
+    document.addEventListener("keydown", function (event) {
+      // Check if the event key is 's' and the Ctrl/Cmd key is pressed
+      if (
+        (event.key === "s" || event.key === "S") &&
+        (event.ctrlKey || event.metaKey)
+      ) {
+        // Prevent the default browser behavior (saving the page)
+        event.preventDefault();
+
+        save();
+      }
+    });
   }
 
   function save() {
@@ -52,7 +65,7 @@
         headers: {
           "Content-Type": "application/json",
           token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
+          username: localStorage.getItem("accountEmail"),
         },
         body: JSON.stringify({
           content: document.getElementById("textEditor").value,
@@ -78,7 +91,7 @@
 
 <a href="/{backurl}/{parseInt(id) + 10000}" class="btn btn-info mb-5"
   ><ArrowLeft class="mr-1.5" />
-  Back</a
+  {$t("button.back")}</a
 >
 <div
   class=" h-[75vh] md:flex justify-between items-start max-md:space-y-1 md:space-x-5"
@@ -101,9 +114,11 @@
     <div class="flex justify-between">
       <div class="flex space-x-2 mb-2">
         <div id="filepath" class="hidden" />
-        <h1 class="text-xl font-bold" id="filename">File</h1>
-        <button class="btn btn-sm btn-disabled" id="saveButton" on:click={save}
-          >{$t("save")}</button
+        <h1 class="text-xl font-bold" id="filename">{$t("file")}</h1>
+        <button
+          class="btn btn-sm btn-neutral btn-disabled"
+          id="saveButton"
+          on:click={save}>{$t("save")}</button
         >
       </div>
       <!--<HistoryButton />-->

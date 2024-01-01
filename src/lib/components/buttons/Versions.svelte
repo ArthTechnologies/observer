@@ -69,16 +69,18 @@
     if (areWorldgenMods) {
       serverAddons.forEach((item) => {
         let worldgenMod = jarsIndex[item.toLowerCase()];
-        worldgenMod.forEach((x) => {
-          if (x.version == version) {
-            updateReady = true;
-            /* This doesnt work for some reason if you add the grayscale class to every image by default.
+        if (worldgenMod != undefined) {
+          worldgenMod.forEach((x) => {
+            if (x.version == version) {
+              updateReady = true;
+              /* This doesnt work for some reason if you add the grayscale class to every image by default.
           document
             .getElementById(item + "Versions")
             .classList.remove("grayscale");
             */
-          }
-        });
+            }
+          });
+        }
       });
     } else {
       updateReady = true;
@@ -106,18 +108,28 @@
   }
 </script>
 
-<label for="versionsModal" class="btn btn-neutral" on:click={onclick}
+<label
+  for="versionsmodal"
+  style="margin:0rem;"
+  class="btn btn-neutral"
+  on:click={onclick}
   ><ArrowDownCircle class="mr-2.5" />
   {$t("button.versions")}</label
 >
 
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id="versionsModal" class="modal-toggle" />
-<div class="modal">
-  <div class="modal-box relative">
+<input
+  type="checkbox"
+  id="versionsmodal"
+  style="margin:0rem;"
+  class="modal-toggle"
+/>
+<div class="modal" style="margin:0rem;">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
     <label
-      for="versionsModal"
-      class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+      for="versionsmodal"
+      style="margin:0rem;"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
 
     <h3 class="text-xl font-bold mb-2">{$t("versions.title")}</h3>
@@ -132,12 +144,12 @@
       </select>
     </div>
     <div
-      class="bg-warning w-86 rounded-lg text-black p-2 py-0.5 flex items-center mb-2 space-x-2"
+      class="bg-warning w-86 rounded-lg text-black p-2 py-0.5 flex items-center mb-3 space-x-2"
     >
       <AlertTriangle size="48" />
       <span class="text-sm">{$t("warning.changeVersion")}</span>
     </div>
-    <div class="flex">
+    <div class="flex my-2">
       {#if areWorldgenMods}
         {#each serverAddons as addon}
           {#if updateReady}
@@ -170,13 +182,18 @@
     </div>
 
     {#if updateReady}
-      <label on:click={update} for="versionsModal" id="confirmBtn" class="btn"
-        >{$t("versions.title")}</label
+      <label
+        on:click={update}
+        for="versionsmodal"
+        style="margin:0rem;"
+        id="confirmBtn"
+        class="btn btn-neutral">{$t("versions.title")}</label
       >
     {:else}
       <label
         on:click={update}
-        for="versionsModal"
+        for="versionsmodal"
+        style="margin:0rem;"
         id="confirmBtn"
         class="btn btn-disabled">{$t("versions.title")}</label
       >

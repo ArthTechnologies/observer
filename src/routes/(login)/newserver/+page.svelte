@@ -1,28 +1,51 @@
 <script lang="ts">
-  import { apiurl, createServer } from "$lib/scripts/req";
+  import { apiurl, createServer, getServers } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import Helper from "$lib/components/ui/Helper.svelte";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
   import Modpacks from "$lib/components/ui/Modpacks.svelte";
   import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
-  import Alert from "$lib/components/ui/Alert.svelte";
+
+  import { alert } from "$lib/scripts/utils";
+
   let version = "1.19.4";
-  export let software = "Paper";
+  export let software = $t("software.paper");
   let name = "";
   let visible = false;
-  let msg = "";
   let gamemode: string;
   let admin = "";
   let modpacks = false;
   let modpackURL = "";
   let latestVersion = "1.20.1";
   let index = {};
-  let versionOptions = [latestVersion];
+  let worldgenMods = [
+    { name: "terralith", tooltip: "Terralith - Overworld Evolved" },
+    { name: "incendium", tooltip: "Incendium - Nether Expansion" },
+    { name: "nullscape", tooltip: "Nullscape - End Expansion" },
+    { name: "structory", tooltip: "Structory - New Structures" },
+  ];
   let worldgen = null;
   let jarsList = [];
+  let id = -1;
 
   if (browser) {
+    let email = localStorage.getItem("accountEmail");
+    if (document.location.href.includes("?id=")) {
+      id = parseInt(document.location.href.split("?id=")[1].split("&")[0]);
+    } else {
+      getServers(email).then((response) => {
+        if (browser) {
+          for (let i in response) {
+            if (response[i].includes("not created yet")) {
+              id = i;
+              break;
+            }
+          }
+          if (id == -1) alert($t("alert.makeANewSubscription"));
+        }
+      });
+    }
     worldgen = document.getElementById("worldgen");
     let intervalID = setInterval(() => {
       if (worldgen == null) {
@@ -31,6 +54,7 @@
         clearInterval(intervalID);
       }
     }, 100);
+
     latestVersion = localStorage.getItem("latestVersion");
     version = latestVersion;
     fetch("https://api.jarsmc.xyz/jars/arthHosting", {
@@ -41,13 +65,14 @@
         index = res;
         index["quilt"] = index["paper"];
         findVersions();
+        checkV();
       });
     fetch(apiurl + "servers/jars", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
-        email: localStorage.getItem("accountEmail"),
+        username: localStorage.getItem("accountEmail"),
       },
     })
       .then((res) => res.json())
@@ -59,16 +84,8 @@
   function send() {
     let addons = [];
     let cmd = [];
-    let sSoftware = software;
-    let sVersion: string;
-    switch (sSoftware) {
-      case "Paper (Reccomended)":
-        sSoftware = "paper";
-        break;
-    }
-
-    sSoftware = sSoftware.charAt(0).toLowerCase() + sSoftware.slice(1);
-    sVersion = version.charAt(0).toLowerCase() + version.slice(1);
+    let sSoftware = software.toLowerCase().split(" - ")[0];
+    let sVersion: string = version.toLowerCase();
 
     //for all 3 checkboxes, if checked, add their ids to the addons array
     if (document.getElementById("terralith").checked) {
@@ -91,29 +108,40 @@
 
     console.log(browser && name != "");
     if (browser && name != "") {
-      modpackURL = localStorage.getItem("modpackURL");
-
-      console.log("creating" + sSoftware + "server...");
-      createServer(name, sSoftware, sVersion, addons, cmd, modpackURL).then(
-        (res) => {
-          localStorage.setItem("modpackURL", "");
-          localStorage.setItem("modpackVersion", "");
-          if (res == true) {
-            console.log("redricting to homepage...");
-            goto("/");
-          } else {
-            msg = res;
-            visible = true;
-            setTimeout(() => {
-              visible = false;
-            }, 3500);
-          }
+      let modpackURL = localStorage.getItem("modpackURL");
+      let modpackID = localStorage.getItem("modpackID");
+      let versionID = localStorage.getItem("modpackVersionID");
+      createServer(
+        id,
+        name,
+        sSoftware,
+        sVersion,
+        addons,
+        cmd,
+        modpackURL,
+        modpackID,
+        versionID
+      ).then((res) => {
+        localStorage.setItem("modpackURL", "");
+        localStorage.setItem("modpackID", "");
+        localStorage.setItem("modpackVersionID", "");
+        if (res == true) {
+          console.log("redricting to homepage...");
+          goto("/");
+          //this tells the navbar to update the icon that is highligted
+          window.dispatchEvent(new Event("redrict"));
+        } else {
+          if (res.includes("Maximum servers"))
+            alert($t("alert.maximumServersReached"));
+          else if (res.includes("If you want another"))
+            alert($t("alert.makeANewSubscription"));
+          else if (res.includes("You are not subscribed"))
+            alert($t("alert.subscribe"));
+          else alert(res);
         }
-      );
+      });
     } else if (browser) {
-      alert("Please give your server a name");
-    } else {
-      alert("Not in browser");
+      alert($t("alert.enterName"));
     }
   }
   function checkV() {
@@ -140,14 +168,25 @@
         worldgen.classList.remove("hidden");
       } else {
         worldgen.classList.add("hidden");
+        document.getElementById("terralith").checked = false;
+        document.getElementById("incendium").checked = false;
+        document.getElementById("nullscape").checked = false;
+        document.getElementById("structory").checked = false;
       }
     } else {
       worldgen.classList.add("hidden");
+      //modpacks search as soon as the button is loaded, so this search needs to
+      //be re-done for the new version.
+      const modpacks = document.getElementById("modpacks");
+      modpacks.innerHTML = "";
+      new Modpacks({
+        target: modpacks,
+      });
     }
   }
 
   function findVersions() {
-    let CVS = software.toLowerCase();
+    let CVS = software.split(" - ")[0].toLowerCase();
     let versionOptions = [];
 
     index[CVS].forEach((item) => {
@@ -180,14 +219,14 @@
     const modpackElement = document.getElementById("modpacks");
     findVersions();
 
-    if (software == "Paper") {
+    if (software.split(" - ")[0] == "Paper") {
       worldgen.classList.remove("hidden");
       modpackElement.classList.add("hidden");
       modpacks = false;
     } else if (
-      software == "Quilt" ||
-      software == "Fabric" ||
-      software == "Forge"
+      software.split(" - ")[0] == "Quilt" ||
+      software.split(" - ")[0] == "Fabric" ||
+      software.split(" - ")[0] == "Forge"
     ) {
       worldgen.classList.add("hidden");
       modpackElement.classList.remove("hidden");
@@ -221,11 +260,11 @@
             tabindex="0"
             class="select select-primary p-2 bg-base-100"
           >
-            <option>Paper</option>
-            <option>Forge</option>
-            <option>Fabric</option>
-            <option>Quilt</option>
-            <option>Velocity</option>
+            <option>{$t("software.paper")}</option>
+            <option>{$t("software.forge")} </option>
+            <option>{$t("software.fabric")}</option>
+            <option>{$t("software.quilt")}</option>
+            <option>{$t("software.velocity")}</option>
           </select>
 
           <label class="label" for="softwareDropdown"
@@ -238,7 +277,10 @@
             tabindex="0"
             class="select select-primary p-2 bg-base-100"
           >
-            <option>{latestVersion}</option>
+            {#if JSON.stringify(jarsList).includes(software + "-" + latestVersion)}<option
+                >{latestVersion}</option
+              >
+            {/if}
             <option>1.19.4</option>
             <option>1.18.2</option>
             <option>1.17.1</option>
@@ -263,64 +305,45 @@
             </div>
 
             <div class="flex justify-center">
-              <img
-                class="mask mask-hexagon"
-                src="/images/terralith.webp"
-                width="80ch"
-              />
-
-              <img
-                class="mask mask-hexagon"
-                src="/images/incendium.webp"
-                width="80ch"
-              />
-              <img
-                class="mask mask-hexagon"
-                src="/images/nullscape.webp"
-                width="80ch"
-              />
-              <img
-                class="mask mask-hexagon"
-                src="/images/structory.webp"
-                width="80ch"
-              />
+              {#each worldgenMods as item, i}
+                <div
+                  class="flex flex-col items-center md:tooltip md:tooltip-right"
+                  data-tip={item.tooltip}
+                >
+                  <img
+                    class="mask mask-hexagon w-[5rem] h-[5rem] md:w-[5.15rem] md:h-[5.15rem] hover:scale-[1.2] transition-all duration-100 ease-in-out"
+                    src={"/images/" + item.name + ".webp"}
+                    alt={item.name}
+                  />
+                </div>
+              {/each}
             </div>
             <div class="p-2" />
-            <div class="flex justify-center space-x-14">
-              <input
-                id="terralith"
-                type="checkbox"
-                class="checkbox checkbox-secondary"
-              />
-              <input
-                id="incendium"
-                type="checkbox"
-                class="checkbox checkbox-secondary"
-              />
-              <input
-                id="nullscape"
-                type="checkbox"
-                class="checkbox checkbox-secondary"
-              />
-              <input
-                id="structory"
-                type="checkbox"
-                class="checkbox checkbox-secondary"
-              />
+            <div
+              class="flex justify-center space-x-[3.475rem] md:space-x-[3.575rem]"
+            >
+              {#each worldgenMods as item}
+                <input
+                  id={item.name}
+                  type="checkbox"
+                  class="checkbox checkbox-secondary"
+                />
+              {/each}
             </div>
           </div>
           <div
             id="modpacks"
-            class=" justify-evenly mt-5 space-y-5 rounded-xl items-center"
+            class=" justify-evenly mt-4 space-y-5 rounded-xl items-center"
           >
             {#if modpacks}
               <Modpacks />{/if}
           </div>
 
-          <a on:click={send} class="btn mt-4">{$t("button.createServer")}</a>
+          <a on:click={send} class="btn btn-neutral mt-4"
+            >{$t("button.createServer")}</a
+          >
         </div>
       </form>
     </div>
   </div>
 </div>
-<Alert detail={msg} {visible} />

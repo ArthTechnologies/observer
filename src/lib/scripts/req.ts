@@ -1,17 +1,54 @@
 import accountEmail from "$lib/stores/accountEmail";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
-export let apiurl = "https://us-dallas-1.arthmc.xyz/";
+import { env } from '$env/dynamic/public'
+import Alert from "$lib/components/ui/Alert.svelte";
+import { alert } from "./utils";
+
+export let apiurl = "http://localhost:4000/";
 export let usingOcelot = false;
-export const lrurl = "https://api.modrinth.com/v2/";
+export let lrurl = "https://api.modrinth.com/v2/";
+export let stripeKey = "";
+export let usingCurseForge = false;
+export let basicPlanPrice = "$4.00";
+export let moddedPlanPrice = "$6.00";
+export let customerPortalLink = "";
+
 
 //set apiurl & usingOcelot to the enviroment variable if it exists
 if (browser) {
-  if (import.meta.env.VITE_API_URL) {
-    apiurl = import.meta.env.VITE_API_URL;
+  if (env.PUBLIC_API_URL) {
+    apiurl = env.PUBLIC_API_URL;
   }
-  if (import.meta.env.VITE_USING_OCELOT) {
-    usingOcelot = import.meta.env.VITE_USING_OCELOT;
+  if (env.PUBLIC_USING_OCELOT) {
+    usingOcelot = JSON.parse(env.PUBLIC_USING_OCELOT);
+  }
+  if (env.PUBLIC_LR_URL) {
+    lrurl = env.PUBLIC_LR_URL;
+  }
+  if (env.PUBLIC_STRIPE_KEY) {
+    stripeKey = env.PUBLIC_STRIPE_KEY;
+  }
+  if (env.PUBLIC_USING_CURSEFORGE) {
+    usingCurseForge = JSON.parse(env.PUBLIC_USING_CURSEFORGE);
+  }
+
+  if (env.PUBLIC_BASIC_PLAN_PRICE) {
+    basicPlanPrice = env.PUBLIC_BASIC_PLAN_PRICE;
+  }
+
+  if (env.PUBLIC_MODDED_PLAN_PRICE) {
+    moddedPlanPrice = env.PUBLIC_MODDED_PLAN_PRICE;
+  }
+
+  if (env.PUBLIC_CUSTOMER_PORTAL_LINK) {
+    customerPortalLink = env.PUBLIC_CUSTOMER_PORTAL_LINK;
+  }
+
+
+  //Migration from old email-only account system to new multi-type account system
+  if (localStorage.getItem("accountEmail") != null && localStorage.getItem("accountEmail").split(":")[1] == undefined) {
+    localStorage.setItem("accountEmail", "email:" + localStorage.getItem("accountEmail"));
   }
 }
 
@@ -20,6 +57,7 @@ let lock = false;
 let GET = {};
 let POST = {};
 let DELETE = {};
+export function updateReqTemplates() {
 //set email from local storage to variable
 if (browser) {
   accountEmail.set(localStorage.getItem("accountEmail"));
@@ -27,28 +65,33 @@ if (browser) {
     localStorage.setItem("x", "false");
     localStorage.setItem("loggedIn", "false");
   }
+  if (localStorage.getItem("theme") == undefined) {
+    localStorage.setItem("theme", "dark");
+  }
   GET = {
     method: "GET",
     headers: {
       token: localStorage.getItem("token"),
-      email: localStorage.getItem("accountEmail"),
+      username: localStorage.getItem("accountEmail"),
     },
   };
   POST = {
     method: "POST",
     headers: {
       token: localStorage.getItem("token"),
-      email: localStorage.getItem("accountEmail"),
+      username: localStorage.getItem("accountEmail"),
     },
   };
   DELETE = {
     method: "DELETE",
     headers: {
       token: localStorage.getItem("token"),
-      email: localStorage.getItem("accountEmail"),
+      username: localStorage.getItem("accountEmail"),
     },
   };
 }
+}
+updateReqTemplates();
 
 export function setInfo(
   id,
@@ -73,7 +116,7 @@ export function setInfo(
     headers: {
       "Content-Type": "application/json",
       token: localStorage.getItem("token"),
-      email: localStorage.getItem("accountEmail"),
+      username: localStorage.getItem("accountEmail"),
     },
     body: JSON.stringify({
       desc: desc,
@@ -96,7 +139,7 @@ export function setInfo(
             console.log("Response Recieved: " + input);
 
             if (input.indexOf("400") > -1) {
-              alert("wrong password.");
+
               return "error";
             } else {
               setDescText(desc);
@@ -105,7 +148,8 @@ export function setInfo(
           })
           .catch((err) => console.error(err));
       } else {
-        alert("Image can't be taller than it is wide.");
+       
+        alert("Error setting server icon. Try again with a square image.", "error");
       }
     };
   } else {
@@ -205,12 +249,16 @@ export function getVersions(id: string) {
 export function searchPlugins(
   software: string,
   version: string,
-  query: string
+  query: string,
+  offset: number,
+  sortBy: string
 ) {
+  sortBy = sortBy.toLowerCase();
   if(browser) {
   if (version == "Latest") {
     version = "1.19.3";
   }
+  query = query.replace(" ", "-");
 
   const url =
     lrurl +
@@ -222,8 +270,10 @@ export function searchPlugins(
     '"],["versions:' +
     version +
     '"],["server_side:optional","server_side:required"]]' +
-    "&limit=10";
-
+    "&limit=15" +
+    "&offset=" + offset +
+    "&index=" + sortBy;
+    console.log(url)
   if (!lock) {
     return fetch(url, GET)
       .then((res) => res.text())
@@ -245,14 +295,19 @@ export function searchMods(
   software: string,
   version: string,
   query: string,
-  modtype: string
+  modtype: string,
+  offset: number,
+  sortBy: string
 ) {
+  sortBy = sortBy.toLowerCase();
   if(browser) {
-  if (version == "Latest") {
+      if (version == "Latest") {
     version = "1.19.3";
-  }
 
+  }
+  query = query.replace(" ", "-");
   let url;
+
   if (platform == "mr")  {
     url =
     lrurl +
@@ -266,8 +321,27 @@ export function searchMods(
     '"],["versions:' +
     version +
     '"],["server_side:optional","server_side:required"]]' +
-    "&limit=10";
+    "&limit=15" +
+    "&offset=" + offset +
+    "&index=" + sortBy;
   } else if (platform == "cf") {
+    let sf = 0;
+    switch (sortBy) {
+      case "relevance":
+        sf = 1;
+        break;
+      case "downloads":
+        sf = 6;
+        break;
+      case "updated":
+        sf = 3;
+        break;
+    }
+
+    let classId = 6;
+    if (modtype == "modpack") {
+     classId = 4471;
+    }
     url =
     apiurl +
     "curseforge/search" +
@@ -276,7 +350,11 @@ export function searchMods(
     '&version=' +
     version +
     '&loader=' +
-    software;
+    software +
+    '&classId=' +
+    classId +
+    '&index=' + offset +
+    "&sortField=" + sf;
   }
 
   if (!lock) {
@@ -306,8 +384,11 @@ export function getSettings() {
         localStorage.setItem("enablePay", JSON.parse(input).enablePay);
         localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
         localStorage.setItem("address", JSON.parse(input).address);
-        localStorage.setItem("webName", JSON.parse(input).webName);
         localStorage.setItem("latestVersion", JSON.parse(input).latestVersion);
+        localStorage.setItem("enableVirusScan", JSON.parse(input).enableVirusScan);
+        localStorage.setItem("enableCloudflareVerify", JSON.parse(input).enableCloudflareVerify);
+        localStorage.setItem("cloudflareVerifySiteKey", JSON.parse(input).cloudflareVerifySiteKey);
+        localStorage.setItem("enableDeepL", JSON.parse(input).enableDeepL);
 
         if (JSON.parse(input).enableAuth == false) {
           localStorage.setItem("accountEmail", "guest");
@@ -350,17 +431,18 @@ export function getServers(em: string) {
 }
 }
 
-export function signupEmail(em: string, pwd: string) {
+export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:string = "") {
   if(browser) {
   console.log("Request Sent");
-  localStorage.setItem("accountEmail", em);
+  localStorage.setItem("accountEmail", "email:" + em);
   return fetch(
     apiurl +
       "accounts/email/signup?" +
       new URLSearchParams({
-        email: em,
+        username: em,
         password: pwd,
         confirmPassword: pwd,
+        cloudflareVerifyToken: encodeURIComponent(cloudflareVerifyToken)
       }),
     POST
   )
@@ -371,27 +453,8 @@ export function signupEmail(em: string, pwd: string) {
       localStorage.setItem("loggedIn", "true");
       localStorage.setItem("token", JSON.parse(input).token);
       localStorage.setItem("accountId", JSON.parse(input).accountId);
-      GET = {
-        method: "GET",
-        headers: {
-          token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
-        },
-      };
-      POST = {
-        method: "POST",
-        headers: {
-          token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
-        },
-      };
-      DELETE = {
-        method: "DELETE",
-        headers: {
-          token: localStorage.getItem("token"),
-          email: localStorage.getItem("accountEmail"),
-        },
-      };
+      localStorage.setItem("avatar", "");
+      updateReqTemplates();
       if (JSON.parse(input).token == -1) {
         return JSON.parse(input).reason;
       }
@@ -401,14 +464,15 @@ export function signupEmail(em: string, pwd: string) {
 }
 }
 
-export function loginEmail(em: string, pwd: string) {
+export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string = "") {
   if(browser) {
   return fetch(
     apiurl +
       "accounts/email/signin?" +
       new URLSearchParams({
-        email: em,
+        username: em,
         password: pwd,
+        cloudflareVerifyToken: cloudflareVerifyToken
       }),
     POST
   )
@@ -424,30 +488,11 @@ export function loginEmail(em: string, pwd: string) {
         if (browser) {
           console.log(JSON.parse(input));
           localStorage.setItem("token", JSON.parse(input).token);
-          localStorage.setItem("accountEmail", em);
+          localStorage.setItem("accountEmail", "email:" + em);
           localStorage.setItem("loggedIn", "true");
           localStorage.setItem("accountId", JSON.parse(input).accountId);
-          GET = {
-            method: "GET",
-            headers: {
-              token: localStorage.getItem("token"),
-              email: localStorage.getItem("accountEmail"),
-            },
-          };
-          POST = {
-            method: "POST",
-            headers: {
-              token: localStorage.getItem("token"),
-              email: localStorage.getItem("accountEmail"),
-            },
-          };
-          DELETE = {
-            method: "DELETE",
-            headers: {
-              token: localStorage.getItem("token"),
-              email: localStorage.getItem("accountEmail"),
-            },
-          };
+          localStorage.setItem("avatar", "");
+          updateReqTemplates();
         }
         return true;
       }
@@ -462,7 +507,7 @@ export function changeServerState(reqstate: string, id: number, em: string) {
   if (usingOcelot)
     baseurl =
       JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
-  const url = baseurl + "server/" + id + "/state/" + reqstate + "?email=" + em;
+  const url = baseurl + "server/" + id + "/state/" + reqstate + "?username=" + em;
   const response = fetch(url, POST)
     .then((res) => res.text())
     .then((text) => console.log("Response Recieved: " + text))
@@ -473,18 +518,22 @@ export function changeServerState(reqstate: string, id: number, em: string) {
 }
 
 export function createServer(
+  id: number,
   n: string,
   s: string,
   v: string,
   a: any[],
   c: any[],
-  mURL: string
+  mURL: string,
+  mID: string,
+  vID: string,
+
 ) {
   if(browser) {
 
     const url =
       apiurl +
-      "server/new?" +
+      "server/new/"+id+"?" +
       "email=" +
       localStorage.getItem("accountEmail") +
       "&accountId=" +
@@ -496,7 +545,7 @@ export function createServer(
     headers: {
       "Content-Type": "application/json",
       token: localStorage.getItem("token"),
-      email: localStorage.getItem("accountEmail"),
+      username: localStorage.getItem("accountEmail"),
     },
     body: JSON.stringify({
       name: n,
@@ -505,6 +554,8 @@ export function createServer(
       addons: a,
       cmds: c,
       modpackURL: mURL,
+      modpackID: mID,
+      modpackVersionID: vID,
     }),
   };
 
@@ -599,7 +650,7 @@ export function deleteServer(id: number, password: string) {
     baseurl +
     "server/" +
     id +
-    "?email=" +
+    "?username=" +
     localStorage.getItem("accountEmail") +
     "&password=" +
     password;
@@ -607,14 +658,20 @@ export function deleteServer(id: number, password: string) {
   return fetch(url, DELETE)
     .then((res) => res.text())
     .then((input: string) => {
-      if (input.indexOf("400") > -1) {
-        return "error";
-      } else {
+      console.error(input);
+      if (input.indexOf("Invalid credentials") > -1) {
+        alert("Wrong password")
+        return "wrong password";
+      }else {
+        console.log("redring1...")
         localStorage.setItem(
           "servers",
           (parseInt(localStorage.getItem("amountOfServers")) - 1).toString()
         );
+        console.log("redring2...")
         goto("/");
+                      //this tells the navbar to update the icon that is highligted
+                      window.dispatchEvent(new Event("redrict"));
         //return input as json
         return JSON.parse(input);
       }

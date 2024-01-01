@@ -1,130 +1,215 @@
-<script>
+<script lang="ts">
   import { browser } from "$app/environment";
-  import { searchMods, searchPlugins } from "$lib/scripts/req";
+  import { searchMods, searchPlugins, usingCurseForge } from "$lib/scripts/req";
   import ModpackResult from "./ModpackResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
-  import { numShort } from "$lib/scripts/numShort";
+  import { numShort } from "$lib/scripts/utils";
+  import { onMount } from "svelte";
+  import { Plus } from "lucide-svelte";
+  import ResultSkele from "./ResultSkele.svelte";
 
   let promise;
-  let results = [];
+  let mrResults = [];
+  let cfResults = [];
   let query = "";
-  function search() {
-    console.log("searching" + query);
-    results = [];
+  let tab = "cf";
+  let skeletonsLength = 15;
+  let allowLoadMore = true;
+  let offset = 0;
+  let sortBy = "relevance";
+  onMount(() => {
+    if (browser) {
+      search("mr");
+      if (usingCurseForge) search("cf");
+      else document.getElementById("mr").classList.add("tab-active");
+    }
+  });
+  if (browser) {
+    if (!usingCurseForge) tab = "mr";
+  }
+  function search(platform: string, loadMore: boolean = false) {
+    console.error("searching" + platform);
+    if (platform != "cf" && platform != "mr") {
+      platform = tab;
+    }
+    offset = 0;
+    if (loadMore) {
+      skeletonsLength = offset + 15;
+      offset += 15;
+    } else {
+      if (skeletonsLength > 15) skeletonsLength = 15;
+      if (platform == "cf") cfResults = [];
+      else if (platform == "mr") mrResults = [];
+    }
     if (browser) {
       let software = document
         .getElementById("softwareDropdown")
-        .value.toLowerCase();
+        .value.split(" - ")[0]
+        .toLowerCase();
       let version = document.getElementById("versionDropdown").value;
+      if (document.getElementById("sortByDropdown") != null) {
+        sortBy = document.getElementById("sortByDropdown").value;
+      }
+      switch (sortBy) {
+        case $t("dropdown.sortBy.relevance"):
+          sortBy = "relevance";
+          break;
 
-      setTimeout(function () {
-        promise = searchMods(software, version, query, "modpack").then(
-          (response) => {
-            response.hits.forEach((item) => {
-              results.push({
-                name: item.title,
-                desc: item.description,
-                icon: item.icon_url,
-                author: item.author,
-                id: item.project_id,
-                client: item.client_side,
-                downloads: numShort(item.downloads),
-              });
-              console.log(results);
+        case $t("dropdown.sortBy.downloads"):
+          sortBy = "downloads";
+          break;
+
+        case $t("dropdown.sortBy.lastUpdated"):
+          sortBy = "updated";
+          break;
+      }
+
+      promise = searchMods(
+        platform,
+        software,
+        version,
+        query,
+        "modpack",
+        offset,
+        sortBy
+      ).then((response) => {
+        if (platform == "mr") {
+          skeletonsLength = response.hits.length;
+          let results = [];
+          response.hits.forEach((item) => {
+            results.push({
+              name: item.title,
+              desc: item.description,
+              icon: item.icon_url,
+              author: item.author,
+              id: item.project_id,
+              client: item.client_side,
+              downloads: numShort(item.downloads),
+              platform: "mr",
+              versions: [],
+              slug: item.slug,
             });
-          }
-        );
-      }, 1);
+          });
+          mrResults = results;
+          console.log(mrResults);
+        } else if (platform == "cf") {
+          skeletonsLength = response.data.length;
+          response.data.forEach((item) => {
+            cfResults.push({
+              platform: "cf",
+              name: item.name,
+              desc: item.summary,
+              icon: item.logo.thumbnailUrl,
+              author: item.authors[0].name,
+              id: item.id,
+              client: null,
+              downloads: numShort(item.downloadCount),
+              versions: item.latestFiles,
+              slug: item.slug,
+            });
+          });
+        }
+      });
     }
   }
-  let tab = "mr";
-  function ft() {
-    if (browser) {
-      tab = "ft";
-      document.getElementById("ft").classList.add("tab-active");
-      document.getElementById("mr").classList.remove("tab-active");
-    }
-  }
+
   function mr() {
     if (browser) {
       tab = "mr";
       document.getElementById("mr").classList.add("tab-active");
-      document.getElementById("ft").classList.remove("tab-active");
+      document.getElementById("cf").classList.remove("tab-active");
+    }
+  }
+
+  function cf() {
+    if (browser) {
+      tab = "cf";
+      document.getElementById("cf").classList.add("tab-active");
+      document.getElementById("mr").classList.remove("tab-active");
     }
   }
 </script>
 
-<label for="my-modal-5" class="btn btn-block btn-primary" on:click={search}
-  >Use Modpack</label
+<label for="modpacksModal" class="btn btn-block btn-primary"
+  >{$t("button.modpacks")}</label
 >
 
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id="my-modal-5" class="modal-toggle" />
-<div class="modal">
-  <div class="modal-box relative w-11/12 max-w-5xl space-y-5 h-[50rem]">
+<input type="checkbox" id="modpacksModal" class="modal-toggle" />
+<div class="modal" style="margin:0rem;">
+  <div
+    id="addModpackModalScroll"
+    class="modal-box bg-opacity-95 backdrop-blur relative w-11/12 max-w-5xl space-y-5 h-[61.5rem]"
+  >
     <div class="flex justify-between">
       <label
-        for="my-modal-5"
-        class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
+        for="modpacksModal"
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+        >✕</label
       >
 
       <div class="tabs tabs-boxed">
-        <button id="mr" on:click={mr} class="tab tab-active"
-          >{$t("search")}</button
+        <button id="mr" on:click={mr} class="tab">Modrinth</button>
+        {#if usingCurseForge}
+          <button id="cf" on:click={cf} class="tab tab-active"
+            >Curseforge</button
+          >
+        {/if}
+      </div>
+    </div>
+    <div class="flex justify-between space-x-2">
+      <input
+        bind:value={query}
+        on:input={() => search(tab)}
+        type="text"
+        placeholder={$t("search")}
+        class="searchBar input input-bordered input-sm max-sm:w-32"
+        id="search"
+      />
+      <div class="flex items-center">
+        {$t("sortBy")}<select
+          id="sortByDropdown"
+          class="select select-sm ml-2 bg-base-300"
+          on:change={() => search(tab)}
+        >
+          <option>Relevance</option>
+          <option>Downloads</option>
+          <option>Last Update</option></select
         >
       </div>
     </div>
-    {#if tab == "mr"}
-      <div>
-        <input
-          bind:value={query}
-          on:keypress={search}
-          type="text"
-          placeholder="{$t('search')} Modrinth"
-          class="searchBar input input-bordered input-sm"
-          id="search"
-        />
+
+    {#await promise}
+      <div class="space-y-2">
+        {#each Array.from({ length: skeletonsLength }) as _}
+          <ResultSkele />
+        {/each}
       </div>
+    {:then}
       <div id="modpacks" class="space-y-2">
-        {#await promise then}
-          {#each results as result}
+        {#if tab == "mr"}
+          {#each mrResults as result}
             <ModpackResult {...result} />
           {/each}
-        {/await}
+        {:else if tab == "cf"}
+          {#each cfResults as result}
+            <ModpackResult {...result} />
+          {/each}
+        {/if}
       </div>
-    {:else if tab == "ft"}
-      <div class="space-y-2">
-        <FeaturedPlugin
-          icon="https://www.spigotmc.org/data/resource_icons/34/34315.jpg?1483592228"
-          name="Vault"
-          desc="Vault is a Permissions, Chat, & Economy API required by many plugins."
-          author="milkbowl"
-          authorLink="https://github.com/MilkBowl"
-          pluginId="MilkBowl/Vault"
-          link="https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar"
-          disclaimer="This plugin has not been tested on minecraft versions before 1.13."
-        />
-        <FeaturedPlugin
-          icon="https://media.forgecdn.net/avatars/thumbnails/493/419/64/64/637803056128514812.png"
-          name="Squaremap"
-          desc="
-  
-            A minimalistic and lightweight world map viewer for Minecraft servers, using the vanilla map rendering style "
-          author="jpenilla"
-          authorLink="https://github.com/jpenilla"
-          pluginId="jpenilla/squaremap"
-          link="https://github.com/jpenilla/squaremap/releases/download/v1.1.12/squaremap-paper-mc1.19.4-1.1.12.jar"
-          disclaimer="This plugin only supports the latest minecraft version."
-        />
-        <ModpackResult
-          name="WorldEdit (FAWE)"
-          author="NotMyFault"
-          desc="Blazingly fast world manipulation for artists, builders and everyone else."
-          icon="https://cdn.modrinth.com/data/z4HZZnLr/1dab3e5596f37ade9a65f3587254ff61a9cf3c43.svg"
-          id="z4HZZnLr"
-        />
+      <div class="flex place-content-center">
+        {#if allowLoadMore}
+          <p
+            on:click={() => {
+              search(tab, true);
+            }}
+            class=" hover:link text-primary mt-2"
+          >
+            {$t("loadMore")}
+          </p>
+        {/if}
       </div>
-    {/if}
+    {/await}
   </div>
 </div>
