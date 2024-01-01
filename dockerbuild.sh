@@ -13,7 +13,18 @@ if [ $? -eq 0 ]; then
   echo "Enter the name of the container (ex: arthmc/observer):"
   read container_name
   CI= npm run build
-  docker build . -t $container_name
+
+
+  arch=$(uname -m)
+  # Check if the user is on an ARM device
+  if [ "$arch" == "armv7l" ] || [ "$arch" == "aarch64" ]; then
+    echo "Building docker image for ARM devices..."
+    docker buildx build --platform linux/arm64 . -t arthmc/observer:latest
+  else
+    echo "Building docker image..."
+    docker build -t $container_name .
+  fi
+
   docker push $container_name
   exit 0
     else
