@@ -54,10 +54,6 @@ You'll need to create a file called `.env` inside your observer folder. For each
 - `PUBLIC_LR_URL` (Advanced): 
 Labrinth is the open-source software behing Modrith, a site where you can download mods and such. If you know another site that is running Labrinth and for some reason want to use that instead of Modrinth, you can tell observer to use that site instead of modrinth via this variable.
 
-## Other Requirements
-
-- By default, observer will connect to Arth's quartz backend. To create your own functioning service you will need to set up a [quartz](https://github.com/arthmc/quartz) backend and replace the address at the top of src/lib/scripts/req.ts.
-
 # Contributing
 
 ## How to run a dev server
@@ -81,4 +77,4 @@ Labrinth is the open-source software behing Modrith, a site where you can downlo
 ✅ Communication with backend  
 ✅ Subscriptions with stripe  
 ✅ Basic UI and function for terminal on the frontend  
-❌ Signin via discord
+🛠️ Signin via discord
