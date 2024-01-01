@@ -9,7 +9,7 @@
   let desc = "";
   let fSecret = "";
   let proxiesEnabled = false;
-  let automaticStartup = false;
+
   let software;
   let name;
   export let type = "smallBtn";
@@ -36,14 +36,6 @@
       .then((data) => {
         desc = data.desc;
         fSecret = data.secret;
-
-        //add checked property to toggle
-
-        if (data.automaticStartup) {
-          document.getElementById("automaticStartup").checked = true;
-        } else {
-          document.getElementById("automaticStartup").checked = false;
-        }
 
         document.getElementById("fSecret").value = data.secret;
         if (data.iconUrl != undefined) {
@@ -86,19 +78,13 @@
           proxiesEnabled = false;
         }
       }
-      if (document.getElementById("automaticStartup") != null) {
-        if (document.getElementById("automaticStartup").checked) {
-          automaticStartup = true;
-        } else {
-          automaticStartup = false;
-        }
-      }
+
       console.log(icon == "");
       if (icon == "") {
         icon = "https://servers.arthmc.xyz/images/placeholder.webp";
       }
 
-      setInfo(id, icon, desc, proxiesEnabled, fSecret, automaticStartup);
+      setInfo(id, icon, desc, proxiesEnabled, fSecret);
 
       if (localStorage.getItem("serverName") != name) {
         fetch(apiurl + "server/" + id + "/rename?newName=" + name, {
@@ -156,18 +142,6 @@
       id="serverName"
       class="input input-bordered"
     />
-    <div class=" w-96 mt-2">
-      <label class="cursor-pointer flex items-center">
-        <span class="label-text max-md:w-48 w-72"
-          >{$t("settings.l.automaticStartup")}</span
-        >
-        <input
-          id="automaticStartup"
-          type="checkbox"
-          class="toggle toggle-primary"
-        />
-      </label>
-    </div>
     <div class="divider mt-3 text-xl font-bold">
       {$t("settings.h.serverInfo")}
     </div>

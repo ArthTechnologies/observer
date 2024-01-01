@@ -99,7 +99,7 @@ export function setInfo(
   desc,
   proxiesEnabled,
   fSecret,
-  automaticStartup
+
 ) {
   if(browser) {
   console.log(icon);
@@ -123,7 +123,7 @@ export function setInfo(
       icon: icon,
       proxiesEnabled: proxiesEnabled,
       fSecret: fSecret,
-      automaticStartup: automaticStartup,
+
     }),
   };
 

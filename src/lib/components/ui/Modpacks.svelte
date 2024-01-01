@@ -173,9 +173,9 @@
           class="select select-sm ml-2 bg-base-300"
           on:change={() => search(tab)}
         >
-          <option>Relevance</option>
-          <option>Downloads</option>
-          <option>Last Update</option></select
+          <option>{$t("dropdown.sortBy.relevance")}</option>
+          <option>{$t("dropdown.sortBy.downloads")}</option>
+          <option>{$t("dropdown.sortBy.lastUpdated")}</option></select
         >
       </div>
     </div>

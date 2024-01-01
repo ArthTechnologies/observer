@@ -144,8 +144,7 @@ export default {
     typeYourPassword: "Type your password",
     "settings.title": "Settings",
     "settings.l.name": "Name",
-    "settings.l.automaticStartup":
-      "Automatically start up after matinence shutdowns.",
+
     "settings.h.serverInfo": "Server Info",
     "settings.desc.serverInfo":
       "Players will see this information on their server list in Minecraft.",
@@ -209,7 +208,7 @@ export default {
     "alert.passwordsDontMatch": "Passwords do not match.",
     "alert.passwordResetSuccess": "Password reset successfully.",
     "alert.emailAlreadyExists": "Email already exists.",
-    "alert.passwordIsTooShort": "Password is too short.",
+    "alert.passwordIsTooShort": "Password needs to be at least 7 characters long.",
     "alert.maximumServersReached.": "Maximum servers reached.",
     "alert.makeANewSubscription": "If you want another server, make a new subscription.",
     "alert.subscribe": "You are not subscribed. Contact support if this is an error.",
@@ -403,8 +402,7 @@ export default {
     typeYourPassword: "Escriba su contraseña",
     "settings.title": "Configuración",
     "settings.l.name": "Nombre",
-    "settings.l.automaticStartup":
-      "Iniciar automáticamente después de los apagones de mantenimiento.",
+
     "settings.h.serverInfo": "Información del servidor",
     "settings.desc.serverInfo":
       "Los jugadores verán esta información en su lista de servidores en Minecraft.",
@@ -468,7 +466,7 @@ export default {
     "alert.passwordsDontMatch": "Las contraseñas no coinciden.",
     "alert.passwordResetSuccess": "Restablecimiento de contraseña exitoso.",
     "alert.emailAlreadyExists": "El correo electrónico ya existe.",
-    "alert.passwordIsTooShort": "La contraseña es demasiado corta.",
+    "alert.passwordIsTooShort": "La contraseña debe tener al menos 7 caracteres.",
     "alert.maximumServersReached.": "Máximo servidores alcanzados.",
     "alert.makeANewSubscription": "Si desea otro servidor, haga una nueva suscripción.",
     "alert.subscribe": "No estás suscrito. Póngase en contacto con el soporte si se trata de un error.",
