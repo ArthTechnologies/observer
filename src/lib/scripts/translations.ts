@@ -144,8 +144,7 @@ export default {
     typeYourPassword: "Type your password",
     "settings.title": "Settings",
     "settings.l.name": "Name",
-    "settings.l.automaticStartup":
-      "Automatically start up after matinence shutdowns.",
+
     "settings.h.serverInfo": "Server Info",
     "settings.desc.serverInfo":
       "Players will see this information on their server list in Minecraft.",
@@ -403,8 +402,7 @@ export default {
     typeYourPassword: "Escriba su contraseña",
     "settings.title": "Configuración",
     "settings.l.name": "Nombre",
-    "settings.l.automaticStartup":
-      "Iniciar automáticamente después de los apagones de mantenimiento.",
+
     "settings.h.serverInfo": "Información del servidor",
     "settings.desc.serverInfo":
       "Los jugadores verán esta información en su lista de servidores en Minecraft.",
