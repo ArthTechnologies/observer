@@ -50,6 +50,7 @@ You'll need to create a file called `.env` inside your observer folder. For each
 - `PUBLIC_USING_CURSEFORGE`: Eether to let users add mods from curseforge, not just modrinth. Only enable this if you've set up curseforge on your quartz instance.
 - `PUBLIC_STRIPE_KEY`: If you want to make people pay for servers via stripe, enter the public stripe key found in the dashboard. This will require some setup on the backend as well.
 - `PUBLIC_BASIC_PLAN_PRICE` & `PUBLIC_MODDED_PLAN_PRICE`: By default, these are $4 and $6 respectively. Of course, you will have to specify these prices in the stripe dashboard as well.
+- `PUBLIC_CUSTOMER_PORTAL_LINK`: You can find a link in the stripe dashboard that lets customers manage subscriptions.
 - `PUBLIC_USING_OCELOT` (Advanced): Set this to true if you're using ocelot, the system that links multiple quartz instances together.
 - `PUBLIC_LR_URL` (Advanced): 
 Labrinth is the open-source software behing Modrith, a site where you can download mods and such. If you know another site that is running Labrinth and for some reason want to use that instead of Modrinth, you can tell observer to use that site instead of modrinth via this variable.

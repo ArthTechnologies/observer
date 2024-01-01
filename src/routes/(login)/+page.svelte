@@ -35,7 +35,10 @@
           id = response.amount;
         }
         servers = response;
-        if (servers.length == 0) {
+        if (
+          servers.length == 0 ||
+          !JSON.stringify(servers).includes(":not created yet")
+        ) {
           console.log("claiming an id...");
           fetch(apiurl + "server/claimId", {
             method: "GET",

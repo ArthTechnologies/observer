@@ -12,6 +12,7 @@ export let stripeKey = "";
 export let usingCurseForge = false;
 export let basicPlanPrice = "$4.00";
 export let moddedPlanPrice = "$6.00";
+export let customerPortalLink = "";
 
 
 //set apiurl & usingOcelot to the enviroment variable if it exists
@@ -38,6 +39,10 @@ if (browser) {
 
   if (env.PUBLIC_MODDED_PLAN_PRICE) {
     moddedPlanPrice = env.PUBLIC_MODDED_PLAN_PRICE;
+  }
+
+  if (env.PUBLIC_CUSTOMER_PORTAL_LINK) {
+    customerPortalLink = env.PUBLIC_CUSTOMER_PORTAL_LINK;
   }
 
 

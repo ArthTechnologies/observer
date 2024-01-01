@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { createServer } from "$lib/scripts/req";
+  import { customerPortalLink } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
+
   let servers = 0;
   if (browser) {
     servers = localStorage.getItem("amountOfServers");
@@ -38,18 +39,18 @@
     <div
       class="flex flex-wrap justify-center button-container sm:space-x-3 w-[90%]"
     >
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://billing.stripe.com/p/login/fZeaHs7161SWaWcaEE?prefilled_email={email}"
-        class="btn btn-neutral grow md:grow sm:w-44 ml-1 md:m-0"
-        >{$t("button.manage")}</a
-      >
+      {#if customerPortalLink != ""}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="{customerPortalLink}?prefilled_email={email}"
+          class="btn btn-neutral grow md:grow sm:w-44 ml-1 md:m-0"
+          >{$t("button.manage")}</a
+        >
+      {/if}
 
       <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://buy.stripe.com/dR63fv4bX3qjc1i28a?prefilled_email={email}&prefilled_promo_code=2023"
+        href="/subscribe"
         class="btn btn-success btn-block md:grow sm:w-44 mt-2.5 sm:m-0"
         on:click={subscribe}
       >
