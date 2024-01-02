@@ -250,6 +250,7 @@ export default {
     selected: "Selected",
     atCapacity: "We're sorry. We're at capacity right now, please check back later.",
     subscriptions: "Subscriptions",
+    free: "Free",
 
   },
   "es-ES": {
@@ -509,6 +510,7 @@ export default {
     selected: "Seleccionado",     
     atCapacity: "Lo sentimos. Estamos a capacidad en este momento, por favor vuelva más tarde.",
     subscriptions: "Suscripciones",
+    free: "Gratis",
 
   },
 };

@@ -17,7 +17,7 @@
     servers = JSON.parse(localStorage.getItem("servers"));
     address = localStorage.getItem("address");
 
-    promise = fetch(apiurl + "servers/purchases", {
+    promise = fetch(apiurl + "servers/subscriptions", {
       method: "GET",
       headers: {
         username: localStorage.getItem("accountEmail"),
@@ -59,29 +59,33 @@
           ></div>
         {:then}
           {#if subs.subscriptions > 0 && subs.basicSubscriptions == 0 && subs.moddedSubscriptions == 0}
-            {#each Array(subs.subscriptions) as server}
-              <div
-                class="bg-gradient-to-tr from-orange-500 to-pink-600 w-min px-1.5 rounded-md text-sm text-black font-bold"
-              >
-                {subs.subscriptions.length}
-              </div>
-            {/each}
+            <div
+              class="bg-gradient-to-tr from-orange-500 to-pink-600 w-min px-1.5 rounded-md text-sm text-black font-bold"
+            >
+              {subs.subscriptions.length}
+            </div>
           {/if}
-          {#each Array(subs.basicSubscriptions) as server}
+          {#if subs.basicSubscriptions > 0}
             <div
-              class="bg-gradient-to-tr from-orange-500 to-pink-600 w-min px-1.5 rounded-md text-sm text-black"
+              class="bg-gradient-to-tr from-orange-400 to-pink-500 px-1.5 rounded-md text-sm text-black"
             >
-              {$t("basic")}
+              {subs.basicSubscriptions}x {$t("basic")}
             </div>
-          {/each}
+          {/if}
 
-          {#each Array(subs.moddedSubscriptions) as server}
+          {#if subs.moddedSubscriptions > 0}
             <div
-              class="bg-gradient-to-tr from-cyan-500 to-indigo-600 w-min px-1.5 rounded-md text-sm text-black"
+              class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 rounded-md text-sm text-black"
             >
-              {$t("modded")}
+              {subs.moddedSubscriptions}x {$t("modded")}
             </div>
-          {/each}
+          {/if}
+
+          {#if subs.freeServers > 0}
+            <div class="bg-success px-1.5 rounded-md text-sm text-black">
+              {subs.freeServers}x {$t("free")}
+            </div>
+          {/if}
         {/await}
       </div>
 
