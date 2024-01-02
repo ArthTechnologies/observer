@@ -96,7 +96,7 @@
             <div
               class="bg-base-300 w-min px-1.5 rounded-md text-sm text-gray-500"
             >
-              {address}:{10000 + parseInt(server.id)}
+              {address}:{10000 + parseInt(server.split(":")[0])}
             </div>
           {:else}
             <div class="bg-base-300 w-min px-1.5 rounded-md text-sm">
