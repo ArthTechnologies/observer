@@ -62,7 +62,7 @@
             <div
               class="bg-gradient-to-tr from-orange-500 to-pink-600 w-min px-1.5 rounded-md text-sm text-black font-bold"
             >
-              {subs.subscriptions.length}
+              {subs.subscriptions}
             </div>
           {/if}
           {#if subs.basicSubscriptions > 0}
