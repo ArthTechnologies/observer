@@ -28,6 +28,7 @@
   let worldgen = null;
   let jarsList = [];
   let id = -1;
+  let canCreateModdedServer = true;
 
   if (browser) {
     let email = localStorage.getItem("accountEmail");
@@ -78,6 +79,41 @@
       .then((res) => res.json())
       .then((res) => {
         jarsList = res;
+      });
+
+    //this checks if the user has paid for a modded plan
+    fetch(apiurl + "servers/subscriptions", {
+      method: "GET",
+      headers: {
+        username: localStorage.getItem("accountEmail"),
+        token: localStorage.getItem("token"),
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        //this makes sure that the backend has multiple plans
+        if (
+          !(
+            json.subscriptions > 0 &&
+            json.moddedSubscriptions == 0 &&
+            json.basicSubscriptions == 0
+          )
+        ) {
+          let servers = JSON.parse(localStorage.getItem("servers"));
+          let moddedServers = 0;
+          for (let i in servers) {
+            switch (servers[i].software.toLowerCase) {
+              case "forge":
+              case "fabric":
+              case "quilt":
+                moddedServers++;
+                break;
+            }
+          }
+          if (json.moddedSubscriptions <= moddedServers) {
+            canCreateModdedServer = false;
+          }
+        }
       });
   }
 
@@ -261,9 +297,11 @@
             class="select select-primary p-2 bg-base-100"
           >
             <option>{$t("software.paper")}</option>
-            <option>{$t("software.forge")} </option>
-            <option>{$t("software.fabric")}</option>
-            <option>{$t("software.quilt")}</option>
+            {#if canCreateModdedServer}
+              <option>{$t("software.forge")} </option>
+              <option>{$t("software.fabric")}</option>
+              <option>{$t("software.quilt")}</option>
+            {/if}
             <option>{$t("software.velocity")}</option>
           </select>
 
