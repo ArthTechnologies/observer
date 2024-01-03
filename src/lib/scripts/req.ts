@@ -642,6 +642,7 @@ export function getServer(id: number) {
 
 export function deleteServer(id: number, password: string) {
   if(browser) {
+    console.log("deleting3...");
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
@@ -654,10 +655,11 @@ export function deleteServer(id: number, password: string) {
     localStorage.getItem("accountEmail") +
     "&password=" +
     password;
-
+    console.log("deleting3.5..." + url);
   return fetch(url, DELETE)
     .then((res) => res.text())
     .then((input: string) => {
+      
       console.error(input);
       if (input.indexOf("Invalid credentials") > -1) {
         alert("Wrong password")

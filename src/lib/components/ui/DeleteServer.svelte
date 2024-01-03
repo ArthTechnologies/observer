@@ -17,6 +17,7 @@
     }
   }
   function del() {
+    console.log("deleting1...");
     let delButton = document.getElementById("delButton");
 
     loading = true;
@@ -25,7 +26,9 @@
     if (accountType === "email") {
       password = document.getElementById("password").value;
     }
+    console.log("deleting2...");
     deleteServer(id, password).then(() => {
+      console.log("deleting4...");
       loading = false;
       if (usingOcelot) {
         fetch(
