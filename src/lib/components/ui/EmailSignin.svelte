@@ -244,46 +244,48 @@
       </div>
     </div>
   {:else}
-    <div class="bg-base-300 border-4 border-base-100 rounded-xl md:w-96 pl-2">
+    <div class="bg-base-300 border-4 border-base-100 rounded-xl md:w-96">
       <div class="p-6 text-center">
         <div class="max-w-md space-y-5">
-          <p class="text-xl">{$t("signin.h.signupEmail")}</p>
-          <input
-            id="email"
-            type="text"
-            placeholder={$t("signin.l.email")}
-            class="input w-full max-w-xs"
-          />
-          <div class="w-full flex space-x-2">
-            <div class="w-full flex space-x-2">
-              <input
-                type={pwdVisible}
-                id="pwd"
-                placeholder={$t("signin.l.pwd")}
-                class="input w-full max-w-xs"
-              />
-              <label class="btn btn-circle swap swap-rotate btn-ghost">
-                <!-- this hidden checkbox controls the state -->
-                <input type="checkbox" on:click={pwdVisibility} />
-
-                <Eye size="28" class="swap-off" />
-
-                <EyeOff size="28" class="swap-on" />
-              </label>
-            </div>
-          </div>
-
-          <div class="space-y-5">
+          <div class="space-x-2 space-y-5">
+            <p class="text-xl">{$t("signin.h.signupEmail")}</p>
             <input
-              type="password"
-              id="confPwd"
-              placeholder={$t("signin.l.cpwd")}
+              id="email"
+              type="text"
+              placeholder={$t("signin.l.email")}
               class="input w-full max-w-xs"
             />
+            <div class="w-full flex space-x-2">
+              <div class="w-full flex space-x-2">
+                <input
+                  type={pwdVisible}
+                  id="pwd"
+                  placeholder={$t("signin.l.pwd")}
+                  class="input w-full max-w-xs"
+                />
+                <label class="btn btn-circle swap swap-rotate btn-ghost">
+                  <!-- this hidden checkbox controls the state -->
+                  <input type="checkbox" on:click={pwdVisibility} />
 
-            <button on:click={submit} class="btn btn-primary"
-              >{$t("continue")}</button
-            >
+                  <Eye size="28" class="swap-off" />
+
+                  <EyeOff size="28" class="swap-on" />
+                </label>
+              </div>
+            </div>
+
+            <div class="space-y-5 flex flex-col items-center">
+              <input
+                type="password"
+                id="confPwd"
+                placeholder={$t("signin.l.cpwd")}
+                class="input w-full max-w-xs"
+              />
+
+              <button on:click={submit} class="btn btn-primary w-min"
+                >{$t("continue")}</button
+              >
+            </div>
           </div>
         </div>
       </div>
