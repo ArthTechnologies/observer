@@ -63,6 +63,7 @@
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         index = res;
         index["quilt"] = index["paper"];
         findVersions();
@@ -78,7 +79,9 @@
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         jarsList = res;
+        checkV();
       });
 
     //this checks if the user has paid for a modded plan
@@ -183,6 +186,7 @@
   function checkV() {
     if (browser) {
       version = document.getElementById("versionDropdown").value;
+      console.log("version selected: " + version);
     }
 
     let worldgenModsAvailable = false;
