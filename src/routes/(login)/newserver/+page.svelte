@@ -68,7 +68,7 @@
         findVersions();
         checkV();
       });
-    fetch(apiurl + "servers/jars", {
+    fetch(apiurl + "info/jars", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +82,7 @@
       });
 
     //this checks if the user has paid for a modded plan
-    fetch(apiurl + "servers/subscriptions", {
+    fetch(apiurl + "info/subscriptions", {
       method: "GET",
       headers: {
         username: localStorage.getItem("accountEmail"),

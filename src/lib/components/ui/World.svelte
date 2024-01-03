@@ -31,7 +31,7 @@
     serverVersion = localStorage.getItem("serverVersion");
     id = localStorage.getItem("serverID");
 
-    fetch(apiurl + "servers/jars", {
+    fetch(apiurl + "info/jars", {
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),
@@ -391,7 +391,7 @@
     serverVersion = localStorage.getItem("serverVersion");
     areWorldgenMods = false;
 
-    fetch(apiurl + "servers/jars", {
+    fetch(apiurl + "info/jars", {
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),

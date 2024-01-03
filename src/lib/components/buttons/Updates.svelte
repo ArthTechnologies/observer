@@ -34,7 +34,7 @@
 
     console.log(serverAddons);
 
-    fetch(apiurl + "servers/jars")
+    fetch(apiurl + "info/jars")
       .then((x) => x.json())
       .then((x) => {
         console.log(x);
@@ -56,7 +56,7 @@
       .then((x) => x.json())
       .then((x) => {
         latestUpdate = x.latest.release;
-        fetch(apiurl + "servers/worldgenMods?version=" + latestUpdate)
+        fetch(apiurl + "info/worldgenMods?version=" + latestUpdate)
           .then((x) => x.json())
           .then((x) => {
             console.log("x" + x);

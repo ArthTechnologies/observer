@@ -17,7 +17,7 @@
     servers = JSON.parse(localStorage.getItem("servers"));
     address = localStorage.getItem("address");
 
-    promise = fetch(apiurl + "servers/subscriptions", {
+    promise = fetch(apiurl + "info/subscriptions", {
       method: "GET",
       headers: {
         username: localStorage.getItem("accountEmail"),

@@ -376,7 +376,7 @@ export function searchMods(
 export function getSettings() {
   if(browser) {
   console.log("Request Sent");
-  return fetch(apiurl + "settings", GET)
+  return fetch(apiurl + "info/", GET)
     .then((res) => res.text())
     .then((input: string) => {
       console.log("Response Recieved: " + input);
@@ -405,7 +405,7 @@ export function getSettings() {
 export function getServers(em: string) {
   if(browser) {
   let url =
-      apiurl + "servers/" + "?accountId=" + localStorage.getItem("accountId");
+      apiurl + "info/servers?accountId=" + localStorage.getItem("accountId");
   
   console.log("Request Sent: Get Servers");
 
