@@ -57,16 +57,17 @@ Labrinth is the open-source software behing Modrith, a site where you can downlo
 
 # Contributing
 
+Make sure to run `git checkout next` to switch to the next branch, where future updates are being worked on.
+
 ## How to run a dev server
 
-- Make sure you install the packages by running `npm i`
+- Make sure you install/update the packages by running `npm i`
 - To run a dev server, enter the command `npm run dev`
 - If you need to mimic a production environment for something like working with Service Workers, enter `npm run preview` instead.
 
 ## Contributing Guidelines
 
-- Please format your code with Prettier, or an alternative that achieves the same results.
-- Please use [Lucide Icons](https://lucide.dev)(Included as an npm package) for svg icons & use webp for raster images whenever possible. If you're wondering what tools have been used to make images like the arth logo (seen on arthmc.xyz) and the favicon, they were made with Lunacy.
+- Please use [Lucide Icons](https://lucide.dev)(Included as an npm package) for icons & use the webp format for images whenever possible. If you're wondering what tools have been used to make images like the arth logo (seen on arthmc.xyz) and the favicon, they were made with Lunacy.
 
 ### Check out our [backend](https://github.com/arthmc/quartz)'s progress
 
@@ -78,4 +79,4 @@ Labrinth is the open-source software behing Modrith, a site where you can downlo
 ✅ Communication with backend  
 ✅ Subscriptions with stripe  
 ✅ Basic UI and function for terminal on the frontend  
-🛠️ Signin via discord
+✅ Add signin with discord option

@@ -4,7 +4,7 @@
   import Footer from "$lib/components/layout/Footer.svelte";
   import Navbar from "$lib/components/layout/Navbar.svelte";
   import { t } from "$lib/scripts/i18n";
-  import { basicPlanPrice, moddedPlanPrice } from "$lib/scripts/req";
+  import { apiurl, basicPlanPrice, moddedPlanPrice } from "$lib/scripts/req";
   import {
     AlertTriangleIcon,
     Check,
@@ -24,6 +24,12 @@
         selectModded();
       }
     }
+
+    fetch(apiurl + "info/isAtCapacity")
+      .then((x) => x.json())
+      .then((x) => {
+        atCapacity = x;
+      });
   });
 
   function selectBasic() {
