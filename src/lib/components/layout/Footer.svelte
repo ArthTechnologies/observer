@@ -19,7 +19,7 @@
     class="btn btn-sm btn-ghost flex items-center justify-self-end pointer-events-auto"
   >
     <HelpCircle class="mr-1.5 mt-[0.05rem]" size="18" />
-    {$t("help")}
+    {$t("support")}
   </label>
 </footer>
 
