@@ -47,7 +47,7 @@ if (browser) {
 
 
   //Migration from old email-only account system to new multi-type account system
-  if (localStorage.getItem("accountEmail") != null && localStorage.getItem("accountEmail").split(":")[1] == undefined) {
+  if (localStorage.getItem("accountEmail") != null && localStorage.getItem("accountEmail").split(":")[1] == undefined && localStorage.getItem("accountEmail") != "noemail") {
     localStorage.setItem("accountEmail", "email:" + localStorage.getItem("accountEmail"));
   }
 }
