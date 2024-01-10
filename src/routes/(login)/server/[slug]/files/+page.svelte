@@ -3,7 +3,7 @@
   import File from "$lib/components/ui/files/File.svelte";
   import Folder from "$lib/components/ui/files/Folder.svelte";
   import TextEditor from "$lib/components/ui/files/TextEditor.svelte";
-  import { apiurl, usingOcelot } from "$lib/scripts/req";
+  import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
   import { ArrowLeft } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
   import HistoryButton from "$lib/components/buttons/HistoryButton.svelte";
@@ -21,9 +21,7 @@
     }
     id = localStorage.getItem("serverID");
     let baseurl = apiurl;
-    if (usingOcelot)
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    if (usingOcelot) baseurl = getServerNode(id);
     const url = baseurl + "server/" + id + "/files";
     fetch(url, {
       method: "GET",

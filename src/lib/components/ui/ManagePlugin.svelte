@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { apiurl, usingOcelot } from "$lib/scripts/req";
+  import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
   import { lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
@@ -97,9 +97,7 @@
     document.dispatchEvent(event);
 
     let baseurl = apiurl;
-    if (usingOcelot)
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    if (usingOcelot) baseurl = getServerNode(id);
     const url =
       baseurl + "server/" + serverId + "/file/" + modtype + "s*" + filename;
     fetch(url, {
@@ -121,9 +119,7 @@
 
   function toggleDisable() {
     let baseurl = apiurl;
-    if (usingOcelot)
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    if (usingOcelot) baseurl = getServerNode(id);
     const url =
       baseurl +
       "server/" +

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { downloadProgressShort, fileSizeShort } from "$lib/scripts/utils";
-  import { apiurl, usingOcelot } from "$lib/scripts/req";
+  import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
   import { HardDrive } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
   import { onMount } from "svelte";

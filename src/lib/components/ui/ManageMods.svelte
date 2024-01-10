@@ -1,6 +1,11 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { apiurl, getMods, usingOcelot } from "$lib/scripts/req";
+  import {
+    apiurl,
+    getMods,
+    usingOcelot,
+    getServerNode,
+  } from "$lib/scripts/req";
 
   import { t } from "$lib/scripts/i18n";
   import ManagePluginSkele from "./ManagePluginSkele.svelte";
@@ -168,9 +173,7 @@
     }
 
     let baseurl = apiurl;
-    if (usingOcelot)
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    if (usingOcelot) baseurl = getServerNode(id);
     const url = baseurl + "server/" + serverId + "/file/mods*" + filename;
     fetch(url, {
       method: "DELETE",
