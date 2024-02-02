@@ -1,6 +1,11 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { apiurl, getMods, usingOcelot } from "$lib/scripts/req";
+  import {
+    apiurl,
+    getMods,
+    usingOcelot,
+    getServerNode,
+  } from "$lib/scripts/req";
   import PluginResult from "./PluginResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import ManagePlugin from "./ManagePlugin.svelte";
@@ -53,9 +58,7 @@
     }
 
     let baseurl = apiurl;
-    if (usingOcelot)
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    if (usingOcelot) baseurl = getServerNode(id);
     const url = baseurl + "server/" + serverId + "/file/plugins*" + filename;
 
     fetch(url, {

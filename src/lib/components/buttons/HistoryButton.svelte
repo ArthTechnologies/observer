@@ -2,7 +2,7 @@
   import { browser } from "$app/environment";
   import { History } from "lucide-svelte";
   import TextVersionEditor from "../ui/files/TextVersionEditor.svelte";
-  import { apiurl, usingOcelot } from "$lib/scripts/req";
+  import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
   import { onMount } from "svelte";
   let filepath;
   let id;
@@ -29,9 +29,7 @@
   function updateEditor(version) {
     filepath = document.getElementById("filepath").value;
     let baseurl = apiurl;
-    if (usingOcelot)
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    if (usingOcelot) baseurl = getServerNode(id);
     fetch(
       baseurl +
         "server/" +

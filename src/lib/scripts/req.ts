@@ -109,7 +109,7 @@ export function setInfo(
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "server/" + id + "/setInfo";
   const req = {
     method: "POST",
@@ -180,7 +180,7 @@ export function getMods(id: number, modtype: string) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "server/" + id + "/" + modtype;
   return fetch(url, GET)
     .then((res) => res.text())
@@ -204,7 +204,7 @@ export function sendVersion(
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url =
     baseurl +
     "server/" +
@@ -506,7 +506,7 @@ export function changeServerState(reqstate: string, id: number, em: string) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "server/" + id + "/state/" + reqstate + "?username=" + em;
   const response = fetch(url, POST)
     .then((res) => res.text())
@@ -530,9 +530,13 @@ export function createServer(
 
 ) {
   if(browser) {
-
-    const url =
-      apiurl +
+    let baseurl = apiurl;
+  if (usingOcelot)
+    baseurl =
+      getServerNode(id);
+      console.log("getting server node for " + id + "...", baseurl);
+    const url  =
+      baseurl +
       "server/new/"+id+"?" +
       "email=" +
       localStorage.getItem("accountEmail") +
@@ -625,7 +629,7 @@ export function getServer(id: number) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "server/" + id;
   return fetch(url, GET)
     .then((res) => res.text())
@@ -646,7 +650,7 @@ export function deleteServer(id: number, password: string) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url =
     baseurl +
     "server/" +
@@ -686,7 +690,7 @@ export function writeTerminal(id: number, cmd: string) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "terminal/" + id + "?cmd=" + cmd;
   return fetch(url, POST)
     .then((res) => res.text())
@@ -707,7 +711,7 @@ export function readTerminal(id: number) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "terminal/" + id;
   return fetch(url, GET)
     .then((res) => res.text())
@@ -723,7 +727,7 @@ export function updateServer(id: number, version: string) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "server/" + id + "/version?version=" + version;
   return fetch(url, POST)
     .then((res) => res.text())
@@ -745,7 +749,7 @@ function getServerNodes() {
   for (let i = 0; i < servers.length; i++) {
     serverIdArray.push(servers[i].id);
   }
-  const url = apiurl + "serverNodes?servers=" + serverIdArray.join(",");
+  const url = apiurl + "serverNodes";
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
@@ -754,6 +758,20 @@ function getServerNodes() {
       //return input as json
       return input;
     });
+}
+}
+
+export function getServerNode(id: number) {
+  if(browser) {
+  let serverNodes = JSON.parse(localStorage.getItem("serverNodes"));
+  for (let i in serverNodes) {
+    let ids = serverNodes[i].split("__")[0].split("-");
+    let url = serverNodes[i].split("__")[1];
+    console.log (id + ">=" + parseInt(ids[0]) + "&&" + id + "<=" + parseInt(ids[1]))
+    if (id >= parseInt(ids[0]) && id <= parseInt(ids[1])) {
+      return url;
+    }
+  }
 }
 }
 

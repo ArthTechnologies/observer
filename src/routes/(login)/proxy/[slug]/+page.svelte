@@ -72,8 +72,7 @@
       id = parseInt(window.location.href.split("/")[4]) - 10000;
     }
     if (usingOcelot) {
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      baseurl = getServerNode(id);
     }
     if (
       localStorage.getItem("serverSoftware") == "Fabric" ||

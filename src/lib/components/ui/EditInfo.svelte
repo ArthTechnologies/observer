@@ -1,6 +1,11 @@
 <script>
   import { browser } from "$app/environment";
-  import { apiurl, setInfo, usingOcelot } from "$lib/scripts/req";
+  import {
+    apiurl,
+    setInfo,
+    usingOcelot,
+    getServerNode,
+  } from "$lib/scripts/req";
   import { t } from "$lib/scripts/i18n";
   import { Settings } from "lucide-svelte";
   let id;
@@ -20,9 +25,7 @@
   }
   function get() {
     let baseurl = apiurl;
-    if (usingOcelot)
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    if (usingOcelot) baseurl = getServerNode(id);
     const url = baseurl + "server/" + id + "/getInfo";
     fetch(url, {
       method: "GET",
