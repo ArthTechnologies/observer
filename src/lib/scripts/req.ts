@@ -10,8 +10,8 @@ export let usingOcelot = false;
 export let lrurl = "https://api.modrinth.com/v2/";
 export let stripeKey = "";
 export let usingCurseForge = false;
-export let basicPlanPrice = "$4.00";
-export let moddedPlanPrice = "$6.00";
+export let basicPlanPrice = "$3.49";
+export let moddedPlanPrice = "$4.99";
 export let customerPortalLink = "";
 
 
