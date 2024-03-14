@@ -61,13 +61,15 @@
 
   //we dont have a system for panel owners to set prices for different
   //countries yet, so for now this is arth hosting only.
-  if (localStorage.getItem("address") == "arthmc.xyz") {
-    getBasicPrice().then((x) => {
-      basicPlanPrice2 = x;
-    });
-    getModdedPrice().then((x) => {
-      moddedPlanPrice2 = x;
-    });
+  if (browser) {
+    if (localStorage.getItem("address") == "arthmc.xyz") {
+      getBasicPrice().then((x) => {
+        basicPlanPrice2 = x;
+      });
+      getModdedPrice().then((x) => {
+        moddedPlanPrice2 = x;
+      });
+    }
   }
   function getBasicPrice() {
     return fetch("https://ip2c.org/s")
