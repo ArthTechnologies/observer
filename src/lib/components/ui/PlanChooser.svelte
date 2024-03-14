@@ -56,6 +56,42 @@
       .classList.remove("pointer-events-none");
     document.getElementById("basicSelect").innerHTML = "Select";
   }
+  let basicPlanPrice2 = basicPlanPrice;
+  let moddedPlanPrice2 = moddedPlanPrice;
+
+  //we dont have a system for panel owners to set prices for different
+  //countries yet, so for now this is arth hosting only.
+  if (localStorage.getItem("address") == "arthmc.xyz") {
+    getBasicPrice().then((x) => {
+      basicPlanPrice2 = x;
+    });
+    getModdedPrice().then((x) => {
+      moddedPlanPrice2 = x;
+    });
+  }
+  function getBasicPrice() {
+    return fetch("https://ip2c.org/s")
+      .then((response) => response.text())
+      .then((data) => {
+        if (data.split(";")[1] == "MX") {
+          return "$60";
+        } else {
+          return "$3.49";
+        }
+      });
+  }
+
+  function getModdedPrice() {
+    return fetch("https://ip2c.org/s")
+      .then((response) => response.text())
+      .then((data) => {
+        if (data.split(";")[1] == "MX") {
+          return "$80";
+        } else {
+          return "$4.99";
+        }
+      });
+  }
 </script>
 
 <Navbar navType="welcome" />
@@ -80,7 +116,9 @@
       <div class="flex flex-col gap-2">
         {$t("basic")}
         <div class="flex gap-2">
-          <p class="text-accent-content text-4xl font-bold">{basicPlanPrice}</p>
+          <p class="text-accent-content text-4xl font-bold">
+            {basicPlanPrice2}
+          </p>
 
           <p class="w-5 text-sm">{$t("perMonth")}</p>
         </div>
