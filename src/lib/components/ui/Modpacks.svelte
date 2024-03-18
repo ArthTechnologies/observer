@@ -72,7 +72,7 @@
         query,
         "modpack",
         offset,
-        sortBy
+        sortBy,
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
@@ -96,18 +96,21 @@
         } else if (platform == "cf") {
           skeletonsLength = response.data.length;
           response.data.forEach((item) => {
-            cfResults.push({
-              platform: "cf",
-              name: item.name,
-              desc: item.summary,
-              icon: item.logo.thumbnailUrl,
-              author: item.authors[0].name,
-              id: item.id,
-              client: null,
-              downloads: numShort(item.downloadCount),
-              versions: item.latestFiles,
-              slug: item.slug,
-            });
+            //prevents duplicate results
+            if (!cfResults.some((result) => result.id == item.id)) {
+              cfResults.push({
+                platform: "cf",
+                name: item.name,
+                desc: item.summary,
+                icon: item.logo.thumbnailUrl,
+                author: item.authors[0].name,
+                id: item.id,
+                client: null,
+                downloads: numShort(item.downloadCount),
+                versions: item.latestFiles,
+                slug: item.slug,
+              });
+            }
           });
         }
       });
