@@ -5,6 +5,7 @@
   import { t } from "$lib/scripts/i18n";
   let id;
   let scrollCorrected = false;
+  let isFocused = false;
 
   if (browser) {
     id = localStorage.getItem("serverID");
@@ -25,7 +26,7 @@
   }
 
   setInterval(() => {
-    if (browser) {
+    if (browser && isFocused) {
       const terminalContainer2 = document.getElementById("terminalContainer2");
       const terminal = document.getElementById("terminal");
       const terminal2 = document.getElementById("terminal2");
@@ -52,6 +53,8 @@
       terminalContainer2.scrollTop = terminalContainer2.scrollHeight;
       scrollCorrected = true;
     }
+
+    isFocused = !isFocused;
   }
 </script>
 
@@ -70,9 +73,7 @@
 <div
   class="modal bg-base-100 h-screen w-screen max-sm:items-start items-center"
 >
-  <div
-    class="flex flex-col space-y-3 items-center my-5 md:py-[2rem]"
-  >
+  <div class="flex flex-col space-y-3 items-center my-5 md:py-[2rem]">
     <div id="terminalContainerContainer2" class="relative">
       <div
         id="terminalContainer2"
