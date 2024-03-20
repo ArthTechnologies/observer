@@ -79,20 +79,30 @@
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
           allowLoadMore = response.hits.length == 15;
+
           response.hits.forEach((item) => {
-            console.log(numShort(item.downloads));
-            mrResults.push({
-              platform: "mr",
-              name: item.title,
-              desc: item.description,
-              icon: item.icon_url,
-              author: item.author,
-              id: item.project_id,
-              client: item.client_side,
-              downloads: numShort(item.downloads),
-              versions: [],
-              slug: item.slug,
-            });
+            //prevents duplicate results
+            let duplicates = false;
+            for (let i in mrResults) {
+              if (mrResults[i].id == item.id) {
+                duplicates = true;
+              }
+            }
+            if (!duplicates) {
+              console.log(numShort(item.downloads));
+              mrResults.push({
+                platform: "mr",
+                name: item.title,
+                desc: item.description,
+                icon: item.icon_url,
+                author: item.author,
+                id: item.project_id,
+                client: item.client_side,
+                downloads: numShort(item.downloads),
+                versions: [],
+                slug: item.slug,
+              });
+            }
             console.log(item);
           });
         } else if (platform == "cf") {
@@ -105,18 +115,27 @@
             if (item.authors[0] != undefined) {
               author = item.authors[0].name;
             }
-            cfResults.push({
-              platform: "cf",
-              name: item.name,
-              desc: item.summary,
-              icon: item.logo.thumbnailUrl,
-              author: author,
-              id: item.id,
-              client: null,
-              downloads: numShort(item.downloadCount),
-              versions: item.latestFiles,
-              slug: item.slug,
-            });
+            //prevents duplicate results
+            let duplicates = false;
+            for (let i in cfResults) {
+              if (cfResults[i].id == item.id) {
+                duplicates = true;
+              }
+            }
+            if (!duplicates) {
+              cfResults.push({
+                platform: "cf",
+                name: item.name,
+                desc: item.summary,
+                icon: item.logo.thumbnailUrl,
+                author: author,
+                id: item.id,
+                client: null,
+                downloads: numShort(item.downloadCount),
+                versions: item.latestFiles,
+                slug: item.slug,
+              });
+            }
           });
         }
       });

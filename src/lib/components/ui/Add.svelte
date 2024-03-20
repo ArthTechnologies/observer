@@ -59,15 +59,25 @@
           skeletonsLength = response.hits.length;
           allowLoadMore = response.hits.length == 15;
           response.hits.forEach((item) => {
-            results.push({
-              name: item.title,
-              desc: item.description,
-              icon: item.icon_url,
-              author: item.author,
-              id: item.project_id,
-              downloads: numShort(item.downloads),
-            });
-            console.log(results);
+            //prevents duplicate results
+            let duplicates = false;
+            for (let i in results) {
+              if (results[i].id == item.project_id) {
+                duplicates = true;
+              }
+            }
+
+            if (!duplicates) {
+              results.push({
+                name: item.title,
+                desc: item.description,
+                icon: item.icon_url,
+                author: item.author,
+                id: item.project_id,
+                downloads: numShort(item.downloads),
+              });
+              console.log(results);
+            }
           });
         }
       );

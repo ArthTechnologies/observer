@@ -72,24 +72,34 @@
         query,
         "modpack",
         offset,
-        sortBy,
+        sortBy
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
           let results = [];
+
           response.hits.forEach((item) => {
-            results.push({
-              name: item.title,
-              desc: item.description,
-              icon: item.icon_url,
-              author: item.author,
-              id: item.project_id,
-              client: item.client_side,
-              downloads: numShort(item.downloads),
-              platform: "mr",
-              versions: [],
-              slug: item.slug,
-            });
+            //prevents duplicate results
+            let duplicates = false;
+            for (let i in mrResults) {
+              if (mrResults[i].id == item.id) {
+                duplicates = true;
+              }
+            }
+            if (!duplicates) {
+              results.push({
+                name: item.title,
+                desc: item.description,
+                icon: item.icon_url,
+                author: item.author,
+                id: item.project_id,
+                client: item.client_side,
+                downloads: numShort(item.downloads),
+                platform: "mr",
+                versions: [],
+                slug: item.slug,
+              });
+            }
           });
           mrResults = results;
           console.log(mrResults);
@@ -97,7 +107,13 @@
           skeletonsLength = response.data.length;
           response.data.forEach((item) => {
             //prevents duplicate results
-            if (!cfResults.some((result) => result.id == item.id)) {
+            let duplicates = false;
+            for (let i in cfResults) {
+              if (cfResults[i].id == item.id) {
+                duplicates = true;
+              }
+            }
+            if (!duplicates) {
               cfResults.push({
                 platform: "cf",
                 name: item.name,
