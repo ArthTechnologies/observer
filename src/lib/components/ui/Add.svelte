@@ -33,6 +33,40 @@
     Zap,
   } from "lucide-svelte";
   import Home from "../buttons/Home.svelte";
+  let categories = [
+    "adventure",
+    "cursed",
+    "decoration",
+    "economy",
+    "equipment",
+    "food",
+    "game mechanics",
+    "library",
+    "magic",
+    "management",
+    "minigame",
+    "mobs",
+    "optimization",
+    "storage",
+    "technology",
+    "transportation",
+    "utility",
+    "worldgen",
+  ];
+
+  function toggleCategory(category) {
+    let categoryFound = false;
+    for (let i in categories) {
+      if (categories[i] == category) {
+        categories.splice(i, 1);
+        categoryFound = true;
+      }
+    }
+    if (!categoryFound) {
+      categories.push(category);
+    }
+  }
+
   let promise;
   let results = [];
   let query = "";
@@ -81,33 +115,38 @@
           break;
       }
 
-      promise = searchPlugins(software, version, query, offset, sortBy).then(
-        (response) => {
-          skeletonsLength = response.hits.length;
-          allowLoadMore = response.hits.length == 15;
-          response.hits.forEach((item) => {
-            //prevents duplicate results
-            let duplicates = false;
-            for (let i in results) {
-              if (results[i].id == item.project_id) {
-                duplicates = true;
-              }
+      promise = searchPlugins(
+        software,
+        version,
+        query,
+        offset,
+        sortBy,
+        categories,
+      ).then((response) => {
+        skeletonsLength = response.hits.length;
+        allowLoadMore = response.hits.length == 15;
+        response.hits.forEach((item) => {
+          //prevents duplicate results
+          let duplicates = false;
+          for (let i in results) {
+            if (results[i].id == item.project_id) {
+              duplicates = true;
             }
+          }
 
-            if (!duplicates) {
-              results.push({
-                name: item.title,
-                desc: item.description,
-                icon: item.icon_url,
-                author: item.author,
-                id: item.project_id,
-                downloads: numShort(item.downloads),
-              });
-              console.log(results);
-            }
-          });
-        }
-      );
+          if (!duplicates) {
+            results.push({
+              name: item.title,
+              desc: item.description,
+              icon: item.icon_url,
+              author: item.author,
+              id: item.project_id,
+              downloads: numShort(item.downloads),
+            });
+            console.log(results);
+          }
+        });
+      });
 
       document.getElementById("plugins").innerHTML = "";
     }
@@ -194,6 +233,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("adventure")}
             />
             <Compass size="18" />
             <p>Adventure</p>
@@ -204,6 +244,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("cursed")}
             />
             <Bug size="18" />
             <p>Cursed</p>
@@ -213,6 +254,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("decoration")}
             />
             <HomeIcon size="18" />
             <p>Decoration</p>
@@ -222,6 +264,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("economy")}
             />
             <DollarSign size="18" />
             <p>Economy</p>
@@ -233,6 +276,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("equipment")}
             />
             <Swords size="18" />
             <p>Equipment</p>
@@ -243,6 +287,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("food")}
             />
             <Carrot size="18" />
             <p>Food</p>
@@ -252,6 +297,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("game mechanics")}
             />
             <SlidersHorizontal size="18" />
             <p>Game Mechanics</p>
@@ -261,6 +307,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("library")}
             />
             <Book size="18" />
             <p>Library</p>
@@ -270,6 +317,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("magic")}
             />
             <Wand size="18" />
             <p>Magic</p>
@@ -281,6 +329,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("management")}
             />
             <Server size="18" />
             <p>Management</p>
@@ -290,6 +339,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("minigame")}
             />
             <Award size="18" />
             <p>Minigame</p>
@@ -299,6 +349,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("mobs")}
             />
             <Squirrel size="18" />
             <p>Mobs</p>
@@ -308,6 +359,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("optimization")}
             />
             <Zap size="18" />
             <p>Optimization</p>
@@ -318,6 +370,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("storage")}
             />
             <Archive size="18" />
             <p>Storage</p>
@@ -329,6 +382,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("technology")}
             />
             <HardDrive size="18" />
             <p>Technology</p>
@@ -338,6 +392,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("transportation")}
             />
             <Truck size="18" />
             <p>Transportation</p>
@@ -348,6 +403,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("utility")}
             />
             <Briefcase size="18" />
             <p>Utility</p>
@@ -358,6 +414,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("worldgen")}
             />
             <Globe size="18" />
             <p>Worldgen</p>
@@ -367,6 +424,7 @@
               type="checkbox"
               checked="checked"
               class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("optimization")}
             />
             <Zap size="18" />
             <p>Optimization</p>

@@ -251,7 +251,8 @@ export function searchPlugins(
   version: string,
   query: string,
   offset: number,
-  sortBy: string
+  sortBy: string,
+  categories: Array<string>
 ) {
   sortBy = sortBy.toLowerCase();
   if(browser) {
@@ -259,15 +260,20 @@ export function searchPlugins(
     version = "1.19.3";
   }
   query = query.replace(" ", "-");
-
+  let categoriesString = "";
+  if (categories.length > 0) {
+    categoriesString = '["categories:'+categories.join('"],["categories:')+'"],';
+  }
+  console.log("CATEGORIES STRING "+categoriesString)
   const url =
     lrurl +
     "search" +
     "?query=" +
     query +
     '&facets=[["categories:' +
-    software +
-    '"],["versions:' +
+    software + 
+    '"],'+
+    categoriesString+'["versions:' +
     version +
     '"],["server_side:optional","server_side:required"]]' +
     "&limit=15" +
