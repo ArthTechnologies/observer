@@ -260,11 +260,16 @@ export function searchPlugins(
     version = "1.19.3";
   }
   query = query.replace(" ", "-");
+  let versionString = '["versions:' +
+  version +
+  '"],';
+  if (version == "any") versionString = "";
   let categoriesString = "";
   if (categories.length > 0) {
     categoriesString = '["categories:'+categories.join('"],["categories:')+'"],';
+    categoriesString = categoriesString.replace(/ /g, "_");
   }
-  console.log("CATEGORIES STRING "+categoriesString)
+
   const url =
     lrurl +
     "search" +
@@ -272,10 +277,8 @@ export function searchPlugins(
     query +
     '&facets=[["categories:' +
     software + 
-    '"],'+
-    categoriesString+'["versions:' +
-    version +
-    '"],["server_side:optional","server_side:required"]]' +
+    '"],'+ versionString +
+    categoriesString+'["server_side:optional","server_side:required"]]' +
     "&limit=15" +
     "&offset=" + offset +
     "&index=" + sortBy;

@@ -33,26 +33,7 @@
     Zap,
   } from "lucide-svelte";
   import Home from "../buttons/Home.svelte";
-  let categories = [
-    "adventure",
-    "cursed",
-    "decoration",
-    "economy",
-    "equipment",
-    "food",
-    "game mechanics",
-    "library",
-    "magic",
-    "management",
-    "minigame",
-    "mobs",
-    "optimization",
-    "storage",
-    "technology",
-    "transportation",
-    "utility",
-    "worldgen",
-  ];
+  let categories = [];
 
   function toggleCategory(category) {
     let categoryFound = false;
@@ -65,6 +46,7 @@
     if (!categoryFound) {
       categories.push(category);
     }
+    search(false);
   }
 
   let promise;
@@ -76,11 +58,17 @@
   let sortBy = "relevance";
   onMount(() => {
     if (browser) {
+      //uncheck every checkbox
+      let checkboxes = document.getElementsByClassName("checkbox");
+      for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false;
+      }
       search(false);
     }
   });
   let software;
   let version;
+  let versionFilter = true;
   function search(loadMore = false) {
     if (loadMore) {
       skeletonsLength = offset + 15;
@@ -114,14 +102,17 @@
           sortBy = "updated";
           break;
       }
-
+      let sVersion = version;
+      if (!versionFilter) {
+        sVersion = "any";
+      }
       promise = searchPlugins(
         software,
-        version,
+        sVersion,
         query,
         offset,
         sortBy,
-        categories,
+        categories
       ).then((response) => {
         skeletonsLength = response.hits.length;
         allowLoadMore = response.hits.length == 15;
@@ -222,7 +213,14 @@
       <div class="flex max-md:flex-col md:space-x-4">
         <div class="flex flex-col items-left">
           <div class="flex items-center space-x-1">
-            <input type="checkbox" class="checkbox checkbox-xs mr-0.5" />
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => {
+                versionFilter = !versionFilter;
+                search(false);
+              }}
+            />
             <Filter size="18" />
             <p>
               Non-{version}
@@ -231,7 +229,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("adventure")}
             />
@@ -242,7 +239,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("cursed")}
             />
@@ -252,7 +248,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("decoration")}
             />
@@ -262,7 +257,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("economy")}
             />
@@ -274,7 +268,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("equipment")}
             />
@@ -285,7 +278,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("food")}
             />
@@ -295,7 +287,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("game mechanics")}
             />
@@ -305,7 +296,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("library")}
             />
@@ -315,7 +305,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("magic")}
             />
@@ -327,7 +316,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("management")}
             />
@@ -337,7 +325,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("minigame")}
             />
@@ -347,7 +334,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("mobs")}
             />
@@ -357,7 +343,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("optimization")}
             />
@@ -368,7 +353,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("storage")}
             />
@@ -380,7 +364,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("technology")}
             />
@@ -390,7 +373,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("transportation")}
             />
@@ -401,7 +383,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("utility")}
             />
@@ -412,7 +393,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("worldgen")}
             />
@@ -422,7 +402,6 @@
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked="checked"
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("optimization")}
             />
