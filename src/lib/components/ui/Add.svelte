@@ -20,9 +20,10 @@
     DollarSign,
     Filter,
     FilterX,
-    Globe,
+    Globe2,
     HardDrive,
     HomeIcon,
+    MessageCircleIcon,
     Server,
     SlidersHorizontal,
     Squirrel,
@@ -396,17 +397,17 @@
               class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("worldgen")}
             />
-            <Globe size="18" />
+            <Globe2 size="18" />
             <p>Worldgen</p>
           </div>
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
               class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("optimization")}
+              on:click={() => toggleCategory("social")}
             />
-            <Zap size="18" />
-            <p>Optimization</p>
+            <MessageCircleIcon size="18" />
+            <p>Social</p>
           </div>
         </div>
       </div>

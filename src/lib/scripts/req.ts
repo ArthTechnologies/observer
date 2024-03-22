@@ -306,7 +306,8 @@ export function searchMods(
   query: string,
   modtype: string,
   offset: number,
-  sortBy: string
+  sortBy: string,
+  categories: Array<string>
 ) {
   sortBy = sortBy.toLowerCase();
   if(browser) {
@@ -318,6 +319,11 @@ export function searchMods(
   let url;
 
   if (platform == "mr")  {
+    let categoriesString = "";
+    if (categories.length > 0) {
+      categoriesString = '["categories:'+categories.join('"],["categories:')+'"],';
+      categoriesString = categoriesString.replace(/ /g, "_");
+    }
     url =
     lrurl +
     "search" +
@@ -325,7 +331,7 @@ export function searchMods(
     query +
     '&facets=[["categories:' +
     software +
-    '"], ["project_type:' +
+    '"],'+categoriesString+'["project_type:' +
     modtype +
     '"],["versions:' +
     version +
@@ -363,7 +369,8 @@ export function searchMods(
     '&classId=' +
     classId +
     '&index=' + offset +
-    "&sortField=" + sf;
+    "&sortField=" + sf +
+    "&categories=" + categories.join(",");
   }
 
   if (!lock) {
