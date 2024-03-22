@@ -283,7 +283,7 @@
               on:click={() => toggleCategory("adventure")}
             />
             <Compass size="18" />
-            <p>Adventure</p>
+            <p>{$t("category.adventure")}</p>
           </div>
 
           <div class="flex items-center space-x-1">
@@ -293,7 +293,7 @@
               on:click={() => toggleCategory("cursed")}
             />
             <Bug size="18" />
-            <p>Cursed</p>
+            <p>{$t("category.cursed")}</p>
           </div>
           <div class="flex items-center space-x-1">
             <input
@@ -302,7 +302,7 @@
               on:click={() => toggleCategory("decoration")}
             />
             <HomeIcon size="18" />
-            <p>Decoration</p>
+            <p>{$t("category.decoration")}</p>
           </div>
           <div class="flex items-center space-x-1">
             <input
@@ -311,7 +311,7 @@
               on:click={() => toggleCategory("economy")}
             />
             <DollarSign size="18" />
-            <p>Economy</p>
+            <p>{$t("category.economy")}</p>
           </div>
           <div class="flex items-center space-x-1">
             <input
@@ -320,7 +320,7 @@
               on:click={() => toggleCategory("social")}
             />
             <MessageCircle size="18" />
-            <p>Social</p>
+            <p>{$t("category.social")}</p>
           </div>
         </div>
         <div class="flex flex-col items-left">
@@ -331,7 +331,7 @@
               on:click={() => toggleCategory("equipment")}
             />
             <Swords size="18" />
-            <p>Equipment</p>
+            <p>{$t("category.equipment")}</p>
           </div>
 
           <div class="flex items-center space-x-1">
@@ -341,7 +341,7 @@
               on:click={() => toggleCategory("food")}
             />
             <Carrot size="18" />
-            <p>Food</p>
+            <p>{$t("category.food")}</p>
           </div>
           <div class="flex items-center space-x-1">
             <input
@@ -350,7 +350,7 @@
               on:click={() => toggleCategory("game mechanics")}
             />
             <SlidersHorizontal size="18" />
-            <p>Game Mechanics</p>
+            <p>{$t("category.game mechanics")}</p>
           </div>
           <div class="flex items-center space-x-1">
             <input
@@ -368,7 +368,7 @@
               on:click={() => toggleCategory("magic")}
             />
             <Wand size="18" />
-            <p>Magic</p>
+            <p>{$t("category.magic")}</p>
           </div>
         </div>
         <div class="flex flex-col items-left">
@@ -379,7 +379,7 @@
               on:click={() => toggleCategory("management")}
             />
             <Server size="18" />
-            <p>Management</p>
+            <p>{$t("category.management")}</p>
           </div>
           <div class="flex items-center space-x-1">
             <input
@@ -388,7 +388,7 @@
               on:click={() => toggleCategory("minigame")}
             />
             <Award size="18" />
-            <p>Minigame</p>
+            <p>{$t("category.minigame")}</p>
           </div>
           <div class="flex items-center space-x-1">
             <input
@@ -397,7 +397,7 @@
               on:click={() => toggleCategory("mobs")}
             />
             <Squirrel size="18" />
-            <p>Mobs</p>
+            <p>{$t("category.mobs")}</p>
           </div>
           <div class="flex items-center space-x-1">
             <input
@@ -406,7 +406,7 @@
               on:click={() => toggleCategory("optimization")}
             />
             <Zap size="18" />
-            <p>Optimization</p>
+            <p>{$t("category.optimization")}</p>
           </div>
 
           <div class="flex items-center space-x-1">
@@ -416,7 +416,7 @@
               on:click={() => toggleCategory("storage")}
             />
             <Archive size="18" />
-            <p>Storage</p>
+            <p>{$t("category.storage")}</p>
           </div>
         </div>
         <div class="flex flex-col items-left">
@@ -427,7 +427,7 @@
               on:click={() => toggleCategory("technology")}
             />
             <HardDrive size="18" />
-            <p>Technology</p>
+            <p>{$t("category.technology")}</p>
           </div>
           <div class="flex items-center space-x-1">
             <input
@@ -436,7 +436,7 @@
               on:click={() => toggleCategory("transportation")}
             />
             <Truck size="18" />
-            <p>Transportation</p>
+            <p>{$t("category.transportation")}</p>
           </div>
 
           <div class="flex items-center space-x-1">
@@ -446,7 +446,7 @@
               on:click={() => toggleCategory("utility")}
             />
             <Briefcase size="18" />
-            <p>Utility</p>
+            <p>{$t("category.utility")}</p>
           </div>
 
           <div class="flex items-center space-x-1">
@@ -456,7 +456,7 @@
               on:click={() => toggleCategory("worldgen")}
             />
             <Globe2 size="18" />
-            <p>Worldgen</p>
+            <p>{$t("category.worldgen")}</p>
           </div>
         </div>
       </div>
