@@ -128,7 +128,7 @@
         "mod",
         offset,
         sortBy,
-        categories
+        categories,
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
@@ -280,20 +280,6 @@
             <input
               type="checkbox"
               class="checkbox checkbox-xs mr-0.5"
-              on:click={() => {
-                versionFilter = !versionFilter;
-                search(false);
-              }}
-            />
-            <Filter size="18" />
-            <p>
-              Non-{version}
-            </p>
-          </div>
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("adventure")}
             />
             <Compass size="18" />
@@ -326,6 +312,15 @@
             />
             <DollarSign size="18" />
             <p>Economy</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("social")}
+            />
+            <MessageCircle size="18" />
+            <p>Social</p>
           </div>
         </div>
         <div class="flex flex-col items-left">
@@ -462,15 +457,6 @@
             />
             <Globe2 size="18" />
             <p>Worldgen</p>
-          </div>
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("social")}
-            />
-            <MessageCircle size="18" />
-            <p>Social</p>
           </div>
         </div>
       </div>
