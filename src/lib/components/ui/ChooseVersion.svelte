@@ -23,7 +23,7 @@
   var sVersion = "";
   var fullDesc = "";
   let lang = "en";
-
+  let versionFilter = true;
   if (browser) {
     lang = window.navigator.language;
     if (localStorage.getItem("lang") != null) {
@@ -33,6 +33,11 @@
     lang = lang.split("_")[0];
     software = localStorage.getItem("serverSoftware");
     sVersion = localStorage.getItem("serverVersion");
+
+    //if versionFilterCheckbox is checked
+    if (localStorage.getItem("versionFilterCheckbox") == "true") {
+      versionFilter = false;
+    }
     switch (software) {
       case "Velocity":
         sVersion = localStorage.getItem("latestVersion");
@@ -42,7 +47,7 @@
     }
     switch (sVersion) {
       case "latest":
-        sVersion = "1.19.4";
+        sVersion = "1.20.4";
         break;
     }
   }
@@ -95,7 +100,7 @@
         if (
           version.name != vname &&
           version.loaders.includes(software) &&
-          version.game_versions.includes(sVersion)
+          (version.game_versions.includes(sVersion) || !versionFilter)
         ) {
           vname = version.name;
           console.log(version);
