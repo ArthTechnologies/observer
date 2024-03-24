@@ -34,10 +34,9 @@
     software = localStorage.getItem("serverSoftware");
     sVersion = localStorage.getItem("serverVersion");
 
-    //if versionFilterCheckbox is checked
-    if (localStorage.getItem("versionFilterCheckbox") == "true") {
+    if (document.getElementById("versionFilterCheckbox").checked)
       versionFilter = false;
-    }
+
     switch (software) {
       case "Velocity":
         sVersion = localStorage.getItem("latestVersion");
