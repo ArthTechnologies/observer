@@ -9,11 +9,38 @@
 
   let stripe = null;
   let clientSecret = null;
+  let currency = "usd";
+  let locale = "en";
+  let email = "";
   onMount(async () => {
+    if (browser) {
+      email = localStorage.getItem("accountEmail");
+      if (email.split(":")[0] == "email") {
+        email = email.split(":")[1];
+      } else {
+        email = "";
+      }
+
+      if (localStorage.getItem("lang") != null) {
+        locale = localStorage.getItem("lang");
+      } else {
+        locale = navigator.language;
+      }
+    }
     stripe = await loadStripe(stripeKey);
-    clientSecret = await fetch(apiurl + "checkout/basic", {
-      method: "POST",
-    })
+    clientSecret = await fetch(
+      apiurl +
+        "checkout/basic" +
+        "?customer_email=" +
+        email +
+        "&currency=" +
+        currency +
+        "&locale=" +
+        locale,
+      {
+        method: "POST",
+      },
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
