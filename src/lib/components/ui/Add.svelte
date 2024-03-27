@@ -113,7 +113,7 @@
         query,
         offset,
         sortBy,
-        categories,
+        categories
       ).then((response) => {
         skeletonsLength = response.hits.length;
         allowLoadMore = response.hits.length == 15;
@@ -217,6 +217,7 @@
             <input
               type="checkbox"
               class="checkbox checkbox-xs mr-0.5"
+              id="versionFilterCheckbox"
               on:click={() => {
                 versionFilter = !versionFilter;
                 search(false);
