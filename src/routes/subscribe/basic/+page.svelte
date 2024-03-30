@@ -26,6 +26,7 @@
       } else {
         locale = navigator.language;
       }
+      locale = locale.split("-")[0];
     }
     stripe = await loadStripe(stripeKey);
     clientSecret = await fetch(
@@ -39,7 +40,7 @@
         locale,
       {
         method: "POST",
-      },
+      }
     )
       .then((res) => res.json())
       .then((data) => {
