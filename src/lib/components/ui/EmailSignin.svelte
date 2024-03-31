@@ -166,7 +166,7 @@
     <div transition:fade={{ duration: 1000 }}>
       {#if sign == "in"}
         <div
-          class="ml-2 w-[20.3rem] md:w-[23rem] bg-base-300 absolute h-[13rem] top-16 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
+          class="ml-2 w-[20.3rem] md:w-[23rem] bg-base-300 absolute h-[13rem] top-16 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1px]"
         >
           <div class="flex flex-col gap-4 items-center -mt-24">
             <div
@@ -184,7 +184,7 @@
         </div>
       {:else if sign == "up"}
         <div
-          class="ml-2 w-[20.3rem] md:w-[23rem] bg-base-300 absolute h-[18rem] top-16 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1.5px]"
+          class="ml-2 w-[20.3rem] md:w-[23rem] bg-base-300 absolute h-[18rem] top-16 bg-opacity-90 z-50 flex justify-center items-center backdrop-blur-[1px]"
         >
           <div class="flex flex-col gap-4 items-center -mt-24">
             <div
@@ -237,7 +237,7 @@
             </div>
 
             <button on:click={submit} class="btn btn-primary"
-              >{$t("continue")}</button
+              >{$t("signin.continue")}</button
             >
           </div>
         </div>
@@ -282,8 +282,8 @@
                 class="input w-full max-w-xs"
               />
 
-              <button on:click={submit} class="btn btn-primary w-min"
-                >{$t("continue")}</button
+              <button on:click={submit} class="btn btn-primary"
+                >{$t("signup.continue")}</button
               >
             </div>
           </div>

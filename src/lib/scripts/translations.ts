@@ -26,7 +26,7 @@ export default {
     "account.logout": "Logout",
     "general.ex": "ex:",
     "signin.title": "Welcome!",
-    "signin.h": "Sign in to access servers.",
+    "signin.h": "Your servers are just a few clicks away.",
     "signin.discord": "Discord (Beta)",
     "signin.metamask": "MetaMask (Coming Soon)",
     "signin.h.email": "Sign in via Email:",
@@ -272,6 +272,9 @@ export default {
     "category.utility": "Utility",
     "category.worldgen": "Worldgen",
     non: "Non-",
+    "signin.continue": "Continue",
+    "signup.continue": "Continue to Payment",
+
 
   },
   "es-ES": {
@@ -305,7 +308,7 @@ export default {
     "account.logout": "Cerrar sesión",
     "general.ex": "ex:",
     "signin.title": "¡Bienvenido!",
-    "signin.h": "Inicia sesión para acceder a sus servidores.",
+    "signin.h": "Sus servidores están a solo unos clics de distancia.",
     "signin.discord": "Discord (Beta)",
     "signin.metamask": "MetaMask (Coming Soon)",
     "signin.h.email": "Iniciar sesión con correo electrónico:",
@@ -553,6 +556,8 @@ export default {
     "category.utility": "Utilidad",
     "category.worldgen": "Worldgen",
     non: "No-",
+    "signin.continue": "Continuar",
+    "signup.continue": "Continuar al Pago",
 
   },
 };
