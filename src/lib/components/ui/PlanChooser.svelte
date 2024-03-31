@@ -15,13 +15,25 @@
   import { onMount } from "svelte";
 
   let atCapacity = false;
-  export let defaultPlan = "basic";
   onMount(() => {
     if (browser && window.innerWidth > 768) {
-      if (defaultPlan == "basic") {
+      if (window.location.pathname == "/subscribe/basic") {
         selectBasic();
-      } else if (defaultPlan == "modded") {
+      } else if (window.location.pathname == "/subscribe/modded") {
         selectModded();
+      }
+    }
+
+    if (browser) {
+      const usd = document.getElementById("usd");
+      const mxn = document.getElementById("mxn");
+      if (localStorage.getItem("currency") == "mxn") {
+        usd?.classList.add("btn-neutral");
+        usd?.classList.add("hover:bg-base-100");
+        usd?.classList.remove("pointer-events-none");
+        mxn?.classList.remove("btn-neutral");
+        mxn?.classList.remove("hover:bg-base-100");
+        mxn?.classList.add("pointer-events-none");
       }
     }
 
@@ -63,12 +75,25 @@
   //countries yet, so for now this is arth hosting only.
   if (browser) {
     if (localStorage.getItem("address") == "arthmc.xyz") {
-      getBasicPrice().then((x) => {
-        basicPlanPrice2 = x;
-      });
-      getModdedPrice().then((x) => {
-        moddedPlanPrice2 = x;
-      });
+      if (localStorage.getItem("currency") == null) {
+        getBasicPrice().then((x) => {
+          basicPlanPrice2 = x;
+        });
+        getModdedPrice().then((x) => {
+          moddedPlanPrice2 = x;
+        });
+      } else {
+        if (localStorage.getItem("currency") == "mxn") {
+          basicPlanPrice2 = "$60";
+          moddedPlanPrice2 = "$80";
+        } else {
+          basicPlanPrice2 = "$3.49";
+          moddedPlanPrice2 = "$4.99";
+        }
+      }
+    } else {
+      const currencyChooser = document.getElementById("currencyChooser");
+      currencyChooser?.classList.add("hidden");
     }
   }
   function getBasicPrice() {
@@ -109,10 +134,50 @@
       </div>
     </div>
   {/if}
+  <div id="currencyChooser" class="flex space-x-1 absolute top-3 right-3 z-50">
+    <button
+      id="usd"
+      class="btn btn-sm pointer-events-none"
+      on:click={() => {
+        if (browser) {
+          const usd = document.getElementById("usd");
+          const mxn = document.getElementById("mxn");
+          usd?.classList.remove("btn-neutral");
+          usd?.classList.remove("hover:bg-base-100");
+          usd?.classList.add("pointer-events-none");
+          mxn?.classList.add("btn-neutral");
+          mxn?.classList.add("hover:bg-base-100");
+          mxn?.classList.remove("pointer-events-none");
+
+          localStorage.setItem("currency", "usd");
+          location.reload();
+        }
+      }}>$</button
+    >
+    <button
+      id="mxn"
+      class="btn btn-neutral btn-sm hover:bg-base-100"
+      on:click={() => {
+        if (browser) {
+          const usd = document.getElementById("usd");
+          const mxn = document.getElementById("mxn");
+          usd?.classList.add("btn-neutral");
+          usd?.classList.add("hover:bg-base-100");
+          usd?.classList.remove("pointer-events-none");
+          mxn?.classList.remove("btn-neutral");
+          mxn?.classList.remove("hover:bg-base-100");
+          mxn?.classList.add("pointer-events-none");
+
+          localStorage.setItem("currency", "mxn");
+          location.reload();
+        }
+      }}>MX$</button
+    >
+  </div>
   <div
     class=" md:h-screen px-16 px-[2.5rem] lg:px-[7rem] py-[4.5rem] flex flex-col max-md:place-items-center relative"
   >
-    <p class="text-lg mb-4 font-bold">{$t("subscribe.pickAPlan")}</p>
+    <p class="text-xl mb-4 font-bold">{$t("subscribe.pickAPlan")}</p>
 
     <div class="flex mb-8">
       <div class="flex flex-col gap-2">
@@ -157,7 +222,7 @@
         {$t("modded")}
         <div class="flex gap-2">
           <p class="text-accent-content text-4xl font-bold">
-            {moddedPlanPrice}
+            {moddedPlanPrice2}
           </p>
 
           <p class="w-5 text-sm">{$t("perMonth")}</p>

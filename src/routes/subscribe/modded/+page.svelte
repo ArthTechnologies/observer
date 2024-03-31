@@ -21,6 +21,22 @@
         email = "";
       }
 
+      if (localStorage.getItem("currency") == null) {
+        fetch("https://ip2c.org/s")
+          .then((response) => response.text())
+          .then((data) => {
+            if (data.split(";")[1] == "MX") {
+              localStorage.setItem("currency", "mxn");
+              currency = "mxn";
+            } else {
+              localStorage.setItem("currency", "usd");
+              currency = "usd";
+            }
+          });
+      } else {
+        currency = localStorage.getItem("currency");
+      }
+
       if (localStorage.getItem("lang") != null) {
         locale = localStorage.getItem("lang");
       } else {
@@ -28,6 +44,7 @@
       }
       locale = locale.split("-")[0];
     }
+
     stripe = await loadStripe(stripeKey);
     clientSecret = await fetch(
       apiurl +
