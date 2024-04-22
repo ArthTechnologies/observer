@@ -72,7 +72,8 @@
         query,
         "modpack",
         offset,
-        sortBy
+        sortBy,
+        []
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
