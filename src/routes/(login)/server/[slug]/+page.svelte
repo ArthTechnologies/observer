@@ -431,16 +431,19 @@
         <div
           class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
         >
-          <div class="flex relative">
+          <div class="flex relative w-[22.4rem]">
             <div class="p-4 space-x-4 flex">
               <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md" />
 
               <div class="">
                 <div class="stat-title">{$t("server.ip")}</div>
-                <div class="font-bold sm:text-lg md:text-3xl">
+                <div class="font-bold sm:text-lg md:text-[1.8rem] mt-1">
                   {address}:{port}
                 </div>
-                <div id="xDesc" class="text-xs font-light flex justify-between">
+                <div
+                  id="xDesc"
+                  class="text-xs font-light flex justify-between mt-1"
+                >
                   Description: {desc}
                 </div>
               </div>
