@@ -153,7 +153,7 @@ export default {
     "settings.h.advancedSettings": "Advanced Settings",
     "settings.h.proxies": "Proxies",
     "settings.desc.proxies":
-      "If you havve a proxy set up, you can enable it here.",
+      "If you have a proxy set up, you can enable it here.",
     "settings.l.enableProxies": "Enable Proxies",
     "settings.l.forwardingSecret": "Forwarding Secret",
     "settings.l.noProxies": "Your server software doesn't support proxies.",
@@ -274,6 +274,7 @@ export default {
     non: "Non-",
     "signin.continue": "Continue",
     "signup.continue": "Continue to Payment",
+    "apply": "Apply",
 
 
   },
@@ -558,6 +559,7 @@ export default {
     non: "No-",
     "signin.continue": "Continuar",
     "signup.continue": "Continuar al Pago",
+    "apply": "Aplicar",
 
   },
 };

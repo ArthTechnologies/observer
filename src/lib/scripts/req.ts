@@ -168,8 +168,13 @@ export function setInfo(
       .catch((err) => console.error(err));
   }
   function setDescText(desc) {
+    document.getElementById("rawDesc").innerHTML = desc;
     if (document.getElementById("xDesc") != null) {
-      document.getElementById("xDesc").innerHTML = "Description: " + desc;
+      document.getElementById("xDesc").innerHTML = "Description: " + desc
+      .replace(/§l/g, "<b>")
+      .replace(/§o/g, "<i>")
+      .replace(/§r/g, "</b></i>")
+      .replace(/§./g, "");
     }
   }
 }

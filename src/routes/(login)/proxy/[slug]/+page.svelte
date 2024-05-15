@@ -16,7 +16,7 @@
   import Manage from "$lib/components/ui/Manage.svelte";
   import AddMod from "$lib/components/ui/AddMod.svelte";
   import Add from "$lib/components/ui/Add.svelte";
-  import EditInfo from "$lib/components/ui/EditInfo.svelte";
+  import ServerSettings from "$lib/components/ui/ServerSettings.svelte";
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
   import FullscreenTerminal from "$lib/components/buttons/FullscreenTerminal.svelte";
@@ -213,7 +213,14 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        desc = data.desc;
+        document.getElementById("rawDesc").innerText = data.desc;
+        //displays bold, italic formatings
+        //removes all other formating codes
+        desc = data.desc
+          .replace(/§l/g, "<b>")
+          .replace(/§o/g, "<i>")
+          .replace(/§r/g, "</b></i>")
+          .replace(/§./g, "");
         console.log(data.iconUrl + "icon");
         if (data.iconUrl != undefined) {
           console.log("icon is " + data.iconUrl);
@@ -536,12 +543,10 @@
                 <div class="font-bold sm:text-lg md:text-[1.8rem] mt-1">
                   {address}:{port}
                 </div>
-                <div
-                  id="xDesc"
-                  class="text-xs font-light flex justify-between mt-1"
-                >
-                  Description: {desc}
+                <div id="xDesc" class="text-xs font-light flex mt-1">
+                  Description: {@html desc}
                 </div>
+                <div id="rawDesc" class="hidden"></div>
               </div>
             </div>
             <a
@@ -553,7 +558,7 @@
               <HelpCircle size="18" class="md:mr-1" />
               <p class="hidden md:block">How to join</p></a
             >
-            <EditInfo />
+            <ServerSettings />
           </div>
         </div>
       </div>
@@ -648,7 +653,7 @@
 
       <div class="w-[20rem] flex flex-col items-center">
         <div class="flex space-x-2 mb-2 mt-4">
-          <EditInfo type="fullBtn" /><StorageLimit />
+          <ServerSettings type="fullBtn" /><StorageLimit />
         </div>
         <div class="flex space-x-2">
           <a

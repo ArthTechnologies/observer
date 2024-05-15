@@ -8,6 +8,8 @@
   } from "$lib/scripts/req";
   import { t } from "$lib/scripts/i18n";
   import { Settings } from "lucide-svelte";
+  import { bind, onMount } from "svelte/internal";
+  import { handleDesc } from "$lib/scripts/utils";
   let id;
   let icon = "";
   let iconPreview = "/images/palceholder.webp";
@@ -63,7 +65,7 @@
         }
         icon = document.getElementById("xIcon").src;
         iconPreview = icon;
-        desc = document.getElementById("xDesc")?.innerText.split(": ")[1];
+        desc = document.getElementById("rawDesc")?.innerText;
         if (icon.includes("/images/placeholder.webp")) {
           icon = "";
           iconPreview = "/images/placeholder.webp";
@@ -135,6 +137,11 @@
       for="editInfo"
       class="btn btn-neutral btn-sm btn-circle fixed right-2 top-2">✕</label
     >
+    <label
+      for="editInfo"
+      class="btn btn-neutral btn-sm fixed right-12 top-2"
+      on:click={set}>{$t("apply")}</label
+    >
     <h3 class="text-2xl font-bold mb-3">{$t("button.settings")}</h3>
     <label for="serverDescription" class="block font-bold mb-2"
       >{$t("settings.l.name")}
@@ -154,12 +161,49 @@
     <label for="serverDescription" class="block font-bold mb-2"
       >{$t("description")}
     </label>
-    <input
+    {#if software != "Velocity"}
+      <div class="mb-1.5 flex space-x-1">
+        <div class="flex text-sm">
+          <div
+            class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
+          >
+            Bold
+          </div>
+          <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§l</div>
+        </div>
+        <div class="flex text-sm">
+          <div
+            class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
+          >
+            Italic
+          </div>
+          <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§o</div>
+        </div>
+        <div class="flex text-sm">
+          <div
+            class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
+          >
+            Glitch Effect
+          </div>
+          <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§k</div>
+        </div>
+        <div class="flex text-sm">
+          <div
+            class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
+          >
+            Reset
+          </div>
+          <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§r</div>
+        </div>
+      </div>
+    {/if}
+
+    <textarea
+      class="textarea textarea-bordered w-full h-24 text-[.95rem]"
       bind:value={desc}
-      type="text"
       id="serverDescription"
-      class="input input-bordered"
-    />
+    ></textarea>
+
     <label for="serverIcon" class="block font-bold my-2"
       >{$t("settings.l.icon")}
       <p class="font-light">{$t("settings.desc.icon")}</p></label
@@ -202,10 +246,11 @@
       />
     {:else}<p class="mb-4">{$t("settings.l.noProxies")}</p>
     {/if}
-    <div class="flex justify-end mt-4">
-      <label on:click={set} for="editInfo" class="btn btn-primary"
-        >{$t("save")}</label
-      >
-    </div>
   </div>
 </div>
+
+<style>
+  .nocopy {
+    user-select: none;
+  }
+</style>
