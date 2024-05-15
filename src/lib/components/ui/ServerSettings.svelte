@@ -218,9 +218,14 @@
       />
       <img src={iconPreview} class="h-[3rem] w-[3rem] rounded-lg" />
     </div>
-    <h3 class="text-2xl font-bold mt-5">{$t("settings.h.advancedSettings")}</h3>
-    <div class="divider mt-5 text-xl font-bold">{$t("settings.h.proxies")}</div>
     {#if software == "Paper"}
+      <h3 class="text-2xl font-bold mt-5">
+        {$t("settings.h.advancedSettings")}
+      </h3>
+      <div class="divider mt-5 text-xl font-bold">
+        {$t("settings.h.proxies")}
+      </div>
+
       <p class="mb-4">{$t("settings.desc.proxies")}</p>
       <div class=" w-52">
         <label class="cursor-pointer label">
@@ -244,7 +249,9 @@
         class="input input-bordered"
         placeholder={fSecret}
       />
-    {:else}<p class="mb-4">{$t("settings.l.noProxies")}</p>
+    {:else if software != "Velocity"}<p class="my-4">
+        {$t("settings.l.noProxies")}
+      </p>
     {/if}
   </div>
 </div>
