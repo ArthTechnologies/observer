@@ -34,7 +34,7 @@
     software = localStorage.getItem("serverSoftware");
     sVersion = localStorage.getItem("serverVersion");
 
-    if (document.getElementById("versionFilterCheckbox").checked)
+    if (document.getElementById("versionFilterCheckbox")?.checked)
       versionFilter = false;
 
     switch (software) {
@@ -66,7 +66,7 @@
       .then((data) => {
         document.getElementById("body" + suffix).innerHTML = marked(data.body);
         document.getElementById("body" + suffix).innerHTML = handleDesc(
-          marked(data.body)
+          marked(data.body),
         );
         fullDesc = data.body
           .replace(/<[^>]*>?/gm, "")
