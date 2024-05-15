@@ -152,7 +152,7 @@
             token: localStorage.getItem("token"),
             username: localStorage.getItem("accountEmail"),
           },
-        }
+        },
       )
         .then((response) => response.json())
         .then((data) => {
@@ -221,12 +221,9 @@
           .replace(/§o/g, "<i>")
           .replace(/§r/g, "</b></i>")
           .replace(/§./g, "");
-        console.log(data.iconUrl + "icon");
         if (data.iconUrl != undefined) {
-          console.log("icon is " + data.iconUrl);
           icon = data.iconUrl;
         } else {
-          console.log("setting placeholder");
           icon = "/images/placeholder.webp";
         }
       });
@@ -241,7 +238,6 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         servers = data;
       });
 
@@ -297,16 +293,14 @@
       //set state to response
       state = response.state;
       if (state == "starting") {
-        console.log("unlocking");
         lock = false;
       }
     });
   }
 
   function setLobbyName() {
-    console.log("setting lobby name");
+    console.log("setting lobby name to " + lobbyName);
     lobbyName = document.getElementById("lobbyName").value;
-    console.log(lobbyName);
     fetch(baseurl + "server/" + id + "/proxy/info?lobbyName=" + lobbyName, {
       method: "POST",
       headers: {
@@ -323,7 +317,6 @@
   }
 
   function start() {
-    console.log(lock);
     if (!lock) {
       if (state == "true") {
         changeServerState("restart", id, email);
@@ -373,7 +366,7 @@
     //if key pressed is enter, send alert
     if (event.keyCode == 13) {
       getStatus();
-      console.log("sending " + input + " to " + id);
+
       writeTerminal(id, input);
       //clear input
       document.getElementById("input").value = "";
@@ -401,9 +394,22 @@
           filteredResponse.split("<p>").length
         ) {
           terminalContainer.scrollTop +=
-            150 *
+            50 *
             (filteredResponse.split("<p>").length -
               terminal.innerHTML.split("<p>").length);
+        }
+
+        //adding to scrollTop doesn't get it to the complete bottom,
+        //so this remedies that by snapping it to the bottom if needed.
+        let difference =
+          terminalContainer.scrollHeight - terminalContainer.scrollTop;
+        const terminalContainerContainer = document.getElementById(
+          "terminalContainerContainer",
+        );
+        if (difference <= terminalContainerContainer?.clientHeight) {
+          setTimeout(() => {
+            terminalContainer.scrollTop = terminalContainer.scrollHeight;
+          }, 1);
         }
 
         //response replace newlines with <p>, remove things that start with [ and end with m
@@ -421,12 +427,8 @@
         }
         if (scrollCorrected == false) {
           terminalContainer.scrollTop = terminalContainer.scrollHeight;
-          if (
-            terminalContainer.scrollHeight - terminalContainer.scrollTop <=
-            384
-          ) {
-            scrollCorrected = true;
-          }
+
+          scrollCorrected = true;
         }
       });
     }
@@ -642,7 +644,7 @@
         <Info />
         <span class="text-sm w-[19rem] lg:w-[22.5rem] flex flex-wrap">
           {$t("proxy.forwardingSecret2")}{hostName}{$t(
-            "proxy.forwardingSecret3"
+            "proxy.forwardingSecret3",
           )}
           <code class="bg-gray-500 rounded p-0.5 mr-1"
             >config/paper-global.yml</code
