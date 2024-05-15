@@ -113,7 +113,7 @@
         query,
         offset,
         sortBy,
-        categories
+        categories,
       ).then((response) => {
         skeletonsLength = response.hits.length;
         allowLoadMore = response.hits.length == 15;
@@ -211,90 +211,8 @@
           >
         </div>
       </div>
-      <div class="flex max-md:flex-col md:space-x-4">
-        <div class="flex flex-col items-left">
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              id="versionFilterCheckbox"
-              on:click={() => {
-                versionFilter = !versionFilter;
-                search(false);
-              }}
-            />
-            <Filter size="18" />
-            <p>
-              {$t("non")}{version}
-            </p>
-          </div>
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("adventure")}
-            />
-            <Compass size="18" />
-            <p>{$t("category.adventure")}</p>
-          </div>
-
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("cursed")}
-            />
-            <Bug size="18" />
-            <p>{$t("category.cursed")}</p>
-          </div>
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("decoration")}
-            />
-            <HomeIcon size="18" />
-            <p>{$t("category.decoration")}</p>
-          </div>
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("economy")}
-            />
-            <DollarSign size="18" />
-            <p>{$t("category.economy")}</p>
-          </div>
-        </div>
-        <div class="flex flex-col items-left">
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("equipment")}
-            />
-            <Swords size="18" />
-            <p>{$t("category.equipment")}</p>
-          </div>
-
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("food")}
-            />
-            <Carrot size="18" />
-            <p>{$t("category.food")}</p>
-          </div>
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("game mechanics")}
-            />
-            <SlidersHorizontal size="18" />
-            <p>{$t("category.game mechanics")}</p>
-          </div>
+      {#if software == "Velocity"}
+        <div class="flex max-md:flex-col md:space-x-4">
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
@@ -308,39 +226,10 @@
             <input
               type="checkbox"
               class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("magic")}
-            />
-            <Wand size="18" />
-            <p>{$t("category.magic")}</p>
-          </div>
-        </div>
-        <div class="flex flex-col items-left">
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
               on:click={() => toggleCategory("management")}
             />
             <Server size="18" />
             <p>{$t("category.management")}</p>
-          </div>
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("minigame")}
-            />
-            <Award size="18" />
-            <p>{$t("category.minigame")}</p>
-          </div>
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("mobs")}
-            />
-            <Squirrel size="18" />
-            <p>{$t("category.mobs")}</p>
           </div>
           <div class="flex items-center space-x-1">
             <input
@@ -351,56 +240,6 @@
             <Zap size="18" />
             <p>{$t("category.optimization")}</p>
           </div>
-
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("storage")}
-            />
-            <Archive size="18" />
-            <p>{$t("category.storage")}</p>
-          </div>
-        </div>
-        <div class="flex flex-col items-left">
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("technology")}
-            />
-            <HardDrive size="18" />
-            <p>{$t("category.technology")}</p>
-          </div>
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("transportation")}
-            />
-            <Truck size="18" />
-            <p>{$t("category.transportation")}</p>
-          </div>
-
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("utility")}
-            />
-            <Briefcase size="18" />
-            <p>{$t("category.utility")}</p>
-          </div>
-
-          <div class="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-xs mr-0.5"
-              on:click={() => toggleCategory("worldgen")}
-            />
-            <Globe2 size="18" />
-            <p>{$t("category.worldgen")}</p>
-          </div>
           <div class="flex items-center space-x-1">
             <input
               type="checkbox"
@@ -410,8 +249,219 @@
             <MessageCircleIcon size="18" />
             <p>{$t("category.social")}</p>
           </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("utility")}
+            />
+            <Briefcase size="18" />
+            <p>{$t("category.utility")}</p>
+          </div>
         </div>
-      </div>
+      {:else}
+        <div class="flex max-md:flex-col md:space-x-4">
+          <div class="flex flex-col items-left">
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                id="versionFilterCheckbox"
+                on:click={() => {
+                  versionFilter = !versionFilter;
+                  search(false);
+                }}
+              />
+              <Filter size="18" />
+              <p>
+                {$t("non")}{version}
+              </p>
+            </div>
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("adventure")}
+              />
+              <Compass size="18" />
+              <p>{$t("category.adventure")}</p>
+            </div>
+
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("cursed")}
+              />
+              <Bug size="18" />
+              <p>{$t("category.cursed")}</p>
+            </div>
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("decoration")}
+              />
+              <HomeIcon size="18" />
+              <p>{$t("category.decoration")}</p>
+            </div>
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("economy")}
+              />
+              <DollarSign size="18" />
+              <p>{$t("category.economy")}</p>
+            </div>
+          </div>
+          <div class="flex flex-col items-left">
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("equipment")}
+              />
+              <Swords size="18" />
+              <p>{$t("category.equipment")}</p>
+            </div>
+
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("food")}
+              />
+              <Carrot size="18" />
+              <p>{$t("category.food")}</p>
+            </div>
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("game mechanics")}
+              />
+              <SlidersHorizontal size="18" />
+              <p>{$t("category.game mechanics")}</p>
+            </div>
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("library")}
+              />
+              <Book size="18" />
+              <p>{$t("category.library")}</p>
+            </div>
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("magic")}
+              />
+              <Wand size="18" />
+              <p>{$t("category.magic")}</p>
+            </div>
+          </div>
+          <div class="flex flex-col items-left">
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("management")}
+              />
+              <Server size="18" />
+              <p>{$t("category.management")}</p>
+            </div>
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("minigame")}
+              />
+              <Award size="18" />
+              <p>{$t("category.minigame")}</p>
+            </div>
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("mobs")}
+              />
+              <Squirrel size="18" />
+              <p>{$t("category.mobs")}</p>
+            </div>
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("optimization")}
+              />
+              <Zap size="18" />
+              <p>{$t("category.optimization")}</p>
+            </div>
+
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("storage")}
+              />
+              <Archive size="18" />
+              <p>{$t("category.storage")}</p>
+            </div>
+          </div>
+          <div class="flex flex-col items-left">
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("technology")}
+              />
+              <HardDrive size="18" />
+              <p>{$t("category.technology")}</p>
+            </div>
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("transportation")}
+              />
+              <Truck size="18" />
+              <p>{$t("category.transportation")}</p>
+            </div>
+
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("utility")}
+              />
+              <Briefcase size="18" />
+              <p>{$t("category.utility")}</p>
+            </div>
+
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("worldgen")}
+              />
+              <Globe2 size="18" />
+              <p>{$t("category.worldgen")}</p>
+            </div>
+            <div class="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                class="checkbox checkbox-xs mr-0.5"
+                on:click={() => toggleCategory("social")}
+              />
+              <MessageCircleIcon size="18" />
+              <p>{$t("category.social")}</p>
+            </div>
+          </div>
+        </div>
+      {/if}
       <div id="plugins" class="space-y-2">
         {#await promise}
           {#each Array.from({ length: skeletonsLength }) as _}

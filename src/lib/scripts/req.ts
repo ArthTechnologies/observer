@@ -268,7 +268,7 @@ export function searchPlugins(
   let versionString = '["versions:' +
   version +
   '"],';
-  if (version == "any") versionString = "";
+  if (version == "any" || software.toLowerCase() == "velocity") versionString = "";
   let categoriesString = "";
   if (categories.length > 0) {
     categoriesString = '["categories:'+categories.join('"],["categories:')+'"],';
