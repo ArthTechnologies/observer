@@ -256,6 +256,7 @@
           "/server/" + tname
         ) {
           getStatus();
+
           readCmd();
         }
       }, interval);
@@ -295,15 +296,31 @@
         const filteredResponse = response
           .replace(/\x1B\[[0-9;]*[mG]/g, "")
           .replace(/\n/g, "<p>");
+
         //scroll down the height of the new lines added
         if (
           terminal.innerHTML.split("<p>").length <
           filteredResponse.split("<p>").length
         ) {
           terminalContainer.scrollTop +=
-            150 *
+            50 *
             (filteredResponse.split("<p>").length -
               terminal.innerHTML.split("<p>").length);
+          let difference =
+            terminalContainer.scrollHeight - terminalContainer.scrollTop;
+          const terminalContainerContainer = document.getElementById(
+            "terminalContainerContainer",
+          );
+          console.log("difference is " + difference);
+          console.log("height is " + terminalContainerContainer?.clientHeight);
+          //adding to scrollTop doesn't get it to the complete bottom,
+          //so if it's within 480 of the bottom, it'll snap to the bottom
+          if (difference <= terminalContainerContainer?.clientHeight) {
+            console.log("difference is less than 480");
+            setTimeout(() => {
+              terminalContainer.scrollTop = terminalContainer.scrollHeight;
+            }, 1);
+          }
         }
 
         //response replace newlines with <p>, remove things that start with [ and end with m
@@ -318,19 +335,15 @@
           }
         } else {
           terminal.innerHTML = filteredResponse.substring(
-            filteredResponse.length - 100000
+            filteredResponse.length - 100000,
           );
         }
 
         //if this is the first time the terminal is loaded, this will scroll to the bottom.
         if (scrollCorrected == false) {
           terminalContainer.scrollTop = terminalContainer.scrollHeight;
-          if (
-            terminalContainer.scrollHeight - terminalContainer.scrollTop <=
-            384
-          ) {
-            scrollCorrected = true;
-          }
+
+          scrollCorrected = true;
         }
       });
     }
