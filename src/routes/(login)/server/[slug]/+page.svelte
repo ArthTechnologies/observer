@@ -165,7 +165,6 @@
             .replace(/§r/g, "</b></i>")
             .replace(/§./g, "");
 
-          console.log(data.secret + "secret");
           secret = data.secret;
 
           //add checked property to toggle
@@ -184,10 +183,8 @@
 
           document.getElementById("fSecret").value = data.secret;
           if (data.iconUrl != undefined) {
-            console.log("icon is " + data.iconUrl);
             icon = data.iconUrl;
           } else {
-            console.log("setting placeholder");
             icon = "/images/placeholder.webp";
           }
         });
@@ -213,14 +210,12 @@
       state = response.state;
 
       if (state == "starting") {
-        console.log("unlocking");
         lock = false;
       }
     });
   }
 
   function start() {
-    console.log(lock);
     if (!lock) {
       if (state == "true") {
         changeServerState("restart", id, email);
@@ -274,7 +269,6 @@
     //if key pressed is enter, send alert
     if (event.keyCode == 13) {
       getStatus();
-      console.log("sending " + input + " to " + id);
       writeTerminal(id, input);
       //clear input
       document.getElementById("input").value = "";
@@ -306,17 +300,15 @@
             50 *
             (filteredResponse.split("<p>").length -
               terminal.innerHTML.split("<p>").length);
+
+          //adding to scrollTop doesn't get it to the complete bottom,
+          //so this remedies that by snapping it to the bottom if needed.
           let difference =
             terminalContainer.scrollHeight - terminalContainer.scrollTop;
           const terminalContainerContainer = document.getElementById(
             "terminalContainerContainer",
           );
-          console.log("difference is " + difference);
-          console.log("height is " + terminalContainerContainer?.clientHeight);
-          //adding to scrollTop doesn't get it to the complete bottom,
-          //so if it's within 480 of the bottom, it'll snap to the bottom
           if (difference <= terminalContainerContainer?.clientHeight) {
-            console.log("difference is less than 480");
             setTimeout(() => {
               terminalContainer.scrollTop = terminalContainer.scrollHeight;
             }, 1);
