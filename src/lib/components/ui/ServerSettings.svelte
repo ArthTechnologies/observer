@@ -7,7 +7,7 @@
     getServerNode,
   } from "$lib/scripts/req";
   import { t } from "$lib/scripts/i18n";
-  import { Settings } from "lucide-svelte";
+  import { Info, Settings } from "lucide-svelte";
   import { bind, onMount } from "svelte/internal";
   import { handleDesc } from "$lib/scripts/utils";
   let id;
@@ -142,10 +142,15 @@
       class="btn btn-neutral btn-sm fixed right-12 top-2"
       on:click={set}>{$t("apply")}</label
     >
-    <h3 class="text-2xl font-bold mb-3">{$t("button.settings")}</h3>
+    <h3 class="text-2xl font-bold mb-1">{$t("button.settings")}</h3>
+    <div class="flex p-1 text-sm items-center gap-1.5 mb-1.5">
+      <Info size="16" />
+      <span>{$t("settings.restartWarning")}</span>
+    </div>
     <label for="serverDescription" class="block font-bold mb-2"
       >{$t("settings.l.name")}
     </label>
+
     <input
       bind:value={name}
       type="text"

@@ -275,6 +275,7 @@ export default {
     "signin.continue": "Continue",
     "signup.continue": "Continue to Payment",
     "apply": "Apply",
+    "settings.restartWarning": "Most changes will only take effect after a restart.",
 
 
   },
@@ -560,6 +561,7 @@ export default {
     "signin.continue": "Continuar",
     "signup.continue": "Continuar al Pago",
     "apply": "Aplicar",
+    "settings.restartWarning": "La mayoría de los cambios solo surtirán efecto después de reiniciar.",
 
   },
 };
