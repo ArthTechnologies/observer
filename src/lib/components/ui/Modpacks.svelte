@@ -7,6 +7,7 @@
   import { numShort } from "$lib/scripts/utils";
   import { onMount } from "svelte";
   import { Plus } from "lucide-svelte";
+  import { apiurl } from "$lib/scripts/req";
   import ResultSkele from "./ResultSkele.svelte";
 
   let promise;
@@ -18,6 +19,10 @@
   let allowLoadMore = true;
   let offset = 0;
   let sortBy = "relevance";
+  let modpackSelected = false;
+  let modpackImageUrl = "/images/placeholder.webp";
+  let modpackName = "";
+  let modpackVersion = "";
   onMount(() => {
     if (browser) {
       search("mr");
@@ -27,6 +32,33 @@
   });
   if (browser) {
     if (!usingCurseForge) tab = "mr";
+    //event listener for 'versionSet', which means a modpack has been selected
+    window.addEventListener("versionSet", (e) => {
+      modpackSelected = true;
+      console.log("detail", e.detail);
+      let id = e.detail.id;
+      if (e.detail.platform == "cf") {
+        fetch(apiurl + "curseforge/" + id, {
+          method: "GET",
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            modpackImageUrl = res.logo.thumbnailUrl;
+            modpackName = res.name;
+            modpackVersion = res.latestFiles[0].displayName;
+          });
+      } else if (e.detail.platform == "mr") {
+        fetch("https://api.modrinth.com/v2/project/" + id, {
+          method: "GET",
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            modpackImageUrl = res.icon_url;
+            modpackName = res.title;
+            modpackVersion = res.versions[0].version;
+          });
+      }
+    });
   }
   function search(platform: string, loadMore: boolean = false) {
     console.error("searching" + platform);
@@ -73,7 +105,7 @@
         "modpack",
         offset,
         sortBy,
-        []
+        [],
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
@@ -151,9 +183,28 @@
   }
 </script>
 
-<label for="modpacksModal" class="btn btn-block btn-primary"
-  >{$t("button.modpacks")}</label
->
+{#if modpackSelected}
+  <div class="flex space-x-2.5 w-[30rem]">
+    <div class="flex">
+      <img src={modpackImageUrl} class="w-12 h-12 rounded-l-lg" />
+      <div
+        class="rounded-r-lg bg-base-200 h-12 flex flex-col justify-between pl-2 pb-1.5 pt-0.5 pr-1"
+      >
+        <p class="truncate w-[10.65rem]">{modpackName}</p>
+        <p class="text-xs text-gray-600 truncate w-[10.65rem]">
+          {modpackVersion}
+        </p>
+      </div>
+    </div>
+    <label for="modpacksModal" class="btn btn-primary w-[15rem]"
+      >Change Modpack</label
+    >
+  </div>
+{:else}
+  <label for="modpacksModal" class="btn btn-primary btn-block"
+    >{$t("button.modpacks")}</label
+  >
+{/if}
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="modpacksModal" class="modal-toggle" />
