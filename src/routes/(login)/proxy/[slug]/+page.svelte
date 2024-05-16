@@ -53,7 +53,6 @@
   let po = 0;
   let port = 10000;
   let id = 0;
-  let lock = false;
   let desc: string = "";
 
   let email: string = "";
@@ -289,12 +288,10 @@
     getServer(id).then((response) => {
       //convert addons array to string, save it to "serverAddons" array
       localStorage.setItem("serverAddons", response.addons.toString());
+      localStorage.setItem("serverSoftware", response.software);
 
       //set state to response
       state = response.state;
-      if (state == "starting") {
-        lock = false;
-      }
     });
   }
 
@@ -317,18 +314,17 @@
   }
 
   function start() {
-    if (!lock) {
+
       if (state == "true") {
         changeServerState("restart", id, email);
       } else if (state == "false") {
         changeServerState("start", id, email);
       }
-    }
+    
   }
 
   function stop() {
     changeServerState("stop", id, email);
-    lock = false;
   }
 
   onMount(() => {

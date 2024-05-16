@@ -46,7 +46,6 @@
   let po = 0;
   let port = 10000;
   let id = 0;
-  let lock = false;
   let desc: string = "";
   let email: string = "";
   let state = "false";
@@ -201,33 +200,26 @@
     }
   }
   function getStatus() {
-    //get server status
-    getServer(id).then((response) => {
+      //get server status
+      getServer(id).then((response) => {
       //convert addons array to string, save it to "serverAddons" array
       localStorage.setItem("serverAddons", response.addons.toString());
       localStorage.setItem("serverVersion", response.version);
       //set state to response
       state = response.state;
-
-      if (state == "starting") {
-        lock = false;
-      }
     });
   }
 
   function start() {
-    if (!lock) {
       if (state == "true") {
         changeServerState("restart", id, email);
       } else if (state == "false") {
         changeServerState("start", id, email);
       }
-    }
   }
 
   function stop() {
     changeServerState("stop", id, email);
-    lock = false;
   }
 
   onMount(() => {
