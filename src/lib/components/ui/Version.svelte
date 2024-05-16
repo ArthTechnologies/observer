@@ -2,6 +2,7 @@
   import { apiurl, sendVersion } from "$lib/scripts/req";
 
   import { browser, version } from "$app/environment";
+  import { onMount } from "svelte";
   import {
     AlertCircle,
     Check,
@@ -34,23 +35,38 @@
   } else if (type == "alpha") {
     type = "Alpha";
   }
+  if (browser) {
+    //listens for versionSet events, so that if another
+    //version is selected the checkbox is unchecked
+    window.addEventListener("versionSet", (e) => {
+      if (e.detail.versionId != versionId) {
+        let checkbox = document.getElementById("addBtn" + uniqueId);
+        checkbox.checked = false;
+      }
+    });
+  }
   let time = new Date(date).toLocaleString();
 
   function submit() {
     let id = "";
     if (browser) {
       id = localStorage.getItem("serverID");
+      window.dispatchEvent(
+        new CustomEvent("versionSet", {
+          detail: {
+            id: id,
+            versionId: versionId,
+            platform: platform,
+            versionName: name,
+          },
+        }),
+      );
     }
 
     pluginName = pluginName.replace(/["']/g, "");
     pluginName = pluginName.replace(/[\(\)]/g, "");
     pluginName = pluginName.replace(/[\s_]/g, "-");
     sendVersion(url, id, pluginId, pluginName, modtype);
-    setTimeout(() => {
-      if (browser) {
-        document.getElementById("addBtn" + uniqueId).checked = false;
-      }
-    }, 2500);
   }
   console.log(dependencies);
   for (let i in dependencies) {
