@@ -61,7 +61,7 @@
         <a
           id="discord-button"
           class="btn btn-neutral z-50"
-          href="https://discord.gg/gCafNVA43d"
+          href="https://discord.com/invite/bjY39AbK35"
           target="_blank"
           rel="noreferrer"
           ><img alt="discord logo" style="width:3ch" src="/discord.svg" />
