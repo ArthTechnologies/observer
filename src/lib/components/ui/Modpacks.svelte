@@ -105,7 +105,7 @@
         "modpack",
         offset,
         sortBy,
-        [],
+        []
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
@@ -186,7 +186,7 @@
 {#if modpackSelected}
   <div class="flex space-x-2.5 w-[30rem]">
     <div class="flex">
-      <img src={modpackImageUrl} class="w-12 h-12 rounded-l-lg" />
+      <img src={modpackImageUrl} class="w-12 h-12 rounded-l-lg bg-base-300" />
       <div
         class="rounded-r-lg bg-base-200 h-12 flex flex-col justify-between pl-2 pb-1.5 pt-0.5 pr-1"
       >
