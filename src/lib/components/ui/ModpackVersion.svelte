@@ -63,21 +63,26 @@
         });
     }
 
-    //listens for versionSet events, so that if another 
+    //listens for versionSet events, so that if another
     //version is selected the checkbox is unchecked
     window.addEventListener("versionSet", (e) => {
       if (e.detail.versionId != versionId) {
         let checkbox = document.getElementById("addBtn" + uniqueId);
-        checkbox.checked = false;
+
+        if (checkbox) {
+          checkbox.checked = false;
+        }
       }
     });
 
     onMount(() => {
-    //checks checkbox if the version is selected
-    if (localStorage.getItem("modpackVersionID") == versionId) {
-      let checkbox = document.getElementById("addBtn" + uniqueId);
-      checkbox.checked = true;
-    }
+      //checks checkbox if the version is selected
+      if (localStorage.getItem("modpackVersionID") == versionId) {
+        let checkbox = document.getElementById("addBtn" + uniqueId);
+        if (checkbox) {
+          checkbox.checked = true;
+        }
+      }
     });
   }
 
@@ -117,7 +122,16 @@
         localStorage.setItem("modpackID", modpackId);
         localStorage.setItem("modpackVersionID", versionId);
       }
-      window.dispatchEvent(new CustomEvent("versionSet", { detail: { id: modpackId, versionId: versionId, platform: platform, versionName: name} }));
+      window.dispatchEvent(
+        new CustomEvent("versionSet", {
+          detail: {
+            id: modpackId,
+            versionId: versionId,
+            platform: platform,
+            versionName: name,
+          },
+        })
+      );
     }
   }
 </script>
