@@ -198,12 +198,12 @@
     </div>
   </div>
   <label for="modpacksModal" class="btn btn-primary w-[15rem]"
-    >Change Modpack</label
+    >{$t("button.changeModpack")}</label
   >
 </div>
 
 <label id="setModpack" for="modpacksModal" class="btn btn-primary btn-block"
-  >{$t("button.modpacks")}</label
+  >{$t("button.setModpack")}</label
 >
 
 <!-- Put this part before </body> tag -->
