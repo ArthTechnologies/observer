@@ -132,7 +132,7 @@
 
 <input type="checkbox" id="editInfo" class="modal-toggle" />
 <div class="modal" style="margin:0rem;">
-  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+  <div class="p-4 md:p-5 modal-box bg-opacity-95 backdrop-blur relative">
     <label
       for="editInfo"
       class="btn btn-neutral btn-sm btn-circle fixed right-2 top-2">✕</label
@@ -167,8 +167,8 @@
       >{$t("description")}
     </label>
     {#if software != "Velocity"}
-      <div class="mb-1.5 flex space-x-1">
-        <div class="flex text-sm">
+      <div class="mb-1.5 flex space-x-1 text-xs md:text-sm">
+        <div class="flex">
           <div
             class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
           >
@@ -176,7 +176,7 @@
           </div>
           <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§l</div>
         </div>
-        <div class="flex text-sm">
+        <div class="flex">
           <div
             class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
           >
@@ -184,7 +184,7 @@
           </div>
           <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§o</div>
         </div>
-        <div class="flex text-sm">
+        <div class="flex">
           <div
             class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
           >
@@ -192,7 +192,7 @@
           </div>
           <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§k</div>
         </div>
-        <div class="flex text-sm">
+        <div class="flex">
           <div
             class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
           >
