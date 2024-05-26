@@ -27,6 +27,15 @@
       search("mr");
       if (usingCurseForge) search("cf");
       else document.getElementById("mr").classList.add("tab-active");
+
+      if (
+        localStorage.getItem("modpackID") != "" &&
+        localStorage.getItem("modpackID") != null
+      ) {
+        localStorage.setItem("modpackID", "");
+        localStorage.setItem("modpackURL", "");
+        localStorage.setItem("modpackVersionID", "");
+      }
     }
   });
   if (browser) {
