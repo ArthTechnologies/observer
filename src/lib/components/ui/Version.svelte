@@ -59,7 +59,7 @@
             platform: platform,
             versionName: name,
           },
-        }),
+        })
       );
     }
 
@@ -68,11 +68,8 @@
     pluginName = pluginName.replace(/[\s_]/g, "-");
     sendVersion(url, id, pluginId, pluginName, modtype);
   }
-  console.log(dependencies);
   for (let i in dependencies) {
     if (platform == "mr") {
-      //GET https://api.modrinth.com/v2/project/{depencencies[i].project_id}
-
       fetch("https://api.modrinth.com/v2/project/" + dependencies[i].project_id)
         .then((response) => response.json())
         .then((data) => {
@@ -86,6 +83,13 @@
           console.log(data);
           dependencies[i].name = data.name;
         });
+    }
+    //there is a issue where there are sometimes duplicate dependencies
+    //the root cause is unknown, but this is a workaround
+    if (i > 0) {
+      if (dependencies[i].name == dependencies[i - 1].name) {
+        dependencies.pop();
+      }
     }
   }
 </script>
