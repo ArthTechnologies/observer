@@ -99,7 +99,7 @@
   }
 </script>
 
-{#if latestUpdate != serverVersion && jarAvailable}
+{#if latestUpdate != serverVersion && jarAvailable && serverSoftware != "Forge"}
   <label for="updates" class="btn btn-neutral" on:click={onclick}
     ><ArrowDownCircle class="mr-2.5" />
     {$t("button.update")}</label
