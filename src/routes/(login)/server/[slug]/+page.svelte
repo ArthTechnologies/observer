@@ -200,8 +200,8 @@
     }
   }
   function getStatus() {
-      //get server status
-      getServer(id).then((response) => {
+    //get server status
+    getServer(id).then((response) => {
       //convert addons array to string, save it to "serverAddons" array
       localStorage.setItem("serverAddons", response.addons.toString());
       localStorage.setItem("serverVersion", response.version);
@@ -211,11 +211,11 @@
   }
 
   function start() {
-      if (state == "true") {
-        changeServerState("restart", id, email);
-      } else if (state == "false") {
-        changeServerState("start", id, email);
-      }
+    if (state == "true") {
+      changeServerState("restart", id, email);
+    } else if (state == "false") {
+      changeServerState("start", id, email);
+    }
   }
 
   function stop() {
@@ -298,7 +298,7 @@
           let difference =
             terminalContainer.scrollHeight - terminalContainer.scrollTop;
           const terminalContainerContainer = document.getElementById(
-            "terminalContainerContainer",
+            "terminalContainerContainer"
           );
           if (difference <= terminalContainerContainer?.clientHeight) {
             setTimeout(() => {
@@ -319,7 +319,7 @@
           }
         } else {
           terminal.innerHTML = filteredResponse.substring(
-            filteredResponse.length - 100000,
+            filteredResponse.length - 100000
           );
         }
 
@@ -436,7 +436,7 @@
         <div
           class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
         >
-          <div class="flex relative w-[22.4rem]">
+          <div class="flex relative w-[20rem] md:w-[22.4rem]">
             <div class="p-4 space-x-4 flex">
               <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md" />
 
