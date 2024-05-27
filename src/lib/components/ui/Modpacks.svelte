@@ -6,7 +6,7 @@
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
   import { numShort } from "$lib/scripts/utils";
   import { onMount } from "svelte";
-  import { Plus } from "lucide-svelte";
+  import { DeleteIcon, Plus } from "lucide-svelte";
   import { apiurl } from "$lib/scripts/req";
   import ResultSkele from "./ResultSkele.svelte";
 
@@ -192,18 +192,35 @@
       document.getElementById("mr").classList.remove("tab-active");
     }
   }
+
+  function clearModpack() {
+    document.getElementById("setModpack").classList.remove("hidden");
+    document.getElementById("changeModpack").classList.add("hidden");
+    modpackImageUrl = "/images/placeholder.webp";
+    modpackName = "";
+    modpackVersion = "";
+    localStorage.setItem("modpackID", "");
+    localStorage.setItem("modpackURL", "");
+    localStorage.setItem("modpackVersionID", "");
+  }
 </script>
 
 <div id="changeModpack" class="hidden flex space-x-2.5 w-[30rem]">
   <div class="flex">
     <img src={modpackImageUrl} class="w-12 h-12 rounded-l-lg bg-base-300" />
     <div
-      class="rounded-r-lg bg-base-200 h-12 flex flex-col justify-between pl-2 pb-1.5 pt-0.5 pr-1"
+      class="relative rounded-r-lg bg-base-200 h-12 flex flex-col justify-between pl-2 pb-1.5 pt-0.5 pr-1"
     >
-      <p class="truncate w-[10.65rem]">{modpackName}</p>
+      <p class="truncate w-[9.625rem] text-[.975rem]">{modpackName}</p>
       <p class="text-xs text-gray-600 truncate w-[10.65rem]">
         {modpackVersion}
       </p>
+      <button
+        class="btn btn-xs btn-square btn-ghost absolute top-0.5 right-0.5"
+        on:click={clearModpack}
+      >
+        ✕
+      </button>
     </div>
   </div>
   <label for="modpacksModal" class="btn btn-primary w-[15rem]"
