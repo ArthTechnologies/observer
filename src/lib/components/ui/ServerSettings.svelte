@@ -7,7 +7,7 @@
     getServerNode,
   } from "$lib/scripts/req";
   import { t } from "$lib/scripts/i18n";
-  import { Info, Settings } from "lucide-svelte";
+  import { ClipboardIcon, ClipboardList, Info, Settings } from "lucide-svelte";
   import { bind, onMount } from "svelte/internal";
   import { handleDesc } from "$lib/scripts/utils";
   let id;
@@ -111,6 +111,10 @@
       }
     }
   }
+
+  function copyChar() {
+    navigator.clipboard.writeText("§");
+  }
 </script>
 
 {#if type == "smallBtn"}
@@ -167,38 +171,48 @@
       >{$t("description")}
     </label>
     {#if software != "Velocity"}
-      <div class="mb-1.5 flex space-x-1 text-xs md:text-sm">
-        <div class="flex">
-          <div
-            class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
-          >
-            Bold
+      <div class="mb-2 space-y-1 text-sm">
+        <div class="flex space-x-1">
+          <div class="flex">
+            <div
+              class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
+            >
+              {$t("bold")}
+            </div>
+            <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§l</div>
           </div>
-          <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§l</div>
+          <div class="flex">
+            <div
+              class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
+            >
+              {$t("italic")}
+            </div>
+            <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§o</div>
+          </div>
+          <div class="flex">
+            <div
+              class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
+            >
+              {$t("glitchEffect")}
+            </div>
+            <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§k</div>
+          </div>
         </div>
-        <div class="flex">
-          <div
-            class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
-          >
-            Italic
+        <div class="flex space-x-1">
+          <div class="flex">
+            <div
+              class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
+            >
+              {$t("reset")}
+            </div>
+            <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§r</div>
           </div>
-          <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§o</div>
-        </div>
-        <div class="flex">
-          <div
-            class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
-          >
-            Glitch Effect
+          <div class="flex">
+            <button class="btn btn-xs btn-ghost" on:click={copyChar}>
+              <ClipboardList size="16" class="mr-1" />
+              <p id="copyCharText">{$t("button.copyCharacter")}</p>
+            </button>
           </div>
-          <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§k</div>
-        </div>
-        <div class="flex">
-          <div
-            class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
-          >
-            Reset
-          </div>
-          <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§r</div>
         </div>
       </div>
     {/if}

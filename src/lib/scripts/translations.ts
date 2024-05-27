@@ -232,6 +232,7 @@ export default {
     "button.deepL.back": "Show original text",
     "button.copyToClipboard": "Copy to Clipboard",
     "button.copyForwardingSecret": "Copy Forwarding Secret",
+    "button.copyCharacter": 'Copy "§" Character',
     "subscribe.list.crossplay": "Built-in Geyser™ crossplay between editions",  
     "subscribe.list.worldgen": "One-click worldgen mods like Terralith",
     "subscribe.list.plugins": "Thousands of plugins one click away via Modrinth",
@@ -277,6 +278,10 @@ export default {
     "signup.continue": "Continue to Payment",
     "apply": "Apply",
     "settings.restartWarning": "Most changes will only take effect after a restart.",
+    "bold": "Bold",
+    "italic": "Italic",
+    "glitchEffect": "Glitch Effect",
+    "reset": "Reset",
 
 
   },
@@ -519,6 +524,7 @@ export default {
     "button.deepL.back": "Mostrar texto original",
     "button.copyToClipboard": "Copiar al portapapeles",
     "button.copyForwardingSecret": "Copiar Secreto de Reenvío",
+    "button.copyCharacter": 'Copiar Carácter "§"',
     "subscribe.list.crossplay": "Geyser™ crossplay incorporado entre ediciones",
     "subscribe.list.worldgen": "Worldgen Mods con un clic como Terralith",
     "subscribe.list.plugins": "Miles de plugins a un clic a través de Modrinth",
@@ -564,6 +570,10 @@ export default {
     "signup.continue": "Continuar al Pago",
     "apply": "Aplicar",
     "settings.restartWarning": "La mayoría de los cambios solo surtirán efecto después de reiniciar.",
+    "bold": "Negrita",
+    "italic": "Itálico",
+    "glitchEffect": "Efecto de falla",
+    "reset": "Restablecer",
 
   },
 };
