@@ -307,6 +307,7 @@
               <option>{$t("software.quilt")}</option>
             {/if}
             <option>{$t("software.velocity")}</option>
+            <option>{$t("software.snapshot")}</option>
           </select>
 
           <label class="label" for="softwareDropdown"
