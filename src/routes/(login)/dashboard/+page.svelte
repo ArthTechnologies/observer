@@ -19,7 +19,7 @@
           if (data.success) {
             isLoggedIn = true;
           } else {
-            alert("Invalid token");
+            alert("Expired or invalid token");
           }
         });
     }
@@ -55,7 +55,7 @@
             </svg>
             <input
               id="input"
-              type="text"
+              type="password"
               placeholder="Type here"
               class="bg-base-100 w-3/4"
             />
