@@ -14,7 +14,7 @@
   let email = "";
   onMount(async () => {
     if (browser) {
-      email = localStorage.getItem("accountEmail");
+      email = localStorage.getItem("email");
       if (email.split(":")[0] == "email") {
         email = email.split(":")[1];
       } else {

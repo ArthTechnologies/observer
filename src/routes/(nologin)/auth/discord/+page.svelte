@@ -25,6 +25,7 @@
         localStorage.setItem("token", data.token);
         localStorage.setItem("accountId", data.accountId);
         localStorage.setItem("accountEmail", "discord:" + data.username);
+        localStorage.setItem("email", data.email);
         updateReqTemplates();
         if (localStorage.getItem("enablePay") == "true" && data.firstTime) {
           goto("/subscribe/basic");

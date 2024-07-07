@@ -456,6 +456,7 @@ export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:strin
   if(browser) {
   console.log("Request Sent");
   localStorage.setItem("accountEmail", "email:" + em);
+  localStorage.setItem("email", em);
   return fetch(
     apiurl +
       "accounts/email/signup?" +
