@@ -1,5 +1,6 @@
 <script>
   import { browser } from "$app/environment";
+  import Analytics from "$lib/components/pages/dashboard/Analytics.svelte";
   import { apiurl } from "$lib/scripts/req";
   import { alert } from "$lib/scripts/utils";
   import { fade } from "svelte/transition";
@@ -9,7 +10,7 @@
   function login() {
     if (browser) {
       let input = document.getElementById("input")?.value;
-      document.getElementById("input").value = "";
+
       fetch(apiurl + "dashboard/verifyToken?tempToken=" + input, {
         method: "GET",
       })
@@ -26,7 +27,11 @@
 </script>
 
 {#if !isLoggedIn}
-  <div class="absolute mt-4 w-96" transition:fade={{ duration: 600 }}>
+  <div
+    transition:fade={{ duration: 1200 }}
+    class="absolute h-[200rem] w-screen bg-base-100 z-40 backdrop-blur-sm bg-opacity-70"
+  ></div>
+  <div class="absolute mt-4 w-96 z-50" transition:fade={{ duration: 600 }}>
     <div class="bg-base-100 w-96 shadow-xl">
       <figure>
         <img src="images/dashboard_bg.png" alt="bg" class="rounded-t-lg" />
@@ -61,3 +66,6 @@
     </div>
   </div>
 {/if}
+<div class="flex gap-5 justify-end px-24 -mt-4">
+  <Analytics />
+</div>
