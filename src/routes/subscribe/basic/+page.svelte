@@ -14,13 +14,6 @@
   let email = "";
   onMount(async () => {
     if (browser) {
-      email = localStorage.getItem("email");
-      if (email.split(":")[0] == "email") {
-        email = email.split(":")[1];
-      } else {
-        email = "";
-      }
-
       if (localStorage.getItem("currency") == null) {
         fetch("https://ip2c.org/s")
           .then((response) => response.text())
@@ -43,27 +36,30 @@
         locale = navigator.language;
       }
       locale = locale.split("-")[0];
-    }
-    stripe = await loadStripe(stripeKey);
-    clientSecret = await fetch(
-      apiurl +
-        "checkout/basic" +
-        "?customer_email=" +
-        email +
-        "&currency=" +
-        currency +
-        "&locale=" +
-        locale,
-      {
-        method: "POST",
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
 
-        return data.clientSecret;
-      });
+      email = localStorage.getItem("email");
+
+      stripe = await loadStripe(stripeKey);
+      clientSecret = await fetch(
+        apiurl +
+          "checkout/basic" +
+          "?customer_email=" +
+          email +
+          "&currency=" +
+          currency +
+          "&locale=" +
+          locale,
+        {
+          method: "POST",
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+
+          return data.clientSecret;
+        });
+    }
   });
 </script>
 
