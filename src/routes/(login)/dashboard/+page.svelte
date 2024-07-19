@@ -4,17 +4,20 @@
   import { t } from "$lib/scripts/i18n";
   import { apiurl } from "$lib/scripts/req";
   import { alert } from "$lib/scripts/utils";
-  import { Mail } from "lucide-svelte";
+  import { Gamepad2, Mail } from "lucide-svelte";
   import { split } from "postcss/lib/list";
   import { fade } from "svelte/transition";
 
   let isLoggedIn = false;
   let address = "";
   let customers = [];
+  let customersLoaded = false;
+  let servers = [];
+  let serversLoaded = false;
   if (browser) {
     address = localStorage.getItem("address");
   }
-  let loaded = false;
+
   function login() {
     if (browser) {
       let input = document.getElementById("input")?.value;
@@ -33,7 +36,24 @@
               .then((res) => res.json())
               .then((data) => {
                 customers = data;
-                loaded = true;
+                //sort by server id
+                customers.sort((a, b) => {
+                  return a[1].servers[0] - b[1].servers[0];
+                });
+                customersLoaded = true;
+              });
+
+            fetch(apiurl + "dashboard/servers?tempToken=" + input, {
+              method: "GET",
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                servers = data;
+                //sort by server id
+                servers.sort((a, b) => {
+                  return a.serverId - b.serverId;
+                });
+                serversLoaded = true;
               });
           } else {
             alert("Expired or invalid token");
@@ -110,7 +130,47 @@
   </div>
 {/if}
 <div class="flex gap-5 justify-end px-24 -mt-4">
-  {#if !loaded}
+  {#if !serversLoaded}
+    <div class="flex flex-col gap-5 w-96">
+      {#each Array.from({ length: 10 }) as _}
+        <div class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
+          <div class="bg-slate-700 animate-pulse w-20 h-5 rounded-md"></div>
+          <div class="bg-slate-700 animate-pulse w-14 h-5 rounded-md"></div>
+          <div class="bg-slate-700 animate-pulse w-14 h-5 rounded-md"></div>
+        </div>
+      {/each}
+    </div>
+  {:else}
+    <div class="flex flex-col gap-5 w-96">
+      {#each servers as server}
+        <div class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
+          {address}:{server.serverId}
+          {#if server.owner != null}
+            {#if server.owner.includes("email:")}
+              <div class="bg-neutral px-1.5 rounded-md text-sm flex gap-1">
+                <Mail size="16" class="mt-0.5" />
+                {server.owner.split(":")[1]}
+              </div>
+            {:else if server.owner.includes("discord:")}
+              <div class="flex">
+                <div class="bg-neutral px-1.5 rounded-l-md text-sm flex gap-1">
+                  <Gamepad2 size="16" class="mt-0.5" />
+                  {server.owner.split(":")[1]}
+                </div>
+                <div
+                  class="bg-slate-700 px-1.5 rounded-r-md text-sm flex gap-1"
+                >
+                  {server.email}
+                </div>
+              </div>
+            {/if}
+          {/if}
+        </div>
+      {/each}
+    </div>
+  {/if}
+
+  {#if !customersLoaded}
     <div class="flex flex-col gap-5 w-96">
       {#each Array.from({ length: 10 }) as _}
         <div class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
