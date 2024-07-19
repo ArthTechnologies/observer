@@ -134,9 +134,8 @@
     <div class="flex flex-col gap-5 w-96">
       {#each Array.from({ length: 10 }) as _}
         <div class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
-          <div class="bg-slate-700 animate-pulse w-20 h-5 rounded-md"></div>
           <div class="bg-slate-700 animate-pulse w-14 h-5 rounded-md"></div>
-          <div class="bg-slate-700 animate-pulse w-14 h-5 rounded-md"></div>
+          <div class="bg-slate-700 animate-pulse w-32 h-5 rounded-md"></div>
         </div>
       {/each}
     </div>
