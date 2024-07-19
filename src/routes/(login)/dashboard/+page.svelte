@@ -4,7 +4,8 @@
   import { t } from "$lib/scripts/i18n";
   import { apiurl } from "$lib/scripts/req";
   import { alert } from "$lib/scripts/utils";
-  import { FishOff } from "lucide-svelte";
+  import { Mail } from "lucide-svelte";
+  import { split } from "postcss/lib/list";
   import { fade } from "svelte/transition";
 
   let isLoggedIn = false;
@@ -39,6 +40,32 @@
           }
         });
     }
+  }
+
+  function timeConverter(UNIX_timestamp) {
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = month + " " + date + " @" + hour;
+    return time;
   }
 </script>
 
@@ -99,20 +126,78 @@
         <div class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
           {customer[0].email}
           <div class="flex gap-1">
-            {#if customer[0].activeBasicSubscriptions > 0}
-              <div
-                class="bg-gradient-to-tr from-orange-400 to-pink-500 px-1.5 rounded-md text-sm text-black"
-              >
-                {customer[0].activeBasicSubscriptions}x {$t("basic")}
-              </div>
-            {/if}
-            {#if customer[0].activeModdedSubscriptions > 0}
-              <div
-                class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 rounded-md text-sm text-black"
-              >
-                {customer[0].activeModdedSubscriptions}x {$t("modded")}
-              </div>
-            {/if}
+            {#each customer[0].subscriptions as sub}
+              {#if sub.split(":")[1] == "active"}
+                {#if sub.split(":")[0] === "basic"}
+                  <div
+                    class="bg-gradient-to-tr from-orange-400 to-pink-500 px-1.5 rounded-md text-sm text-black"
+                  >
+                    {$t("basic")}
+                  </div>
+                {/if}
+                {#if sub.split(":")[0] === "modded"}
+                  <div
+                    class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 rounded-md text-sm text-black"
+                  >
+                    {$t("modded")}
+                  </div>
+                {/if}
+              {:else}
+                {#if sub.split(":")[0] === "basic"}
+                  <div
+                    class="bg-gradient-to-tr from-orange-400 to-pink-500 px-1.5 text-sm text-black rounded-l-md"
+                  >
+                    {$t("basic")}
+                  </div>
+                  {#if sub.split(":")[1] == "cancelled"}
+                    <div
+                      class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
+                    >
+                      Cancels {timeConverter(sub.split(":")[2])}
+                      {#if sub.split(":")[3] != "null"}
+                        <div
+                          class="tooltip tooltip-right z-50 hidden sm:block"
+                          data-tip="Feedback: {sub.split(':')[3]}"
+                        >
+                          <Mail size="16" class="mt-0.5" />
+                        </div>
+                      {/if}
+                    </div>
+                  {:else}
+                    <div class="bg-slate-700 rounded-r-md text-sm px-1.5">
+                      {sub.split(":")[1]}
+                    </div>
+                  {/if}
+                {/if}
+                {#if sub.split(":")[0] === "modded"}
+                  <div
+                    class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 text-sm text-black rounded-l-md"
+                  >
+                    {$t("modded")}
+                  </div>
+
+                  {#if sub.split(":")[1] == "cancelled"}
+                    <div
+                      class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
+                    >
+                      Cancels {timeConverter(sub.split(":")[2])}
+                      {#if sub.split(":")[3] != "null"}
+                        <div
+                          class="tooltip tooltip-right z-50 hidden sm:block"
+                          data-tip="Feedback: {sub.split(':')[3]}"
+                        >
+                          <Mail size="16" class="mt-0.5" />
+                        </div>
+                      {/if}
+                    </div>
+                  {:else}
+                    <div class="bg-slate-700 rounded-r-md text-sm px-1.5">
+                      {sub.split(":")[1]}
+                    </div>
+                  {/if}
+                {/if}
+              {/if}
+            {/each}
           </div>
           <div class="flex gap-1">
             {#each customer[1].servers as server}
