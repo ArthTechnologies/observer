@@ -149,11 +149,15 @@
                   >
                     {$t("basic")}
                   </div>
-                  {#if sub.split(":")[1] == "cancelled"}
+                  {#if sub.split(":")[1] == "canceled"}
                     <div
                       class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
                     >
-                      Cancels {timeConverter(sub.split(":")[2])}
+                      {#if parseInt(sub.split(":")[2]) > Date.now() / 1000}
+                        Cancels {timeConverter(sub.split(":")[2])}
+                      {:else}
+                        Canceled
+                      {/if}
                       {#if sub.split(":")[3] != "null"}
                         <div
                           class="tooltip tooltip-right z-50 hidden sm:block"
@@ -176,11 +180,15 @@
                     {$t("modded")}
                   </div>
 
-                  {#if sub.split(":")[1] == "cancelled"}
+                  {#if sub.split(":")[1] == "canceled"}
                     <div
                       class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
                     >
-                      Cancels {timeConverter(sub.split(":")[2])}
+                      {#if parseInt(sub.split(":")[2]) > Date.now() / 1000}
+                        Cancels {timeConverter(sub.split(":")[2])}
+                      {:else}
+                        Canceled
+                      {/if}
                       {#if sub.split(":")[3] != "null"}
                         <div
                           class="tooltip tooltip-right z-50 hidden sm:block"
