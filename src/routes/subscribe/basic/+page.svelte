@@ -6,6 +6,7 @@
   import { ArrowLeft } from "lucide-svelte";
   import { browser } from "$app/environment";
   import PlanChooser from "$lib/components/ui/PlanChooser.svelte";
+  import { alert } from "$lib/scripts/utils";
 
   let stripe = null;
   let clientSecret = null;
@@ -38,7 +39,10 @@
       locale = locale.split("-")[0];
 
       email = localStorage.getItem("email");
-
+      if (email == undefined)
+        alert(
+          "We were unable to get your email from Discord. Please try again with an email account."
+        );
       stripe = await loadStripe(stripeKey);
       clientSecret = await fetch(
         apiurl +
