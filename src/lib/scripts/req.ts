@@ -514,6 +514,7 @@ export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string
           localStorage.setItem("loggedIn", "true");
           localStorage.setItem("accountId", JSON.parse(input).accountId);
           localStorage.setItem("avatar", "");
+          localStorage.setItem("email", em);  
           updateReqTemplates();
         }
         return true;
