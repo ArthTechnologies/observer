@@ -240,90 +240,92 @@
   {:else}
     <div class="flex flex-col gap-5 w-96">
       {#each customers as customer}
-        <div
-          class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
-        >
-          {customer[0].email}
-          <div class="flex gap-1">
-            {#each customer[0].subscriptions as sub}
-              {#if sub.split(":")[1] == "active"}
-                {#if sub.split(":")[0] === "basic"}
-                  <div
-                    class="bg-gradient-to-tr from-orange-400 to-pink-500 px-1.5 rounded-md text-sm text-black"
-                  >
-                    {$t("basic")}
-                  </div>
-                {/if}
-                {#if sub.split(":")[0] === "modded"}
-                  <div
-                    class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 rounded-md text-sm text-black"
-                  >
-                    {$t("modded")}
-                  </div>
-                {/if}
-              {:else}
-                {#if sub.split(":")[0] === "basic"}
-                  <div
-                    class="bg-gradient-to-tr from-orange-400 to-pink-500 px-1.5 text-sm text-black rounded-l-md"
-                  >
-                    {$t("basic")}
-                  </div>
-                  {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
+        {#if customer[0].subscriptions == "active" || (customer[0].subscriptions == "canceled" && customer[0].subscriptions > Date.now() / 1000) || customer[1].servers.length > 0}
+          <div
+            class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
+          >
+            {customer[0].email}
+            <div class="flex gap-1">
+              {#each customer[0].subscriptions as sub}
+                {#if sub.split(":")[1] == "active"}
+                  {#if sub.split(":")[0] === "basic"}
                     <div
-                      class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
+                      class="bg-gradient-to-tr from-orange-400 to-pink-500 px-1.5 rounded-md text-sm text-black"
                     >
-                      {format(sub.split(":")[1], sub.split(":")[2])}
-
-                      <FeedbackTooltip feedback={sub.split(":")[3]} />
-                    </div>
-                  {:else}
-                    <div
-                      class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
-                    >
-                      {format(sub.split(":")[1], sub.split(":")[2])}
-                      <FeedbackTooltip feedback={sub.split(":")[3]} />
+                      {$t("basic")}
                     </div>
                   {/if}
-                {/if}
-                {#if sub.split(":")[0] === "modded"}
-                  <div
-                    class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 text-sm text-black rounded-l-md"
-                  >
-                    {$t("modded")}
-                  </div>
-
-                  {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
+                  {#if sub.split(":")[0] === "modded"}
                     <div
-                      class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
+                      class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 rounded-md text-sm text-black"
                     >
-                      {format(sub.split(":")[1], sub.split(":")[2])}
-                      <FeedbackTooltip feedback={sub.split(":")[3]} />
-                    </div>
-                  {:else}
-                    <div
-                      class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
-                    >
-                      {format(sub.split(":")[1], sub.split(":")[2])}
-                      <FeedbackTooltip feedback={sub.split(":")[3]} />
+                      {$t("modded")}
                     </div>
                   {/if}
+                {:else}
+                  {#if sub.split(":")[0] === "basic"}
+                    <div
+                      class="bg-gradient-to-tr from-orange-400 to-pink-500 px-1.5 text-sm text-black rounded-l-md"
+                    >
+                      {$t("basic")}
+                    </div>
+                    {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
+                      <div
+                        class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
+                      >
+                        {format(sub.split(":")[1], sub.split(":")[2])}
+
+                        <FeedbackTooltip feedback={sub.split(":")[3]} />
+                      </div>
+                    {:else}
+                      <div
+                        class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
+                      >
+                        {format(sub.split(":")[1], sub.split(":")[2])}
+                        <FeedbackTooltip feedback={sub.split(":")[3]} />
+                      </div>
+                    {/if}
+                  {/if}
+                  {#if sub.split(":")[0] === "modded"}
+                    <div
+                      class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 text-sm text-black rounded-l-md"
+                    >
+                      {$t("modded")}
+                    </div>
+
+                    {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
+                      <div
+                        class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
+                      >
+                        {format(sub.split(":")[1], sub.split(":")[2])}
+                        <FeedbackTooltip feedback={sub.split(":")[3]} />
+                      </div>
+                    {:else}
+                      <div
+                        class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
+                      >
+                        {format(sub.split(":")[1], sub.split(":")[2])}
+                        <FeedbackTooltip feedback={sub.split(":")[3]} />
+                      </div>
+                    {/if}
+                  {/if}
                 {/if}
+              {/each}
+            </div>
+            <div class="flex gap-1">
+              {#each customer[1].servers as server}
+                <div class="bg-neutral px-1.5 rounded-md text-sm">
+                  {address}:{server}
+                </div>
+              {/each}
+              {#if customer[1].servers.length == 0}
+                <div
+                  class="absolute h-full w-full bg-error blur-sm rounded-xl top-0 right-0 z-[-1]"
+                ></div>
               {/if}
-            {/each}
+            </div>
           </div>
-          <div class="flex gap-1">
-            {#each customer[1].servers as server}
-              <div class="bg-neutral px-1.5 rounded-md text-sm">
-                {address}:{server}
-              </div>
-            {/each}
-            {#if customer[1].servers.length == 0}
-              <div
-                class="absolute h-full w-full bg-error blur-sm rounded-xl top-0 right-0 z-[-1]"
-              ></div>
-            {/if}
-          </div>
-        </div>
+        {/if}
       {/each}
     </div>
   {/if}
