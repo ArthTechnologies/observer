@@ -50,6 +50,9 @@
             .then((res) => res.json())
             .then((res) => {
               console.log(res);
+              if (res.msg == "You haven't paid for a server.") {
+                goto("/subscribe");
+              }
               promise = getServers(email).then((response) => {
                 if (browser) {
                   noserverlock = true;
