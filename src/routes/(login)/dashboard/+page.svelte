@@ -87,6 +87,25 @@
     var time = month + " " + date + " @" + hour;
     return time;
   }
+
+  function format(str, date) {
+    let ret = str;
+    if (str == "incomplete_expired") {
+      ret = "Failed Payment";
+    } else if (str == "canceled") {
+      if (parseInt(date) > Date.now() / 1000) {
+        ret = "Cancels " + timeConverter(date);
+      } else {
+        ret = "Canceled " + timeConverter(date);
+      }
+    } else {
+      ret = str
+        .split("_")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    }
+    return ret;
+  }
 </script>
 
 {#if !isLoggedIn}
@@ -208,15 +227,12 @@
                   >
                     {$t("basic")}
                   </div>
-                  {#if sub.split(":")[1] == "canceled"}
+                  {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
                     <div
                       class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
                     >
-                      {#if parseInt(sub.split(":")[2]) > Date.now() / 1000}
-                        Cancels {timeConverter(sub.split(":")[2])}
-                      {:else}
-                        Canceled
-                      {/if}
+                      {format(sub.split(":")[1], sub.split(":")[2])}
+
                       {#if sub.split(":")[3] != "null"}
                         <div
                           class="tooltip tooltip-right z-50 hidden sm:block"
@@ -227,8 +243,18 @@
                       {/if}
                     </div>
                   {:else}
-                    <div class="bg-slate-700 rounded-r-md text-sm px-1.5">
-                      {sub.split(":")[1]}
+                    <div
+                      class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
+                    >
+                      {format(sub.split(":")[1], sub.split(":")[2])}
+                      {#if sub.split(":").length == 4 && sub.split(":")[3] != "null"}
+                        <div
+                          class="tooltip tooltip-right z-50 hidden sm:block"
+                          data-tip="Feedback: {sub.split(':')[3]}"
+                        >
+                          <Mail size="16" class="mt-0.5" />
+                        </div>
+                      {/if}
                     </div>
                   {/if}
                 {/if}
