@@ -1,10 +1,11 @@
 <script>
   import { browser } from "$app/environment";
   import Analytics from "$lib/components/pages/dashboard/Analytics.svelte";
+  import FeedbackTooltip from "$lib/components/pages/dashboard/FeedbackTooltip.svelte";
   import { t } from "$lib/scripts/i18n";
   import { apiurl } from "$lib/scripts/req";
   import { alert } from "$lib/scripts/utils";
-  import { Gamepad2, Mail } from "lucide-svelte";
+  import { Gamepad2, Info, Mail } from "lucide-svelte";
   import { split } from "postcss/lib/list";
   import { fade } from "svelte/transition";
 
@@ -233,28 +234,14 @@
                     >
                       {format(sub.split(":")[1], sub.split(":")[2])}
 
-                      {#if sub.split(":")[3] != "null"}
-                        <div
-                          class="tooltip tooltip-right z-50 hidden sm:block"
-                          data-tip="Feedback: {sub.split(':')[3]}"
-                        >
-                          <Mail size="16" class="mt-0.5" />
-                        </div>
-                      {/if}
+                      <FeedbackTooltip feedback={sub.split(":")[3]} />
                     </div>
                   {:else}
                     <div
                       class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
                     >
                       {format(sub.split(":")[1], sub.split(":")[2])}
-                      {#if sub.split(":").length == 4 && sub.split(":")[3] != "null"}
-                        <div
-                          class="tooltip tooltip-right z-50 hidden sm:block"
-                          data-tip="Feedback: {sub.split(':')[3]}"
-                        >
-                          <Mail size="16" class="mt-0.5" />
-                        </div>
-                      {/if}
+                      <FeedbackTooltip feedback={sub.split(":")[3]} />
                     </div>
                   {/if}
                 {/if}
@@ -265,27 +252,19 @@
                     {$t("modded")}
                   </div>
 
-                  {#if sub.split(":")[1] == "canceled"}
+                  {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
                     <div
                       class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
                     >
-                      {#if parseInt(sub.split(":")[2]) > Date.now() / 1000}
-                        Cancels {timeConverter(sub.split(":")[2])}
-                      {:else}
-                        Canceled
-                      {/if}
-                      {#if sub.split(":")[3] != "null"}
-                        <div
-                          class="tooltip tooltip-right z-50 hidden sm:block"
-                          data-tip="Feedback: {sub.split(':')[3]}"
-                        >
-                          <Mail size="16" class="mt-0.5" />
-                        </div>
-                      {/if}
+                      {format(sub.split(":")[1], sub.split(":")[2])}
+                      <FeedbackTooltip feedback={sub.split(":")[3]} />
                     </div>
                   {:else}
-                    <div class="bg-slate-700 rounded-r-md text-sm px-1.5">
-                      {sub.split(":")[1]}
+                    <div
+                      class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
+                    >
+                      {format(sub.split(":")[1], sub.split(":")[2])}
+                      <FeedbackTooltip feedback={sub.split(":")[3]} />
                     </div>
                   {/if}
                 {/if}
