@@ -2,11 +2,12 @@
   import { apiurl, customerPortalLink } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
-  import { MessagesSquare } from "lucide-svelte";
+  import { ClipboardList, MessagesSquare } from "lucide-svelte";
 
   let servers = [];
   var email: string = "";
   let promise = null;
+  let accountID;
   //gets subs and servers from localstorage
   var subs = {
     subscriptions: 0,
@@ -15,6 +16,7 @@
   };
   let address;
   if (browser) {
+    accountID = localStorage.getItem("accountId");
     servers = JSON.parse(localStorage.getItem("servers"));
     address = localStorage.getItem("address");
 
@@ -139,8 +141,22 @@
         <MessagesSquare />Refunds & Disputes
       </div>
       <ul class="list-disc pl-[1.45rem]">
-        <li>Arth Hosting offers refunds for technical issues experienced</li>
+        <li>
+          Arth Hosting offers refunds for major technical issues experienced
+        </li>
         <li>Other issues are on a case-by-case basis</li>
+        <li class="relative">
+          Contact <b>support@arthmc.xyz</b> to request a refund and include your
+          Account ID
+          <button
+            class="btn btn-xs btn-neutral ml-2 absolute"
+            on:click={() => {
+              navigator.clipboard.writeText(accountID);
+            }}
+            ><ClipboardList size="16" class="mr-1" />
+            {$t("button.copyToClipboard")}</button
+          >
+        </li>
         <li>
           Disputing a payment with your bank before attempting to request a
           refund may result in termination of service

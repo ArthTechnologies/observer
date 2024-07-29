@@ -7,6 +7,10 @@
   type NavType = "default" | "welcome";
 
   export let navType: NavType;
+  let accountID = "";
+  if (browser) {
+    accountID = localStorage.getItem("accountId");
+  }
 </script>
 
 <footer
@@ -32,12 +36,15 @@
 />
 <div class="modal" style="margin:0rem;">
   <div class="modal-box bg-opacity-95 backdrop-blur relative">
+    <p class="opacity-50 absolute top-1.5 left-2.5 text-sm">
+      Account ID: {accountID}
+    </p>
     <label
       for="support-modal"
       style="margin:0rem;"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
-    <h3 class="text-2xl font-bold mb-2">{$t("help.title")}</h3>
+    <h3 class="text-2xl font-bold mb-2 mt-1">{$t("help.title")}</h3>
 
     <h3 class="text-lg font-bold mt-2 mb-1">{$t("help.l.tutorials")}</h3>
     <a

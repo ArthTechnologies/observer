@@ -283,6 +283,8 @@ export default {
     "italic": "Italic",
     "glitchEffect": "Glitch Effect",
     "reset": "Reset",
+    "copy": "copy",
+    "copied": "copied",
 
 
   },
@@ -576,6 +578,8 @@ export default {
     "italic": "Itálico",
     "glitchEffect": "Efecto de falla",
     "reset": "Restablecer",
+    "copy": "copiar",
+    "copied": "copiado",
 
   },
 };
