@@ -31,6 +31,10 @@
       .then((json) => {
         console.log(json);
         subs = json;
+        if (subs.subscriptions == 0) {
+          //greys out the manage button
+          document.getElementById("manage").classList.add("btn-disabled");
+        }
       });
 
     //sets email to the value of localstorage.getItem("email")
@@ -115,6 +119,7 @@
       >
         {#if customerPortalLink != ""}
           <a
+            id="manage"
             target="_blank"
             rel="noopener noreferrer"
             href="{customerPortalLink}?prefilled_email={email}"
@@ -128,7 +133,7 @@
           class="btn btn-success btn-block md:grow sm:w-44 mt-2.5 sm:m-0"
           on:click={subscribe}
         >
-          {#if subs == 0}
+          {#if subs.subscriptions == 0}
             {$t("button.subscribe")}
           {:else}
             {$t("button.newsubscribe")}
@@ -136,7 +141,7 @@
         </a>
       </div>
     </div>
-    <div class="ml-12 py-8 space-y-2">
+    <div id="refunds" class="ml-12 py-8 space-y-2">
       <div class="flex items-center gap-2 font-bold text-xl">
         <MessagesSquare />Refunds & Disputes
       </div>

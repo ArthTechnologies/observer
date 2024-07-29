@@ -51,7 +51,7 @@
             .then((res) => {
               console.log(res);
               if (res.msg == "You haven't paid for a server.") {
-                goto("/subscribe");
+                goto("/billing");
               }
               promise = getServers(email).then((response) => {
                 if (browser) {
