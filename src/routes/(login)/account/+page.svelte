@@ -46,11 +46,8 @@
           <Mail size="16" />
           Email Address
         </div>
-        {#if accountType == "email"}
-          {accountEmail}
-        {:else if accountType == "discord"}
-          Discord
-        {/if}
+
+        {accountEmail}
       </div>
       <div class="flex gap-2 items-center">
         <div
@@ -59,11 +56,8 @@
           <Hash size="16" />
           Account ID
         </div>
-        {#if accountType == "email"}
-          {accountId}
-        {:else if accountType == "discord"}
-          Discord
-        {/if}
+
+        {accountId}
       </div>
     </div>
 
