@@ -7,7 +7,7 @@
   let servers = [];
   var email: string = "";
   let promise = null;
-  let accountID;
+  let accountId;
   //gets subs and servers from localstorage
   var subs = {
     subscriptions: 0,
@@ -16,7 +16,7 @@
   };
   let address;
   if (browser) {
-    accountID = localStorage.getItem("accountId");
+    accountId = localStorage.getItem("accountId");
     servers = JSON.parse(localStorage.getItem("servers"));
     address = localStorage.getItem("address");
 
@@ -151,7 +151,7 @@
           <button
             class="btn btn-xs btn-neutral ml-2 absolute"
             on:click={() => {
-              navigator.clipboard.writeText(accountID);
+              navigator.clipboard.writeText(accountId);
             }}
             ><ClipboardList size="16" class="mr-1" />
             {$t("button.copyToClipboard")}</button

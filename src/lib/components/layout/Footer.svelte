@@ -7,9 +7,9 @@
   type NavType = "default" | "welcome";
 
   export let navType: NavType;
-  let accountID = "";
+  let accountId = "";
   if (browser) {
-    accountID = localStorage.getItem("accountId");
+    accountId = localStorage.getItem("accountId");
   }
 </script>
 
@@ -37,7 +37,7 @@
 <div class="modal" style="margin:0rem;">
   <div class="modal-box bg-opacity-95 backdrop-blur relative">
     <p class="opacity-50 absolute top-1.5 left-2.5 text-sm">
-      Account ID: {accountID}
+      Account ID: {accountId}
     </p>
     <label
       for="support-modal"
