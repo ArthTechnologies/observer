@@ -8,6 +8,7 @@
   import { Gamepad2, Info, Mail } from "lucide-svelte";
   import { split } from "postcss/lib/list";
   import { fade } from "svelte/transition";
+  import { server } from "websocket";
 
   let isLoggedIn = false;
   let address = "";
@@ -42,6 +43,33 @@
                   return a[1].servers[0] - b[1].servers[0];
                 });
                 customersLoaded = true;
+                for (let i = 0; i < servers.length; i++) {
+                  let stripeOwner = false;
+                  let activeOwner = false;
+                  for (let j = 0; j < customers.length; j++) {
+                    if (
+                      customers[j][1].servers.includes(
+                        parseInt(servers[i].serverId)
+                      ) ||
+                      customers[j][1].servers.includes(servers[i].serverId)
+                    ) {
+                      stripeOwner = true;
+                      if (
+                        customers[j][0].subscriptions[0].split(":")[1] ==
+                          "active" ||
+                        (customers[j][0].subscriptions[0].split(":")[1] ==
+                          "canceled" &&
+                          customers[j][0].subscriptions[0].split(":")[2] >
+                            Date.now() / 1000)
+                      ) {
+                        activeOwner = true;
+                      }
+                    }
+                  }
+                  servers[i].stripeOwner = stripeOwner;
+                  servers[i].activeOwner = activeOwner;
+                }
+                serversLoaded = true;
               });
 
             fetch(apiurl + "dashboard/servers?tempToken=" + input, {
@@ -54,7 +82,6 @@
                 servers.sort((a, b) => {
                   return a.serverId - b.serverId;
                 });
-                serversLoaded = true;
               });
           } else {
             alert("Expired or invalid token");
@@ -162,7 +189,9 @@
   {:else}
     <div class="flex flex-col gap-5 w-96">
       {#each servers as server}
-        <div class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
+        <div
+          class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
+        >
           {address}:{server.serverId}
           {#if server.owner != null}
             {#if server.owner.includes("email:")}
@@ -184,6 +213,15 @@
               </div>
             {/if}
           {/if}
+          {#if !server.stripeOwner}
+            <div
+              class="absolute h-full w-full bg-error blur-sm rounded-xl -top-1.5 right-0 z-[-1]"
+            ></div>
+          {:else if !server.activeOwner}
+            <div
+              class="absolute h-full w-full bg-warning blur-sm rounded-xl -top-1.5 right-0 z-[-1]"
+            ></div>
+          {/if}
         </div>
       {/each}
     </div>
@@ -202,7 +240,9 @@
   {:else}
     <div class="flex flex-col gap-5 w-96">
       {#each customers as customer}
-        <div class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
+        <div
+          class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
+        >
           {customer[0].email}
           <div class="flex gap-1">
             {#each customer[0].subscriptions as sub}
@@ -277,6 +317,11 @@
                 {address}:{server}
               </div>
             {/each}
+            {#if customer[1].servers.length == 0}
+              <div
+                class="absolute h-full w-full bg-error blur-sm rounded-xl top-0 right-0 z-[-1]"
+              ></div>
+            {/if}
           </div>
         </div>
       {/each}
