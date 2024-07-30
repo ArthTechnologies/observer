@@ -40,7 +40,7 @@
   let vanilla = false;
   let name: string = "-";
   let address: string;
-  let tname: string;
+
   let url: string;
   let apo = 0;
   let po = 0;
@@ -189,16 +189,7 @@
         });
     }
   });
-  //grab window url
-  if (browser) {
-    url = window.location.href;
-    //set tname to url after the last slash
-    tname = url.substring(url.lastIndexOf("/") + 1);
-    //if tname has character encoding, decode it
-    if (tname.includes("%")) {
-      tname = decodeURIComponent(tname);
-    }
-  }
+
   function getStatus() {
     //get server status
     getServer(id).then((response) => {
@@ -240,7 +231,7 @@
         }
         if (
           decodeURIComponent(window.location.pathname) ==
-          "/server/" + tname
+          "/server/" + (10000 + parseInt(id))
         ) {
           getStatus();
 
