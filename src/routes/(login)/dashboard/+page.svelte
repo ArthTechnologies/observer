@@ -2,6 +2,7 @@
   import { browser } from "$app/environment";
   import Analytics from "$lib/components/pages/dashboard/Analytics.svelte";
   import FeedbackTooltip from "$lib/components/pages/dashboard/FeedbackTooltip.svelte";
+  import Status from "$lib/components/pages/dashboard/Status.svelte";
   import { t } from "$lib/scripts/i18n";
   import { apiurl } from "$lib/scripts/req";
   import { alert } from "$lib/scripts/utils";
@@ -176,9 +177,10 @@
     </div>
   </div>
 {/if}
-<div class="flex gap-5 justify-end px-24 -mt-4">
+<div class="flex gap-5 justify-between px-16 -mt-4">
+  <Status />
   {#if !serversLoaded}
-    <div class="flex flex-col gap-5 w-96">
+    <div class="flex flex-col gap-5 w-96 items-center">
       {#each Array.from({ length: 10 }) as _}
         <div class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
           <div class="bg-slate-700 animate-pulse w-14 h-5 rounded-md"></div>
@@ -187,7 +189,7 @@
       {/each}
     </div>
   {:else}
-    <div class="flex flex-col gap-5 w-96">
+    <div class="flex flex-col gap-5 w-96 items-center">
       {#each servers as server}
         <div
           class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
@@ -228,7 +230,7 @@
   {/if}
 
   {#if !customersLoaded}
-    <div class="flex flex-col gap-5 w-96">
+    <div class="flex flex-col gap-5 w-96 items-center">
       {#each Array.from({ length: 10 }) as _}
         <div class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
           <div class="bg-slate-700 animate-pulse w-20 h-5 rounded-md"></div>
@@ -238,7 +240,7 @@
       {/each}
     </div>
   {:else}
-    <div class="flex flex-col gap-5 w-96">
+    <div class="flex flex-col gap-5 w-96 items-center">
       {#each customers as customer}
         {#if customer[0].subscriptions == "active" || (customer[0].subscriptions == "canceled" && customer[0].subscriptions > Date.now() / 1000) || customer[1].servers.length > 0}
           <div

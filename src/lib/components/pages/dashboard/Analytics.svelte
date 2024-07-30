@@ -131,7 +131,7 @@
   }
 </script>
 
-<div class="w-[20rem]">
+<div class="w-[25rem]">
   <div class="flex items-center flex-col">
     <p class="text-lg font-bold my-3 ml-8">Hits in the last 30 days</p>
     <div class="bg-base-200 rounded-xl shadow mb-5">
