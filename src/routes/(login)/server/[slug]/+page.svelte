@@ -229,19 +229,15 @@
         if (count > 20) {
           interval = 2000;
         }
-
-        if (
-          decodeURIComponent(window.location.pathname) ==
-          "/server/" + (10000 + parseInt(id))
-        ) {
+        let path = decodeURIComponent(window.location.pathname);
+        // if there is a / at the end, this removes it
+        if (path.endsWith("/")) {
+          path = path.substring(0, path.length - 1);
+        }
+        if (path == "/server/" + (10000 + parseInt(id))) {
           getStatus();
 
           readCmd();
-        } else if (count % 10 == 0) {
-          console.log(
-            decodeURIComponent(window.location.pathname),
-            "/server/" + (10000 + parseInt(id))
-          );
         }
       }, interval);
     }
