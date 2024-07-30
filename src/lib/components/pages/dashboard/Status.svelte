@@ -1,6 +1,8 @@
 <script>
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
+  import { apiurl } from "$lib/scripts/req";
+  import { AlertTriangle } from "lucide-svelte";
 
   let network;
   let hosting;
@@ -12,41 +14,57 @@
   let jarsmcf;
   let jarsmcb;
   let jarsmc;
+  let atCapacity = false;
+  if (browser) {
+    fetch(apiurl + "info/isAtCapacity", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        atCapacity = res;
+      });
+    const response = fetch("https://backend.arthmc.xyz/status")
+      .then((response) => response.json())
+      .then((json) => {
+        if (json != undefined) {
+          backend = "Online";
+        } else {
+          backend = "Offline";
+        }
+        network = json.arthnetwork;
+        observer = json.observer;
+        quartz = json.quartz;
+        frontend = json.frontend;
+        jarsmcf = json.jarsmcf;
+        jarsmcb = json.jarsmcb;
+        if (jarsmcf == "Online" && jarsmcb == "Online") {
+          jarsmc = "Online";
+        } else {
+          jarsmc = "Offline";
+        }
+        if (quartz == "Online") {
+          hosting = "Online";
+        } else {
+          hosting = "Offline";
+        }
 
-  const response = fetch("https://backend.arthmc.xyz/status")
-    .then((response) => response.json())
-    .then((json) => {
-      if (json != undefined) {
-        backend = "Online";
-      } else {
-        backend = "Offline";
-      }
-      network = json.arthnetwork;
-      observer = json.observer;
-      quartz = json.quartz;
-      frontend = json.frontend;
-      jarsmcf = json.jarsmcf;
-      jarsmcb = json.jarsmcb;
-      if (jarsmcf == "Online" && jarsmcb == "Online") {
-        jarsmc = "Online";
-      } else {
-        jarsmc = "Offline";
-      }
-      if (quartz == "Online") {
-        hosting = "Online";
-      } else {
-        hosting = "Offline";
-      }
-
-      if (backend == "Online" && frontend == "Online") {
-        website = "Online";
-      } else {
-        website = "Offline";
-      }
-    });
+        if (backend == "Online" && frontend == "Online") {
+          website = "Online";
+        } else {
+          website = "Offline";
+        }
+      });
+  }
 </script>
 
 <div class=" space-y-5">
+  {#if atCapacity}
+    <div
+      class="w-[10rem] p-2 bg-error rounded-xl shadow-xl text-black flex gap-1 font-bold justify-center ml-4"
+    >
+      <AlertTriangle size="24" />At Capacity
+    </div>
+  {/if}
   <div class="h-22 w-48 bg-base-200 rounded-xl p-2">
     <p class="font-bold text-2xl">Arth Hosting</p>
     <div class="flex items-center mb-1">
