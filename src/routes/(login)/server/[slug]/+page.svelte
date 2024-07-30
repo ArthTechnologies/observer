@@ -229,6 +229,7 @@
         if (count > 20) {
           interval = 2000;
         }
+
         if (
           decodeURIComponent(window.location.pathname) ==
           "/server/" + (10000 + parseInt(id))
@@ -236,6 +237,11 @@
           getStatus();
 
           readCmd();
+        } else if (count % 10 == 0) {
+          console.log(
+            decodeURIComponent(window.location.pathname),
+            "/server/" + (10000 + parseInt(id))
+          );
         }
       }, interval);
     }
