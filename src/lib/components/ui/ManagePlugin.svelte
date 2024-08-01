@@ -157,28 +157,28 @@
         {#if platform == "lr"}
           <img
             class="ml-1.5 h-6"
-            src="https://github.com/modrinth/art/blob/main/Branding/Mark/mark-dark__32x32.png?raw=true"
+            src="/images/modrinth.svg"
             width="24"
             height="24"
           />
         {:else if platform == "cf"}
           <img
             class="ml-1.5 h-6"
-            src="https://static-beta.curseforge.com/images/favicon.ico"
+            src="/images/curseforge.svg"
             width="24"
             height="24"
           />
         {:else if platform == "gh"}
           <img
             class="ml-1.5 h-6"
-            src="https://github.githubassets.com/favicons/favicon.svg"
+            src="/images/github.svg"
             width="24"
             height="24"
           />
         {:else if platform == "cx"}
           <img
             class="ml-1.5 h-6"
-            src="https://geysermc.org/favicon.ico"
+            src="/images/geyser.webp"
             width="24"
             height="24"
           />
