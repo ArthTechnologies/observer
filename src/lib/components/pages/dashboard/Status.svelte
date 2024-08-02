@@ -2,7 +2,7 @@
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
   import { apiurl } from "$lib/scripts/req";
-  import { AlertTriangle } from "lucide-svelte";
+  import { AlertTriangle, InfoIcon } from "lucide-svelte";
 
   let network;
   let hosting;
@@ -15,13 +15,17 @@
   let jarsmcb;
   let jarsmc;
   let atCapacity = false;
+  let numServers = -16;
+  let maxServers = 16;
   if (browser) {
-    fetch(apiurl + "info/isAtCapacity", {
+    fetch(apiurl + "info/capacity", {
       method: "GET",
     })
       .then((res) => res.json())
       .then((res) => {
-        atCapacity = res;
+        atCapacity = res.atCapacity;
+        numServers = res.numServers;
+        maxServers = res.maxServers;
       });
     const response = fetch("https://backend.arthmc.xyz/status")
       .then((response) => response.json())
@@ -63,6 +67,13 @@
       class="w-[10rem] p-2 bg-error rounded-xl shadow-xl text-black flex gap-1 font-bold justify-center ml-4"
     >
       <AlertTriangle size="24" />At Capacity
+    </div>
+  {:else}
+    <div
+      class="w-[10rem] p-2 bg-info rounded-xl shadow-xl text-black flex gap-1 font-bold justify-center ml-4"
+    >
+      <InfoIcon size="24" />{Math.trunc(numServers / maxServers) * 100}%
+      Capacity
     </div>
   {/if}
   <div class="h-22 w-48 bg-base-200 rounded-xl p-2">

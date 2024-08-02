@@ -37,10 +37,10 @@
       }
     }
 
-    fetch(apiurl + "info/isAtCapacity")
+    fetch(apiurl + "info/capacity")
       .then((x) => x.json())
       .then((x) => {
-        atCapacity = x;
+        atCapacity = x.atCapacity;
       });
   });
 
