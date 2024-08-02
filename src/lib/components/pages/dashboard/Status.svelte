@@ -72,7 +72,7 @@
     <div
       class="w-[10rem] p-2 bg-info rounded-xl shadow-xl text-black flex gap-1 font-bold justify-center ml-4"
     >
-      <InfoIcon size="24" />{Math.trunc(numServers / maxServers) * 100}%
+      <InfoIcon size="24" />{Math.trunc((numServers / maxServers) * 100)}%
       Capacity
     </div>
   {/if}
