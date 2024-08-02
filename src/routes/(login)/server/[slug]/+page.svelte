@@ -35,6 +35,7 @@
   } from "lucide-svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
   import Versions from "$lib/components/buttons/Versions.svelte";
+  import FullscreenMap from "$lib/components/pages/server/FullscreenMap.svelte";
   let scrollCorrected = false;
   let modded = false;
   let vanilla = false;
@@ -53,6 +54,7 @@
   let secret = "";
   let difference = -1;
   let baseurl = apiurl;
+  let webmap = false;
 
   if (browser) {
     name = localStorage.getItem("serverName");
@@ -68,6 +70,13 @@
     ) {
       modded = true;
     }
+
+    if (localStorage.getItem("serverWebmap") == "true") {
+      webmap = true;
+    }
+    document.addEventListener("webmapEnabled", function () {
+      webmap = true;
+    });
     if (usingOcelot) {
       baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()];
     }
@@ -196,6 +205,7 @@
       //convert addons array to string, save it to "serverAddons" array
       localStorage.setItem("serverAddons", response.addons.toString());
       localStorage.setItem("serverVersion", response.version);
+      localStorage.setItem("serverWebmap", response.webmap);
       //set state to response
       state = response.state;
     });
@@ -463,6 +473,18 @@
           <Add /><Manage />
         {/if}
       </div>
+      {#if webmap}
+        <div class="mt-5 relative">
+          <iframe
+            title="Webmap of the server's world"
+            type="text/html"
+            src="http://192.168.1.85:{parseInt(id) + 10200}"
+            class="shadow-xl w-full rounded-xl"
+            height="300"
+          />
+          <FullscreenMap />
+        </div>
+      {/if}
       <div class=" bg-base-200 mt-4 rounded-xl px-4 py-3 w-[20rem] md:w-auto">
         <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
         <div class="space-x-1.5 space-y-1.5">

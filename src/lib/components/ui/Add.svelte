@@ -113,7 +113,7 @@
         query,
         offset,
         sortBy,
-        categories,
+        categories
       ).then((response) => {
         skeletonsLength = response.hits.length;
         allowLoadMore = response.hits.length == 15;
@@ -504,6 +504,14 @@
           desc="Blazingly fast world manipulation for artists, builders and everyone else."
           icon="https://cdn.modrinth.com/data/z4HZZnLr/1dab3e5596f37ade9a65f3587254ff61a9cf3c43.svg"
           id="z4HZZnLr"
+          downloads="null"
+        />
+        <PluginResult
+          name="Dynmap®"
+          author="mikeprimm"
+          desc="A Google Maps-like map for your Minecraft server that can be viewed in a browser. Easy to set up when making use of Dynmap's integrated webserver, while also supporting advanced deployment with Apache and other web servers."
+          icon="https://cdn.modrinth.com/data/fRQREgAc/99327619930da6a9943d475540f268ddfe585a82.png"
+          id="fRQREgAc"
           downloads="null"
         />
       </div>

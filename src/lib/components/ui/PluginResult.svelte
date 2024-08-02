@@ -4,7 +4,7 @@
   import ChooseVersion from "$lib/components/ui/ChooseVersion.svelte";
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
-  import { Download } from "lucide-svelte";
+  import { Download, Plug } from "lucide-svelte";
   import TranslateableText from "./TranslateableText.svelte";
   export let name: string;
   export let author: string;
@@ -27,7 +27,14 @@
   }
 </script>
 
-<div class="bg-base-200 rounded-lg p-3">
+<div class="bg-base-200 rounded-lg p-3 relative">
+  {#if name.includes("Dynmap")}
+    <div
+      class="absolute h-6 bg-base-300 rounded-lg pl-[0.2rem] px-1.5 mt-1 text-sm flex items-center top-2 right-2"
+    >
+      <Plug size="18" /> Officially Supported
+    </div>
+  {/if}
   <div class="flex justify-between place-items-center max-w-full relative">
     <div class="flex space-x-3 w-minus-7">
       <a

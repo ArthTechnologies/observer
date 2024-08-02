@@ -231,6 +231,7 @@ export function sendVersion(
       if (input.indexOf("400") > -1) {
         return "error";
       } else {
+
         return "success";
       }
     })
@@ -660,6 +661,10 @@ export function getServer(id: number) {
       if (input.indexOf("400") > -1) {
         return "error";
       } else {
+        if (JSON.parse(input).webmap == true && localStorage.getItem("serverWebmap") != "true") {
+          window.dispatchEvent(new Event("webmapEnabled"));
+          localStorage.setItem("serverWebmap", "true");
+        }
         //return input as json
         return JSON.parse(input);
       }
