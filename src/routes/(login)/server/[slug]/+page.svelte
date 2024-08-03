@@ -488,7 +488,7 @@
           <iframe
             title="Webmap of the server's world"
             type="text/html"
-            src="http://192.168.1.85:{parseInt(id) + 10200}"
+            src="{apiurl}:{parseInt(id) + 10200}"
             class="shadow-xl w-full rounded-xl"
             height="300"
           />
@@ -502,7 +502,7 @@
               class="btn btn-sm btn-ghost"
               on:click={() => {
                 navigator.clipboard.writeText(
-                  "http://192.168.1.85:{parseInt(id) + 10200}"
+                  `${apiurl}:${parseInt(id) + 10200}`
                 );
               }}
               ><ClipboardList size="16" class="mr-1" />
