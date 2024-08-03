@@ -76,7 +76,19 @@
       return;
     }
     localStorage.setItem("email", email);
-    location.reload();
+    fetch(apiurl + "accounts/email?email=" + email, {
+      method: "POST",
+      headers: {
+        accountname: localStorage.getItem("accountEmail"),
+        token: localStorage.getItem("token"),
+      },
+    }).then((res) => {
+      if (res.status == 200) {
+        location.reload();
+      } else {
+        alert("An error occurred. Please try again.", "error");
+      }
+    });
   }
 </script>
 
