@@ -32,10 +32,12 @@
     Repeat,
     StopCircle,
     Settings,
+    ClipboardList,
   } from "lucide-svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
   import Versions from "$lib/components/buttons/Versions.svelte";
   import FullscreenMap from "$lib/components/pages/server/FullscreenMap.svelte";
+  import { write } from "fs";
   let scrollCorrected = false;
   let modded = false;
   let vanilla = false;
@@ -340,6 +342,10 @@
     }
   }
   readCmd();
+
+  function webmapRender() {
+    writeTerminal(id, "dynmap fullrender world");
+  }
 </script>
 
 <div class="lg:-mt-10">
@@ -486,6 +492,23 @@
             class="shadow-xl w-full rounded-xl"
             height="300"
           />
+          <div
+            class="absolute bottom-0 w-full bg-neutral rounded-b-lg bg-opacity-50 backdrop-blur-xl p-2 flex gap-2"
+          >
+            <button on:click={webmapRender} class="btn btn-sm"
+              >Render World</button
+            >
+            <button
+              class="btn btn-sm btn-ghost"
+              on:click={() => {
+                navigator.clipboard.writeText(
+                  "http://192.168.1.85:{parseInt(id) + 10200}"
+                );
+              }}
+              ><ClipboardList size="16" class="mr-1" />
+              Copy Link</button
+            >
+          </div>
           <FullscreenMap />
         </div>
       {/if}
