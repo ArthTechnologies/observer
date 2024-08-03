@@ -41,7 +41,7 @@
       locale = locale.split("-")[0];
 
       email = localStorage.getItem("email");
-      if (email == undefined) {
+      if (email == undefined || email == "undefined") {
         noEmail = true;
         return;
       }

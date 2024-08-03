@@ -3,7 +3,7 @@
   import { EmbeddedCheckout } from "svelte-stripe";
   import { loadStripe } from "@stripe/stripe-js";
   import { apiurl, stripeKey } from "$lib/scripts/req";
-  import { ArrowLeft } from "lucide-svelte";
+  import { ArrowLeft, Info } from "lucide-svelte";
   import { browser } from "$app/environment";
   import PlanChooser from "$lib/components/ui/PlanChooser.svelte";
   import { alert } from "$lib/scripts/utils";
@@ -41,10 +41,10 @@
       locale = locale.split("-")[0];
 
       email = localStorage.getItem("email");
-      if (email == undefined)
-        alert(
-          "We were unable to get your email from Discord. Please try again with an email account."
-        );
+      if (email == undefined || email == "undefined") {
+        noEmail = true;
+        return;
+      }
       stripe = await loadStripe(stripeKey);
       clientSecret = await fetch(
         apiurl +
@@ -67,6 +67,28 @@
         });
     }
   });
+
+  function emailSubmit() {
+    email = document.getElementById("emailInput").value;
+    if (email == "" || !email.includes("@") || !email.includes(".")) {
+      alert("Please enter a valid address.", "error");
+      return;
+    }
+    localStorage.setItem("email", email);
+    fetch(apiurl + "accounts/email?email=" + email, {
+      method: "POST",
+      headers: {
+        accountname: localStorage.getItem("accountEmail"),
+        token: localStorage.getItem("token"),
+      },
+    }).then((res) => {
+      if (res.status == 200) {
+        location.reload();
+      } else {
+        alert("An error occurred. Please try again.", "error");
+      }
+    });
+  }
 </script>
 
 <div class="flex relative">
