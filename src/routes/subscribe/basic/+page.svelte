@@ -3,16 +3,18 @@
   import { EmbeddedCheckout } from "svelte-stripe";
   import { loadStripe } from "@stripe/stripe-js";
   import { apiurl, stripeKey } from "$lib/scripts/req";
-  import { ArrowLeft } from "lucide-svelte";
+  import { AlertTriangle, ArrowLeft, Info } from "lucide-svelte";
   import { browser } from "$app/environment";
   import PlanChooser from "$lib/components/ui/PlanChooser.svelte";
   import { alert } from "$lib/scripts/utils";
+  import { t } from "$lib/scripts/i18n";
 
   let stripe = null;
   let clientSecret = null;
   let currency = "usd";
   let locale = "en";
   let email = "";
+  let noEmail = false;
   onMount(async () => {
     if (browser) {
       if (localStorage.getItem("currency") == null) {
@@ -39,10 +41,11 @@
       locale = locale.split("-")[0];
 
       email = localStorage.getItem("email");
-      if (email == undefined)
-        alert(
-          "We were unable to get your email from Discord. Please try again with an email account."
-        );
+      if (email == undefined) {
+        noEmail = true;
+        return;
+      }
+
       stripe = await loadStripe(stripeKey);
       clientSecret = await fetch(
         apiurl +
@@ -65,9 +68,19 @@
         });
     }
   });
+
+  function emailSubmit() {
+    email = document.getElementById("emailInput").value;
+    if (email == "" || !email.includes("@") || !email.includes(".")) {
+      alert("Please enter a valid address.", "error");
+      return;
+    }
+    localStorage.setItem("email", email);
+    location.reload();
+  }
 </script>
 
-<div class="flex">
+<div class="flex relative">
   <div class="hidden md:flex w-1/2 min-h-screen">
     <PlanChooser />
   </div>
@@ -81,4 +94,36 @@
     >
     <EmbeddedCheckout {stripe} {clientSecret} />
   </div>
+  {#if noEmail}
+    <div
+      class="z-50 absolute w-full h-full backdrop-blur-sm backdrop-brightness-[0.35] flex items-center justify-center"
+      style="margin:0rem;"
+    >
+      <div
+        class="bg-base-100 rounded-xl p-5 bg-opacity-95 backdrop-blur relative"
+      >
+        <h3 class="text-xl font-bold">Billing Email</h3>
+        <div
+          class="bg-info w-[32rem] h-16 rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-2"
+        >
+          <Info size="48" />
+          <span class="text-sm"
+            >We were unable to get your email from Discord, so you need to enter
+            an email address for billing purposes. You won't need this to sign
+            in.</span
+          >
+        </div>
+        <div class="flex gap-1">
+          <input
+            type="text"
+            id="emailInput"
+            class="input input-bordered mr-1"
+            placeholder={$t("signin.l.email")}
+          />
+
+          <button on:click={emailSubmit} class="btn btn-neutral">Submit</button>
+        </div>
+      </div>
+    </div>
+  {/if}
 </div>
