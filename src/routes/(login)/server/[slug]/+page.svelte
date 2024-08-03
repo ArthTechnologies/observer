@@ -74,9 +74,7 @@
     if (localStorage.getItem("serverWebmap") == "true") {
       webmap = true;
     }
-    document.addEventListener("webmapEnabled", function () {
-      webmap = true;
-    });
+
     if (usingOcelot) {
       baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()];
     }
@@ -206,6 +204,12 @@
       localStorage.setItem("serverAddons", response.addons.toString());
       localStorage.setItem("serverVersion", response.version);
       localStorage.setItem("serverWebmap", response.webmap);
+      if (response.webmap == true && webmap == false) {
+        setTimeout(() => {
+          webmap = true;
+        }, 5000);
+      }
+
       //set state to response
       state = response.state;
     });
