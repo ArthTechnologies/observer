@@ -38,7 +38,7 @@
           ><img
             alt="microsoft logo"
             style="width:2.5ch"
-            src="discord.svg"
+            src="/discord.svg"
           />{$t("signin.discord")}</a
         >
         <div

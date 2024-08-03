@@ -34,7 +34,7 @@
       <a
         class="btn btn-neutral mb-2 btn-icon-text text-2xs"
         href="https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri={address}/auth/discord&response_type=token&scope=email+identify"
-        ><img alt="microsoft logo" style="width:2.5ch" src="discord.svg" />{$t(
+        ><img alt="microsoft logo" style="width:2.5ch" src="/discord.svg" />{$t(
           "signin.discord"
         )}</a
       >
