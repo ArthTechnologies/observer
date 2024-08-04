@@ -514,6 +514,14 @@
           id="fRQREgAc"
           downloads="null"
         />
+        <PluginResult
+          name="Simple Voice Chat"
+          author="henkelmax"
+          desc="A working voice chat in Minecraft!"
+          icon="https://cdn.modrinth.com/data/9eGKb6K1/icon.png"
+          id="9eGKb6K1"
+          downloads="null"
+        />
       </div>
     {/if}
   </div>
