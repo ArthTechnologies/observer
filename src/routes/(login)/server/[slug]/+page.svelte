@@ -220,8 +220,8 @@
           webmap = true;
         }, 5000);
       }
-      if (response.voicechat == false && voicechat == true) {
-        voicechat = false;
+      if (response.voicechat == true && voicechat == false) {
+        voicechat = true;
       }
 
       //set state to response
