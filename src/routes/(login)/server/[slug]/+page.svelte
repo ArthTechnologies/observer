@@ -61,6 +61,7 @@
   let webmap = false;
   let webmapurl =
     "http://" + apiurl.substring(0, apiurl.length - 1).split("https://")[1];
+  let voicechat = false;
 
   if (browser) {
     name = localStorage.getItem("serverName");
@@ -79,6 +80,10 @@
 
     if (localStorage.getItem("serverWebmap") == "true") {
       webmap = true;
+    }
+
+    if (localStorage.getItem("serverVoicechat") == "true") {
+      voicechat = true;
     }
 
     if (usingOcelot) {
@@ -214,6 +219,9 @@
         setTimeout(() => {
           webmap = true;
         }, 5000);
+      }
+      if (response.voicechat == false && voicechat == true) {
+        voicechat = false;
       }
 
       //set state to response
@@ -482,49 +490,46 @@
         </div>
       </div>
 
-      <div class="w-[10.6rem] flex place-content-center space-x-2">
+      <div class="w-[10.6rem] flex place-content-center space-x-2 mb-2">
         {#if modded}<AddMod /><ManageMods />{:else if !vanilla}
           <Add /><Manage />
         {/if}
       </div>
       {#if webmap}
-        <div class=" bg-base-300 rounded-lg mt-5 p-2 flex gap-2 w-[21.75rem]">
-          <div class="dropdown dropdown-hover">
-            <a
-              tabindex="0"
-              role="button"
-              href="https://arthmc.xyz/docs/using-dynmap"
-              target="_blank"
-              rel="noreferrer"
-              class=" z-50 hidden sm:block"
-            >
-              <img
-                alt="dynmap-icon"
-                class="w-8 h-8 rounded-lg bg-base-100"
-                src="/images/dynmap.webp"
-              />
-              <div
-                class="relative dropdown-content bg-slate-700 rounded z-[1] px-2 py-0.5 shadow-xl text-sm flex text-nowrap items-center gap-1"
-              >
-                <ExternalLink size="16" />
-                <p style="	text-wrap: nowrap;">Guide: Using Dynmap</p>
-              </div>
-            </a>
-          </div>
+        <div class=" bg-base-300 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+          <img
+            alt="dynmap-icon"
+            class="w-8 h-8 rounded-lg bg-base-100"
+            src="/images/dynmap.webp"
+          />
 
           <div class="divider divider-horizontal m-0"></div>
-          <button on:click={webmapRender} class="btn btn-neutral btn-sm"
-            >Render World</button
+          <div
+            style="text-wrap: nowrap;"
+            class="tooltip tooltip-top tooltip-info z-50 hidden sm:block"
+            data-tip="Only renders overworld. See guide for more info."
           >
-          <button
-            class="btn btn-sm"
-            on:click={() => {
-              navigator.clipboard.writeText(
-                `${webmapurl}:${parseInt(id) + 10200}`
-              );
-            }}
-            ><ClipboardList size="16" class="mr-1" />
-            Copy Link</button
+            <button
+              on:click={webmapRender}
+              class="btn btn-neutral btn-sm items-center">Render</button
+            >
+          </div>
+          <a
+            href="https://arthmc.xyz/docs/using-dynmap"
+            target="_blank"
+            rel="noreferrer"
+            ><button class="btn btn-neutral btn-sm items-center"
+              >Guide <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+          <a
+            href="{webmapurl}:{parseInt(id) + 10200}"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <button class="btn btn-sm items-center hover:bg-base-100"
+              >Map <ExternalLink size="18" class="ml-1" /></button
+            ></a
           >
         </div>
         <!--<div class="mt-5 relative">
@@ -554,6 +559,36 @@
           </div>
           <FullscreenMap />
         </div>!-->
+      {/if}
+      {#if voicechat}
+        <div class=" bg-base-300 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+          <div class="dropdown dropdown-hover">
+            <img
+              alt="dynmap-icon"
+              class="w-8 h-8 rounded-lg bg-base-100"
+              src="/images/voicechat.webp"
+            />
+          </div>
+
+          <div class="divider divider-horizontal m-0"></div>
+          <a
+            href="https://arthmc.xyz/docs/using-simple-voice-chat"
+            target="_blank"
+            rel="noreferrer"
+            ><button class="btn btn-neutral btn-sm items-center"
+              >Guide <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+          <a
+            href="https://modrinth.com/plugin/simple-voice-chat/versions?l=fabric"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <button class="btn btn-sm items-center hover:bg-base-100"
+              >Download Mod <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+        </div>
       {/if}
       <div class=" bg-base-200 mt-5 rounded-xl px-4 py-3 w-[20rem] md:w-auto">
         <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
