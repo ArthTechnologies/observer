@@ -41,10 +41,9 @@
   }
 
   if (platform == "lr") {
-    /*
     name = name.replace(/-/g, " ");
 
-    promise = fetch(lrurl + "project/" + id)
+    fetch(lrurl + "project/" + id)
       .then((response) => response.json())
       .then((data) => {
         desc = data.description;
@@ -52,16 +51,14 @@
         name = data.title;
         icon = data.icon_url;
       });
-      
+
     fetch(lrurl + "project/" + id + "/members")
       .then((response) => response.json())
       .then((data) => {
         author = data[0].user.username;
       });
-      */
   } else if (platform == "cf") {
-    /*
-    promise = fetch(apiurl + "curseforge/" + id)
+    fetch(apiurl + "curseforge/" + id)
       .then((response) => response.json())
       .then((data) => {
         desc = data.summary;
@@ -70,7 +67,6 @@
         author = data.authors[0].name;
         icon = data.logo.thumbnailUrl;
       });
-      */
   } else if (platform == "gh") {
     author = id.split("/")[0];
     fetch("https://api.github.com/repos/" + id)
