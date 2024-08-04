@@ -15,9 +15,13 @@
         for (let i = 0; i < html.split("\n").length; i++) {
           if (html.split("\n")[i].includes("src=")) {
             let src = html.split("\n")[i].split("src=")[1].split('"')[1];
-
-            let newsrc = apiurl + "server/" + id + "/webmap/" + src;
-            console.log(newsrc);
+            console.log(src);
+            let src2 = src;
+            //if src contains standalone/config.js...
+            if (src.includes("standalone/config.js")) {
+              src2 = "standalone/config.js";
+            }
+            let newsrc = apiurl + "server/" + id + "/webmap/" + src2;
 
             //replace the src with the new src
             html = html.replace(src, newsrc);
