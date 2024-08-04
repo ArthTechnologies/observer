@@ -33,6 +33,8 @@
     StopCircle,
     Settings,
     ClipboardList,
+    ArrowUpSquare,
+    ExternalLink,
   } from "lucide-svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
   import Versions from "$lib/components/buttons/Versions.svelte";
@@ -487,11 +489,29 @@
       </div>
       {#if webmap}
         <div class=" bg-base-300 rounded-lg mt-5 p-2 flex gap-2 w-[21.75rem]">
-          <img
-            alt="dynmap-icon"
-            class="w-8 h-8 rounded-lg bg-base-100"
-            src="/images/dynmap.webp"
-          />
+          <div class="dropdown dropdown-hover">
+            <a
+              tabindex="0"
+              role="button"
+              href="https://arthmc.xyz/docs/using-dynmap"
+              target="_blank"
+              rel="noreferrer"
+              class=" z-50 hidden sm:block"
+            >
+              <img
+                alt="dynmap-icon"
+                class="w-8 h-8 rounded-lg bg-base-100"
+                src="/images/dynmap.webp"
+              />
+              <div
+                class="relative dropdown-content bg-slate-700 rounded z-[1] px-2 py-0.5 shadow-xl text-sm flex text-nowrap items-center gap-1"
+              >
+                <ExternalLink size="16" />
+                <p style="	text-wrap: nowrap;">Guide: Using Dynmap</p>
+              </div>
+            </a>
+          </div>
+
           <div class="divider divider-horizontal m-0"></div>
           <button on:click={webmapRender} class="btn btn-neutral btn-sm"
             >Render World</button
