@@ -57,6 +57,8 @@
   let difference = -1;
   let baseurl = apiurl;
   let webmap = false;
+  let webmapurl =
+    "http://" + apiurl.substring(0, apiurl.length - 1).split("https://")[1];
 
   if (browser) {
     name = localStorage.getItem("serverName");
@@ -488,7 +490,7 @@
           <iframe
             title="Webmap of the server's world"
             type="text/html"
-            src="{apiurl}:{parseInt(id) + 10200}"
+            src="{webmapurl}:{parseInt(id) + 10200}"
             class="shadow-xl w-full rounded-xl"
             height="300"
           />
@@ -502,7 +504,7 @@
               class="btn btn-sm btn-ghost"
               on:click={() => {
                 navigator.clipboard.writeText(
-                  `${apiurl}:${parseInt(id) + 10200}`
+                  `${webmapurl}:${parseInt(id) + 10200}`
                 );
               }}
               ><ClipboardList size="16" class="mr-1" />
