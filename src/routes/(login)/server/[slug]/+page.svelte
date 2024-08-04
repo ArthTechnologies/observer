@@ -486,7 +486,28 @@
         {/if}
       </div>
       {#if webmap}
-        <div class="mt-5 relative">
+        <div class=" bg-base-300 rounded-lg mt-5 p-2 flex gap-2 w-[21.75rem]">
+          <img
+            alt="dynmap-icon"
+            class="w-8 h-8 rounded-lg bg-base-100"
+            src="/images/dynmap.webp"
+          />
+          <div class="divider divider-horizontal m-0"></div>
+          <button on:click={webmapRender} class="btn btn-neutral btn-sm"
+            >Render World</button
+          >
+          <button
+            class="btn btn-sm"
+            on:click={() => {
+              navigator.clipboard.writeText(
+                `${webmapurl}:${parseInt(id) + 10200}`
+              );
+            }}
+            ><ClipboardList size="16" class="mr-1" />
+            Copy Link</button
+          >
+        </div>
+        <!--<div class="mt-5 relative">
           <iframe
             title="Webmap of the server's world"
             type="text/html"
@@ -512,9 +533,9 @@
             >
           </div>
           <FullscreenMap />
-        </div>
+        </div>!-->
       {/if}
-      <div class=" bg-base-200 mt-4 rounded-xl px-4 py-3 w-[20rem] md:w-auto">
+      <div class=" bg-base-200 mt-5 rounded-xl px-4 py-3 w-[20rem] md:w-auto">
         <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
         <div class="space-x-1.5 space-y-1.5">
           <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
