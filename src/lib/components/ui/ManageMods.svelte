@@ -24,7 +24,7 @@
     document.addEventListener("refresh", function () {
       setTimeout(function () {
         search();
-      }, 10);
+      }, 50);
     });
   }
   export function search() {
