@@ -555,7 +555,7 @@
           <input
             id="worldFile"
             type="file"
-            class="file-input file-input-bordered file-input-secondary max-w-xs"
+            class="file-input file-input-bordered file-input-secondary max-w-xs w-2/3"
             on:change={handleFileSelect}
           />
           <button
