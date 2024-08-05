@@ -285,6 +285,13 @@ export default {
     "reset": "Reset",
     "copy": "copy",
     "copied": "copied",
+    "bill.refunds.title": "Refunds & Disputes",
+    "bill.refunds.1": "Arth Hosting offers refunds for major technical issues experienced",
+    "bill.refunds.2": "Other issues are on a case-by-case basis",
+    "bill.refunds.3a": "Contact",
+    "bill.refunds.3b": "support@arthmc.xyz",
+    "bill.refunds.3c": "to request a refund and include your Account ID ",
+    "bill.refunds.4": "Disputing a payment with your bank before attempting to request a refund may result in termination of service",
 
 
   },
@@ -580,6 +587,14 @@ export default {
     "reset": "Restablecer",
     "copy": "copiar",
     "copied": "copiado",
+    "bill.refunds.title": "Reembolsos y Disputas",
+    "bill.refunds.1": "Arth Hosting ofrece reembolsos por problemas técnicos importantes experimentados",
+    "bill.refunds.2": "Otros problemas se consideran caso por caso",
+    "bill.refunds.3a": "Contacte a",
+    "bill.refunds.3b": "support@arthmc.xyz",
+    "bill.refunds.3c": "para solicitar un reembolso e incluya su ID de cuenta",
+    "bill.refunds.4": "Disputar un pago con su banco antes de intentar solicitar un reembolso puede resultar en la terminación del servicio",
+    
 
   },
 };

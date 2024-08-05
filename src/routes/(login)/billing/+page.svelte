@@ -143,28 +143,32 @@
     </div>
     <div id="refunds" class="ml-12 py-8 space-y-2">
       <div class="flex items-center gap-2 font-bold text-xl">
-        <MessagesSquare />Refunds & Disputes
+        <MessagesSquare />{$t("bill.refunds.title")}
       </div>
       <ul class="list-disc pl-[1.45rem]">
         <li>
-          Arth Hosting offers refunds for major technical issues experienced
+          {$t("bill.refunds.1")}
         </li>
-        <li>Other issues are on a case-by-case basis</li>
+        <li>
+          {$t("bill.refunds.2")}
+        </li>
         <li class="relative">
-          Contact <b>support@arthmc.xyz</b> to request a refund and include your
-          Account ID
+          {$t("bill.refunds.3a")}
+          <b>{$t("bill.refunds.3b")}</b>
+          {$t("bill.refunds.3c")}
           <button
             class="btn btn-xs btn-neutral ml-2 absolute"
             on:click={() => {
               navigator.clipboard.writeText(accountId);
             }}
-            ><ClipboardList size="16" class="mr-1" />
-            {$t("button.copyToClipboard")}</button
+            ><div class="flex items-center" style="text-wrap: nowrap;">
+              <ClipboardList size="16" class="mr-1" />
+              {$t("button.copyToClipboard")}
+            </div></button
           >
         </li>
         <li>
-          Disputing a payment with your bank before attempting to request a
-          refund may result in termination of service
+          {$t("bill.refunds.4")}
         </li>
       </ul>
     </div>
