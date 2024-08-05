@@ -4,16 +4,16 @@
   import { apiurl } from "$lib/scripts/req";
   import { AlertTriangle, InfoIcon } from "lucide-svelte";
 
-  let network;
-  let hosting;
-  let quartz;
+  let network = "Offline";
+  let hosting = "Offline";
+  let quartz = "Offline";
   let observer = "Online";
-  let frontend;
-  let backend;
-  let website;
-  let jarsmcf;
-  let jarsmcb;
-  let jarsmc;
+  let frontend = "Offline";
+  let backend = "Offline";
+  let website = "Offline";
+  let jarsmcf = "Offline";
+  let jarsmcb = "Offline";
+  let jarsmc = "Offline";
   let atCapacity = false;
   let numServers = -16;
   let maxServers = 16;
