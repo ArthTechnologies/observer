@@ -295,6 +295,11 @@ export default {
     "account.type": "Account Type",
     "account.email": "Email Address",
     "account.id": "Account ID",
+    "plugins.dynmap.render": "Render",
+    "plugins.dynmap.guide": "Guide",
+    "plugins.dynmap.map": "Map",
+    "plugins.voicechat.guide": "Guide",
+    "plugins.voicechat.downloadMod": "Download Mod",
 
 
   },
@@ -600,6 +605,12 @@ export default {
     "account.type": "Tipo de cuenta",
     "account.email": "Dirección de correo electrónico",
     "account.id": "ID de cuenta",
+    "plugins.dynmap.render": "Render",
+    "plugins.dynmap.guide": "Guía", 
+    "plugins.dynmap.map": "Mapa",
+    "plugins.voicechat.guide": "Guía",  
+    "plugins.voicechat.downloadMod": "Descargar Mod",
+
     
 
   },

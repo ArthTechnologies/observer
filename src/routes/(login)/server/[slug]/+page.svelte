@@ -511,7 +511,8 @@
           >
             <button
               on:click={webmapRender}
-              class="btn btn-neutral btn-sm items-center">Render</button
+              class="btn btn-neutral btn-sm items-center"
+              >{$t("plugins.dynmap.render")}</button
             >
           </div>
           <a
@@ -519,7 +520,8 @@
             target="_blank"
             rel="noreferrer"
             ><button class="btn btn-neutral btn-sm items-center"
-              >Guide <ExternalLink size="18" class="ml-1" /></button
+              >{$t("plugins.dynmap.guide")}
+              <ExternalLink size="18" class="ml-1" /></button
             ></a
           >
           <a
@@ -528,7 +530,8 @@
             rel="noreferrer"
           >
             <button class="btn btn-sm items-center hover:bg-base-100"
-              >Map <ExternalLink size="18" class="ml-1" /></button
+              >{$t("plugins.dynmap.map")}
+              <ExternalLink size="18" class="ml-1" /></button
             ></a
           >
         </div>
@@ -576,7 +579,8 @@
             target="_blank"
             rel="noreferrer"
             ><button class="btn btn-neutral btn-sm items-center"
-              >Guide <ExternalLink size="18" class="ml-1" /></button
+              >{$t("plugins.voicechat.guide")}
+              <ExternalLink size="18" class="ml-1" /></button
             ></a
           >
           <a
@@ -585,7 +589,8 @@
             rel="noreferrer"
           >
             <button class="btn btn-sm items-center hover:bg-base-100"
-              >Download Mod <ExternalLink size="18" class="ml-1" /></button
+              >{$t("plugins.voicechat.downloadMod")}
+              <ExternalLink size="18" class="ml-1" /></button
             ></a
           >
         </div>
