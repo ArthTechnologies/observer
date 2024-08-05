@@ -31,30 +31,30 @@
           class="flex bg-neutral p-1.5 rounded-lg items-center text-sm font-bold gap-1"
         >
           <FileType2 size="16" />
-          Account Type
+          {$t("account.type")}
         </div>
         {#if accountType == "email"}
-          Email
+          {$t("email")}
         {:else if accountType == "discord"}
           Discord
         {/if}
       </div>
       <div class="flex gap-2 items-center">
         <div
-          class="flex bg-neutral p-1.5 rounded-lg items-center text-sm font-bold gap-1"
+          class="flex bg-neutral p-1.5 rounded-lg items-center text-sm font-bold gap-1 truncate"
         >
           <Mail size="16" />
-          Email Address
+          {$t("account.email")}
         </div>
 
-        {accountEmail}
+        <p>{accountEmail}</p>
       </div>
       <div class="flex gap-2 items-center">
         <div
           class="flex bg-neutral p-1.5 rounded-lg items-center text-sm font-bold gap-1"
         >
           <Hash size="16" />
-          Account ID
+          {$t("account.id")}
         </div>
 
         {accountId}

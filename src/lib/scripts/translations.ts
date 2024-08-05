@@ -134,7 +134,7 @@ export default {
     "account.resetPassword.title": "Reset Password",
     "account.resetPassword.desc":
       "For the security of your account, you only have 5 attempts.",
-    "account.resetPassword.l.email": "Email",
+    "email": "Email",
     "account.resetPassword.l.last4": "Last 4 digits of your Credit Card",
     "account.resetPassword.l.newPassword": "New Password",
     "account.resetPassword.l.confirmPassword": "Confirm New Password",
@@ -292,6 +292,9 @@ export default {
     "bill.refunds.3b": "support@arthmc.xyz",
     "bill.refunds.3c": "to request a refund and include your Account ID ",
     "bill.refunds.4": "Disputing a payment with your bank before attempting to request a refund may result in termination of service",
+    "account.type": "Account Type",
+    "account.email": "Email Address",
+    "account.id": "Account ID",
 
 
   },
@@ -436,7 +439,7 @@ export default {
     "account.resetPassword.title": "Restablecer contraseña",
     "account.resetPassword.desc":
       "Para la seguridad de su cuenta, solo puede intentarlo 5 veces.",
-    "account.resetPassword.l.email": "Correo electrónico",
+    "email": "Correo electrónico",
     "account.resetPassword.l.last4": "Últimos 4 dígitos de la tarjeta",
     "account.resetPassword.l.newPassword": "Nueva contraseña",
     "account.resetPassword.l.confirmPassword": "Confirmar contraseña",
@@ -594,6 +597,9 @@ export default {
     "bill.refunds.3b": "support@arthmc.xyz",
     "bill.refunds.3c": "para solicitar un reembolso e incluya su ID de cuenta",
     "bill.refunds.4": "Disputar un pago con su banco antes de intentar solicitar un reembolso puede resultar en la terminación del servicio",
+    "account.type": "Tipo de cuenta",
+    "account.email": "Dirección de correo electrónico",
+    "account.id": "ID de cuenta",
     
 
   },
