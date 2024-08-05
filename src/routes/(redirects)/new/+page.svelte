@@ -4,5 +4,7 @@
 
   if (browser) {
     goto("newserver");
+    //this tells the navbar to update the icon that is highligted
+    window.dispatchEvent(new Event("redrict"));
   }
 </script>
