@@ -40,6 +40,7 @@
   import Versions from "$lib/components/buttons/Versions.svelte";
   import FullscreenMap from "$lib/components/pages/server/FullscreenMap.svelte";
   import { write } from "fs";
+  import { alert } from "$lib/scripts/utils";
   let scrollCorrected = false;
   let modded = false;
   let vanilla = false;
@@ -64,6 +65,14 @@
   let voicechat = false;
 
   if (browser) {
+    if (localStorage.getItem("updateAlert") != "dynmap") {
+      localStorage.setItem("updateAlert", "dynmap");
+      alert(
+        "Update: Dynmap & Simple Voice Chat support have been added.",
+        "info"
+      );
+    }
+
     name = localStorage.getItem("serverName");
     if (localStorage.getItem("serverCardRedrict") != "true") {
       id = parseInt(localStorage.getItem("serverID"));
