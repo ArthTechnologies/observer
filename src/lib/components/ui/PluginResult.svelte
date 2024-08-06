@@ -28,11 +28,12 @@
 </script>
 
 <div class="bg-base-200 rounded-lg p-3 relative">
-  {#if name.includes("Dynmap") || name.includes("Simple Voice Chat")}
+  {#if name.includes("Dynmap") || name.includes("Simple Voice Chat") || name.includes("Chunky") || name.includes("DiscordSRV")}
     <div
       class="absolute h-6 bg-base-300 rounded-lg pl-[0.2rem] px-2 mt-1 text-sm flex items-center top-0.5 right-1"
     >
-      <Plug size="17" class="mr-[0.1rem]" /> Officially Supported
+      <Plug size="17" class="mr-[0.1rem]" />
+      {$t("plugins.officiallySupported")}
     </div>
   {/if}
   <div class="flex justify-between place-items-center max-w-full relative">

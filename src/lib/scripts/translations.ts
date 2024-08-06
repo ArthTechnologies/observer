@@ -300,6 +300,9 @@ export default {
     "plugins.dynmap.map": "Map",
     "plugins.voicechat.guide": "Guide",
     "plugins.voicechat.downloadMod": "Download Mod",
+    "plugins.chunky.l.radius": "Radius (In Blocks)",
+    "plugins.discordsrv.guide": "Srtup Guide",
+    "plugins.officiallySupported": "Officially Supported",
 
 
   },
@@ -610,6 +613,9 @@ export default {
     "plugins.dynmap.map": "Mapa",
     "plugins.voicechat.guide": "Guía",  
     "plugins.voicechat.downloadMod": "Descargar Mod",
+    "plugins.chunky.l.radius": "Radio (En Bloques)",
+    "plugins.discordsrv.guide": "Guía de Configuración",
+    "plugins.officiallySupported": "Soportado oficialmente",
 
     
 

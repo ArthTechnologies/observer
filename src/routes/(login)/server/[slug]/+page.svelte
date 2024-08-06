@@ -35,6 +35,8 @@
     ClipboardList,
     ArrowUpSquare,
     ExternalLink,
+    Send,
+    FileCog,
   } from "lucide-svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
   import Versions from "$lib/components/buttons/Versions.svelte";
@@ -63,6 +65,8 @@
   let webmapurl =
     "http://" + apiurl.substring(0, apiurl.length - 1).split("https://")[1];
   let voicechat = false;
+  let chunky = false;
+  let discordsrv = false;
 
   if (browser) {
     if (localStorage.getItem("updateAlert") != "dynmap") {
@@ -93,6 +97,14 @@
 
     if (localStorage.getItem("serverVoicechat") == "true") {
       voicechat = true;
+    }
+
+    if (localStorage.getItem("serverChunky") == "true") {
+      chunky = true;
+    }
+
+    if (localStorage.getItem("serverDiscordSRV") == "true") {
+      discordsrv = true;
     }
 
     if (usingOcelot) {
@@ -224,13 +236,29 @@
       localStorage.setItem("serverAddons", response.addons.toString());
       localStorage.setItem("serverVersion", response.version);
       localStorage.setItem("serverWebmap", response.webmap);
+      localStorage.setItem("serverVoicechat", response.voicechat);
+      localStorage.setItem("serverChunky", response.chunky);
+      localStorage.setItem("serverDiscordSRV", response.discordsrv);
+
       if (response.webmap == true && webmap == false) {
         setTimeout(() => {
           webmap = true;
         }, 5000);
       }
       if (response.voicechat == true && voicechat == false) {
-        voicechat = true;
+        setTimeout(() => {
+          voicechat = true;
+        }, 500);
+      }
+
+      if (response.chunky == true && chunky == false) {
+        setTimeout(() => {
+          chunky = true;
+        }, 2000);
+      }
+
+      if (response.discordsrv == true && discordsrv == false) {
+        discordsrv = true;
       }
 
       //set state to response
@@ -366,6 +394,12 @@
 
   function webmapRender() {
     writeTerminal(id, "dynmap fullrender world");
+  }
+
+  function pregen() {
+    let radius = document.getElementById("pregenRadius").value;
+    writeTerminal(id, "chunky start world circle 0 0 " + radius);
+    document.getElementById("pregenRadius").value = "";
   }
 </script>
 
@@ -599,6 +633,59 @@
           >
             <button class="btn btn-sm items-center hover:bg-base-100"
               >{$t("plugins.voicechat.downloadMod")}
+              <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+        </div>
+      {/if}
+      {#if chunky}
+        <div class=" bg-base-300 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+          <div class="dropdown dropdown-hover">
+            <img
+              alt="dynmap-icon"
+              class="w-8 h-8 rounded-lg bg-base-100"
+              src="/images/chunky.webp"
+            />
+          </div>
+          <div class="divider divider-horizontal m-0"></div>
+          <input
+            id="pregenRadius"
+            class="input input-sm w-32 input-bordered"
+            placeholder={$t("plugins.chunky.l.radius")}
+            type="text"
+          />
+          <button on:click={pregen} class="btn btn-secondary btn-sm btn-square"
+            ><Send size="18" /></button
+          >
+
+          <a
+            href="https://github.com/pop4959/Chunky/wiki/Commands"
+            target="_blank"
+            rel="noreferrer"
+            ><button class="btn btn-neutral btn-sm items-center"
+              >{$t("plugins.voicechat.guide")}
+              <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+        </div>
+      {/if}
+      {#if discordsrv}
+        <div class=" bg-base-300 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+          <div class="dropdown dropdown-hover">
+            <img
+              alt="dynmap-icon"
+              class="w-8 h-8 rounded-lg bg-base-100"
+              src="/images/discordsrv.webp"
+            />
+          </div>
+
+          <div class="divider divider-horizontal m-0"></div>
+          <a
+            href="https://docs.discordsrv.com/installation/initial-setup"
+            target="_blank"
+            rel="noreferrer"
+            ><button class="btn btn-neutral btn-sm items-center"
+              >{$t("plugins.discordsrv.guide")}
               <ExternalLink size="18" class="ml-1" /></button
             ></a
           >
