@@ -5,8 +5,8 @@
   import Status from "$lib/components/pages/dashboard/Status.svelte";
   import { t } from "$lib/scripts/i18n";
   import { apiurl } from "$lib/scripts/req";
-  import { alert } from "$lib/scripts/utils";
-  import { Gamepad2, Info, Mail } from "lucide-svelte";
+  import { alert, fileSizeShort } from "$lib/scripts/utils";
+  import { Gamepad2, HardDrive, Info, Mail } from "lucide-svelte";
   import { split } from "postcss/lib/list";
   import { fade } from "svelte/transition";
   import { server } from "websocket";
@@ -224,6 +224,10 @@
               class="absolute h-full w-full bg-warning blur-sm rounded-xl -top-1.5 right-0 z-[-1]"
             ></div>
           {/if}
+          <div class="bg-base-300 px-1.5 rounded-md text-sm flex gap-1 w-fit">
+            <HardDrive size="16" class="mt-0.5" />
+            {fileSizeShort(server.storage).toUpperCase()}
+          </div>
         </div>
       {/each}
     </div>
