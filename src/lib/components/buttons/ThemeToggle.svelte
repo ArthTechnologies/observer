@@ -7,13 +7,17 @@
   if (browser) {
     console.log(navigator.userAgent);
     // checks if the browser (supports DaisyUI theme switcher) is chrome 105+, firefox 121+, or safari 15.4+
-    supportsDaisyUIThemeSwitcher =
-      (navigator.userAgent.includes("Chrome") &&
-        parseInt(navigator.userAgent.match(/Chrome\/(\d+)\./)[1]) >= 105) ||
-      (navigator.userAgent.includes("Firefox") &&
-        parseInt(navigator.userAgent.match(/Firefox\/(\d+)\./)[1]) >= 121) ||
-      (navigator.userAgent.includes("Safari") &&
-        parseInt(navigator.userAgent.match(/Version\/(\d+)\./)[1]) >= 15);
+    try {
+      supportsDaisyUIThemeSwitcher =
+        (navigator.userAgent.includes("Chrome") &&
+          parseInt(navigator.userAgent.match(/Chrome\/(\d+)\./)[1]) >= 105) ||
+        (navigator.userAgent.includes("Firefox") &&
+          parseInt(navigator.userAgent.match(/Firefox\/(\d+)\./)[1]) >= 121) ||
+        (navigator.userAgent.includes("Safari") &&
+          parseInt(navigator.userAgent.match(/Version\/(\d+)\./)[1]) >= 15);
+    } catch (e) {
+      console.log(e);
+    }
 
     //to-do: find out what versions of edge and maybe opera supports this
 
