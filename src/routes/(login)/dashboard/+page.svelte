@@ -177,7 +177,7 @@
     </div>
   </div>
 {/if}
-<div class="flex gap-5 justify-between px-16 -mt-4">
+<div class="flex max-md:flex-col gap-5 justify-between md:px-16 md:-mt-4">
   <Status />
   {#if !serversLoaded}
     <div class="flex flex-col gap-5 w-96 items-center">
