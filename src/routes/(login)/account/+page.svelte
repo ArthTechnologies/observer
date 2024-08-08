@@ -4,6 +4,7 @@
   import DeleteAccount from "$lib/components/buttons/DeleteAccount.svelte";
   import { browser } from "$app/environment";
   import { FileType2, Hash, Mail } from "lucide-svelte";
+  import { goto } from "$app/navigation";
   let accountType = "email";
   let accountName;
   let accountEmail;
@@ -18,6 +19,12 @@
     }
     accountEmail = localStorage.getItem("email");
     accountId = localStorage.getItem("accountId");
+  }
+
+  function redrict() {
+    goto("/billing");
+    //this tells the navbar to update the icon that is highligted
+    window.dispatchEvent(new Event("redrict"));
   }
 </script>
 
@@ -62,10 +69,11 @@
     </div>
 
     <div class="flex flex-wrap justify-center button-container gap-3 w-[62%]">
-      <a
+      <button
+        on:click={redrict}
         href="/billing"
         class="btn btn-neutral grow md:grow sm:w-44 ml-1 md:m-0"
-        >{$t("account.button.managePayments")}</a
+        >{$t("account.button.managePayments")}</button
       >
       {#if accountType == "email"}
         <a

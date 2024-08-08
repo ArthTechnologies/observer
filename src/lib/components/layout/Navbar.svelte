@@ -50,6 +50,7 @@
       //this listens for redricts
       window.addEventListener("redrict", function (e) {
         checkPage();
+        console.log("checking page");
       });
       setTimeout(function () {
         enableAuth = localStorage.getItem("enableAuth");
@@ -71,7 +72,10 @@
         highlightIcon();
         setTimeout(() => {
           highlightIcon();
-        }, 50);
+          setTimeout(() => {
+            highlightIcon();
+          }, 150);
+        }, 100);
       }, 50);
     }
   }
