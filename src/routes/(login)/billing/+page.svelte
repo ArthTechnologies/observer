@@ -141,7 +141,7 @@
         </a>
       </div>
     </div>
-    <div id="refunds" class="ml-12 py-8 space-y-2">
+    <div id="refunds" class=" md:ml-12 py-8 space-y-2">
       <div class="flex items-center gap-2 font-bold text-xl">
         <MessagesSquare />{$t("bill.refunds.title")}
       </div>
@@ -152,12 +152,12 @@
         <li>
           {$t("bill.refunds.2")}
         </li>
-        <li class="relative">
+        <li class="relative max-lg:mb-8">
           {$t("bill.refunds.3a")}
           <b>{$t("bill.refunds.3b")}</b>
           {$t("bill.refunds.3c")}
           <button
-            class="btn btn-xs btn-neutral ml-2 absolute"
+            class="btn btn-xs btn-neutral ml-2 absolute max-lg:-bottom-7 max-lg:-left-2"
             on:click={() => {
               navigator.clipboard.writeText(accountId);
             }}
