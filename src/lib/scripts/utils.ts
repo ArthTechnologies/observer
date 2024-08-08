@@ -16,6 +16,10 @@ export function fileSizeShort(bytes: number) {
   return `${(bytes / 1000000000).toFixed(1)}gB`;
 }
 
+export function includesAny(str:string, substrings:string[]) {
+  return substrings.some(substring => str.indexOf(substring) !== -1);
+}
+
 export function downloadProgressShort(currentBytes: number, totalBytes: number) {
 
   let unit = 'B';

@@ -4,7 +4,7 @@
   import ModpackResult from "./ModpackResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
-  import { numShort } from "$lib/scripts/utils";
+  import { includesAny, numShort } from "$lib/scripts/utils";
   import { onMount } from "svelte";
   import { DeleteIcon, Plus } from "lucide-svelte";
   import { apiurl } from "$lib/scripts/req";
@@ -130,7 +130,16 @@
                 duplicates = true;
               }
             }
-            if (!duplicates) {
+            if (
+              !duplicates &&
+              !includesAny(item.description.toLowerCase(), [
+                "optimization",
+                "performance",
+                "client-side",
+                "clientside",
+                "graphics",
+              ])
+            ) {
               results.push({
                 name: item.title,
                 desc: item.description,
@@ -157,7 +166,18 @@
                 duplicates = true;
               }
             }
-            if (!duplicates) {
+            if (
+              !duplicates &&
+              !includesAny(item.summary.toLowerCase(), [
+                "optimization",
+                "performance",
+                "client-side",
+                "clientside",
+                "graphics",
+                "fps",
+                "shader",
+              ])
+            ) {
               cfResults.push({
                 platform: "cf",
                 name: item.name,
