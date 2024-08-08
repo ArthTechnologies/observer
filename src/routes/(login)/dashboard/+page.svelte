@@ -40,9 +40,17 @@
               .then((data) => {
                 customers = data;
                 //sort by server id
+                for (let i = customers.length - 1; i >= 0; i--) {
+                  if (customers[i][1].servers.length == 0) {
+                    customers.splice(i, 1);
+                  }
+                }
+
+                console.log(customers);
                 customers.sort((a, b) => {
                   return a[1].servers[0] - b[1].servers[0];
                 });
+
                 customersLoaded = true;
                 for (let i = 0; i < servers.length; i++) {
                   let stripeOwner = false;
