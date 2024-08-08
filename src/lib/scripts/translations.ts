@@ -301,7 +301,7 @@ export default {
     "plugins.voicechat.guide": "Guide",
     "plugins.voicechat.downloadMod": "Download Mod",
     "plugins.chunky.l.radius": "Radius (In Blocks)",
-    "plugins.discordsrv.guide": "Srtup Guide",
+    "plugins.discordsrv.guide": "Setup Guide",
     "plugins.officiallySupported": "Officially Supported",
 
 
