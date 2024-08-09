@@ -28,10 +28,12 @@
   }
 </script>
 
-<div class="flex place-content-center">
+<div class="flex place-content-center text-neutral-content">
   <div class="flex flex-col grow items-center max-w-[55rem] mb-10 space-y-6">
     <h1 class="divider px-10 text-3xl font-semibold">{$t("account.title")}</h1>
-    <div class="w-[55%] px-5 py-3 bg-base-300 flex flex-col gap-1 rounded-xl">
+    <div
+      class=" md:w-[55%] px-5 py-3 bg-[#20252e] flex flex-col gap-1 rounded-xl"
+    >
       <p class="text-lg font-bold mb-1">{accountName}</p>
       <div class="flex gap-2 items-center">
         <div

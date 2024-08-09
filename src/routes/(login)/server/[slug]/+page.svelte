@@ -480,7 +480,7 @@
         <FullscreenTerminal />
         <div
           id="terminalContainer"
-          class="bg-base-300 rounded-xl overflow-auto w-[25rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem] h-[30rem] 2xl:h-[35rem]"
+          class="bg-base-300 rounded-xl overflow-auto w-[23rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem] h-[30rem] 2xl:h-[35rem]"
         >
           <div class="p-5 sm:text-xs xl:text-base font-mono relative">
             <p id="terminal" />
@@ -492,7 +492,7 @@
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 w-[25rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
+        class="input input-secondary bg-base-200 w-[23rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
       />
       <div class="divider md:hidden pt-5 pb-4" />
     </div>
