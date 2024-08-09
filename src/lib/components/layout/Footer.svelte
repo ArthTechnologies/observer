@@ -78,5 +78,9 @@
         >
       </div>
     </div>
+    <p class="text-sm mt-2">
+      If you'd like to suggest a feature or give feedback don't hesitate to send
+      us an email at <a class="hover:link text-accent">contact@arthmc.xyz</a>.
+    </p>
   </div>
 </div>
