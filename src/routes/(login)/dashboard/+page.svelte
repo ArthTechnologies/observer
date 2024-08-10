@@ -206,7 +206,9 @@
           {address}:{server.serverId}
           {#if server.owner != null}
             {#if server.owner.includes("email:")}
-              <div class="bg-neutral px-1.5 rounded-md text-sm flex gap-1">
+              <div
+                class="bg-neutral px-1.5 rounded-md text-sm flex gap-1 truncate"
+              >
                 <Mail size="16" class="mt-0.5 flex-shrink-0" />
                 {server.owner.split(":")[1].split(".json")[0]}
               </div>
@@ -217,7 +219,7 @@
                   {server.owner.split(":")[1].split(".json")[0]}
                 </div>
                 <div
-                  class="bg-slate-700 px-1.5 rounded-r-md text-sm flex gap-1"
+                  class="bg-slate-700 px-1.5 rounded-r-md text-sm flex gap-1 truncate"
                 >
                   {server.email}
                 </div>
