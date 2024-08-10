@@ -64,19 +64,19 @@
 <div class=" space-y-5">
   {#if atCapacity}
     <div
-      class="w-[10rem] p-2 bg-error rounded-xl shadow-xl text-black flex gap-1 font-bold justify-center ml-4"
+      class="w-[8rem] 2xl:w-[10rem] p-2 bg-error rounded-xl shadow-xl text-black flex gap-1 font-bold justify-center ml-4"
     >
       <AlertTriangle size="24" />At Capacity
     </div>
   {:else}
     <div
-      class="w-[10rem] p-2 bg-info rounded-xl shadow-xl text-black flex gap-1 font-bold justify-center ml-4"
+      class="w-[8rem] 2xl:w-[10rem] p-2 bg-info rounded-xl shadow-xl text-black flex gap-1 font-bold justify-center ml-4"
     >
       <InfoIcon size="24" />{Math.trunc((numServers / maxServers) * 100)}%
       Capacity
     </div>
   {/if}
-  <div class="h-22 w-48 bg-base-200 rounded-xl p-2">
+  <div class="h-22 w-40 2xl:w-48 bg-base-200 rounded-xl p-2">
     <p class="font-bold text-2xl">Arth Hosting</p>
     <div class="flex items-center mb-1">
       <svg
@@ -97,7 +97,7 @@
           y2="12"
         /></svg
       >
-      <p class="text-4xl">{hosting}</p>
+      <p class="text-3xl">{hosting}</p>
     </div>
 
     <div class="space-y-2 mt-2">
@@ -105,7 +105,7 @@
       <p class="bg-base-300 p-1 pl-1.5 rounded-lg">Backend: {quartz}</p>
     </div>
   </div>
-  <div class="h-22 w-48 bg-base-200 rounded-xl p-2">
+  <div class="h-22 w-40 2xl:w-48 bg-base-200 rounded-xl p-2">
     <p class="font-bold text-2xl">Arth Website</p>
     <div class="flex items-center mb-1">
       <svg
@@ -126,7 +126,7 @@
           y2="12"
         /></svg
       >
-      <p class="text-4xl">{website}</p>
+      <p class="text-3xl">{website}</p>
     </div>
 
     <div class="space-y-2 mt-2">
@@ -134,7 +134,7 @@
       <p class="bg-base-300 p-1 pl-1.5 ounded-lg">Backend: {backend}</p>
     </div>
   </div>
-  <div class="h-22 w-48 bg-base-200 rounded-xl p-2">
+  <div class="h-22 w-40 2xl:w-48 bg-base-200 rounded-xl p-2">
     <p class="font-bold text-2xl">JarsMC</p>
     <div class="flex items-center mb-1">
       <svg
@@ -155,7 +155,7 @@
           y2="12"
         /></svg
       >
-      <p class="text-4xl">{jarsmc}</p>
+      <p class="text-3xl">{jarsmc}</p>
     </div>
 
     <div class="space-y-2 mt-2">

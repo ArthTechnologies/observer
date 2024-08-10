@@ -190,9 +190,10 @@
   {#if !serversLoaded}
     <div class="flex flex-col gap-5 w-96 items-center">
       {#each Array.from({ length: 10 }) as _}
-        <div class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
+        <div class="p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
           <div class="bg-slate-700 animate-pulse w-14 h-5 rounded-md"></div>
           <div class="bg-slate-700 animate-pulse w-32 h-5 rounded-md"></div>
+          <div class="bg-slate-700 animate-pulse w-8 h-5 rounded-md"></div>
         </div>
       {/each}
     </div>
@@ -200,13 +201,13 @@
     <div class="flex flex-col gap-5 w-96 items-center">
       {#each servers as server}
         <div
-          class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
+          class="p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
         >
           {address}:{server.serverId}
           {#if server.owner != null}
             {#if server.owner.includes("email:")}
               <div class="bg-neutral px-1.5 rounded-md text-sm flex gap-1">
-                <Mail size="16" class="mt-0.5" />
+                <Mail size="16" class="mt-0.5 flex-shrink-0" />
                 {server.owner.split(":")[1].split(".json")[0]}
               </div>
             {:else if server.owner.includes("discord:")}
@@ -244,7 +245,7 @@
   {#if !customersLoaded}
     <div class="flex flex-col gap-5 w-96 items-center">
       {#each Array.from({ length: 10 }) as _}
-        <div class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
+        <div class="p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
           <div class="bg-slate-700 animate-pulse w-20 h-5 rounded-md"></div>
           <div class="bg-slate-700 animate-pulse w-14 h-5 rounded-md"></div>
           <div class="bg-slate-700 animate-pulse w-14 h-5 rounded-md"></div>
@@ -256,7 +257,7 @@
       {#each customers as customer}
         {#if customer[0].subscriptions == "active" || (customer[0].subscriptions == "canceled" && customer[0].subscriptions > Date.now() / 1000) || customer[1].servers.length > 0}
           <div
-            class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
+            class="p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
           >
             {customer[0].email}
             <div class="flex gap-1">
