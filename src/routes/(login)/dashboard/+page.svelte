@@ -207,13 +207,13 @@
             {#if server.owner.includes("email:")}
               <div class="bg-neutral px-1.5 rounded-md text-sm flex gap-1">
                 <Mail size="16" class="mt-0.5" />
-                {server.owner.split(":")[1]}
+                {server.owner.split(":")[1].split(".json")[0]}
               </div>
             {:else if server.owner.includes("discord:")}
               <div class="flex">
                 <div class="bg-neutral px-1.5 rounded-l-md text-sm flex gap-1">
                   <Gamepad2 size="16" class="mt-0.5" />
-                  {server.owner.split(":")[1]}
+                  {server.owner.split(":")[1].split(".json")[0]}
                 </div>
                 <div
                   class="bg-slate-700 px-1.5 rounded-r-md text-sm flex gap-1"
