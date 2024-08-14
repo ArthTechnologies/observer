@@ -2,6 +2,7 @@
   import { apiurl, sendVersion } from "$lib/scripts/req";
 
   import { browser } from "$app/environment";
+  import { onMount } from "svelte";
   import { AlertCircle, Check, Clock, Plus } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
   import Changelog from "./Changelog.svelte";
@@ -61,6 +62,28 @@
           alternateFile.loaded = true;
         });
     }
+
+    //listens for versionSet events, so that if another
+    //version is selected the checkbox is unchecked
+    window.addEventListener("versionSet", (e) => {
+      if (e.detail.versionId != versionId) {
+        let checkbox = document.getElementById("addBtn" + uniqueId);
+
+        if (checkbox) {
+          checkbox.checked = false;
+        }
+      }
+    });
+
+    onMount(() => {
+      //checks checkbox if the version is selected
+      if (localStorage.getItem("modpackVersionID") == versionId) {
+        let checkbox = document.getElementById("addBtn" + uniqueId);
+        if (checkbox) {
+          checkbox.checked = true;
+        }
+      }
+    });
   }
 
   function submit() {
@@ -99,9 +122,16 @@
         localStorage.setItem("modpackID", modpackId);
         localStorage.setItem("modpackVersionID", versionId);
       }
-      setTimeout(() => {
-        document.getElementById("addBtn" + uniqueId).checked = false;
-      }, 2500);
+      window.dispatchEvent(
+        new CustomEvent("versionSet", {
+          detail: {
+            id: modpackId,
+            versionId: versionId,
+            platform: platform,
+            versionName: name,
+          },
+        })
+      );
     }
   }
 </script>

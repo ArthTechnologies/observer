@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { deleteServer, usingOcelot } from "$lib/scripts/req";
+  import { deleteServer, usingOcelot, getServerNode } from "$lib/scripts/req";
   import { t } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   import { apiurl } from "$lib/scripts/req";
@@ -361,9 +361,7 @@
       }
 
       let baseurl = apiurl;
-      if (usingOcelot)
-        baseurl =
-          JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      if (usingOcelot) baseurl = getServerNode(id);
       const url = baseurl + "server/" + id + "/world";
       fetch(
         apiurl +
@@ -557,7 +555,7 @@
           <input
             id="worldFile"
             type="file"
-            class="file-input file-input-bordered file-input-secondary max-w-xs"
+            class="file-input file-input-bordered file-input-secondary max-w-xs w-2/3"
             on:change={handleFileSelect}
           />
           <button

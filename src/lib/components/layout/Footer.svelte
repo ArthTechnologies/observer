@@ -7,6 +7,10 @@
   type NavType = "default" | "welcome";
 
   export let navType: NavType;
+  let accountId = "";
+  if (browser) {
+    accountId = localStorage.getItem("accountId");
+  }
 </script>
 
 <footer
@@ -19,7 +23,7 @@
     class="btn btn-sm btn-ghost flex items-center justify-self-end pointer-events-auto"
   >
     <HelpCircle class="mr-1.5 mt-[0.05rem]" size="18" />
-    {$t("help")}
+    {$t("support")}
   </label>
 </footer>
 
@@ -32,12 +36,15 @@
 />
 <div class="modal" style="margin:0rem;">
   <div class="modal-box bg-opacity-95 backdrop-blur relative">
+    <p class="opacity-50 absolute top-1.5 left-2.5 text-sm">
+      Account ID: {accountId}
+    </p>
     <label
       for="support-modal"
       style="margin:0rem;"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
-    <h3 class="text-2xl font-bold mb-2">{$t("help.title")}</h3>
+    <h3 class="text-2xl font-bold mb-2 mt-1">{$t("help.title")}</h3>
 
     <h3 class="text-lg font-bold mt-2 mb-1">{$t("help.l.tutorials")}</h3>
     <a
@@ -61,7 +68,7 @@
         <a
           id="discord-button"
           class="btn btn-neutral z-50"
-          href="https://discord.gg/gCafNVA43d"
+          href="https://discord.com/invite/jUeNm7UvKy"
           target="_blank"
           rel="noreferrer"
           ><img alt="discord logo" style="width:3ch" src="/discord.svg" />
@@ -71,5 +78,9 @@
         >
       </div>
     </div>
+    <p class="text-sm mt-2">
+      If you'd like to suggest a feature or give feedback don't hesitate to send
+      us an email at <a class="hover:link text-accent">contact@arthmc.xyz</a>.
+    </p>
   </div>
 </div>

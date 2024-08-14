@@ -50,6 +50,7 @@
       //this listens for redricts
       window.addEventListener("redrict", function (e) {
         checkPage();
+        console.log("checking page");
       });
       setTimeout(function () {
         enableAuth = localStorage.getItem("enableAuth");
@@ -68,56 +69,62 @@
   function checkPage() {
     if (browser) {
       setTimeout(() => {
-        switch (window.location.pathname) {
-          case "/":
-            document.getElementById("servers").classList.add("text-primary");
-            document.getElementById("servers2").classList.add("text-primary");
-
-            document
-              .getElementById("newserver")
-              .classList.remove("text-primary");
-            document.getElementById("account").classList.remove("text-primary");
-            document.getElementById("billing").classList.remove("text-primary");
-            break;
-          case "/billing":
-            document.getElementById("billing").classList.add("text-primary");
-
-            document.getElementById("servers").classList.remove("text-primary");
-            document
-              .getElementById("servers2")
-              .classList.remove("text-primary");
-            document
-              .getElementById("newserver")
-              .classList.remove("text-primary");
-            document.getElementById("account").classList.remove("text-primary");
-            break;
-          case "/newserver":
-            document.getElementById("billing").classList.remove("text-primary");
-            document.getElementById("newserver").classList.add("text-primary");
-
-            document.getElementById("servers").classList.remove("text-primary");
-            document
-              .getElementById("servers2")
-              .classList.remove("text-primary");
-            document.getElementById("account").classList.remove("text-primary");
-            break;
-          case "/account":
-            document.getElementById("account").classList.add("text-primary");
-
-            document.getElementById("servers").classList.remove("text-primary");
-            document
-              .getElementById("servers2")
-              .classList.remove("text-primary");
-            document
-              .getElementById("newserver")
-              .classList.remove("text-primary");
-            document.getElementById("billing").classList.remove("text-primary");
-            break;
-        }
+        highlightIcon();
+        setTimeout(() => {
+          highlightIcon();
+          setTimeout(() => {
+            highlightIcon();
+          }, 150);
+        }, 100);
       }, 50);
     }
   }
   checkPage();
+
+  function highlightIcon() {
+    let pathname = window.location.pathname;
+    if (
+      pathname.split("")[pathname.split("").length - 1] == "/" &&
+      pathname != "/"
+    ) {
+      pathname = pathname.slice(0, pathname.length - 1);
+    }
+    console.log("pathname " + pathname);
+    switch (pathname) {
+      case "/":
+        document.getElementById("servers").classList.add("text-primary");
+        document.getElementById("servers2").classList.add("text-primary");
+
+        document.getElementById("newserver").classList.remove("text-primary");
+        document.getElementById("account").classList.remove("text-primary");
+        document.getElementById("billing").classList.remove("text-primary");
+        break;
+      case "/billing":
+        document.getElementById("billing").classList.add("text-primary");
+
+        document.getElementById("servers").classList.remove("text-primary");
+        document.getElementById("servers2").classList.remove("text-primary");
+        document.getElementById("newserver").classList.remove("text-primary");
+        document.getElementById("account").classList.remove("text-primary");
+        break;
+      case "/newserver":
+        document.getElementById("billing").classList.remove("text-primary");
+        document.getElementById("newserver").classList.add("text-primary");
+
+        document.getElementById("servers").classList.remove("text-primary");
+        document.getElementById("servers2").classList.remove("text-primary");
+        document.getElementById("account").classList.remove("text-primary");
+        break;
+      case "/account":
+        document.getElementById("account").classList.add("text-primary");
+
+        document.getElementById("servers").classList.remove("text-primary");
+        document.getElementById("servers2").classList.remove("text-primary");
+        document.getElementById("newserver").classList.remove("text-primary");
+        document.getElementById("billing").classList.remove("text-primary");
+        break;
+    }
+  }
 </script>
 
 {#if navType === "default"}

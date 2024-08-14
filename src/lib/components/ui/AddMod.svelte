@@ -6,8 +6,39 @@
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
   import { onMount } from "svelte";
-  import { Plus } from "lucide-svelte";
+  import {
+    BookIcon,
+    Globe2,
+    MapIcon,
+    MessageCircle,
+    Plus,
+  } from "lucide-svelte";
   import ResultSkele from "./ResultSkele.svelte";
+  import {
+    Archive,
+    Award,
+    Book,
+    Briefcase,
+    Bug,
+    Carrot,
+    CircleOff,
+    CloudLightning,
+    Compass,
+    DollarSign,
+    Filter,
+    FilterX,
+    Globe,
+    HardDrive,
+    HomeIcon,
+    Server,
+    SlidersHorizontal,
+    Squirrel,
+    Swords,
+    Truck,
+    Wand,
+    X,
+    Zap,
+  } from "lucide-svelte";
   let promise;
   let cfResults = [];
   let mrResults = [];
@@ -19,12 +50,34 @@
   let allowLoadMore = true;
   let offset = 0;
   let sortBy = "relevance";
+  let categories = [];
+
+  function toggleCategory(category) {
+    let categoryFound = false;
+    for (let i in categories) {
+      if (categories[i] == category) {
+        categories.splice(i, 1);
+        categoryFound = true;
+      }
+    }
+    if (!categoryFound) {
+      categories.push(category);
+    }
+    search(tab);
+  }
 
   if (browser) {
     software = localStorage.getItem("serverSoftware");
     version = localStorage.getItem("serverVersion");
   }
   onMount(() => {
+    if (browser) {
+      //uncheck every checkbox
+      let checkboxes = document.getElementsByClassName("checkbox");
+      for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false;
+      }
+    }
     if (software.toLowerCase() == "forge" && usingCurseForge) {
       cf();
     }
@@ -74,25 +127,36 @@
         query,
         "mod",
         offset,
-        sortBy
+        sortBy,
+        categories,
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
           allowLoadMore = response.hits.length == 15;
+
           response.hits.forEach((item) => {
-            console.log(numShort(item.downloads));
-            mrResults.push({
-              platform: "mr",
-              name: item.title,
-              desc: item.description,
-              icon: item.icon_url,
-              author: item.author,
-              id: item.project_id,
-              client: item.client_side,
-              downloads: numShort(item.downloads),
-              versions: [],
-              slug: item.slug,
-            });
+            //prevents duplicate results
+            let duplicates = false;
+            for (let i in mrResults) {
+              if (mrResults[i].id == item.id) {
+                duplicates = true;
+              }
+            }
+            if (!duplicates) {
+              console.log(numShort(item.downloads));
+              mrResults.push({
+                platform: "mr",
+                name: item.title,
+                desc: item.description,
+                icon: item.icon_url,
+                author: item.author,
+                id: item.project_id,
+                client: item.client_side,
+                downloads: numShort(item.downloads),
+                versions: [],
+                slug: item.slug,
+              });
+            }
             console.log(item);
           });
         } else if (platform == "cf") {
@@ -105,18 +169,27 @@
             if (item.authors[0] != undefined) {
               author = item.authors[0].name;
             }
-            cfResults.push({
-              platform: "cf",
-              name: item.name,
-              desc: item.summary,
-              icon: item.logo.thumbnailUrl,
-              author: author,
-              id: item.id,
-              client: null,
-              downloads: numShort(item.downloadCount),
-              versions: item.latestFiles,
-              slug: item.slug,
-            });
+            //prevents duplicate results
+            let duplicates = false;
+            for (let i in cfResults) {
+              if (cfResults[i].id == item.id) {
+                duplicates = true;
+              }
+            }
+            if (!duplicates) {
+              cfResults.push({
+                platform: "cf",
+                name: item.name,
+                desc: item.summary,
+                icon: item.logo.thumbnailUrl,
+                author: author,
+                id: item.id,
+                client: null,
+                downloads: numShort(item.downloadCount),
+                versions: item.latestFiles,
+                slug: item.slug,
+              });
+            }
           });
         }
       });
@@ -125,6 +198,12 @@
 
   function mr() {
     if (browser) {
+      categories = [];
+      //uncheck every checkbox
+      let checkboxes = document.getElementsByClassName("checkbox");
+      for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false;
+      }
       tab = "mr";
       document.getElementById("mr").classList.add("tab-active");
       document.getElementById("cf").classList.remove("tab-active");
@@ -132,6 +211,12 @@
   }
   function cf() {
     if (browser) {
+      categories = [];
+      //uncheck every checkbox
+      let checkboxes = document.getElementsByClassName("checkbox");
+      for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false;
+      }
       tab = "cf";
       document.getElementById("cf").classList.add("tab-active");
       document.getElementById("mr").classList.remove("tab-active");
@@ -188,6 +273,280 @@
         >
       </div>
     </div>
+    {#if tab == "mr"}
+      <div class="flex max-md:flex-col md:space-x-4">
+        <div class="flex flex-col items-left">
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("adventure")}
+            />
+            <Compass size="18" />
+            <p>{$t("category.adventure")}</p>
+          </div>
+
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("cursed")}
+            />
+            <Bug size="18" />
+            <p>{$t("category.cursed")}</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("decoration")}
+            />
+            <HomeIcon size="18" />
+            <p>{$t("category.decoration")}</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("economy")}
+            />
+            <DollarSign size="18" />
+            <p>{$t("category.economy")}</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("social")}
+            />
+            <MessageCircle size="18" />
+            <p>{$t("category.social")}</p>
+          </div>
+        </div>
+        <div class="flex flex-col items-left">
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("equipment")}
+            />
+            <Swords size="18" />
+            <p>{$t("category.equipment")}</p>
+          </div>
+
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("food")}
+            />
+            <Carrot size="18" />
+            <p>{$t("category.food")}</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("game mechanics")}
+            />
+            <SlidersHorizontal size="18" />
+            <p>{$t("category.game mechanics")}</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("library")}
+            />
+            <Book size="18" />
+            <p>Library</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("magic")}
+            />
+            <Wand size="18" />
+            <p>{$t("category.magic")}</p>
+          </div>
+        </div>
+        <div class="flex flex-col items-left">
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("management")}
+            />
+            <Server size="18" />
+            <p>{$t("category.management")}</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("minigame")}
+            />
+            <Award size="18" />
+            <p>{$t("category.minigame")}</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("mobs")}
+            />
+            <Squirrel size="18" />
+            <p>{$t("category.mobs")}</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("optimization")}
+            />
+            <Zap size="18" />
+            <p>{$t("category.optimization")}</p>
+          </div>
+
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("storage")}
+            />
+            <Archive size="18" />
+            <p>{$t("category.storage")}</p>
+          </div>
+        </div>
+        <div class="flex flex-col items-left">
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("technology")}
+            />
+            <HardDrive size="18" />
+            <p>{$t("category.technology")}</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("transportation")}
+            />
+            <Truck size="18" />
+            <p>{$t("category.transportation")}</p>
+          </div>
+
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("utility")}
+            />
+            <Briefcase size="18" />
+            <p>{$t("category.utility")}</p>
+          </div>
+
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("worldgen")}
+            />
+            <Globe2 size="18" />
+            <p>{$t("category.worldgen")}</p>
+          </div>
+        </div>
+      </div>
+    {:else if tab == "cf"}
+      <div class="flex max-md:flex-col md:space-x-4 hidden">
+        <div class="flex flex-col items-left">
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("422")}
+            />
+            <Compass size="18" />
+            <p>Adventure</p>
+          </div>
+
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("423")}
+            />
+            <MapIcon size="18" />
+            <p>Maps & Info</p>
+          </div>
+        </div>
+
+        <div class="flex flex-col items-left">
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("421")}
+            />
+            <Book size="18" />
+            <p>Library</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("6814")}
+            />
+            <Zap size="18" />
+            <p>Optimization</p>
+          </div>
+        </div>
+        <div class="flex flex-col items-left">
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("436")}
+            />
+            <Carrot size="18" />
+            <p>Food</p>
+          </div>
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("412")}
+            />
+            <HardDrive size="18" />
+            <p>Technology</p>
+          </div>
+        </div>
+        <div class="flex flex-col items-left">
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("419")}
+            />
+            <Wand size="18" />
+            <p>Magic</p>
+          </div>
+
+          <div class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-xs mr-0.5"
+              on:click={() => toggleCategory("406")}
+            />
+            <Globe2 size="18" />
+            <p>Worldgen</p>
+          </div>
+        </div>
+      </div>
+    {/if}
     <div id="mods" class="space-y-2">
       {#await promise}
         {#each Array.from({ length: skeletonsLength }) as _}

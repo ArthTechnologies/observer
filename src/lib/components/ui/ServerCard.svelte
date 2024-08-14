@@ -38,6 +38,8 @@
   export let software: string;
   export let state: string;
   export let id: number;
+  export let webmap: boolean;
+  export let voicechat: boolean;
 
   if (software == "velocity") {
     softwareType = "proxy";
@@ -58,6 +60,8 @@
       localStorage.setItem("serverSoftware", software);
       localStorage.setItem("serverVersion", version);
       localStorage.setItem("serverCardRedrict", "true");
+      localStorage.setItem("serverWebmap", webmap);
+      localStorage.setItem("serverVoicechat", voicechat);
     }
   }
   function status() {

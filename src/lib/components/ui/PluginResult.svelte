@@ -4,7 +4,7 @@
   import ChooseVersion from "$lib/components/ui/ChooseVersion.svelte";
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
-  import { Download } from "lucide-svelte";
+  import { Download, Plug } from "lucide-svelte";
   import TranslateableText from "./TranslateableText.svelte";
   export let name: string;
   export let author: string;
@@ -27,7 +27,15 @@
   }
 </script>
 
-<div class="bg-base-200 rounded-lg p-3">
+<div class="bg-base-200 rounded-lg p-3 relative">
+  {#if name.includes("Dynmap") || name.includes("Simple Voice Chat") || name.includes("Chunky") || name.includes("DiscordSRV")}
+    <div
+      class="absolute h-6 bg-base-300 rounded-lg pl-[0.2rem] px-2 mt-1 text-sm flex items-center top-0.5 right-1 z-10"
+    >
+      <Plug size="17" class="mr-[0.1rem]" />
+      {$t("plugins.officiallySupported")}
+    </div>
+  {/if}
   <div class="flex justify-between place-items-center max-w-full relative">
     <div class="flex space-x-3 w-minus-7">
       <a

@@ -4,9 +4,10 @@
   import ModpackResult from "./ModpackResult.svelte";
   import { t } from "$lib/scripts/i18n";
   import FeaturedPlugin from "./FeaturedPlugin.svelte";
-  import { numShort } from "$lib/scripts/utils";
+  import { includesAny, numShort } from "$lib/scripts/utils";
   import { onMount } from "svelte";
-  import { Plus } from "lucide-svelte";
+  import { DeleteIcon, Plus } from "lucide-svelte";
+  import { apiurl } from "$lib/scripts/req";
   import ResultSkele from "./ResultSkele.svelte";
 
   let promise;
@@ -18,15 +19,57 @@
   let allowLoadMore = true;
   let offset = 0;
   let sortBy = "relevance";
+  let modpackImageUrl = "/images/placeholder.webp";
+  let modpackName = "";
+  let modpackVersion = "";
   onMount(() => {
     if (browser) {
       search("mr");
       if (usingCurseForge) search("cf");
       else document.getElementById("mr").classList.add("tab-active");
+
+      if (
+        localStorage.getItem("modpackID") != "" &&
+        localStorage.getItem("modpackID") != null
+      ) {
+        localStorage.setItem("modpackID", "");
+        localStorage.setItem("modpackURL", "");
+        localStorage.setItem("modpackVersionID", "");
+      }
     }
   });
   if (browser) {
     if (!usingCurseForge) tab = "mr";
+    //event listener for 'versionSet', which means a modpack has been selected
+    window.addEventListener("versionSet", (e) => {
+      if (e.detail != undefined) {
+        console.log("detail", e.detail);
+        let id = e.detail.id;
+        if (e.detail.platform == "cf") {
+          fetch(apiurl + "curseforge/" + id, {
+            method: "GET",
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              modpackImageUrl = res.logo.thumbnailUrl;
+              modpackName = res.name;
+              modpackVersion = res.latestFiles[0].displayName;
+            });
+        } else if (e.detail.platform == "mr") {
+          fetch("https://api.modrinth.com/v2/project/" + id, {
+            method: "GET",
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              modpackImageUrl = res.icon_url;
+              modpackName = res.title;
+              modpackVersion = res.versions[0].version;
+            });
+        }
+        document.getElementById("setModpack").classList.add("hidden");
+        document.getElementById("changeModpack").classList.remove("hidden");
+      }
+    });
   }
   function search(platform: string, loadMore: boolean = false) {
     console.error("searching" + platform);
@@ -72,42 +115,82 @@
         query,
         "modpack",
         offset,
-        sortBy
+        sortBy,
+        []
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
           let results = [];
+
           response.hits.forEach((item) => {
-            results.push({
-              name: item.title,
-              desc: item.description,
-              icon: item.icon_url,
-              author: item.author,
-              id: item.project_id,
-              client: item.client_side,
-              downloads: numShort(item.downloads),
-              platform: "mr",
-              versions: [],
-              slug: item.slug,
-            });
+            //prevents duplicate results
+            let duplicates = false;
+            for (let i in mrResults) {
+              if (mrResults[i].id == item.id) {
+                duplicates = true;
+              }
+            }
+            if (
+              !duplicates &&
+              !includesAny(item.description.toLowerCase(), [
+                "optimization",
+                "performance",
+                "client-side",
+                "clientside",
+                "graphics",
+              ])
+            ) {
+              results.push({
+                name: item.title,
+                desc: item.description,
+                icon: item.icon_url,
+                author: item.author,
+                id: item.project_id,
+                client: item.client_side,
+                downloads: numShort(item.downloads),
+                platform: "mr",
+                versions: [],
+                slug: item.slug,
+              });
+            }
           });
           mrResults = results;
           console.log(mrResults);
         } else if (platform == "cf") {
           skeletonsLength = response.data.length;
           response.data.forEach((item) => {
-            cfResults.push({
-              platform: "cf",
-              name: item.name,
-              desc: item.summary,
-              icon: item.logo.thumbnailUrl,
-              author: item.authors[0].name,
-              id: item.id,
-              client: null,
-              downloads: numShort(item.downloadCount),
-              versions: item.latestFiles,
-              slug: item.slug,
-            });
+            //prevents duplicate results
+            let duplicates = false;
+            for (let i in cfResults) {
+              if (cfResults[i].id == item.id) {
+                duplicates = true;
+              }
+            }
+            if (
+              !duplicates &&
+              !includesAny(item.summary.toLowerCase(), [
+                "optimization",
+                "performance",
+                "client-side",
+                "clientside",
+                "graphics",
+                "fps",
+                "shader",
+              ])
+            ) {
+              cfResults.push({
+                platform: "cf",
+                name: item.name,
+                desc: item.summary,
+                icon: item.logo.thumbnailUrl,
+                author: item.authors[0].name,
+                id: item.id,
+                client: null,
+                downloads: numShort(item.downloadCount),
+                versions: item.latestFiles,
+                slug: item.slug,
+              });
+            }
           });
         }
       });
@@ -129,10 +212,44 @@
       document.getElementById("mr").classList.remove("tab-active");
     }
   }
+
+  function clearModpack() {
+    document.getElementById("setModpack").classList.remove("hidden");
+    document.getElementById("changeModpack").classList.add("hidden");
+    modpackImageUrl = "/images/placeholder.webp";
+    modpackName = "";
+    modpackVersion = "";
+    localStorage.setItem("modpackID", "");
+    localStorage.setItem("modpackURL", "");
+    localStorage.setItem("modpackVersionID", "");
+  }
 </script>
 
-<label for="modpacksModal" class="btn btn-block btn-primary"
-  >{$t("button.modpacks")}</label
+<div id="changeModpack" class="hidden flex space-x-2.5 w-[30rem]">
+  <div class="flex">
+    <img src={modpackImageUrl} class="w-12 h-12 rounded-l-lg bg-base-300" />
+    <div
+      class="relative rounded-r-lg bg-base-200 h-12 flex flex-col justify-between pl-2 pb-1.5 pt-0.5 pr-1"
+    >
+      <p class="truncate w-[9.625rem] text-[.975rem]">{modpackName}</p>
+      <p class="text-xs text-gray-600 truncate w-[10.65rem]">
+        {modpackVersion}
+      </p>
+      <button
+        class="btn btn-xs btn-square btn-ghost absolute top-0.5 right-0.5"
+        on:click={clearModpack}
+      >
+        ✕
+      </button>
+    </div>
+  </div>
+  <label for="modpacksModal" class="btn btn-primary w-[15rem]"
+    >{$t("button.changeModpack")}</label
+  >
+</div>
+
+<label id="setModpack" for="modpacksModal" class="btn btn-primary btn-block"
+  >{$t("button.setModpack")}</label
 >
 
 <!-- Put this part before </body> tag -->

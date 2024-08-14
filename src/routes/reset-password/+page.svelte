@@ -33,7 +33,7 @@
           cc,
         {
           method: "POST",
-        },
+        }
       )
         .then((res) => res.json())
         .then((data) => {
@@ -45,7 +45,7 @@
                 $t("alert.tooManyAttempts") +
                   5 -
                   data.attempts +
-                  $t("alert.tooManyAttempts2"),
+                  $t("alert.tooManyAttempts2")
               );
             else alert(data.reason);
           } else {
@@ -82,9 +82,7 @@
         {$t("account.resetPassword.desc")}
       </p>
       <div class="flex flex-col mt-2">
-        <label for="email " class="font-bold"
-          >{$t("account.resetPassword.l.email")}</label
-        >
+        <label for="email " class="font-bold">{$t("email")}</label>
         <input id="email" class="input input-bordered" type="text" />
       </div>
       {#if enablePay}

@@ -13,7 +13,11 @@ export function fileSizeShort(bytes: number) {
   if (bytes < 100) return bytes.toString();
   if (bytes < 100000) return `${(bytes / 1000).toFixed(1)}kB`;
   if (bytes < 100000000) return `${(bytes / 1000000).toFixed(1)}mB`;
-  return `${(bytes / 100000000).toFixed(1)}gB`;
+  return `${(bytes / 1000000000).toFixed(1)}gB`;
+}
+
+export function includesAny(str:string, substrings:string[]) {
+  return substrings.some(substring => str.indexOf(substring) !== -1);
 }
 
 export function downloadProgressShort(currentBytes: number, totalBytes: number) {

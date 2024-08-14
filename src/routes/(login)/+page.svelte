@@ -50,6 +50,11 @@
             .then((res) => res.json())
             .then((res) => {
               console.log(res);
+              if (res.msg == "You haven't paid for a server.") {
+                goto("/billing");
+                              //this tells the navbar to update the icon that is highligted
+              window.dispatchEvent(new Event("redrict"));
+              }
               promise = getServers(email).then((response) => {
                 if (browser) {
                   noserverlock = true;

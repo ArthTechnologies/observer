@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { apiurl, usingOcelot } from "$lib/scripts/req";
+  import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
   import { lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
@@ -41,10 +41,9 @@
   }
 
   if (platform == "lr") {
-    /*
     name = name.replace(/-/g, " ");
 
-    promise = fetch(lrurl + "project/" + id)
+    fetch(lrurl + "project/" + id)
       .then((response) => response.json())
       .then((data) => {
         desc = data.description;
@@ -52,16 +51,14 @@
         name = data.title;
         icon = data.icon_url;
       });
-      
+
     fetch(lrurl + "project/" + id + "/members")
       .then((response) => response.json())
       .then((data) => {
         author = data[0].user.username;
       });
-      */
   } else if (platform == "cf") {
-    /*
-    promise = fetch(apiurl + "curseforge/" + id)
+    fetch(apiurl + "curseforge/" + id)
       .then((response) => response.json())
       .then((data) => {
         desc = data.summary;
@@ -70,7 +67,6 @@
         author = data.authors[0].name;
         icon = data.logo.thumbnailUrl;
       });
-      */
   } else if (platform == "gh") {
     author = id.split("/")[0];
     fetch("https://api.github.com/repos/" + id)
@@ -97,9 +93,7 @@
     document.dispatchEvent(event);
 
     let baseurl = apiurl;
-    if (usingOcelot)
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    if (usingOcelot) baseurl = getServerNode(id);
     const url =
       baseurl + "server/" + serverId + "/file/" + modtype + "s*" + filename;
     fetch(url, {
@@ -121,9 +115,7 @@
 
   function toggleDisable() {
     let baseurl = apiurl;
-    if (usingOcelot)
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    if (usingOcelot) baseurl = getServerNode(id);
     const url =
       baseurl +
       "server/" +
@@ -161,28 +153,28 @@
         {#if platform == "lr"}
           <img
             class="ml-1.5 h-6"
-            src="https://github.com/modrinth/art/blob/main/Branding/Mark/mark-dark__32x32.png?raw=true"
+            src="/images/modrinth.svg"
             width="24"
             height="24"
           />
         {:else if platform == "cf"}
           <img
             class="ml-1.5 h-6"
-            src="https://static-beta.curseforge.com/images/favicon.ico"
+            src="/images/curseforge.svg"
             width="24"
             height="24"
           />
         {:else if platform == "gh"}
           <img
             class="ml-1.5 h-6"
-            src="https://github.githubassets.com/favicons/favicon.svg"
+            src="/images/github.svg"
             width="24"
             height="24"
           />
         {:else if platform == "cx"}
           <img
             class="ml-1.5 h-6"
-            src="https://geysermc.org/favicon.ico"
+            src="/images/geyser.webp"
             width="24"
             height="24"
           />

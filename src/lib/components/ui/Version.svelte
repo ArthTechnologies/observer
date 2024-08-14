@@ -2,6 +2,7 @@
   import { apiurl, sendVersion } from "$lib/scripts/req";
 
   import { browser, version } from "$app/environment";
+  import { onMount } from "svelte";
   import {
     AlertCircle,
     Check,
@@ -34,29 +35,41 @@
   } else if (type == "alpha") {
     type = "Alpha";
   }
+  if (browser) {
+    //listens for versionSet events, so that if another
+    //version is selected the checkbox is unchecked
+    window.addEventListener("versionSet", (e) => {
+      if (e.detail.versionId != versionId) {
+        let checkbox = document.getElementById("addBtn" + uniqueId);
+        checkbox.checked = false;
+      }
+    });
+  }
   let time = new Date(date).toLocaleString();
 
   function submit() {
     let id = "";
     if (browser) {
       id = localStorage.getItem("serverID");
+      window.dispatchEvent(
+        new CustomEvent("versionSet", {
+          detail: {
+            id: id,
+            versionId: versionId,
+            platform: platform,
+            versionName: name,
+          },
+        })
+      );
     }
 
     pluginName = pluginName.replace(/["']/g, "");
     pluginName = pluginName.replace(/[\(\)]/g, "");
     pluginName = pluginName.replace(/[\s_]/g, "-");
     sendVersion(url, id, pluginId, pluginName, modtype);
-    setTimeout(() => {
-      if (browser) {
-        document.getElementById("addBtn" + uniqueId).checked = false;
-      }
-    }, 2500);
   }
-  console.log(dependencies);
   for (let i in dependencies) {
     if (platform == "mr") {
-      //GET https://api.modrinth.com/v2/project/{depencencies[i].project_id}
-
       fetch("https://api.modrinth.com/v2/project/" + dependencies[i].project_id)
         .then((response) => response.json())
         .then((data) => {
@@ -70,6 +83,13 @@
           console.log(data);
           dependencies[i].name = data.name;
         });
+    }
+    //there is a issue where there are sometimes duplicate dependencies
+    //the root cause is unknown, but this is a workaround
+    if (i > 0) {
+      if (dependencies[i].name == dependencies[i - 1].name) {
+        dependencies.pop();
+      }
     }
   }
 </script>
@@ -94,13 +114,24 @@
           <div
             class="bg-base-300 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
           >
-            {#if dependency.dependency_type == "optional"}
+            {#if platform == "mr"}
+              {#if dependency.dependency_type == "optional"}
+                <InfoIcon class="mr-1.5 shrink-0" size="16" />
+                {$t("worksWith")}
+              {:else if dependency.dependency_type == "incompatible"}
+                <AlertCircle class="mr-1.5 shrink-0" size="16" />
+                {$t("incompatibleWith")}
+              {:else}
+                <AlertCircle class="mr-1.5 shrink-0" size="16" />
+                {$t("requires")}
+              {/if}
+            {:else if (dependency.relationType = 2)}
               <InfoIcon class="mr-1.5 shrink-0" size="16" />
               {$t("worksWith")}
-            {:else if dependency.dependency_type == "incompatible"}
+            {:else if dependency.relationType == 5}
               <AlertCircle class="mr-1.5 shrink-0" size="16" />
               {$t("incompatibleWith")}
-            {:else}
+            {:else if dependency.relationType == 3}
               <AlertCircle class="mr-1.5 shrink-0" size="16" />
               {$t("requires")}
             {/if}

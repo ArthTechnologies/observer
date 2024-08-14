@@ -17,7 +17,7 @@
   import Manage from "$lib/components/ui/Manage.svelte";
   import AddMod from "$lib/components/ui/AddMod.svelte";
   import Add from "$lib/components/ui/Add.svelte";
-  import EditInfo from "$lib/components/ui/EditInfo.svelte";
+  import ServerSettings from "$lib/components/ui/ServerSettings.svelte";
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
   import Updates from "$lib/components/buttons/Updates.svelte";
@@ -32,21 +32,28 @@
     Repeat,
     StopCircle,
     Settings,
+    ClipboardList,
+    ArrowUpSquare,
+    ExternalLink,
+    Send,
+    FileCog,
   } from "lucide-svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
   import Versions from "$lib/components/buttons/Versions.svelte";
+  import FullscreenMap from "$lib/components/pages/server/FullscreenMap.svelte";
+  import { write } from "fs";
+  import { alert } from "$lib/scripts/utils";
   let scrollCorrected = false;
   let modded = false;
   let vanilla = false;
   let name: string = "-";
   let address: string;
-  let tname: string;
+
   let url: string;
   let apo = 0;
   let po = 0;
   let port = 10000;
   let id = 0;
-  let lock = false;
   let desc: string = "";
   let email: string = "";
   let state = "false";
@@ -54,8 +61,22 @@
   let secret = "";
   let difference = -1;
   let baseurl = apiurl;
+  let webmap = false;
+  let webmapurl =
+    "http://" + apiurl.substring(0, apiurl.length - 1).split("https://")[1];
+  let voicechat = false;
+  let chunky = false;
+  let discordsrv = false;
 
   if (browser) {
+    if (localStorage.getItem("updateAlert") != "dynmap") {
+      localStorage.setItem("updateAlert", "dynmap");
+      alert(
+        "Update: Dynmap & Simple Voice Chat support have been added.",
+        "info"
+      );
+    }
+
     name = localStorage.getItem("serverName");
     if (localStorage.getItem("serverCardRedrict") != "true") {
       id = parseInt(localStorage.getItem("serverID"));
@@ -69,6 +90,23 @@
     ) {
       modded = true;
     }
+
+    if (localStorage.getItem("serverWebmap") == "true") {
+      webmap = true;
+    }
+
+    if (localStorage.getItem("serverVoicechat") == "true") {
+      voicechat = true;
+    }
+
+    if (localStorage.getItem("serverChunky") == "true") {
+      chunky = true;
+    }
+
+    if (localStorage.getItem("serverDiscordSRV") == "true") {
+      discordsrv = true;
+    }
+
     if (usingOcelot) {
       baseurl = JSON.parse(localStorage.getItem("serverNodes"))[id.toString()];
     }
@@ -156,8 +194,15 @@
       })
         .then((response) => response.json())
         .then((data) => {
-          desc = data.desc;
-          console.log(data.secret + "secret");
+          document.getElementById("rawDesc").innerText = data.desc;
+          //displays bold, italic formatings
+          //removes all other formating codes
+          desc = data.desc
+            .replace(/§l/g, "<b>")
+            .replace(/§o/g, "<i>")
+            .replace(/§r/g, "</b></i>")
+            .replace(/§./g, "");
+
           secret = data.secret;
 
           //add checked property to toggle
@@ -176,55 +221,61 @@
 
           document.getElementById("fSecret").value = data.secret;
           if (data.iconUrl != undefined) {
-            console.log("icon is " + data.iconUrl);
             icon = data.iconUrl;
           } else {
-            console.log("setting placeholder");
             icon = "/images/placeholder.webp";
           }
         });
     }
   });
-  //grab window url
-  if (browser) {
-    url = window.location.href;
-    //set tname to url after the last slash
-    tname = url.substring(url.lastIndexOf("/") + 1);
-    //if tname has character encoding, decode it
-    if (tname.includes("%")) {
-      tname = decodeURIComponent(tname);
-    }
-  }
+
   function getStatus() {
     //get server status
     getServer(id).then((response) => {
       //convert addons array to string, save it to "serverAddons" array
       localStorage.setItem("serverAddons", response.addons.toString());
       localStorage.setItem("serverVersion", response.version);
+      localStorage.setItem("serverWebmap", response.webmap);
+      localStorage.setItem("serverVoicechat", response.voicechat);
+      localStorage.setItem("serverChunky", response.chunky);
+      localStorage.setItem("serverDiscordSRV", response.discordsrv);
+
+      if (response.webmap == true && webmap == false) {
+        setTimeout(() => {
+          webmap = true;
+        }, 5000);
+      }
+      if (response.voicechat == true && voicechat == false) {
+        setTimeout(() => {
+          voicechat = true;
+        }, 500);
+      }
+
+      if (response.chunky == true && chunky == false) {
+        setTimeout(() => {
+          chunky = true;
+        }, 2000);
+      }
+
+      if (response.discordsrv == true && discordsrv == false) {
+        discordsrv = true;
+      }
+
       //set state to response
       state = response.state;
-
-      if (state == "starting") {
-        console.log("unlocking");
-        lock = false;
-      }
     });
   }
 
   function start() {
-    console.log(lock);
-    if (!lock) {
-      if (state == "true") {
-        changeServerState("restart", id, email);
-      } else if (state == "false") {
-        changeServerState("start", id, email);
-      }
+    if (state == "true") {
+      changeServerState("restart", id, email);
+    } else if (state == "false") {
+      changeServerState("start", id, email);
     }
   }
 
   function stop() {
     changeServerState("stop", id, email);
-    lock = false;
   }
 
   onMount(() => {
@@ -243,11 +294,14 @@
         if (count > 20) {
           interval = 2000;
         }
-        if (
-          decodeURIComponent(window.location.pathname) ==
-          "/server/" + tname
-        ) {
+        let path = decodeURIComponent(window.location.pathname);
+        // if there is a / at the end, this removes it
+        if (path.endsWith("/")) {
+          path = path.substring(0, path.length - 1);
+        }
+        if (path == "/server/" + (10000 + parseInt(id))) {
           getStatus();
+
           readCmd();
         }
       }, interval);
@@ -265,7 +319,6 @@
     //if key pressed is enter, send alert
     if (event.keyCode == 13) {
       getStatus();
-      console.log("sending " + input + " to " + id);
       writeTerminal(id, input);
       //clear input
       document.getElementById("input").value = "";
@@ -287,15 +340,29 @@
         const filteredResponse = response
           .replace(/\x1B\[[0-9;]*[mG]/g, "")
           .replace(/\n/g, "<p>");
+
         //scroll down the height of the new lines added
         if (
           terminal.innerHTML.split("<p>").length <
           filteredResponse.split("<p>").length
         ) {
           terminalContainer.scrollTop +=
-            150 *
+            50 *
             (filteredResponse.split("<p>").length -
               terminal.innerHTML.split("<p>").length);
+
+          //adding to scrollTop doesn't get it to the complete bottom,
+          //so this remedies that by snapping it to the bottom if needed.
+          let difference =
+            terminalContainer.scrollHeight - terminalContainer.scrollTop;
+          const terminalContainerContainer = document.getElementById(
+            "terminalContainerContainer"
+          );
+          if (difference <= terminalContainerContainer?.clientHeight) {
+            setTimeout(() => {
+              terminalContainer.scrollTop = terminalContainer.scrollHeight;
+            }, 1);
+          }
         }
 
         //response replace newlines with <p>, remove things that start with [ and end with m
@@ -317,17 +384,23 @@
         //if this is the first time the terminal is loaded, this will scroll to the bottom.
         if (scrollCorrected == false) {
           terminalContainer.scrollTop = terminalContainer.scrollHeight;
-          if (
-            terminalContainer.scrollHeight - terminalContainer.scrollTop <=
-            384
-          ) {
-            scrollCorrected = true;
-          }
+
+          scrollCorrected = true;
         }
       });
     }
   }
   readCmd();
+
+  function webmapRender() {
+    writeTerminal(id, "dynmap fullrender world");
+  }
+
+  function pregen() {
+    let radius = document.getElementById("pregenRadius").value;
+    writeTerminal(id, "chunky start world circle 0 0 " + radius);
+    document.getElementById("pregenRadius").value = "";
+  }
 </script>
 
 <div class="lg:-mt-10">
@@ -400,14 +473,14 @@
   </div>
 
   <div
-    class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10"
+    class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between py-10 px-5 md:px-10"
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div id="terminalContainerContainer" class="relative mb-1.5">
         <FullscreenTerminal />
         <div
           id="terminalContainer"
-          class="bg-base-300 h-96 rounded-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
+          class="bg-base-300 rounded-xl overflow-auto w-[23rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem] h-[30rem] 2xl:h-[35rem]"
         >
           <div class="p-5 sm:text-xs xl:text-base font-mono relative">
             <p id="terminal" />
@@ -419,7 +492,7 @@
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
+        class="input input-secondary bg-base-200 w-[23rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
       />
       <div class="divider md:hidden pt-5 pb-4" />
     </div>
@@ -431,18 +504,19 @@
         <div
           class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
         >
-          <div class="flex relative">
+          <div class="flex relative w-[20rem] md:w-[22.4rem]">
             <div class="p-4 space-x-4 flex">
               <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md" />
 
               <div class="">
                 <div class="stat-title">{$t("server.ip")}</div>
-                <div class="font-bold sm:text-lg md:text-3xl">
+                <div class="font-bold sm:text-lg md:text-[1.8rem] mt-1">
                   {address}:{port}
                 </div>
-                <div id="xDesc" class="text-xs font-light flex justify-between">
-                  Description: {desc}
+                <div id="xDesc" class="text-xs font-light flex mt-1">
+                  Description: {@html desc}
                 </div>
+                <div id="rawDesc" class="hidden"></div>
               </div>
             </div>
             <a
@@ -454,17 +528,170 @@
               <HelpCircle size="18" class="md:mr-1.5" />
               <p class="hidden md:block">How to join</p></a
             >
-            <EditInfo type="smallBtn" />
+            <ServerSettings type="smallBtn" />
           </div>
         </div>
       </div>
 
-      <div class="w-[10.6rem] flex place-content-center space-x-2">
+      <div class="w-[10.6rem] flex place-content-center space-x-2 mb-2">
         {#if modded}<AddMod /><ManageMods />{:else if !vanilla}
           <Add /><Manage />
         {/if}
       </div>
-      <div class=" bg-base-200 mt-4 rounded-xl px-4 py-3 w-[20rem] md:w-auto">
+      {#if webmap}
+        <div class=" bg-base-300 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+          <img
+            alt="dynmap-icon"
+            class="w-8 h-8 rounded-lg bg-base-100"
+            src="/images/dynmap.webp"
+          />
+
+          <div class="divider divider-horizontal m-0"></div>
+          <div
+            style="text-wrap: nowrap;"
+            class="tooltip tooltip-top tooltip-info z-50 hidden sm:block"
+            data-tip="Only renders overworld. See guide for more info."
+          >
+            <button
+              on:click={webmapRender}
+              class="btn btn-neutral btn-sm items-center"
+              >{$t("plugins.dynmap.render")}</button
+            >
+          </div>
+          <a
+            href="https://arthmc.xyz/docs/using-dynmap"
+            target="_blank"
+            rel="noreferrer"
+            ><button class="btn btn-neutral btn-sm items-center"
+              >{$t("plugins.dynmap.guide")}
+              <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+          <a
+            href="{webmapurl}:{parseInt(id) + 10200}"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <button class="btn btn-sm items-center hover:bg-base-100"
+              >{$t("plugins.dynmap.map")}
+              <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+        </div>
+        <!--<div class="mt-5 relative">
+          <iframe
+            title="Webmap of the server's world"
+            type="text/html"
+            src="{webmapurl}:{parseInt(id) + 10200}"
+            class="shadow-xl w-full rounded-xl"
+            height="300"
+          />
+          <div
+            class="absolute bottom-0 w-full bg-neutral rounded-b-lg bg-opacity-50 backdrop-blur-xl p-2 flex gap-2"
+          >
+            <button on:click={webmapRender} class="btn btn-sm"
+              >Render World</button
+            >
+            <button
+              class="btn btn-sm btn-ghost"
+              on:click={() => {
+                navigator.clipboard.writeText(
+                  `${webmapurl}:${parseInt(id) + 10200}`
+                );
+              }}
+              ><ClipboardList size="16" class="mr-1" />
+              Copy Link</button
+            >
+          </div>
+          <FullscreenMap />
+        </div>!-->
+      {/if}
+      {#if voicechat}
+        <div class=" bg-base-300 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+          <div class="dropdown dropdown-hover">
+            <img
+              alt="dynmap-icon"
+              class="w-8 h-8 rounded-lg bg-base-100"
+              src="/images/voicechat.webp"
+            />
+          </div>
+
+          <div class="divider divider-horizontal m-0"></div>
+          <a
+            href="https://arthmc.xyz/docs/using-simple-voice-chat"
+            target="_blank"
+            rel="noreferrer"
+            ><button class="btn btn-neutral btn-sm items-center"
+              >{$t("plugins.voicechat.guide")}
+              <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+          <a
+            href="https://modrinth.com/plugin/simple-voice-chat/versions?l=fabric"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <button class="btn btn-sm items-center hover:bg-base-100"
+              >{$t("plugins.voicechat.downloadMod")}
+              <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+        </div>
+      {/if}
+      {#if chunky}
+        <div class=" bg-base-300 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+          <div class="dropdown dropdown-hover">
+            <img
+              alt="dynmap-icon"
+              class="w-8 h-8 rounded-lg bg-base-100"
+              src="/images/chunky.webp"
+            />
+          </div>
+          <div class="divider divider-horizontal m-0"></div>
+          <input
+            id="pregenRadius"
+            class="input input-sm w-32 input-bordered"
+            placeholder={$t("plugins.chunky.l.radius")}
+            type="text"
+          />
+          <button on:click={pregen} class="btn btn-secondary btn-sm btn-square"
+            ><Send size="18" /></button
+          >
+
+          <a
+            href="https://github.com/pop4959/Chunky/wiki/Commands"
+            target="_blank"
+            rel="noreferrer"
+            ><button class="btn btn-neutral btn-sm items-center"
+              >{$t("plugins.voicechat.guide")}
+              <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+        </div>
+      {/if}
+      {#if discordsrv}
+        <div class=" bg-base-300 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+          <div class="dropdown dropdown-hover">
+            <img
+              alt="dynmap-icon"
+              class="w-8 h-8 rounded-lg bg-base-100"
+              src="/images/discordsrv.webp"
+            />
+          </div>
+
+          <div class="divider divider-horizontal m-0"></div>
+          <a
+            href="https://docs.discordsrv.com/installation/initial-setup"
+            target="_blank"
+            rel="noreferrer"
+            ><button class="btn btn-neutral btn-sm items-center"
+              >{$t("plugins.discordsrv.guide")}
+              <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+        </div>
+      {/if}
+      <div class=" bg-base-200 mt-5 rounded-xl px-4 py-3 w-[20rem] md:w-auto">
         <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
         <div class="space-x-1.5 space-y-1.5">
           <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
@@ -507,7 +734,7 @@
       </div>
       <div class="w-[20rem] flex flex-col items-center">
         <div class="flex space-x-2 mb-2 mt-4">
-          <EditInfo type="fullBtn" /><StorageLimit />
+          <ServerSettings type="fullBtn" /><StorageLimit />
         </div>
         <div class="flex">
           <a

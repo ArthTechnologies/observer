@@ -16,7 +16,7 @@
   import Manage from "$lib/components/ui/Manage.svelte";
   import AddMod from "$lib/components/ui/AddMod.svelte";
   import Add from "$lib/components/ui/Add.svelte";
-  import EditInfo from "$lib/components/ui/EditInfo.svelte";
+  import ServerSettings from "$lib/components/ui/ServerSettings.svelte";
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
   import FullscreenTerminal from "$lib/components/buttons/FullscreenTerminal.svelte";
@@ -53,7 +53,6 @@
   let po = 0;
   let port = 10000;
   let id = 0;
-  let lock = false;
   let desc: string = "";
 
   let email: string = "";
@@ -72,8 +71,7 @@
       id = parseInt(window.location.href.split("/")[4]) - 10000;
     }
     if (usingOcelot) {
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      baseurl = getServerNode(id);
     }
     if (
       localStorage.getItem("serverSoftware") == "Fabric" ||
@@ -153,7 +151,7 @@
             token: localStorage.getItem("token"),
             username: localStorage.getItem("accountEmail"),
           },
-        }
+        },
       )
         .then((response) => response.json())
         .then((data) => {
@@ -214,13 +212,17 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        desc = data.desc;
-        console.log(data.iconUrl + "icon");
+        document.getElementById("rawDesc").innerText = data.desc;
+        //displays bold, italic formatings
+        //removes all other formating codes
+        desc = data.desc
+          .replace(/§l/g, "<b>")
+          .replace(/§o/g, "<i>")
+          .replace(/§r/g, "</b></i>")
+          .replace(/§./g, "");
         if (data.iconUrl != undefined) {
-          console.log("icon is " + data.iconUrl);
           icon = data.iconUrl;
         } else {
-          console.log("setting placeholder");
           icon = "/images/placeholder.webp";
         }
       });
@@ -235,7 +237,6 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         servers = data;
       });
 
@@ -287,20 +288,16 @@
     getServer(id).then((response) => {
       //convert addons array to string, save it to "serverAddons" array
       localStorage.setItem("serverAddons", response.addons.toString());
+      localStorage.setItem("serverSoftware", response.software);
 
       //set state to response
       state = response.state;
-      if (state == "starting") {
-        console.log("unlocking");
-        lock = false;
-      }
     });
   }
 
   function setLobbyName() {
-    console.log("setting lobby name");
+    console.log("setting lobby name to " + lobbyName);
     lobbyName = document.getElementById("lobbyName").value;
-    console.log(lobbyName);
     fetch(baseurl + "server/" + id + "/proxy/info?lobbyName=" + lobbyName, {
       method: "POST",
       headers: {
@@ -317,19 +314,17 @@
   }
 
   function start() {
-    console.log(lock);
-    if (!lock) {
+
       if (state == "true") {
         changeServerState("restart", id, email);
       } else if (state == "false") {
         changeServerState("start", id, email);
       }
-    }
+    
   }
 
   function stop() {
     changeServerState("stop", id, email);
-    lock = false;
   }
 
   onMount(() => {
@@ -367,7 +362,7 @@
     //if key pressed is enter, send alert
     if (event.keyCode == 13) {
       getStatus();
-      console.log("sending " + input + " to " + id);
+
       writeTerminal(id, input);
       //clear input
       document.getElementById("input").value = "";
@@ -395,9 +390,22 @@
           filteredResponse.split("<p>").length
         ) {
           terminalContainer.scrollTop +=
-            150 *
+            50 *
             (filteredResponse.split("<p>").length -
               terminal.innerHTML.split("<p>").length);
+        }
+
+        //adding to scrollTop doesn't get it to the complete bottom,
+        //so this remedies that by snapping it to the bottom if needed.
+        let difference =
+          terminalContainer.scrollHeight - terminalContainer.scrollTop;
+        const terminalContainerContainer = document.getElementById(
+          "terminalContainerContainer",
+        );
+        if (difference <= terminalContainerContainer?.clientHeight) {
+          setTimeout(() => {
+            terminalContainer.scrollTop = terminalContainer.scrollHeight;
+          }, 1);
         }
 
         //response replace newlines with <p>, remove things that start with [ and end with m
@@ -415,12 +423,8 @@
         }
         if (scrollCorrected == false) {
           terminalContainer.scrollTop = terminalContainer.scrollHeight;
-          if (
-            terminalContainer.scrollHeight - terminalContainer.scrollTop <=
-            384
-          ) {
-            scrollCorrected = true;
-          }
+
+          scrollCorrected = true;
         }
       });
     }
@@ -497,14 +501,14 @@
   </div>
 
   <div
-    class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between p-10"
+    class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between py-10 px-5 md:px-10"
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0">
       <div id="terminalContainerContainer" class="relative mb-1.5">
         <FullscreenTerminal />
         <div
           id="terminalContainer"
-          class="bg-base-300 h-96 rounded-xl overflow-auto w-[20rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
+          class="bg-base-300 h-96 rounded-xl overflow-auto w-[25rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem] h-[30rem] 2xl:h-[35rem]"
         >
           <div class="p-5 sm:text-xs xl:text-base font-mono relative">
             <p id="terminal" />
@@ -516,7 +520,7 @@
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 w-[19rem] lg:w-[22.5rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
+        class="input input-secondary bg-base-200 w-[25rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
       />
       <div class="divider md:hidden pt-5 pb-4" />
     </div>
@@ -528,18 +532,19 @@
         <div
           class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-[19rem] lg:w-[22.5rem] md:w-auto"
         >
-          <div class="flex relative">
+          <div class="flex relative w-[22.4rem]">
             <div class="p-4 space-x-4 flex">
               <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md" />
 
               <div class="">
                 <div class="stat-title">{$t("server.ip")}</div>
-                <div class="font-bold text-sm sm:text-lg md:text-3xl">
+                <div class="font-bold sm:text-lg md:text-[1.8rem] mt-1">
                   {address}:{port}
                 </div>
-                <div id="xDesc" class="text-xs font-light flex justify-between">
-                  Description: {desc}
+                <div id="xDesc" class="text-xs font-light flex mt-1">
+                  Description: {@html desc}
                 </div>
+                <div id="rawDesc" class="hidden"></div>
               </div>
             </div>
             <a
@@ -551,7 +556,7 @@
               <HelpCircle size="18" class="md:mr-1" />
               <p class="hidden md:block">How to join</p></a
             >
-            <EditInfo />
+            <ServerSettings />
           </div>
         </div>
       </div>
@@ -635,7 +640,7 @@
         <Info />
         <span class="text-sm w-[19rem] lg:w-[22.5rem] flex flex-wrap">
           {$t("proxy.forwardingSecret2")}{hostName}{$t(
-            "proxy.forwardingSecret3"
+            "proxy.forwardingSecret3",
           )}
           <code class="bg-gray-500 rounded p-0.5 mr-1"
             >config/paper-global.yml</code
@@ -646,7 +651,7 @@
 
       <div class="w-[20rem] flex flex-col items-center">
         <div class="flex space-x-2 mb-2 mt-4">
-          <EditInfo type="fullBtn" /><StorageLimit />
+          <ServerSettings type="fullBtn" /><StorageLimit />
         </div>
         <div class="flex space-x-2">
           <a

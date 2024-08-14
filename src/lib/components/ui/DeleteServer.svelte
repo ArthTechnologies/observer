@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { apiurl, deleteServer, usingOcelot } from "$lib/scripts/req";
+  import {
+    apiurl,
+    deleteServer,
+    usingOcelot,
+    getServerNode,
+  } from "$lib/scripts/req";
   import { t } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   import World from "./World.svelte";
@@ -17,6 +22,7 @@
     }
   }
   function del() {
+    console.log("deleting1...");
     let delButton = document.getElementById("delButton");
 
     loading = true;
@@ -25,7 +31,9 @@
     if (accountType === "email") {
       password = document.getElementById("password").value;
     }
+    console.log("deleting2...");
     deleteServer(id, password).then(() => {
+      console.log("deleting4...");
       loading = false;
       if (usingOcelot) {
         fetch(

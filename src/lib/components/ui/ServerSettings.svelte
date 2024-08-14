@@ -1,8 +1,15 @@
 <script>
   import { browser } from "$app/environment";
-  import { apiurl, setInfo, usingOcelot } from "$lib/scripts/req";
+  import {
+    apiurl,
+    setInfo,
+    usingOcelot,
+    getServerNode,
+  } from "$lib/scripts/req";
   import { t } from "$lib/scripts/i18n";
-  import { Settings } from "lucide-svelte";
+  import { ClipboardIcon, ClipboardList, Info, Settings } from "lucide-svelte";
+  import { bind, onMount } from "svelte/internal";
+  import { handleDesc } from "$lib/scripts/utils";
   let id;
   let icon = "";
   let iconPreview = "/images/palceholder.webp";
@@ -20,9 +27,7 @@
   }
   function get() {
     let baseurl = apiurl;
-    if (usingOcelot)
-      baseurl =
-        JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+    if (usingOcelot) baseurl = getServerNode(id);
     const url = baseurl + "server/" + id + "/getInfo";
     fetch(url, {
       method: "GET",
@@ -60,7 +65,7 @@
         }
         icon = document.getElementById("xIcon").src;
         iconPreview = icon;
-        desc = document.getElementById("xDesc")?.innerText.split(": ")[1];
+        desc = document.getElementById("rawDesc")?.innerText;
         if (icon.includes("/images/placeholder.webp")) {
           icon = "";
           iconPreview = "/images/placeholder.webp";
@@ -106,6 +111,10 @@
       }
     }
   }
+
+  function copyChar() {
+    navigator.clipboard.writeText("§");
+  }
 </script>
 
 {#if type == "smallBtn"}
@@ -127,15 +136,25 @@
 
 <input type="checkbox" id="editInfo" class="modal-toggle" />
 <div class="modal" style="margin:0rem;">
-  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+  <div class="p-4 md:p-5 modal-box bg-opacity-95 backdrop-blur relative">
     <label
       for="editInfo"
       class="btn btn-neutral btn-sm btn-circle fixed right-2 top-2">✕</label
     >
-    <h3 class="text-2xl font-bold mb-3">{$t("button.settings")}</h3>
+    <label
+      for="editInfo"
+      class="btn btn-neutral btn-sm fixed right-12 top-2"
+      on:click={set}>{$t("apply")}</label
+    >
+    <h3 class="text-2xl font-bold mb-1">{$t("button.settings")}</h3>
+    <div class="flex p-1 text-sm items-center gap-1.5 mb-1.5">
+      <Info size="16" />
+      <span>{$t("settings.restartWarning")}</span>
+    </div>
     <label for="serverDescription" class="block font-bold mb-2"
       >{$t("settings.l.name")}
     </label>
+
     <input
       bind:value={name}
       type="text"
@@ -151,12 +170,59 @@
     <label for="serverDescription" class="block font-bold mb-2"
       >{$t("description")}
     </label>
-    <input
+    {#if software != "Velocity"}
+      <div class="mb-2 space-y-1 text-sm">
+        <div class="flex space-x-1">
+          <div class="flex">
+            <div
+              class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
+            >
+              {$t("bold")}
+            </div>
+            <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§l</div>
+          </div>
+          <div class="flex">
+            <div
+              class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
+            >
+              {$t("italic")}
+            </div>
+            <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§o</div>
+          </div>
+          <div class="flex">
+            <div
+              class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
+            >
+              {$t("glitchEffect")}
+            </div>
+            <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§k</div>
+          </div>
+        </div>
+        <div class="flex space-x-1">
+          <div class="flex">
+            <div
+              class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
+            >
+              {$t("reset")}
+            </div>
+            <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§r</div>
+          </div>
+          <div class="flex">
+            <button class="btn btn-xs btn-ghost" on:click={copyChar}>
+              <ClipboardList size="16" class="mr-1" />
+              <p id="copyCharText">{$t("button.copyCharacter")}</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    {/if}
+
+    <textarea
+      class="textarea textarea-bordered w-full h-24 text-[.95rem]"
       bind:value={desc}
-      type="text"
       id="serverDescription"
-      class="input input-bordered"
-    />
+    ></textarea>
+
     <label for="serverIcon" class="block font-bold my-2"
       >{$t("settings.l.icon")}
       <p class="font-light">{$t("settings.desc.icon")}</p></label
@@ -171,9 +237,14 @@
       />
       <img src={iconPreview} class="h-[3rem] w-[3rem] rounded-lg" />
     </div>
-    <h3 class="text-2xl font-bold mt-5">{$t("settings.h.advancedSettings")}</h3>
-    <div class="divider mt-5 text-xl font-bold">{$t("settings.h.proxies")}</div>
     {#if software == "Paper"}
+      <h3 class="text-2xl font-bold mt-5">
+        {$t("settings.h.advancedSettings")}
+      </h3>
+      <div class="divider mt-5 text-xl font-bold">
+        {$t("settings.h.proxies")}
+      </div>
+
       <p class="mb-4">{$t("settings.desc.proxies")}</p>
       <div class=" w-52">
         <label class="cursor-pointer label">
@@ -197,12 +268,15 @@
         class="input input-bordered"
         placeholder={fSecret}
       />
-    {:else}<p class="mb-4">{$t("settings.l.noProxies")}</p>
+    {:else if software != "Velocity"}<p class="my-4">
+        {$t("settings.l.noProxies")}
+      </p>
     {/if}
-    <div class="flex justify-end mt-4">
-      <label on:click={set} for="editInfo" class="btn btn-primary"
-        >{$t("save")}</label
-      >
-    </div>
   </div>
 </div>
+
+<style>
+  .nocopy {
+    user-select: none;
+  }
+</style>

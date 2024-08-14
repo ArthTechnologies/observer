@@ -10,8 +10,8 @@ export let usingOcelot = false;
 export let lrurl = "https://api.modrinth.com/v2/";
 export let stripeKey = "";
 export let usingCurseForge = false;
-export let basicPlanPrice = "$4.00";
-export let moddedPlanPrice = "$6.00";
+export let basicPlanPrice = "$3.49";
+export let moddedPlanPrice = "$4.99";
 export let customerPortalLink = "";
 
 
@@ -109,7 +109,7 @@ export function setInfo(
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "server/" + id + "/setInfo";
   const req = {
     method: "POST",
@@ -168,8 +168,13 @@ export function setInfo(
       .catch((err) => console.error(err));
   }
   function setDescText(desc) {
+    document.getElementById("rawDesc").innerHTML = desc;
     if (document.getElementById("xDesc") != null) {
-      document.getElementById("xDesc").innerHTML = "Description: " + desc;
+      document.getElementById("xDesc").innerHTML = "Description: " + desc
+      .replace(/§l/g, "<b>")
+      .replace(/§o/g, "<i>")
+      .replace(/§r/g, "</b></i>")
+      .replace(/§./g, "");
     }
   }
 }
@@ -180,7 +185,7 @@ export function getMods(id: number, modtype: string) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "server/" + id + "/" + modtype;
   return fetch(url, GET)
     .then((res) => res.text())
@@ -204,7 +209,7 @@ export function sendVersion(
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url =
     baseurl +
     "server/" +
@@ -226,6 +231,7 @@ export function sendVersion(
       if (input.indexOf("400") > -1) {
         return "error";
       } else {
+
         return "success";
       }
     })
@@ -251,7 +257,8 @@ export function searchPlugins(
   version: string,
   query: string,
   offset: number,
-  sortBy: string
+  sortBy: string,
+  categories: Array<string>
 ) {
   sortBy = sortBy.toLowerCase();
   if(browser) {
@@ -259,6 +266,15 @@ export function searchPlugins(
     version = "1.19.3";
   }
   query = query.replace(" ", "-");
+  let versionString = '["versions:' +
+  version +
+  '"],';
+  if (version == "any" || software.toLowerCase() == "velocity") versionString = "";
+  let categoriesString = "";
+  if (categories.length > 0) {
+    categoriesString = '["categories:'+categories.join('"],["categories:')+'"],';
+    categoriesString = categoriesString.replace(/ /g, "_");
+  }
 
   const url =
     lrurl +
@@ -266,10 +282,9 @@ export function searchPlugins(
     "?query=" +
     query +
     '&facets=[["categories:' +
-    software +
-    '"],["versions:' +
-    version +
-    '"],["server_side:optional","server_side:required"]]' +
+    software + 
+    '"],'+ versionString +
+    categoriesString+'["server_side:optional","server_side:required"]]' +
     "&limit=15" +
     "&offset=" + offset +
     "&index=" + sortBy;
@@ -297,7 +312,8 @@ export function searchMods(
   query: string,
   modtype: string,
   offset: number,
-  sortBy: string
+  sortBy: string,
+  categories: Array<string>
 ) {
   sortBy = sortBy.toLowerCase();
   if(browser) {
@@ -309,6 +325,11 @@ export function searchMods(
   let url;
 
   if (platform == "mr")  {
+    let categoriesString = "";
+    if (categories.length > 0) {
+      categoriesString = '["categories:'+categories.join('"],["categories:')+'"],';
+      categoriesString = categoriesString.replace(/ /g, "_");
+    }
     url =
     lrurl +
     "search" +
@@ -316,7 +337,7 @@ export function searchMods(
     query +
     '&facets=[["categories:' +
     software +
-    '"], ["project_type:' +
+    '"],'+categoriesString+'["project_type:' +
     modtype +
     '"],["versions:' +
     version +
@@ -354,7 +375,8 @@ export function searchMods(
     '&classId=' +
     classId +
     '&index=' + offset +
-    "&sortField=" + sf;
+    "&sortField=" + sf +
+    "&categories=" + categories.join(",");
   }
 
   if (!lock) {
@@ -435,6 +457,7 @@ export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:strin
   if(browser) {
   console.log("Request Sent");
   localStorage.setItem("accountEmail", "email:" + em);
+  localStorage.setItem("email", em);
   return fetch(
     apiurl +
       "accounts/email/signup?" +
@@ -492,6 +515,7 @@ export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string
           localStorage.setItem("loggedIn", "true");
           localStorage.setItem("accountId", JSON.parse(input).accountId);
           localStorage.setItem("avatar", "");
+          localStorage.setItem("email", em);  
           updateReqTemplates();
         }
         return true;
@@ -506,7 +530,7 @@ export function changeServerState(reqstate: string, id: number, em: string) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "server/" + id + "/state/" + reqstate + "?username=" + em;
   const response = fetch(url, POST)
     .then((res) => res.text())
@@ -530,9 +554,13 @@ export function createServer(
 
 ) {
   if(browser) {
-
-    const url =
-      apiurl +
+    let baseurl = apiurl;
+  if (usingOcelot)
+    baseurl =
+      getServerNode(id);
+      console.log("getting server node for " + id + "...", baseurl);
+    const url  =
+      baseurl +
       "server/new/"+id+"?" +
       "email=" +
       localStorage.getItem("accountEmail") +
@@ -625,7 +653,7 @@ export function getServer(id: number) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "server/" + id;
   return fetch(url, GET)
     .then((res) => res.text())
@@ -633,6 +661,8 @@ export function getServer(id: number) {
       if (input.indexOf("400") > -1) {
         return "error";
       } else {
+
+
         //return input as json
         return JSON.parse(input);
       }
@@ -642,10 +672,11 @@ export function getServer(id: number) {
 
 export function deleteServer(id: number, password: string) {
   if(browser) {
+    console.log("deleting3...");
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url =
     baseurl +
     "server/" +
@@ -654,10 +685,11 @@ export function deleteServer(id: number, password: string) {
     localStorage.getItem("accountEmail") +
     "&password=" +
     password;
-
+    console.log("deleting3.5..." + url);
   return fetch(url, DELETE)
     .then((res) => res.text())
     .then((input: string) => {
+      
       console.error(input);
       if (input.indexOf("Invalid credentials") > -1) {
         alert("Wrong password")
@@ -684,7 +716,7 @@ export function writeTerminal(id: number, cmd: string) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "terminal/" + id + "?cmd=" + cmd;
   return fetch(url, POST)
     .then((res) => res.text())
@@ -705,7 +737,7 @@ export function readTerminal(id: number) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "terminal/" + id;
   return fetch(url, GET)
     .then((res) => res.text())
@@ -721,7 +753,7 @@ export function updateServer(id: number, version: string) {
   let baseurl = apiurl;
   if (usingOcelot)
     baseurl =
-      JSON.parse(localStorage.getItem("serverNodes"))[id.toString()] + "/";
+      getServerNode(id);
   const url = baseurl + "server/" + id + "/version?version=" + version;
   return fetch(url, POST)
     .then((res) => res.text())
@@ -743,7 +775,7 @@ function getServerNodes() {
   for (let i = 0; i < servers.length; i++) {
     serverIdArray.push(servers[i].id);
   }
-  const url = apiurl + "serverNodes?servers=" + serverIdArray.join(",");
+  const url = apiurl + "serverNodes";
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
@@ -752,6 +784,20 @@ function getServerNodes() {
       //return input as json
       return input;
     });
+}
+}
+
+export function getServerNode(id: number) {
+  if(browser) {
+  let serverNodes = JSON.parse(localStorage.getItem("serverNodes"));
+  for (let i in serverNodes) {
+    let ids = serverNodes[i].split("__")[0].split("-");
+    let url = serverNodes[i].split("__")[1];
+    console.log (id + ">=" + parseInt(ids[0]) + "&&" + id + "<=" + parseInt(ids[1]))
+    if (id >= parseInt(ids[0]) && id <= parseInt(ids[1])) {
+      return url;
+    }
+  }
 }
 }
 

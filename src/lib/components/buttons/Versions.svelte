@@ -108,95 +108,98 @@
   }
 </script>
 
-<label
-  for="versionsmodal"
-  style="margin:0rem;"
-  class="btn btn-neutral"
-  on:click={onclick}
-  ><ArrowDownCircle class="mr-2.5" />
-  {$t("button.versions")}</label
->
+{#if serverSoftware != "Forge"}
+  <label
+    for="versionsmodal"
+    style="margin:0rem;"
+    class="btn btn-neutral"
+    on:click={onclick}
+    ><ArrowDownCircle class="mr-2.5" />
+    {$t("button.versions")}</label
+  >
 
-<!-- Put this part before </body> tag -->
-<input
-  type="checkbox"
-  id="versionsmodal"
-  style="margin:0rem;"
-  class="modal-toggle"
-/>
-<div class="modal" style="margin:0rem;">
-  <div class="modal-box bg-opacity-95 backdrop-blur relative">
-    <label
-      for="versionsmodal"
-      style="margin:0rem;"
-      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
-    >
-
-    <h3 class="text-xl font-bold mb-2">{$t("versions.title")}</h3>
-    <div class="form-control w-full max-w-xs mb-4">
-      <label class="label">{$t("versions.l.pickVersion")}</label>
-      <select
-        class="select select-bordered"
-        id="versionDropdown"
-        on:change={checkV}
+  <!-- Put this part before </body> tag -->
+  <input
+    type="checkbox"
+    id="versionsmodal"
+    style="margin:0rem;"
+    class="modal-toggle"
+  />
+  <div class="modal" style="margin:0rem;">
+    <div class="modal-box bg-opacity-95 backdrop-blur relative">
+      <label
+        for="versionsmodal"
+        style="margin:0rem;"
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+        >✕</label
       >
-        <option disabled selected>Loading...</option>
-      </select>
-    </div>
-    <div
-      class="bg-warning w-86 rounded-lg text-black p-2 py-0.5 flex items-center mb-3 space-x-2"
-    >
-      <AlertTriangle size="48" />
-      <span class="text-sm">{$t("warning.changeVersion")}</span>
-    </div>
-    <div class="flex my-2">
-      {#if areWorldgenMods}
-        {#each serverAddons as addon}
-          {#if updateReady}
-            <img
-              id="{addon}Versions"
-              class="mask mask-hexagon"
-              src="/images/{addon}.webp"
-              width="80ch"
-            />
-          {:else}
-            <img
-              id="{addon}Versions"
-              class="mask mask-hexagon grayscale"
-              src="/images/{addon}.webp"
-              width="80ch"
-            />
-          {/if}
-        {/each}
-      {/if}
-    </div>
-    <div class="ml-4 mb-4 mt-1">
+
+      <h3 class="text-xl font-bold mb-2">{$t("versions.title")}</h3>
+      <div class="form-control w-full max-w-xs mb-4">
+        <label class="label">{$t("versions.l.pickVersion")}</label>
+        <select
+          class="select select-bordered"
+          id="versionDropdown"
+          on:change={checkV}
+        >
+          <option disabled selected>Loading...</option>
+        </select>
+      </div>
+      <div
+        class="bg-warning w-86 rounded-lg text-black p-2 py-0.5 flex items-center mb-3 space-x-2"
+      >
+        <AlertTriangle size="48" />
+        <span class="text-sm">{$t("warning.changeVersion")}</span>
+      </div>
+      <div class="flex my-2">
+        {#if areWorldgenMods}
+          {#each serverAddons as addon}
+            {#if updateReady}
+              <img
+                id="{addon}Versions"
+                class="mask mask-hexagon"
+                src="/images/{addon}.webp"
+                width="80ch"
+              />
+            {:else}
+              <img
+                id="{addon}Versions"
+                class="mask mask-hexagon grayscale"
+                src="/images/{addon}.webp"
+                width="80ch"
+              />
+            {/if}
+          {/each}
+        {/if}
+      </div>
+      <div class="ml-4 mb-4 mt-1">
+        {#if updateReady}
+          {$t("changeVersion.readyToUpdate")} {version}.
+        {:else}
+          {$t("changeVersion.worldgenNotReady")}
+          {version}
+          {$t("changeVersion.worldgenNotReady2")}
+          {version}.
+        {/if}
+      </div>
+
       {#if updateReady}
-        {$t("changeVersion.readyToUpdate")} {version}.
+        <label
+          on:click={update}
+          for="versionsmodal"
+          style="margin:0rem;"
+          id="confirmBtn"
+          class="btn btn-neutral">{$t("versions.title")}</label
+        >
       {:else}
-        {$t("changeVersion.worldgenNotReady")}
-        {version}
-        {$t("changeVersion.worldgenNotReady2")}
-        {version}.
+        <label
+          on:click={update}
+          for="versionsmodal"
+          style="margin:0rem;"
+          id="confirmBtn"
+          class="btn btn-disabled">{$t("versions.title")}</label
+        >
       {/if}
     </div>
-
-    {#if updateReady}
-      <label
-        on:click={update}
-        for="versionsmodal"
-        style="margin:0rem;"
-        id="confirmBtn"
-        class="btn btn-neutral">{$t("versions.title")}</label
-      >
-    {:else}
-      <label
-        on:click={update}
-        for="versionsmodal"
-        style="margin:0rem;"
-        id="confirmBtn"
-        class="btn btn-disabled">{$t("versions.title")}</label
-      >
-    {/if}
   </div>
-</div>
+{/if}
