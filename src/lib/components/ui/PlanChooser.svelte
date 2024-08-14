@@ -7,14 +7,17 @@
   import { apiurl, basicPlanPrice, moddedPlanPrice } from "$lib/scripts/req";
   import {
     AlertTriangleIcon,
+    BadgeDollarSign,
     Check,
     ChevronDown,
     Cross,
+    MemoryStick,
     XIcon,
   } from "lucide-svelte";
   import { onMount } from "svelte";
 
   let atCapacity = false;
+  let billingCycle = $t("perMonth");
   onMount(() => {
     if (browser && window.innerWidth > 768) {
       if (window.location.pathname == "/subscribe/basic") {
@@ -46,6 +49,7 @@
 
   function selectBasic() {
     document.getElementById("basicSelect").classList.remove("btn-neutral");
+    document.getElementById("basicSelect").classList.add("bg-base-300");
     document.getElementById("basicSelect").classList.add("pointer-events-none");
     document.getElementById("basicSelect").innerHTML = "Selected";
 
@@ -57,6 +61,7 @@
   }
   function selectModded() {
     document.getElementById("moddedSelect").classList.remove("btn-neutral");
+    document.getElementById("moddedSelect").classList.add("bg-base-300");
     document
       .getElementById("moddedSelect")
       .classList.add("pointer-events-none");
@@ -68,62 +73,64 @@
       .classList.remove("pointer-events-none");
     document.getElementById("basicSelect").innerHTML = "Select";
   }
-  let basicPlanPrice2 = basicPlanPrice;
-  let moddedPlanPrice2 = moddedPlanPrice;
+  let basicPlanPrice2 = 3.49;
+  let moddedPlanPrice2 = 4.99;
 
-  //we dont have a system for panel owners to set prices for different
-  //countries yet, so for now this is arth hosting only.
   if (browser) {
-    if (localStorage.getItem("address") == "arthmc.xyz") {
-      if (localStorage.getItem("currency") == null) {
-        getBasicPrice().then((x) => {
-          basicPlanPrice2 = x;
-        });
-        getModdedPrice().then((x) => {
-          moddedPlanPrice2 = x;
-        });
+    onMount(() => {
+      if (localStorage.getItem("address") == "arthmc.xyz") {
+        const ramBoost = document.getElementById("ramBoost");
+        const billQuarterly = document.getElementById("billQuarterly");
+
+        if (localStorage.getItem("ramBoost") == "true") {
+          ramBoost?.setAttribute("checked", "true");
+
+          basicPlanPrice2 = 7.99;
+          moddedPlanPrice2 = 7.99;
+          if (localStorage.getItem("billQuarterly") == "true") {
+            billQuarterly?.setAttribute("checked", "true");
+            basicPlanPrice2 = 23.49;
+            moddedPlanPrice2 = 23.49;
+          }
+        } else if (localStorage.getItem("billQuarterly") == "true") {
+          billQuarterly?.setAttribute("checked", "true");
+
+          basicPlanPrice2 = 9.99;
+          moddedPlanPrice2 = 13.99;
+          billingCycle = $t("perQuarter");
+        }
+
+        let currency = localStorage.getItem("currency");
+        if (currency == "mxn") {
+          basicPlanPrice2 = (basicPlanPrice2 * 18).toFixed(0);
+          moddedPlanPrice2 = (moddedPlanPrice2 * 18).toFixed(0);
+          //round up to nearest 5
+          basicPlanPrice2 = Math.ceil(basicPlanPrice2 / 5) * 5;
+          moddedPlanPrice2 = Math.ceil(moddedPlanPrice2 / 5) * 5;
+        }
       } else {
-        if (localStorage.getItem("currency") == "mxn") {
-          basicPlanPrice2 = "$60";
-          moddedPlanPrice2 = "$80";
-        } else {
-          basicPlanPrice2 = "$3.49";
-          moddedPlanPrice2 = "$4.99";
-        }
+        const currencyChooser = document.getElementById("currencyChooser");
+        currencyChooser?.classList.add("hidden");
+
+        const addonChooser = document.getElementById("addonChooser");
+        addonChooser?.classList.add("hidden");
       }
-    } else {
-      const currencyChooser = document.getElementById("currencyChooser");
-      currencyChooser?.classList.add("hidden");
-    }
-  }
-  function getBasicPrice() {
-    return fetch("https://ip2c.org/s")
-      .then((response) => response.text())
-      .then((data) => {
-        if (data.split(";")[1] == "MX") {
-          return "$60";
-        } else {
-          return "$3.49";
-        }
-      });
+    });
   }
 
-  function getModdedPrice() {
-    return fetch("https://ip2c.org/s")
-      .then((response) => response.text())
-      .then((data) => {
-        if (data.split(";")[1] == "MX") {
-          return "$80";
-        } else {
-          return "$4.99";
-        }
-      });
+  function updatePrice() {
+    const ramBoost = document.getElementById("ramBoost");
+    const billQuarterly = document.getElementById("billQuarterly");
+
+    localStorage.setItem("ramBoost", ramBoost?.checked.toString());
+    localStorage.setItem("billQuarterly", billQuarterly?.checked.toString());
+    location.reload();
   }
 </script>
 
 <Navbar navType="welcome" />
 
-<div class="md:flex relative">
+<div class="md:flex relative bg-base-200">
   {#if atCapacity}
     <div
       class="absolute w-screen h-screen bg-black bg-opacity-70 z-[999] flex place-items-center justify-center"
@@ -187,7 +194,7 @@
             {basicPlanPrice2}
           </p>
 
-          <p class="w-5 text-sm">{$t("perMonth")}</p>
+          <p class="w-5 text-sm">{billingCycle}</p>
         </div>
         <img
           src="/images/basicPlan.webp"
@@ -225,7 +232,7 @@
             {moddedPlanPrice2}
           </p>
 
-          <p class="w-5 text-sm">{$t("perMonth")}</p>
+          <p class="w-5 text-sm">{billingCycle}</p>
         </div>
 
         <img
@@ -255,6 +262,55 @@
           <Check size="16" class="shrink-0" />
           {$t("subscribe.list.mods2")}
         </p>
+      </div>
+    </div>
+
+    <div class="mb-8" id="addonChooser">
+      <p class="text-lg mb-4 font-bold">Add-ons</p>
+      <div class="gap-4 grid grid-cols-2">
+        <div
+          class="rounded-xl bg-gradient-to-tr from-[#010101] to-[#170800] p-2 px-3 shadow-2xl"
+        >
+          <div class="flex justify-between">
+            <div>
+              <div class="flex gap-2 font-bold">
+                <MemoryStick size="24" class="shrink-0" />
+                RAM Boost
+              </div>
+              <p class="text-[.93rem] w-52">
+                More players, more mods, more fun. 8GB of RAM for one unbeatable
+                price.
+              </p>
+            </div>
+            <input
+              id="ramBoost"
+              type="checkbox"
+              class="checkbox"
+              on:click={updatePrice}
+            />
+          </div>
+        </div>
+        <div
+          class="rounded-xl h-24 bg-gradient-to-tr from-[#010101] to-[#001606] p-2 px-3 shadow-2xl"
+        >
+          <div class="flex justify-between">
+            <div>
+              <div class="flex gap-2 font-bold">
+                <BadgeDollarSign size="24" class="shrink-0" />
+                Bill Quarterly
+              </div>
+              <p class="text-[.93rem] w-48 mt-0.5">
+                Pay every 3 months instead of 1 and save.
+              </p>
+            </div>
+            <input
+              id="billQuarterly"
+              type="checkbox"
+              class="checkbox"
+              on:click={updatePrice}
+            />
+          </div>
+        </div>
       </div>
     </div>
 

@@ -303,6 +303,7 @@ export default {
     "plugins.chunky.l.radius": "Radius (In Blocks)",
     "plugins.discordsrv.guide": "Setup Guide",
     "plugins.officiallySupported": "Officially Supported",
+    "perQuarter": "per quarter",
 
 
   },
@@ -616,6 +617,7 @@ export default {
     "plugins.chunky.l.radius": "Radio (En Bloques)",
     "plugins.discordsrv.guide": "Guía de Configuración",
     "plugins.officiallySupported": "Soportado oficialmente",
+    "perQuarter": "por trimestre",
 
     
 

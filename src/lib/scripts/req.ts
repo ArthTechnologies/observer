@@ -10,8 +10,6 @@ export let usingOcelot = false;
 export let lrurl = "https://api.modrinth.com/v2/";
 export let stripeKey = "";
 export let usingCurseForge = false;
-export let basicPlanPrice = "$3.49";
-export let moddedPlanPrice = "$4.99";
 export let customerPortalLink = "";
 
 
@@ -33,13 +31,6 @@ if (browser) {
     usingCurseForge = JSON.parse(env.PUBLIC_USING_CURSEFORGE);
   }
 
-  if (env.PUBLIC_BASIC_PLAN_PRICE) {
-    basicPlanPrice = env.PUBLIC_BASIC_PLAN_PRICE;
-  }
-
-  if (env.PUBLIC_MODDED_PLAN_PRICE) {
-    moddedPlanPrice = env.PUBLIC_MODDED_PLAN_PRICE;
-  }
 
   if (env.PUBLIC_CUSTOMER_PORTAL_LINK) {
     customerPortalLink = env.PUBLIC_CUSTOMER_PORTAL_LINK;
