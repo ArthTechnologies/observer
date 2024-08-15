@@ -45,11 +45,24 @@
         noEmail = true;
         return;
       }
-
+      let priceId;
+      let ramBoost = localStorage.getItem("ramBoost");
+      let billQuarterly = localStorage.getItem("billQuarterly");
+      if (ramBoost == "true") {
+        priceId = "price_1PnquhJYPXquzaSzT8EehcEC";
+        if (billQuarterly == "true") {
+          priceId = "price_1PnqxnJYPXquzaSzgtPyDy6g";
+        }
+      } else if (billQuarterly == "true") {
+        priceId = "price_1PnqvuJYPXquzaSzV1xarMTP";
+      } else {
+        priceId = "price_1OuLohJYPXquzaSzUZUBHLjc";
+      }
       stripe = await loadStripe(stripeKey);
       clientSecret = await fetch(
         apiurl +
-          "checkout/basic" +
+          "checkout/" +
+          priceId +
           "?customer_email=" +
           email +
           "&currency=" +

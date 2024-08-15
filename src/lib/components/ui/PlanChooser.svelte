@@ -130,7 +130,7 @@
 
 <Navbar navType="welcome" />
 
-<div class="md:flex relative bg-base-200">
+<div class="md:flex relative bg-base-200 h-full">
   {#if atCapacity}
     <div
       class="absolute w-screen h-screen bg-black bg-opacity-70 z-[999] flex place-items-center justify-center"
@@ -182,7 +182,7 @@
     >
   </div>
   <div
-    class=" md:h-screen px-16 px-[2.5rem] lg:px-[7rem] py-[4.5rem] flex flex-col max-md:place-items-center relative"
+    class=" px-16 px-[2.5rem] lg:px-[7rem] py-[4.5rem] flex flex-col max-md:place-items-center relative"
   >
     <p class="text-xl mb-4 font-bold">{$t("subscribe.pickAPlan")}</p>
 
@@ -191,7 +191,7 @@
         {$t("basic")}
         <div class="flex gap-2">
           <p class="text-accent-content text-4xl font-bold">
-            {basicPlanPrice2}
+            ${basicPlanPrice2}
           </p>
 
           <p class="w-5 text-sm">{billingCycle}</p>
@@ -229,7 +229,7 @@
         {$t("modded")}
         <div class="flex gap-2">
           <p class="text-accent-content text-4xl font-bold">
-            {moddedPlanPrice2}
+            ${moddedPlanPrice2}
           </p>
 
           <p class="w-5 text-sm">{billingCycle}</p>
@@ -265,7 +265,7 @@
       </div>
     </div>
 
-    <div class="mb-8" id="addonChooser">
+    <div class="mb-8 max-md:w-80 2xl:w-[35rem]" id="addonChooser">
       <p class="text-lg mb-4 font-bold">Add-ons</p>
       <div class="gap-4 grid grid-cols-2">
         <div
@@ -273,11 +273,11 @@
         >
           <div class="flex justify-between">
             <div>
-              <div class="flex gap-2 font-bold">
+              <div class="flex gap-2 font-bold max-md:text-sm">
                 <MemoryStick size="24" class="shrink-0" />
                 RAM Boost
               </div>
-              <p class="text-[.93rem] w-52">
+              <p class="text-[.93rem] 2xl:w-52">
                 More players, more mods, more fun. 8GB of RAM for one unbeatable
                 price.
               </p>
@@ -291,15 +291,15 @@
           </div>
         </div>
         <div
-          class="rounded-xl h-24 bg-gradient-to-tr from-[#010101] to-[#001606] p-2 px-3 shadow-2xl"
+          class="rounded-xl xl:h-24 bg-gradient-to-tr from-[#010101] to-[#001606] p-2 px-3 shadow-2xl"
         >
           <div class="flex justify-between">
             <div>
-              <div class="flex gap-2 font-bold">
+              <div class="flex gap-2 font-bold max-md:text-sm">
                 <BadgeDollarSign size="24" class="shrink-0" />
                 Bill Quarterly
               </div>
-              <p class="text-[.93rem] w-48 mt-0.5">
+              <p class="text-[.93rem] 2xl:w-48 mt-0.5">
                 Pay every 3 months instead of 1 and save.
               </p>
             </div>
