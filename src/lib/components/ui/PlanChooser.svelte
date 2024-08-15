@@ -187,7 +187,7 @@
   >
     <p class="text-xl mb-4 font-bold">{$t("subscribe.pickAPlan")}</p>
 
-    <div class="flex mb-8">
+    <div class="flex mb-2">
       <div class="flex flex-col gap-2">
         {$t("basic")}
         <div class="flex gap-2">
@@ -212,15 +212,15 @@
           class="btn btn-neutral btn-sm my-0.5 w-full"
           href="/subscribe/basic">{$t("select")}</a
         >
-        <p class="flex items-center gap-2 text-[.95rem] w-[9.5rem]">
+        <p class="flex items-center gap-2 text-sm xl:text-[.95rem] w-[9.5rem]">
           <Check size="16" class="shrink-0" />
           {$t("subscribe.list.crossplay")}
         </p>
-        <p class="flex items-center gap-2 text-[.95rem] w-[9.5rem]">
+        <p class="flex items-center gap-2 text-sm xl:text-[.95rem] w-[9.5rem]">
           <Check size="16" class="shrink-0" />
           {$t("subscribe.list.worldgen")}
         </p>
-        <p class="flex items-center gap-2 text-[.95rem] w-[9.5rem]">
+        <p class="flex items-center gap-2 text-sm xl:text-[.95rem] w-[9.5rem]">
           <Check size="16" class="shrink-0" />
           {$t("subscribe.list.plugins")}
         </p>
@@ -251,15 +251,15 @@
           class="btn btn-neutral btn-sm my-0.5 w-full"
           href="/subscribe/modded">{$t("select")}</a
         >
-        <p class="flex items-center gap-2 text-[.95rem] w-[9.5rem]">
+        <p class="flex items-center gap-2 text-sm xl:text-[.95rem] w-[9.5rem]">
           <Check size="16" class="shrink-0" />
           {$t("subscribe.list.mods1")}
         </p>
-        <p class="flex items-center gap-2 text-[.95rem] w-[9.5rem]">
+        <p class="flex items-center gap-2 text-sm xl:text-[.95rem] w-[9.5rem]">
           <Check size="16" class="shrink-0" />
           {$t("subscribe.list.modpacks")}
         </p>
-        <p class="flex items-center gap-2 text-[.95rem] w-[9.5rem]">
+        <p class="flex items-center gap-2 text-sm xl:text-[.95rem] w-[9.5rem]">
           <Check size="16" class="shrink-0" />
           {$t("subscribe.list.mods2")}
         </p>
