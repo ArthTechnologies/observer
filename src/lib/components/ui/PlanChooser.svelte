@@ -89,6 +89,7 @@
           moddedPlanPrice2 = 7.99;
           if (localStorage.getItem("billQuarterly") == "true") {
             billQuarterly?.setAttribute("checked", "true");
+            billingCycle = $t("perQuarter");
             basicPlanPrice2 = 23.49;
             moddedPlanPrice2 = 23.49;
           }

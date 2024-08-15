@@ -154,7 +154,7 @@
     </div>
   </div>
 {:else if navType === "welcome"}
-  <div class="navbar fixed justify-between px-6">
+  <div class="navbar fixed justify-between px-6 z-10">
     <a
       class="btn btn-ghost normal-case text-xl invisible sm:visible"
       href="https://arthmc.xyz/"
