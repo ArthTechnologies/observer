@@ -34,6 +34,8 @@
         if (subs.subscriptions == 0) {
           //greys out the manage button
           document.getElementById("manage").classList.add("btn-disabled");
+        } else {
+          document.getElementById("subscribe").classList.add("btn-disabled");
         }
       });
 
@@ -129,6 +131,7 @@
         {/if}
 
         <a
+          id="subscribe"
           href="/subscribe"
           class="btn btn-success btn-block md:grow sm:w-44 mt-2.5 sm:m-0"
           on:click={subscribe}
