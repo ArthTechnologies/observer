@@ -113,7 +113,7 @@
           if (res.days[i] == undefined) {
             y1.push(100);
           } else {
-            y1.push(100 - (100 / res.max) * res.days[i]);
+            y1.push(100 - (100 / res.max) * res.days[i].hits);
           }
         }
         for (let i = 0; i <= 30; i++) {
