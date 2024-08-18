@@ -10,7 +10,10 @@
     170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300,
   ];
   let y1 = [];
+
+  let y2 = [];
   let points = "";
+  let points2 = "";
   let linux;
   let windows;
   let macos;
@@ -112,13 +115,17 @@
         for (let i = res.day - 30; i <= res.day; i++) {
           if (res.days[i] == undefined) {
             y1.push(100);
+            y2.push(100);
           } else {
             y1.push(100 - (100 / res.max) * res.days[i].hits);
+            y2.push(100 - (100 / res.max) * res.days[i].redirects);
           }
         }
         for (let i = 0; i <= 30; i++) {
           points += `${x1[i]},${y1[i]} `;
+          points2 += `${x1[i]},${y2[i]} `;
         }
+
         linux = res.devices.linux;
         windows = res.devices.windows;
         macos = res.devices.macintosh;
@@ -136,8 +143,6 @@
     <p class="text-lg font-bold my-3 ml-8">Hits in the last 30 days</p>
     <div class="bg-base-200 rounded-xl shadow mb-5">
       <svg width="300" height="100">
-        <!-- x axis -->
-        <line x1="0" x2="300" y1="100" y2="100" />
         <g class="x" transform="translate(0,120)">
           <text x="0">30</text>
           <text x="60">24</text>
@@ -157,11 +162,19 @@
 
         <!-- data -->
         <polyline
+          style="stroke: #f8844e; stroke-width: 2"
+          points="
+    {points2}
+  "
+        />
+        <polyline
           style="stroke: #00a4cd; stroke-width: 2"
           points="
         {points}
       "
         />
+        <!-- x axis -->
+        <line x1="0" x2="300" y1="100" y2="100" />
       </svg>
     </div>
   </div>
