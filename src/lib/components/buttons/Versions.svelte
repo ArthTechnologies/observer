@@ -24,7 +24,7 @@
 
     setInterval(() => {
       let page = location.pathname;
-      if (page != "/") {
+      if (page != "/" && serverSoftware != "Forge") {
         checkV();
       }
     }, 500);
@@ -38,23 +38,24 @@
     if (serverAddons[0] == "") {
       areWorldgenMods = false;
     }
-
-    fetch("https://api.jarsmc.xyz/jars/arthHosting")
-      .then((x) => x.json())
-      .then((x) => {
-        jarsIndex = x;
-        let html = "";
-        if (jarsIndex[serverSoftware.toLowerCase()] != undefined) {
-          jarsIndex[serverSoftware.toLowerCase()].forEach((x) => {
-            if (x.version != serverVersion) {
-              html +=
-                "<option value=" + x.version + ">" + x.version + "</option>";
-            }
-          });
-          document.getElementById("versionDropdown").innerHTML = html;
-          checkV();
-        }
-      });
+    if (serverSoftware != "Forge") {
+      fetch("https://api.jarsmc.xyz/jars/arthHosting")
+        .then((x) => x.json())
+        .then((x) => {
+          jarsIndex = x;
+          let html = "";
+          if (jarsIndex[serverSoftware.toLowerCase()] != undefined) {
+            jarsIndex[serverSoftware.toLowerCase()].forEach((x) => {
+              if (x.version != serverVersion) {
+                html +=
+                  "<option value=" + x.version + ">" + x.version + "</option>";
+              }
+            });
+            document.getElementById("versionDropdown").innerHTML = html;
+            checkV();
+          }
+        });
+    }
   }
   export function checkV() {
     version = document.getElementById("versionDropdown").value;
