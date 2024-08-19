@@ -341,16 +341,37 @@
           .replace(/\x1B\[[0-9;]*[mG]/g, "")
           .replace(/\n/g, "<p>");
 
+        //response replace newlines with <p>, remove things that start with [ and end with m
+        if (response.length < 100000) {
+          terminalContainer.scrollTop +=
+            50 *
+            (filteredResponse.split("<p>").length -
+              terminal.innerHTML.split("<p>").length);
+          if (
+            filteredResponse.length - terminal.innerHTML.length !=
+            difference
+          ) {
+            difference = filteredResponse.length - terminal.innerHTML.length;
+
+            terminal.innerHTML = filteredResponse;
+          }
+        } else {
+          terminalContainer.scrollTop +=
+            50 *
+            (filteredResponse
+              .substring(filteredResponse.length - 100000)
+              .split("<p>").length -
+              terminal.innerHTML.split("<p>").length);
+          terminal.innerHTML = filteredResponse.substring(
+            filteredResponse.length - 100000
+          );
+        }
+
         //scroll down the height of the new lines added
         if (
           terminal.innerHTML.split("<p>").length <
           filteredResponse.split("<p>").length
         ) {
-          terminalContainer.scrollTop +=
-            50 *
-            (filteredResponse.split("<p>").length -
-              terminal.innerHTML.split("<p>").length);
-
           //adding to scrollTop doesn't get it to the complete bottom,
           //so this remedies that by snapping it to the bottom if needed.
           let difference =
@@ -363,22 +384,6 @@
               terminalContainer.scrollTop = terminalContainer.scrollHeight;
             }, 1);
           }
-        }
-
-        //response replace newlines with <p>, remove things that start with [ and end with m
-        if (response.length < 100000) {
-          if (
-            filteredResponse.length - terminal.innerHTML.length !=
-            difference
-          ) {
-            difference = filteredResponse.length - terminal.innerHTML.length;
-
-            terminal.innerHTML = filteredResponse;
-          }
-        } else {
-          terminal.innerHTML = filteredResponse.substring(
-            filteredResponse.length - 100000
-          );
         }
 
         //if this is the first time the terminal is loaded, this will scroll to the bottom.
