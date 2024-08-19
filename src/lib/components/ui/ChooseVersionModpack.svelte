@@ -197,9 +197,12 @@
             if (buttonType == "default") from = "serverpage";
             if (
               version.name != vname &&
-              version.gameVersions.includes(
+              (version.gameVersions.includes(
                 software.charAt(0).toUpperCase() + software.slice(1)
-              ) &&
+              ) ||
+                version.displayName
+                  .toLowerCase()
+                  .includes(software.toLowerCase())) &&
               version.gameVersions.includes(sVersion)
             ) {
               let type = "release";
@@ -232,9 +235,13 @@
             ) {
               //if there is no server software listed (rlcraft does this sometimes) put it
               //in a special section
-              document
-                .getElementById("noSoftwareSpecifiedWarning")
-                .classList.remove("hidden");
+              if (
+                document.getElementById("noSoftwareSpecifiedWarning") != null
+              ) {
+                document
+                  .getElementById("noSoftwareSpecifiedWarning")
+                  .classList.remove("hidden");
+              }
               let type = "release";
               if (version.releaseType == 1) type = "beta";
               else if (version.releaseType == 0) type = "alpha";
