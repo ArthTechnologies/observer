@@ -447,7 +447,7 @@ export function getServers(em: string) {
 export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:string = "") {
   if(browser) {
   console.log("Request Sent");
-  localStorage.setItem("accountEmail", "email:" + em);
+  localStorage.setItem("accountEmail", "email:" + em.toLowerCase());
   localStorage.setItem("email", em);
   return fetch(
     apiurl +
@@ -502,7 +502,7 @@ export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string
         if (browser) {
           console.log(JSON.parse(input));
           localStorage.setItem("token", JSON.parse(input).token);
-          localStorage.setItem("accountEmail", "email:" + em);
+          localStorage.setItem("accountEmail", "email:" + em.toLowerCase());
           localStorage.setItem("loggedIn", "true");
           localStorage.setItem("accountId", JSON.parse(input).accountId);
           localStorage.setItem("avatar", "");
