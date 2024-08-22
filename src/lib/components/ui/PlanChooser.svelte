@@ -131,7 +131,7 @@
 
 <Navbar navType="welcome" />
 
-<div class="md:flex relative bg-base-200 h-full">
+<div class="md:flex relative bg-base-200 h-full w-full">
   {#if atCapacity}
     <div
       class="absolute w-screen h-screen bg-black bg-opacity-70 z-[999] flex place-items-center justify-center"
