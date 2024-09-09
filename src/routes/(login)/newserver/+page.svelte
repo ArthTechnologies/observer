@@ -38,11 +38,14 @@
       getServers(email).then((response) => {
         if (browser) {
           for (let i in response) {
-            if (response[i].includes("not created yet")) {
-              id = i;
+            //if it is a string, that means it is not created yet
+            if (typeof response[i] == "string") {
+              id = i.id;
+
               break;
             }
           }
+
           if (id == -1) alert($t("alert.makeANewSubscription"));
         }
       });
@@ -105,15 +108,17 @@
           let servers = JSON.parse(localStorage.getItem("servers"));
           let moddedServers = 0;
           for (let i in servers) {
-            switch (servers[i].software.toLowerCase) {
-              case "forge":
-              case "fabric":
-              case "quilt":
-                moddedServers++;
-                break;
+            if (typeof servers[i] == "object") {
+              switch (servers[i].software.toLowerCase) {
+                case "forge":
+                case "fabric":
+                case "quilt":
+                  moddedServers++;
+                  break;
+              }
             }
           }
-          if (json.moddedSubscriptions <= moddedServers) {
+          if (json.moddedSubscriptions + json.freeServers <= moddedServers) {
             canCreateModdedServer = false;
           }
         }
