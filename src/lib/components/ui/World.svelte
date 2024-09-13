@@ -14,7 +14,7 @@
   let id = -1;
   let serverName = "";
   let serverVersion = "";
-  let file = null;
+
   let worldgenFiles = [];
   let promise;
   let worldgenModsText = "Worldgen Mods:";
@@ -188,6 +188,9 @@
 
   function upload() {
     const formData = new FormData();
+    const fileInput = document.getElementById("worldFile");
+    const file = fileInput.files[0];
+
     formData.append("file", file, file.name);
 
     console.error("uploading");
@@ -195,23 +198,18 @@
       const uploadBtn = document.getElementById("uploadBtn");
       //we normally use fetch, but we have to use XMLHttpRequest for this because fetch doesnt give progress of uploads.
       const xhr = new XMLHttpRequest();
-      let percentComplete = 0;
+      let fileSize = 200;
       let counter = 0;
       let requestFinished = false;
-      let virusDetected = false;
+
       //display estimated progress
       let intervalId = setInterval(() => {
         counter++;
-        let visualPercent = (percentComplete + counter / 2) / 3;
+        let visualPercent = (((counter / 20) * 1.09) / fileSize) * 100;
         let virusScanningEnabled = localStorage.getItem("enableVirusScan");
         let theme = localStorage.getItem("theme");
 
-        //We estimate uploading the file takes up only a third of the time,
-        //so after this point, itll just keep going at the same speed.
-        if (visualPercent >= 33) percentComplete += 100 / counter;
-
-        if (requestFinished) percentComplete += 2.5;
-        else {
+        if (!requestFinished) {
           //disable clicks to the button
           uploadBtn.classList.add("pointer-events-none");
         }
@@ -278,10 +276,11 @@
             clearInterval(intervalId);
           }
         }
-      }, 30);
+      }, 50);
       xhr.upload.addEventListener("progress", (event) => {
         if (event.lengthComputable) {
-          percentComplete = (event.loaded / event.total) * 100;
+          fileSize = event.total / Math.pow(1024, 2);
+          console.log("PROGRESS", fileSize);
         }
       });
 
@@ -329,10 +328,6 @@
         }
       };
     }
-  }
-
-  function handleFileSelect(event) {
-    file = event.target.files[0]; // Store the selected file
   }
 
   function regen() {
@@ -556,7 +551,6 @@
             id="worldFile"
             type="file"
             class="file-input file-input-bordered file-input-secondary max-w-xs w-2/3"
-            on:change={handleFileSelect}
           />
           <button
             on:click={upload}
