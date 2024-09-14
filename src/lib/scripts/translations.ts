@@ -303,7 +303,9 @@ export default {
     "plugins.chunky.l.radius": "Radius (In Blocks)",
     "plugins.discordsrv.guide": "Setup Guide",
     "plugins.officiallySupported": "Officially Supported",
-    "perQuarter": "per quarter",
+    "perQuarter": "per QTR",
+    "billMonthly": "Bill Monthly",
+    "billQuarterly": "Bill Quarterly"
 
 
   },
@@ -617,7 +619,9 @@ export default {
     "plugins.chunky.l.radius": "Radio (En Bloques)",
     "plugins.discordsrv.guide": "Guía de Configuración",
     "plugins.officiallySupported": "Soportado oficialmente",
-    "perQuarter": "por trimestre",
+    "perQuarter": "por trim.",
+    "billMonthly": "Factura Mensual",
+    "billQuarterly": "Factura Trimestral"
 
     
 

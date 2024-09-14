@@ -46,14 +46,9 @@
         return;
       }
       let priceId;
-      let ramBoost = localStorage.getItem("ramBoost");
+
       let billQuarterly = localStorage.getItem("billQuarterly");
-      if (ramBoost == "true") {
-        priceId = "price_1PnquhJYPXquzaSzT8EehcEC";
-        if (billQuarterly == "true") {
-          priceId = "price_1PnqxnJYPXquzaSzgtPyDy6g";
-        }
-      } else if (billQuarterly == "true") {
+      if (billQuarterly == "true") {
         priceId = "price_1PnqvuJYPXquzaSzV1xarMTP";
       } else {
         priceId = "price_1OuLohJYPXquzaSzUZUBHLjc";
@@ -106,15 +101,15 @@
 </script>
 
 <div class="flex relative">
-  <div class="hidden md:flex w-1/2 min-h-screen">
+  <div class="hidden min-[1080px]:flex w-1/2 min-h-screen">
     <PlanChooser />
   </div>
   <div
-    class="bg-[#525f7f] max-md:w-screen md:w-1/2 min-h-screen pt-10 pb-16 relative"
+    class="bg-[#525f7f] max-[1080px]:w-screen min-[1080px]:w-1/2 min-h-screen pt-10 pb-16 relative"
   >
     <a
       href="/subscribe/choosePlan"
-      class="absolute top-2 left-2 btn btn-ghost btn-sm md:hidden"
+      class="absolute top-2 left-2 btn btn-ghost btn-sm min-[1080px]:hidden"
       ><ArrowLeft class="mr-1.5" size="18" /> Back</a
     >
     <EmbeddedCheckout {stripe} {clientSecret} />
