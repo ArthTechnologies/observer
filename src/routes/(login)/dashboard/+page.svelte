@@ -58,7 +58,7 @@
                   for (let j = 0; j < customers.length; j++) {
                     if (
                       customers[j][1].servers.includes(
-                        parseInt(servers[i].serverId)
+                        parseInt(servers[i].serverId),
                       ) ||
                       customers[j][1].servers.includes(servers[i].serverId)
                     ) {
@@ -279,12 +279,38 @@
                       {$t("modded")}
                     </div>
                   {/if}
+                  {#if sub.split(":")[0] === "premium"}
+                    <div class="bg-neutral px-1.5 rounded-md text-sm">
+                      Premium
+                    </div>
+                  {/if}
                 {:else}
                   {#if sub.split(":")[0] === "basic"}
                     <div
                       class="bg-gradient-to-tr from-orange-400 to-pink-500 px-1.5 text-sm text-black rounded-l-md"
                     >
                       {$t("basic")}
+                    </div>
+                    {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
+                      <div
+                        class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
+                      >
+                        {format(sub.split(":")[1], sub.split(":")[2])}
+
+                        <FeedbackTooltip feedback={sub.split(":")[3]} />
+                      </div>
+                    {:else}
+                      <div
+                        class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
+                      >
+                        {format(sub.split(":")[1], sub.split(":")[2])}
+                        <FeedbackTooltip feedback={sub.split(":")[3]} />
+                      </div>
+                    {/if}
+                  {/if}
+                  {#if sub.split(":")[0] === "premium"}
+                    <div class="bg-neutral px-1.5 text-sm rounded-l-md">
+                      Premium
                     </div>
                     {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
                       <div
