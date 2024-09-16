@@ -261,10 +261,16 @@
         {#each pages as page, index}
           {#if page.hits != null}
             <div
-              class="bg-base-200 h-16 rounded-xl shadow p-2 pl-2.5 justify-between mb-3 text-sm"
+              class="bg-base-200 h-16 rounded-xl shadow p-2 pl-2.5 justify-between mb-3 text-sm truncate text-ellipsis"
             >
               <p class="mt-1">
-                <span class="font-bold capitalize">{page.name}:</span>
+                <span class="font-bold"
+                  >{#if page.name.split("/").length > 2}/{page.name
+                      .split("/")[1]
+                      .split("")[0]}/{page.name.split(
+                      "/",
+                    )[2]}{:else}{page.name}{/if}:</span
+                >
                 {Math.round((page.hits / res.initial) * 100)}%
               </p>
               <p>{page.hits} Hits</p>
