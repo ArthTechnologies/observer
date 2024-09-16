@@ -23,6 +23,7 @@
   let sign = "up";
   let pwdVisible = "password";
   let lang = "us";
+  let plan = undefined;
   function pwdVisibility() {
     if (pwdVisible == "password") {
       pwdVisible = "text";
@@ -32,6 +33,7 @@
   }
 
   if (browser) {
+    plan = document.location.search.split("plan=")[1];
     let intervalId = setInterval(() => {
       if (localStorage.getItem("enableCloudflareVerify") != undefined) {
         cloudflareVerify = JSON.parse(
@@ -107,7 +109,11 @@
             console.log("redricting...");
             if (localStorage.getItem("enablePay") == "true") {
               //change this to your own stripe checkout link
-              goto("/subscribe/basic");
+              if (plan == undefined) {
+                goto("/subscribe/basic");
+              } else {
+                goto("/subscribe/" + plan);
+              }
             } else {
               goto("/");
               //this tells the navbar to update the icon that is highligted

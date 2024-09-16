@@ -6,10 +6,11 @@
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { getSettings } from "$lib/scripts/req";
   let address;
-
+  let plan = undefined;
   getSettings();
 
   if (browser) {
+    plan = document.location.search.split("plan=")[1];
     address = window.location.host;
     //add in http or https depending on the protocol
     if (window.location.protocol == "https:") {
@@ -29,7 +30,11 @@
   <div class="hero-content text-center">
     <div class="max-w-md">
       <h1 class="text-5xl font-bold">{$t("signin.title")}</h1>
-      <p class="py-6">{$t("signin.h")}</p>
+      {#if plan == undefined}<p class="py-6">{$t("signin.h")}</p>{:else}<p
+          class="py-6"
+        >
+          {$t("signin.h2")}
+        </p>{/if}
 
       <a
         class="btn btn-neutral mb-2 btn-icon-text text-2xs"
