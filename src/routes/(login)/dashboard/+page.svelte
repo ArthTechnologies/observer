@@ -201,7 +201,7 @@
     <div class="flex flex-col gap-5 w-96 items-center">
       {#each servers as server}
         <div
-          class="p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
+          class="h-[6.875rem] p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
         >
           {address}:{server.serverId}
           {#if server.owner != null}
@@ -259,7 +259,7 @@
       {#each customers as customer}
         {#if customer[0].subscriptions == "active" || (customer[0].subscriptions == "canceled" && customer[0].subscriptions > Date.now() / 1000) || customer[1].servers.length > 0}
           <div
-            class="p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
+            class="h-[6.875rem] p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
           >
             {customer[0].email}
             <div class="flex gap-1">
@@ -293,7 +293,7 @@
                     </div>
                     {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
                       <div
-                        class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
+                        class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1 truncate"
                       >
                         {format(sub.split(":")[1], sub.split(":")[2])}
 
@@ -301,7 +301,7 @@
                       </div>
                     {:else}
                       <div
-                        class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
+                        class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1 truncate"
                       >
                         {format(sub.split(":")[1], sub.split(":")[2])}
                         <FeedbackTooltip feedback={sub.split(":")[3]} />
@@ -314,7 +314,7 @@
                     </div>
                     {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
                       <div
-                        class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
+                        class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1 truncate"
                       >
                         {format(sub.split(":")[1], sub.split(":")[2])}
 
@@ -322,7 +322,7 @@
                       </div>
                     {:else}
                       <div
-                        class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
+                        class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1 truncate"
                       >
                         {format(sub.split(":")[1], sub.split(":")[2])}
                         <FeedbackTooltip feedback={sub.split(":")[3]} />
@@ -338,14 +338,14 @@
 
                     {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
                       <div
-                        class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
+                        class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1 truncate"
                       >
                         {format(sub.split(":")[1], sub.split(":")[2])}
                         <FeedbackTooltip feedback={sub.split(":")[3]} />
                       </div>
                     {:else}
                       <div
-                        class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
+                        class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1 truncate"
                       >
                         {format(sub.split(":")[1], sub.split(":")[2])}
                         <FeedbackTooltip feedback={sub.split(":")[3]} />
