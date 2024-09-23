@@ -1,9 +1,11 @@
-<script>
+<script lang="ts">
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
   import { apiurl } from "$lib/scripts/req";
-  import { AlertTriangle, InfoIcon } from "lucide-svelte";
+  import { numShort } from "$lib/scripts/utils";
+  import { Users, RotateCw, Database } from "lucide-svelte";
 
+  export let customers: object[] = [];
   let network = "Offline";
   let hosting = "Offline";
   let quartz = "Offline";
@@ -17,7 +19,17 @@
   let atCapacity = false;
   let numServers = -16;
   let maxServers = 16;
+
+  let recurringUsers = 0;
+  let users = 0;
   if (browser) {
+    for (let i = 0; i < customers.length; i++) {
+      if (customers[i][0].subscriptions[0].includes(":active")) {
+        recurringUsers++;
+      }
+      users++;
+    }
+
     fetch(apiurl + "info/capacity", {
       method: "GET",
     })
@@ -61,19 +73,57 @@
   }
 </script>
 
-<div class=" space-y-5">
-  {#if atCapacity}
+<div class="flex flex-col items-center space-y-5">
+  {#if customers.length > 0}
     <div
-      class="w-[8rem] 2xl:w-[10rem] p-2 bg-error rounded-xl shadow-xl text-black flex gap-1 font-bold justify-center ml-4"
+      class="stats stats-vertical shadow bg-base-300 w-40 2xl:w-48 overflow-clip"
     >
-      <AlertTriangle size="24" />At Capacity
-    </div>
-  {:else}
-    <div
-      class="w-[8rem] 2xl:w-[10rem] p-2 bg-info rounded-xl shadow-xl text-black flex gap-1 font-bold justify-center ml-4"
-    >
-      <InfoIcon size="24" />{Math.trunc((numServers / maxServers) * 100)}%
-      Capacity
+      <div class="stat">
+        <div class="stat-title">Total Users</div>
+        <div class="stat-value flex justify-between pr-2">
+          {numShort(users)}
+          <Users size="28" />
+        </div>
+
+        <div class="stat-desc text-base-content">
+          As of {new Date().toDateString()}
+        </div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">Active Users</div>
+        <div class="stat-value flex justify-between pr-2">
+          {numShort(recurringUsers)}
+          <RotateCw size="28" />
+        </div>
+
+        <div class="stat-desc text-base-content">
+          {(recurringUsers / users).toFixed(2) * 100}% of Total Users
+        </div>
+      </div>
+      {#if !atCapacity}
+        <div class="stat bg-gradient-to-t from-sky-500/[.15] to-base-300">
+          <div class="stat-title">Capacity</div>
+          <div class="stat-value text-info flex justify-between pr-2">
+            {Math.trunc((numServers / maxServers) * 100)}%
+            <Database size="28" />
+          </div>
+
+          <div class="stat-desc text-base-content">
+            {numServers} / {maxServers} Servers
+          </div>
+        </div>{:else}
+        <div class="stat bg-gradient-to-t from-red-600/[.50] to-base-300">
+          <div class="stat-title">Capacity</div>
+          <div class="stat-value text-error flex justify-between pr-2">
+            {Math.trunc((numServers / maxServers) * 100)}%
+            <Database size="28" />
+          </div>
+
+          <div class="stat-desc text-base-content">
+            {numServers} / {maxServers} Servers
+          </div>
+        </div>{/if}
     </div>
   {/if}
   <div class="h-22 w-40 2xl:w-48 bg-base-200 rounded-xl p-2">

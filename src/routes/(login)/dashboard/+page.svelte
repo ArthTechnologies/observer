@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { browser } from "$app/environment";
   import Analytics from "$lib/components/pages/dashboard/Analytics.svelte";
   import FeedbackTooltip from "$lib/components/pages/dashboard/FeedbackTooltip.svelte";
@@ -13,9 +13,9 @@
 
   let isLoggedIn = false;
   let address = "";
-  let customers = [];
+  let customers: object[] = [];
   let customersLoaded = false;
-  let servers = [];
+  let servers: object[] = [];
   let serversLoaded = false;
   if (browser) {
     address = localStorage.getItem("address");
@@ -58,7 +58,7 @@
                   for (let j = 0; j < customers.length; j++) {
                     if (
                       customers[j][1].servers.includes(
-                        parseInt(servers[i].serverId),
+                        parseInt(servers[i].serverId)
                       ) ||
                       customers[j][1].servers.includes(servers[i].serverId)
                     ) {
@@ -186,7 +186,11 @@
   </div>
 {/if}
 <div class="flex max-md:flex-col gap-5 justify-between md:px-16 md:-mt-4">
-  <Status />
+  {#if !customersLoaded}
+    <Status />
+  {:else}
+    <Status {customers} />
+  {/if}
   {#if !serversLoaded}
     <div class="flex flex-col gap-5 w-96 items-center">
       {#each Array.from({ length: 10 }) as _}
