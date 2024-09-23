@@ -205,7 +205,7 @@
     <div class="flex flex-col gap-5 w-96 items-center">
       {#each servers as server}
         <div
-          class="h-[6.875rem] p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
+          class="h-[6.875rem] p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative overflow-x-hidden"
         >
           {address}:{server.serverId}
           {#if server.owner != null}
