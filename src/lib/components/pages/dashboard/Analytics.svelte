@@ -153,7 +153,13 @@
         </g>
 
         <!-- y axis -->
-        <line x1="0" x2="0" y1="0" y2="100" />
+        <line
+          x1="0"
+          x2="0"
+          y1="0"
+          y2="100"
+          style="stroke: #000000; stroke-width: 2"
+        />
         <g class="y" transform="translate(-10,0)">
           <text y="100">0</text>
           <text y="50">{res.max / 2}</text>
@@ -174,7 +180,13 @@
       "
         />
         <!-- x axis -->
-        <line x1="0" x2="300" y1="100" y2="100" />
+        <line
+          style="stroke: #000000; stroke-width: 2"
+          x1="0"
+          x2="300"
+          y1="100"
+          y2="100"
+        />
       </svg>
     </div>
   </div>
@@ -268,7 +280,7 @@
                   >{#if page.name.split("/").length > 2}/{page.name
                       .split("/")[1]
                       .split("")[0]}/{page.name.split(
-                      "/",
+                      "/"
                     )[2]}{:else}{page.name}{/if}:</span
                 >
                 {Math.round((page.hits / res.initial) * 100)}%
