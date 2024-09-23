@@ -125,6 +125,34 @@
           </div>
         </div>{/if}
     </div>
+  {:else}
+    <div
+      class="stats stats-vertical shadow bg-base-300 w-40 2xl:w-48 overflow-clip"
+    >
+      <div class="stat">
+        <div class="bg-slate-700 animate-pulse w-24 h-4 my-1 rounded"></div>
+        <div class="bg-slate-700 animate-pulse w-full h-7 my-1 rounded"></div>
+
+        <div class="bg-slate-700 animate-pulse w-28 h-3 my-1 rounded"></div>
+      </div>
+
+      <div class="stat">
+        <div class="bg-slate-700 animate-pulse w-20 h-4 my-1 rounded"></div>
+        <div class="bg-slate-700 animate-pulse w-full h-7 my-1 rounded"></div>
+
+        <div class="bg-slate-700 animate-pulse w-24 h-3 my-1 rounded"></div>
+      </div>
+      <div
+        class="stat bg-gradient-to-t from-sky-500/[.15] animate-pulse to-base-300"
+      >
+        <div
+          class="bg-slate-700 animate-pulse w-16 h-4 my-1 rounded skeleton"
+        ></div>
+        <div class="bg-slate-700 animate-pulse w-full h-7 my-1 rounded"></div>
+
+        <div class="bg-slate-700 animate-pulse w-32 h-3 my-1 rounded"></div>
+      </div>
+    </div>
   {/if}
   <div class="h-22 w-40 2xl:w-48 bg-base-200 rounded-xl p-2">
     <p class="font-bold text-2xl">Arth Hosting</p>
