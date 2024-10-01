@@ -6,7 +6,16 @@
   import { t } from "$lib/scripts/i18n";
   import { apiurl } from "$lib/scripts/req";
   import { alert, fileSizeShort } from "$lib/scripts/utils";
-  import { Gamepad2, HardDrive, Info, Mail } from "lucide-svelte";
+  import token from "$lib/stores/token";
+  import {
+    Gamepad2,
+    HardDrive,
+    ArrowLeft,
+    Mail,
+    User,
+    Gamepad2,
+    DollarSign,
+  } from "lucide-svelte";
   import { split } from "postcss/lib/list";
   import { fade } from "svelte/transition";
   import { server } from "websocket";
@@ -17,13 +26,30 @@
   let customersLoaded = false;
   let servers: object[] = [];
   let serversLoaded = false;
+  let token = "";
+  let accountDetails = {};
   if (browser) {
     address = localStorage.getItem("address");
   }
 
+  function getAccount(accountID) {
+    if (browser) {
+      let input = document.getElementById("accountID")?.value;
+      fetch(apiurl + "dashboard/account/" + input + "?tempToken=" + token, {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          accountDetails = data;
+
+          console.error(data);
+        });
+    }
+  }
   function login() {
     if (browser) {
       let input = document.getElementById("input")?.value;
+      token = input;
 
       fetch(apiurl + "dashboard/verifyToken?tempToken=" + input, {
         method: "GET",
@@ -61,7 +87,7 @@
                   for (let j = 0; j < customers.length; j++) {
                     if (
                       customers[j][1].servers.includes(
-                        parseInt(servers[i].serverId)
+                        parseInt(servers[i].serverId),
                       ) ||
                       customers[j][1].servers.includes(servers[i].serverId)
                     ) {
@@ -261,6 +287,57 @@
     </div>
   {:else}
     <div class="flex flex-col gap-5 w-96 items-center">
+      <div
+        class="relative h-[6.875rem] px-5 py-3 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
+      >
+        {#if Object.keys(accountDetails).length > 0}
+          <btn
+            on:click={() => (accountDetails = {})}
+            class="absolute btn btn-ghost btn-square btn-sm top-2 right-2"
+            ><ArrowLeft size="16" /></btn
+          >
+          <div class="flex items-center gap-1">
+            <div
+              class="bg-neutral h-6 w-6 rounded-md text-sm flex items-center justify-center gap-1"
+            >
+              {#if accountDetails.type == "email"}<Mail />{:else}<Gamepad2
+                  size="16"
+                />{/if}
+            </div>
+
+            {accountDetails.name.split(":")[1]}
+          </div>
+          <div class="flex items-center gap-1">
+            <div
+              class="bg-neutral h-6 w-6 rounded-md text-sm flex items-center justify-center gap-1"
+            >
+              <DollarSign size="16" />
+            </div>
+
+            {accountDetails.email}
+          </div>
+          <div class="flex items-center gap-1">
+            {#each accountDetails.servers as server}
+              <div class="bg-neutral px-1.5 rounded-md text-sm">
+                {address}:{server}
+              </div>
+            {/each}
+          </div>
+        {:else}<p>Get Account Info</p>
+          <div class="flex gap-2">
+            <input
+              id="accountID"
+              type="text"
+              class="input input-bordered input-sm w-2/3"
+              placeholder="Account ID"
+            />
+
+            <button on:click={getAccount} class="btn btn-sm btn-primary"
+              >Check</button
+            >
+          </div>
+        {/if}
+      </div>
       {#each customers as customer}
         {#if customer[0].subscriptions == "active" || (customer[0].subscriptions == "canceled" && customer[0].subscriptions > Date.now() / 1000) || customer[1].servers.length > 0}
           <div
