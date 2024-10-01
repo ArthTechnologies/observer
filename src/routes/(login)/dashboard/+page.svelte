@@ -41,7 +41,10 @@
                 customers = data;
                 //sort by server id
                 for (let i = customers.length - 1; i >= 0; i--) {
-                  if (customers[i][1].servers.length == 0) {
+                  if (
+                    customers[i][1].servers == undefined ||
+                    customers[i][1].servers.length == 0
+                  ) {
                     customers.splice(i, 1);
                   }
                 }
