@@ -454,12 +454,21 @@ export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:strin
       "accounts/email/signup?" +
       new URLSearchParams({
         username: em,
-        password: pwd,
-        confirmPassword: pwd,
         cloudflareVerifyToken: encodeURIComponent(cloudflareVerifyToken)
       }),
-    POST
-  )
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password: pwd,
+          confirmPassword: pwd,
+        }),
+      })
+    
+
+  
     .then((res) => res.text())
     .then((input: string) => {
       console.log(input);
@@ -485,10 +494,18 @@ export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string
       "accounts/email/signin?" +
       new URLSearchParams({
         username: em,
-        password: pwd,
+       
         cloudflareVerifyToken: cloudflareVerifyToken
       }),
-    POST
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        password: pwd,
+      }),
+    }
   )
     .then((res) => res.text())
     .then((input: string) => {
@@ -673,11 +690,22 @@ export function deleteServer(id: number, password: string) {
     "server/" +
     id +
     "?username=" +
-    localStorage.getItem("accountEmail") +
-    "&password=" +
-    password;
+    localStorage.getItem("accountEmail")
+  ;
     console.log("deleting3.5..." + url);
-  return fetch(url, DELETE)
+  return fetch(url,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        username: localStorage.getItem("accountEmail"),
+        
+      },
+      body: JSON.stringify({
+        password: password,
+      }),
+    })
     .then((res) => res.text())
     .then((input: string) => {
       

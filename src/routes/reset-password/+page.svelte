@@ -23,16 +23,20 @@
     } else {
       fetch(
         apiurl +
-          "accounts/email/resetPassword?password=" +
-          password +
-          "&confirmPassword=" +
-          confPassword +
-          "&email=" +
+          "accounts/email/resetPassword" +
+          "?email=" +
           email +
           "&last4=" +
           cc,
         {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            password: password,
+            confPassword: confPassword,
+          }),
         }
       )
         .then((res) => res.json())

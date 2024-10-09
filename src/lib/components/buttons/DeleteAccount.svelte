@@ -18,16 +18,18 @@
         fetch(
           apiurl +
             "accounts/email?username=" +
-            localStorage.getItem("accountEmail") +
-            "&password=" +
-            document.getElementById("password").value,
+            localStorage.getItem("accountEmail"),
 
           {
             method: "DELETE",
             headers: {
+              "Content-Type": "application/json",
               token: localStorage.getItem("token"),
               username: localStorage.getItem("accountEmail"),
             },
+            body: JSON.stringify({
+              password: document.getElementById("password").value,
+            }),
           }
         )
           .then((res) => res.json())
