@@ -28,8 +28,22 @@
   let serversLoaded = false;
   let token = "";
   let accountDetails = {};
+  let folders = [];
   if (browser) {
     address = localStorage.getItem("address");
+    fetch(apiurl + "info/capacity", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        res.folders.sort((a, b) => {
+          return a.localeCompare(b, undefined, {
+            numeric: true,
+            sensitivity: "base",
+          });
+        });
+        folders = res.folders;
+      });
   }
 
   function getAccount(accountID) {
@@ -87,7 +101,7 @@
                   for (let j = 0; j < customers.length; j++) {
                     if (
                       customers[j][1].servers.includes(
-                        parseInt(servers[i].serverId),
+                        parseInt(servers[i].serverId)
                       ) ||
                       customers[j][1].servers.includes(servers[i].serverId)
                     ) {
@@ -232,6 +246,29 @@
     </div>
   {:else}
     <div class="flex flex-col gap-5 w-96 items-center">
+      <div class="h-[6.875rem] grid grid-cols-8 gap-1">
+        {#each folders as folder}
+          {#if folder.split(":")[1] == "normal"}
+            <div
+              class="p-1 bg-base-200 rounded-lg w-8 h-6 shadow space-y-1.5 flex items-center justify-center text-sm"
+            >
+              {folder.split(":")[0]}
+            </div>
+          {:else if folder.split(":")[1] == "admin"}
+            <div
+              class="p-1 bg-base-300 rounded-lg w-8 h-6 shadow space-y-1.5 flex items-center justify-center text-sm"
+            >
+              {folder.split(":")[0]}
+            </div>
+          {:else if folder.split(":")[1] == "error"}
+            <div
+              class="p-1 bg-error text-black rounded-lg w-8 h-6 shadow space-y-1.5 flex items-center justify-center text-sm"
+            >
+              {folder.split(":")[0]}
+            </div>
+          {/if}
+        {/each}
+      </div>
       {#each servers as server}
         <div
           class="h-[6.875rem] p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative overflow-x-hidden"
