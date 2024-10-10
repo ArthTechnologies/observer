@@ -4,7 +4,15 @@
   export let url: string;
   export let filename: string;
   import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
-  import { File, FileText, Image, Trash2, FileUp } from "lucide-svelte";
+  import {
+    File,
+    FileText,
+    Image,
+    Trash2,
+    FileUp,
+    AlertTriangle,
+  } from "lucide-svelte";
+  import { Warning } from "postcss";
   let id;
   let extension = filename.split(".")[filename.split(".").length - 1];
   let clickable = "auto";
@@ -61,6 +69,27 @@
         document.getElementById("filepath").value = url;
       });
   }
+
+  function deleteFile() {
+    let baseurl = apiurl;
+    if (usingOcelot) baseurl = getServerNode(id);
+
+    fetch(baseurl + "server/" + id + "/file/" + url, {
+      method: "DELETE",
+      headers: {
+        token: localStorage.getItem("token"),
+        username: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.msg == "Done") {
+          document.getElementById("delete" + filename).checked = false;
+          location.reload();
+        }
+      });
+  }
 </script>
 
 <div class="flex gap-1 justify-between">
@@ -80,7 +109,7 @@
   </a>
   <div class="flex gap-1">
     <label
-      for="delete"
+      for="delete{filename}"
       on:click={getText}
       class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     >
@@ -96,29 +125,25 @@
   </div>
 </div>
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id="delete" class="modal-toggle" />
+<input type="checkbox" id="delete{filename}" class="modal-toggle" />
 <div class="modal" style="margin:0rem;">
   <div class="modal-box bg-opacity-95 backdrop-blur relative">
     <label
-      for="delete"
+      for="delete{filename}"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
     <h3 class="text-lg font-bold">{$t("server.delete.title")}</h3>
     <div
-      class="bg-warning w-86 h-16 rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-2"
+      class="bg-warning w-86 rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-2"
     >
-      <span class="text-sm">{$t("server.delete.desc")}</span>
+      <AlertTriangle class="w-6 h-6" />
+      <span class="text-sm"
+        >Make sure that you are deleting the right file, you won't be able to
+        recover <b>{filename}</b>.</span
+      >
     </div>
     <div class="flex gap-1">
-      {#if accountType == "email"}
-        <input
-          type="password"
-          id="password"
-          class="input input-bordered input-error mr-1"
-          placeholder={$t("typeYourPassword")}
-        />
-      {/if}
-      <button id="delButton" class="btn btn-error">
+      <button on:click={deleteFile} id="delButton" class="btn btn-error">
         {$t("button.delete")}</button
       >
     </div>
