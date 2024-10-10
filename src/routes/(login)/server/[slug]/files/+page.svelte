@@ -68,7 +68,7 @@
         body: JSON.stringify({
           content: document.getElementById("textEditor").value,
         }),
-      }
+      },
     )
       .then((response) => response.json())
       .then((data) => {
@@ -94,10 +94,7 @@
 <div
   class=" h-[75vh] md:flex justify-between items-start max-md:space-y-1 md:space-x-5"
 >
-  <div
-    class="bg-base-200 rounded-xl md:p-2 menu menu-xs md:w-[20rem]"
-    id="filetree"
-  >
+  <div class="bg-base-200 rounded-xl md:p-2 md:w-[20rem]" id="filetree">
     {#each files as file}
       {#if typeof file == "string"}
         <File filename={file.split(":")[0]} url={file.split(":")[1]} />

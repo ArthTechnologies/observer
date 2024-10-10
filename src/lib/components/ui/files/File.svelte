@@ -1,15 +1,22 @@
 <script lang="ts">
   import { browser } from "$app/environment";
+  import { t } from "$lib/scripts/i18n";
   export let url: string;
   export let filename: string;
   import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
-  import { File, FileText, Image } from "lucide-svelte";
+  import { File, FileText, Image, Trash2, FileUp } from "lucide-svelte";
   let id;
   let extension = filename.split(".")[filename.split(".").length - 1];
   let clickable = "auto";
+  let accountType = "email";
 
   if (browser) {
     id = localStorage.getItem("serverID");
+    if (localStorage.getItem("accountEmail").includes("@")) {
+      accountType = "email";
+    } else {
+      accountType = localStorage.getItem("accountEmail").split(":")[0];
+    }
   }
   switch (extension) {
     case "png":
@@ -56,19 +63,93 @@
   }
 </script>
 
-<li class="">
+<div class="flex gap-1 justify-between">
   <a
     href="#textEditor"
     on:click={getText}
-    class="btn-sm pointer-events-{clickable} -space-x-2 md:space-x-0"
+    class="w-[65%] px-1.5 p-1 rounded-lg btn-ghost pointer-events-{clickable} gap-1 flex items-center"
   >
     {#if extension == "png" || extension == "jpg" || extension == "jpeg"}
-      <Image class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+      <Image class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {:else if extension == "yml" || extension == "yaml" || extension == "json" || extension == "txt"}
-      <FileText class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+      <FileText class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {:else}
-      <File class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+      <File class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {/if}
     <p class="text-xs md:text-sm truncate w-[8rem] md:w-[14rem]">{filename}</p>
   </a>
-</li>
+  <div class="flex gap-1">
+    <label
+      for="delete"
+      on:click={getText}
+      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
+    >
+      <Trash2 class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+    </label>
+    <label
+      for="upload"
+      on:click={getText}
+      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
+    >
+      <FileUp class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+    </label>
+  </div>
+</div>
+<!-- Put this part before </body> tag -->
+<input type="checkbox" id="delete" class="modal-toggle" />
+<div class="modal" style="margin:0rem;">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+    <label
+      for="delete"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
+    >
+    <h3 class="text-lg font-bold">{$t("server.delete.title")}</h3>
+    <div
+      class="bg-warning w-86 h-16 rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-2"
+    >
+      <span class="text-sm">{$t("server.delete.desc")}</span>
+    </div>
+    <div class="flex gap-1">
+      {#if accountType == "email"}
+        <input
+          type="password"
+          id="password"
+          class="input input-bordered input-error mr-1"
+          placeholder={$t("typeYourPassword")}
+        />
+      {/if}
+      <button id="delButton" class="btn btn-error">
+        {$t("button.delete")}</button
+      >
+    </div>
+  </div>
+</div>
+<!-- Put this part before </body> tag -->
+<input type="checkbox" id="upload" class="modal-toggle" />
+<div class="modal" style="margin:0rem;">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+    <label
+      for="upload"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
+    >
+    <h3 class="text-lg font-bold">{$t("server.delete.title")}</h3>
+    <div
+      class="bg-warning w-86 h-16 rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-2"
+    >
+      <span class="text-sm">{$t("server.delete.desc")}</span>
+    </div>
+    <div class="flex gap-1">
+      {#if accountType == "email"}
+        <input
+          type="password"
+          id="password"
+          class="input input-bordered input-error mr-1"
+          placeholder={$t("typeYourPassword")}
+        />
+      {/if}
+      <button id="delButton" class="btn btn-error">
+        {$t("button.delete")}</button
+      >
+    </div>
+  </div>
+</div>

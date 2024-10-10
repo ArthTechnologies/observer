@@ -1,7 +1,13 @@
 <script lang="ts">
   import File from "$lib/components/ui/files/File.svelte";
   import Folder from "$lib/components/ui/files/Folder.svelte";
-  import { ChevronDown, FolderClosed, ChevronRight } from "lucide-svelte";
+  import {
+    ChevronDown,
+    FolderClosed,
+    ChevronRight,
+    Trash2,
+    FileUp,
+  } from "lucide-svelte";
   export let foldername;
   export let files;
   let open = false;
@@ -44,16 +50,29 @@
   }
 </script>
 
-<li>
-  <a class="btn-sm -space-x-2 md:space-x-0" on:click={toggleOpen}>
-    <FolderClosed class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
-    <p class="text-xs md:text-sm">{foldername}</p>
+<div class="flex gap-1 justify-between">
+  <a
+    class="w-[78%] px-1.5 p-1 rounded-lg btn-ghost gap-1 flex items-center cursor-pointer"
+    on:click={toggleOpen}
+  >
+    <FolderClosed
+      class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]"
+    />
+    <p class="text-xs md:text-sm w-full">{foldername}</p>
 
     {#if files.length >= 1}
       <p id="toggleIndicator{folderId}"><ChevronDown /></p>
     {/if}
   </a>
-</li>
+  <div class="flex gap-1">
+    <button class="px-1.5 p-1 rounded-lg btn-ghost gap-1 flex items-center">
+      <Trash2 class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+    </button>
+    <button class="px-1.5 p-1 rounded-lg btn-ghost gap-1 flex items-center">
+      <FileUp class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+    </button>
+  </div>
+</div>
 {#if open}
   <div class="ml-3 md:ml-5">
     {#each files as file}
