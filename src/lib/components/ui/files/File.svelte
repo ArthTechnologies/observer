@@ -118,7 +118,7 @@
     <label
       for="upload"
       on:click={getText}
-      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
+      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center btn-disabled opacity-50"
     >
       <FileUp class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     </label>

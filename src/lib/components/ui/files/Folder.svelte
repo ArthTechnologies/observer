@@ -65,10 +65,14 @@
     {/if}
   </a>
   <div class="flex gap-1">
-    <button class="px-1.5 p-1 rounded-lg btn-ghost gap-1 flex items-center">
+    <button
+      class="px-1.5 p-1 rounded-lg btn-ghost gap-1 flex items-center btn-disabled opacity-50"
+    >
       <Trash2 class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     </button>
-    <button class="px-1.5 p-1 rounded-lg btn-ghost gap-1 flex items-center">
+    <button
+      class="px-1.5 p-1 rounded-lg btn-ghost gap-1 flex items-center btn-disabled opacity-50"
+    >
       <FileUp class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     </button>
   </div>
