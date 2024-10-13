@@ -68,7 +68,7 @@
         body: JSON.stringify({
           content: document.getElementById("textEditor").value,
         }),
-      },
+      }
     )
       .then((response) => response.json())
       .then((data) => {
@@ -99,7 +99,11 @@
       {#if typeof file == "string"}
         <File filename={file.split(":")[0]} url={file.split(":")[1]} />
       {:else}
-        <Folder foldername={file[0].split(":")[0]} files={file[1]} />
+        <Folder
+          foldername={file[0].split(":")[0]}
+          files={file[1]}
+          path={file[0].split(":")[1]}
+        />
       {/if}
     {/each}
   </div>

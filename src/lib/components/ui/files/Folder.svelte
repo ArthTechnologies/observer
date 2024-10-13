@@ -1,17 +1,35 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import File from "$lib/components/ui/files/File.svelte";
   import Folder from "$lib/components/ui/files/Folder.svelte";
+  import { t } from "$lib/scripts/i18n";
+  import { apiurl, getServerNode, usingOcelot } from "$lib/scripts/req";
+  import { alert } from "$lib/scripts/utils";
   import {
     ChevronDown,
     FolderClosed,
     ChevronRight,
     Trash2,
     FileUp,
+    AlertTriangle,
   } from "lucide-svelte";
   export let foldername;
   export let files;
+  export let path;
   let open = false;
   let folderId;
+  let id;
+  let accountType;
+
+  if (browser) {
+    console.error(path);
+    id = localStorage.getItem("serverID");
+    if (localStorage.getItem("accountEmail").includes("@")) {
+      accountType = "email";
+    } else {
+      accountType = localStorage.getItem("accountEmail").split(":")[0];
+    }
+  }
   //folder ID is a random number.
   folderId = Math.floor(Math.random() * 1000000000);
   function toggleOpen() {
@@ -29,24 +47,41 @@
     }
   }
 
-  function getFilePath(file) {
-    function findPath(files, currentPath = "") {
-      for (const item of files) {
-        if (typeof item === "string") {
-          if (item === file) {
-            return currentPath + item;
-          }
-        } else {
-          const [foldername, subfiles] = item;
-          const newPath = currentPath + foldername + "/";
-          const result = findPath(subfiles, newPath);
-          if (result) return result;
-        }
+  function deleteFile() {
+    let baseurl = apiurl;
+    if (usingOcelot) baseurl = getServerNode(id);
+
+    fetch(
+      baseurl +
+        "server/" +
+        id +
+        "/folder/" +
+        path
+          .split("servers/" + id + "//")[1]
+          .split("/")
+          .join("*"),
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token"),
+          username: localStorage.getItem("accountEmail"),
+        },
+        body: JSON.stringify({
+          password: document.getElementById("password" + foldername).value,
+        }),
       }
-      return null; // File not found
-    }
-    console.log(findPath(files, ""));
-    return findPath(files, ""); // Start with an empty currentPath
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.msg == "Done") {
+          document.getElementById("delete" + foldername).checked = false;
+          location.reload();
+        } else {
+          alert("Error: " + data.msg);
+        }
+      });
   }
 </script>
 
@@ -65,16 +100,18 @@
     {/if}
   </a>
   <div class="flex gap-1">
-    <button
-      class="px-1.5 p-1 rounded-lg btn-ghost gap-1 flex items-center btn-disabled opacity-50"
+    <label
+      for="delete{foldername}"
+      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     >
       <Trash2 class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
-    </button>
-    <button
-      class="px-1.5 p-1 rounded-lg btn-ghost gap-1 flex items-center btn-disabled opacity-50"
+    </label>
+    <label
+      for="upload"
+      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center btn-disabled opacity-50"
     >
       <FileUp class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
-    </button>
+    </label>
   </div>
 </div>
 {#if open}
@@ -83,8 +120,46 @@
       {#if typeof file == "string"}
         <File filename={file.split(":")[0]} url={file.split(":")[1]} />
       {:else}
-        <Folder foldername={file[0].split(":")[0]} files={file[1]} />
+        <Folder
+          foldername={file[0].split(":")[0]}
+          files={file[1]}
+          path={file[0].split(":")[1]}
+        />
       {/if}
     {/each}
   </div>
 {/if}
+
+<!-- Put this part before </body> tag -->
+<input type="checkbox" id="delete{foldername}" class="modal-toggle" />
+<div class="modal" style="margin:0rem;">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+    <label
+      for="delete{foldername}"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
+    >
+    <h3 class="text-lg font-bold">{$t("server.delete.title")}</h3>
+    <div
+      class="bg-warning w-86 rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-2"
+    >
+      <AlertTriangle class="w-6 h-6" />
+      <span class="text-sm"
+        >Make sure that you are deleting the right file, you won't be able to
+        recover <b>{foldername}</b>.</span
+      >
+    </div>
+    <div class="flex gap-1">
+      {#if accountType == "email"}
+        <input
+          type="password"
+          id="password{foldername}"
+          class="input input-bordered input-error mr-1"
+          placeholder={$t("typeYourPassword")}
+        />
+      {/if}
+      <button on:click={deleteFile} id="delButton" class="btn btn-error">
+        {$t("button.delete")}</button
+      >
+    </div>
+  </div>
+</div>
