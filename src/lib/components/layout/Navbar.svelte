@@ -131,7 +131,12 @@
   <div class="navbar bg-base-300 px-4 max-sm:pl-2" on:click={checkPage}>
     <div class="flex-1 h-[3rem]">
       <a class="btn btn-ghost normal-case text-xl" href="/"
-        ><img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" /></a
+        ><img
+          src="/images/sitelogo.svg"
+          alt="Arth"
+          width="105"
+          height="105"
+        /></a
       >
     </div>
     <div class="flex-1 md:flex-none space-x-2 navbar-end">
