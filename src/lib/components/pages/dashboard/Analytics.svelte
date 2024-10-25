@@ -117,8 +117,14 @@
             y1.push(100);
             y2.push(100);
           } else {
+            let bpageredirects = 0;
+            if (res.days[i].redirectsB != undefined) {
+              bpageredirects = res.days[i].redirectsB;
+            }
             y1.push(100 - (100 / res.max) * res.days[i].hits);
-            y2.push(100 - (100 / res.max) * res.days[i].redirects);
+            y2.push(
+              100 - (100 / res.max) * (res.days[i].redirects + bpageredirects),
+            );
           }
         }
         for (let i = 0; i <= 30; i++) {
@@ -280,7 +286,7 @@
                   >{#if page.name.split("/").length > 2}/{page.name
                       .split("/")[1]
                       .split("")[0]}/{page.name.split(
-                      "/"
+                      "/",
                     )[2]}{:else}{page.name}{/if}:</span
                 >
                 {Math.round((page.hits / res.initial) * 100)}%
