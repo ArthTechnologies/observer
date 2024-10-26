@@ -164,7 +164,7 @@
       class="btn btn-ghost normal-case text-xl invisible sm:visible"
       href="https://arthmc.xyz/"
     >
-      <img src="/images/sitelogo.svg" alt="Arth" width="75" height="75" />
+      <img src="/images/sitelogo.svg" alt="Arth" width="105" height="105" />
     </a>
     <ThemeToggle />
   </div>
