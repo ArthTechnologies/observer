@@ -70,7 +70,7 @@
         body: JSON.stringify({
           password: document.getElementById("password" + foldername).value,
         }),
-      }
+      },
     )
       .then((response) => response.json())
       .then((data) => {
@@ -82,6 +82,160 @@
           alert("Error: " + data.msg);
         }
       });
+  }
+  let gradientBackground = "#1fb2a5";
+  function uploadFile() {
+    const formData = new FormData();
+    const fileInput = document.getElementById("upload" + foldername + "file");
+    const file = fileInput.files[0];
+
+    formData.append("file", file, file.name);
+
+    console.error("uploading");
+    if (browser) {
+      const uploadBtn = document.getElementById("uploadBtn");
+      //we normally use fetch, but we have to use XMLHttpRequest for this because fetch doesnt give progress of uploads.
+      const xhr = new XMLHttpRequest();
+      let fileSize = 200;
+      let counter = 0;
+      let requestFinished = false;
+
+      //display estimated progress
+      let intervalId = setInterval(() => {
+        counter++;
+        let visualPercent = (((counter / 20) * 1.09) / fileSize) * 100;
+        let virusScanningEnabled = localStorage.getItem("enableVirusScan");
+        let theme = localStorage.getItem("theme");
+
+        if (!requestFinished) {
+          //disable clicks to the button
+          uploadBtn.classList.add("pointer-events-none");
+        }
+
+        if (visualPercent < 100) {
+          if (theme == "dark") uploadBtn.classList.add("text-accent-content");
+          else if (theme == "light") uploadBtn.classList.add("text-white");
+
+          uploadBtn.innerHTML = $t("uploading");
+          //if its dark theme, gradient needs to be 90% transparency
+          //to 0% transparency, where light should be from 90% to 70%.
+
+          if (theme == "dark") {
+            gradientBackground = "#1fb2a5";
+            uploadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.0) ${visualPercent}%,
+  ${gradientBackground} ${visualPercent}%,
+  ${gradientBackground} 100%
+)`;
+          } else if (theme == "light") {
+            gradientBackground = "#88c0d0";
+            uploadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.7) ${visualPercent}%,
+  ${gradientBackground} ${visualPercent}%,
+  ${gradientBackground} 100%
+)`;
+          }
+        } else {
+          uploadBtn.classList.remove("text-accent-content");
+          uploadBtn.classList.remove("text-white");
+          if (virusScanningEnabled == "true") {
+            uploadBtn.innerHTML = $t("scanningForViruses");
+            uploadBtn.classList.add("text-lime-500");
+            uploadBtn.style.background = ``;
+            if (theme == "dark") uploadBtn.classList.add("bg-[#112100]");
+            if (theme == "light") uploadBtn.classList.add("bg-[#143f04]");
+            uploadBtn.classList.add("skeleton");
+            visualPercent++;
+            if (requestFinished && visualPercent > 108) {
+              if (theme == "dark") uploadBtn.classList.remove("bg-[#112100]");
+              if (theme == "light") uploadBtn.classList.remove("bg-[#143f04]");
+              uploadBtn.classList.remove("skeleton");
+
+              uploadBtn.classList.remove("text-lime-500");
+
+              uploadBtn.innerHTML = $t("button.upload");
+
+              //re-enable clicks to the button
+              uploadBtn.classList.remove("pointer-events-none");
+              clearInterval(intervalId);
+            }
+          } else if (requestFinished) {
+            uploadBtn.style.background = ``;
+
+            uploadBtn.innerHTML = $t("button.upload");
+
+            //re-enable clicks to the button
+            uploadBtn.classList.remove("pointer-events-none");
+
+            clearInterval(intervalId);
+          }
+        }
+      }, 50);
+      xhr.upload.addEventListener("progress", (event) => {
+        if (event.lengthComputable) {
+          fileSize = event.total / Math.pow(1024, 2);
+          console.log("PROGRESS", fileSize);
+        }
+      });
+
+      xhr.addEventListener("load", (e) => {
+        console.log(e.target.response);
+
+        if (e.target.response.indexOf("No Viruses Detected") == -1) {
+          alert($t("alert.virusDetected"));
+        } else {
+          alert($t("alert.worldUploaded"), "success");
+        }
+        requestFinished = true;
+      });
+
+      xhr.addEventListener("error", (error) => {
+        console.error("Error:", error);
+      });
+
+      xhr.open(
+        "POST",
+        apiurl +
+          "server/" +
+          id +
+          "/file/upload/" +
+          foldername +
+          "?filename=" +
+          file.name,
+        true,
+      );
+      xhr.setRequestHeader("token", localStorage.getItem("token"));
+      xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
+      xhr.send(formData);
+
+      //when response is recieved...
+      xhr.onload = function () {
+        //if its dark theme, gradient needs to be 90% transparency
+        //to 0% transparency, where light should be from 90% to 70%.
+        let theme = localStorage.getItem("theme");
+        if (theme == "dark") {
+          uploadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.0) 100%,
+  ${gradientBackground} 100%,
+  ${gradientBackground} 100%
+)`;
+        } else if (theme == "light") {
+          uploadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.7) 100}%,
+  ${gradientBackground} 100%,
+  ${gradientBackground} 100%
+)`;
+        }
+      };
+    }
   }
 </script>
 
@@ -107,8 +261,8 @@
       <Trash2 class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     </label>
     <label
-      for="upload"
-      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center btn-disabled opacity-50"
+      for="upload{foldername}"
+      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     >
       <FileUp class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     </label>
@@ -159,6 +313,28 @@
       {/if}
       <button on:click={deleteFile} id="delButton" class="btn btn-error">
         {$t("button.delete")}</button
+      >
+    </div>
+  </div>
+</div>
+<!-- Put this part before </body> tag -->
+<input type="checkbox" id="upload{foldername}" class="modal-toggle" />
+<div class="modal" style="margin:0rem;">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+    <label
+      for="upload{foldername}"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
+    >
+    <h3 class="text-lg font-bold">Upload File to /{foldername}</h3>
+
+    <div class="flex gap-1 mt-2">
+      <input
+        id="upload{foldername}file"
+        type="file"
+        class="file-input file-input-bordered file-input-secondary w-full max-w-xs"
+      />
+      <button id="uploadBtn" on:click={uploadFile} class="btn btn-error">
+        {$t("button.upload")}</button
       >
     </div>
   </div>
