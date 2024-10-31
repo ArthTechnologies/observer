@@ -174,6 +174,6 @@
     >
     <h3 class="text-lg font-bold">Upload File to /{foldername}</h3>
 
-    <FileUpload {foldername} />
+    <FileUpload {foldername} {id} />
   </div>
 </div>

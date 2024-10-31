@@ -1,6 +1,10 @@
 <script>
   import { t } from "$lib/scripts/i18n";
+  import { browser } from "$app/environment";
+  import { apiurl, getServerNode, usingOcelot } from "$lib/scripts/req";
+  import { alert } from "$lib/scripts/utils";
   export let foldername;
+  export let id;
   let gradientBackground = "#1fb2a5";
   function uploadFile() {
     const formData = new FormData();
