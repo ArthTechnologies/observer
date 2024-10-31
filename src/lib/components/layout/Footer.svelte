@@ -53,8 +53,8 @@
       target="_blank"
       rel="noreferer"
     >
-      <img src="/favicon.webp" width="20" class="mr-1.5 mb-[.1rem]" />How to
-      Join Servers
+      <img src="/favicon.png" width="20" class="mr-1.5 mb-[.1rem]" />How to Join
+      Servers
     </a>
     <h3 class="text-lg font-bold mt-2 mb-1">{$t("help.l.contact")}</h3>
     <div class="md:flex md:space-x-2 space-y-2 md:space-y-0">
