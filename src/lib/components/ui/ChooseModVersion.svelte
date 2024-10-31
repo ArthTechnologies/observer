@@ -2,7 +2,7 @@
   import Version from "./Version.svelte";
   import { apiurl, getVersions, lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
-  import { ArrowUpRight, ClipboardList, Plus } from "lucide-svelte";
+  import { InfoIcon, ClipboardList, Plus } from "lucide-svelte";
   import { handleDesc } from "$lib/scripts/utils";
   import { marked } from "marked";
   import { t } from "$lib/scripts/i18n";
@@ -48,7 +48,7 @@
         break;
     }
   }
-  function get() {
+  function get(index = 0) {
     //this disables the scrollbar of the modal below this one
     document.getElementById("addModModalScroll").style.overflow = "hidden";
     //get description
@@ -152,14 +152,13 @@
         });
         //if it's still blank, add a message saying that there are no versions for this plugin
         if (document.getElementById("list" + suffix).innerHTML == "") {
-          document.getElementById("list" + suffix).innerHTML =
-            "<p class='text-center'>" + $t("noVersionsMod") + "</p>";
+          get(index + 1);
         }
       });
     } else if (platform == "cf") {
       document.getElementById("list" + suffix).innerHTML = "";
 
-      fetch(apiurl + "curseforge/" + id + "/versions", {
+      fetch(apiurl + "curseforge/" + id + "/versions?index=" + index * 50, {
         method: "GET",
 
         headers: {
@@ -168,13 +167,11 @@
       })
         .then((response) => response.json())
         .then((data) => {
+          console.error(sVersion, software);
           console.log(data);
           data.forEach((version) => {
             if (
               version.name != vname &&
-              version.gameVersions.includes(
-                software.charAt(0).toUpperCase() + software.slice(1)
-              ) &&
               version.gameVersions.includes(sVersion)
             ) {
               vname = version.displayName;
@@ -182,27 +179,58 @@
               let type = "release";
               if (version.releaseType == 1) type = "beta";
               else if (version.releaseType == 0) type = "alpha";
-              new Version({
-                target: document.getElementById("list" + suffix),
-                props: {
-                  name: version.displayName,
-                  date: version.fileDate,
-                  type: type,
-                  url: version.downloadUrl,
-                  pluginId: id,
-                  pluginName: name,
-                  modtype: "mod",
-                  dependencies: version.dependencies,
-                  platform: "cf",
-                  versionId: version.id,
-                },
-              });
+              //If software is specified
+              if (
+                version.gameVersions.includes(
+                  software.charAt(0).toUpperCase() + software.slice(1)
+                )
+              ) {
+                new Version({
+                  target: document.getElementById("list" + suffix),
+                  props: {
+                    name: version.displayName,
+                    date: version.fileDate,
+                    type: type,
+                    url: version.downloadUrl,
+                    pluginId: id,
+                    pluginName: name,
+                    modtype: "mod",
+                    dependencies: version.dependencies,
+                    platform: "cf",
+                    versionId: version.id,
+                  },
+                });
+              } else {
+                new Version({
+                  target: document.getElementById(
+                    "noSoftwareSpecifiedList" + suffix
+                  ),
+                  props: {
+                    name: version.displayName,
+                    date: version.fileDate,
+                    type: type,
+                    url: version.downloadUrl,
+                    pluginId: id,
+                    pluginName: name,
+                    modtype: "mod",
+                    dependencies: version.dependencies,
+                    platform: "cf",
+                    versionId: version.id,
+                  },
+                });
+              }
             }
           });
-          //if it's still blank, add a message saying that there are no versions for this plugin
+          //this goes to the next page if there are no applicable versions.
+
           if (document.getElementById("list" + suffix).innerHTML == "") {
-            document.getElementById("list" + suffix).innerHTML =
-              "<p class='text-center'>" + $t("noVersionsMod") + "</p>";
+            //if none of the pages have an applicable version the noVersionsMod texxt will be applied.
+            if (data.length == 50) {
+              get(index + 1);
+            } else {
+              document.getElementById("list" + suffix).innerHTML =
+                "<p class='text-center'>" + $t("noVersionsMod") + "</p>";
+            }
           }
         });
     }
@@ -215,12 +243,18 @@
 {#if buttonType == "default"}
   <label
     for="versions"
-    on:click={get}
+    on:click={() => {
+      get();
+    }}
     class="btn btn-circle btn-ghost absolute right-0"><Plus /></label
   >
 {:else if buttonType == "2"}
-  <label for="versions{suffix}" on:click={get} class="btn btn-xs btn-neutral"
-    >{$t("versions")}</label
+  <label
+    for="versions{suffix}"
+    on:click={() => {
+      get();
+    }}
+    class="btn btn-xs btn-neutral">{$t("versions")}</label
   >
 {/if}
 
@@ -342,6 +376,13 @@
             >
           </div>
           <div id="list{suffix}" class="space-y-2 mb-5" />
+          <div id="noSoftwareSpecifiedWarning" class="mb-3 mt-6">
+            <div role="alert" class="alert">
+              <InfoIcon />
+              <span>{$t("warning.noSoftwareSpecified")}</span>
+            </div>
+          </div>
+          <div id="noSoftwareSpecifiedList{suffix}" class="space-y-2 mb-5" />
         </div>
       </div>
     </div>
