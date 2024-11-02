@@ -33,7 +33,7 @@
   class="bg-[url('/images/hostingbg3.png')] 0 hero min-h-screen bg-base-100"
 >
   <div
-    class="relative bg-base-300 rounded-xl shadow-xl px-5 md:px-8 xl:px-12 flex flex-col items-center"
+    class="relative bg-base-300 rounded-xl shadow-xl px-5 md:px-8 xl:px-12 flex flex-col items-center max-sm:w-[95%]"
   >
     <ul class="steps scale-90 mt-5 w-2/3">
       <li class="step step-neutral step-primary" data-content="">
@@ -45,7 +45,7 @@
       </li>
     </ul>
     <!-- Signup Section-->
-    <div class="p-6 w-96 rounded-xl">
+    <div class="p-4 md:p-6 md:w-96 rounded-xl">
       <p class="text-[1.4rem] font-poppins-bold mb-3">Sign up with</p>
       <div class="grid grid-cols-2 gap-3 w-full items-center">
         <div class="flex gap-2.5">
@@ -59,7 +59,7 @@
             />Discord</a
           >
           <a
-            class="w-40 btn btn-neutral rounded-xl mb-2 btn-icon-text btn-disabled"
+            class="max-sm:hidden w-40 btn btn-neutral rounded-xl mb-2 btn-icon-text btn-disabled"
             href="https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri={address}/auth/discord&response_type=token&scope=email+identify"
             ><span class="flex flex-shrink-0 items-center scale-95">
               <img
@@ -76,7 +76,7 @@
       <EmailSigninNew sign="up" />
       <div class="mt-8"></div>
       <span
-        class="text-xs ml-1.5 font-poppins absolute bottom-3 left-2 w-[95%] text-center"
+        class="text-xs ml-1.5 font-poppins absolute bottom-3 left-2 md:w-[95%] text-center"
         >Already have an account? <a
           href="/login"
           class="hover:link text-primary">Log in here</a

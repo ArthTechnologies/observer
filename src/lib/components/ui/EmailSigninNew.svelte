@@ -217,7 +217,7 @@
               id="email"
               type="text"
               placeholder={$t("signin.l.email")}
-              class="input w-full"
+              class="input sm:w-full"
             />
             <div class="w-full flex space-x-2">
               <div class="w-full flex space-x-2">
@@ -225,7 +225,7 @@
                   type={pwdVisible}
                   id="pwd"
                   placeholder={$t("signin.l.pwd")}
-                  class="input w-full max-w-xs"
+                  class="input sm:w-full max-sm:w-48 max-w-xs"
                 />
                 <label class="btn btn-circle swap swap-rotate btn-ghost">
                   <!-- this hidden checkbox controls the state -->
@@ -237,14 +237,14 @@
                 </label>
               </div>
             </div>
+            <input
+              type="password"
+              id="confPwd"
+              placeholder={$t("signin.l.cpwd")}
+              class="input sm:w-full"
+            />
 
-            <div class="space-y-5 flex flex-col items-center w-full">
-              <input
-                type="password"
-                id="confPwd"
-                placeholder={$t("signin.l.cpwd")}
-                class="input w-full"
-              />
+            <div class="space-y-5 flex flex-col md:items-center md:w-full">
               <div class="w-[100%] flex justify-center h-[4.1rem]">
                 {#if !checkingIfCloudflareVerify}
                   <Turnstile

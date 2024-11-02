@@ -33,7 +33,7 @@
   class="bg-[url('/images/hostingbg3.png')] 0 hero min-h-screen bg-base-100"
 >
   <div
-    class="relative bg-base-300 rounded-xl shadow-xl px-5 md:px-8 xl:px-12 flex flex-col items-center"
+    class="relative bg-base-300 rounded-xl shadow-xl px-5 md:px-8 xl:px-12 flex flex-col items-center max-sm:w-[95%]"
   >
     <div
       class="max-md:hidden mt-5 px-4 py-2 bg-primary rounded-full text-white font-semibold text-sm flex items-center gap-2"
@@ -60,7 +60,7 @@
       Welcome Back!
     </div>
     <!-- Signup Section-->
-    <div class="p-6 w-96 rounded-xl">
+    <div class="p-4 md:p-6 md:w-96 rounded-xl">
       <p class="text-[1.4rem] font-poppins-bold mb-3">Log in with</p>
       <div class="grid grid-cols-2 gap-3 w-full items-center">
         <div class="flex gap-2.5">
@@ -74,7 +74,7 @@
             />Discord</a
           >
           <a
-            class="w-40 btn btn-neutral rounded-xl mb-2 btn-icon-text btn-disabled"
+            class="max-sm:hidden w-40 btn btn-neutral rounded-xl mb-2 btn-icon-text btn-disabled"
             href="https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri={address}/auth/discord&response_type=token&scope=email+identify"
             ><span class="flex flex-shrink-0 items-center scale-95">
               <img
