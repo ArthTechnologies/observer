@@ -6,7 +6,7 @@
   import { apiurl } from "$lib/scripts/req";
   import { alert } from "$lib/scripts/utils";
   let enablePay = true;
-  let backurl = "/signin";
+  let backurl = "/login";
   if (browser) {
     if (localStorage.getItem("enablePay") == "false") {
       enablePay = false;
@@ -54,7 +54,7 @@
             else alert(data.reason);
           } else {
             alert($t("alert.passwordResetSuccess"));
-            window.location.href = "/signin";
+            window.location.href = "/login";
           }
         });
     }

@@ -60,7 +60,7 @@
           enableAuth == "true" &&
           navType == "default"
         ) {
-          goto("/signin");
+          goto("/login");
         }
       }, 500);
     }

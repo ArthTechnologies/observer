@@ -39,7 +39,7 @@
               alert($t("alert.wrongPassword"));
             } else {
               localStorage.clear();
-              window.location.href = "/signin";
+              window.location.href = "/signup";
             }
           });
       } else if (accountType == "discord") {
@@ -61,7 +61,7 @@
               alert($t("alert.wrongPassword"));
             } else {
               localStorage.clear();
-              window.location.href = "/signin";
+              window.location.href = "/signup";
             }
           });
       }

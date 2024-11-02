@@ -16,7 +16,7 @@
     localStorage.setItem("token", "");
     localStorage.setItem("loggedIn", "false");
     loginStatus = false;
-    window.location.href = "/signin";
+    window.location.href = "/login";
   }
   let accountEmail = "noemail";
   let accountEmailChopped = "noemail";

@@ -31,4 +31,38 @@ the oklch format. */
     
 
     }
+
+
+  }
+
+  @font-face {
+    font-family: "Poppins";
+    src: url("/fonts/Poppins-Regular.ttf");
+  }
+  @font-face {
+    font-family: "PoppinsBold";
+    src: url("/fonts/Poppins-Bold.ttf");
+  }
+
+  .font-poppins {
+    font-family: "Poppins";
+  }
+
+  .font-poppins-bold {
+    font-family: "PoppinsBold";
+  }      @font-face {
+    font-family: "Poppins";
+    src: url("/fonts/Poppins-Regular.ttf");
+  }
+  @font-face {
+    font-family: "PoppinsBold";
+    src: url("/fonts/Poppins-Bold.ttf");
+  }
+
+  .font-poppins {
+    font-family: "Poppins";
+  }
+
+  .font-poppins-bold {
+    font-family: "PoppinsBold";
   }
