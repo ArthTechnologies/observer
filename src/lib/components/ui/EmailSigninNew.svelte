@@ -73,28 +73,6 @@
     }
     console.log(matchPwd);
   }
-  //give the element with id="pwd" the class "tab-active"
-  function signUp() {
-    document.getElementById("sup").classList.add("tab-active");
-    //remove the class "tab-active" from the element with id="sin"
-    document.getElementById("sin").classList.remove("tab-active");
-    sign = "up";
-  }
-  function signIn() {
-    document.getElementById("sin").classList.add("tab-active");
-    //remove the class "tab-active" from the element with id="sin"
-    document.getElementById("sup").classList.remove("tab-active");
-    sign = "in";
-  }
-
-  onMount(() => {
-    //run signUp() if token == "" if window is defined
-    if (browser) {
-      if (localStorage.getItem("token") == "") {
-        signUp();
-      }
-    }
-  });
 
   function submit() {
     if (sign == "up") {
