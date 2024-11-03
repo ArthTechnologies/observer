@@ -148,7 +148,7 @@
             <input
               id="email"
               type="text"
-              placeholder={$t("signin.l.email")}
+              placeholder={$t("auth.email")}
               class="input w-full"
             />
 
@@ -157,7 +157,7 @@
                 <input
                   type={pwdVisible}
                   id="pwd"
-                  placeholder={$t("signin.l.pwd")}
+                  placeholder={$t("auth.password")}
                   class="input w-full max-w-xs"
                 />
                 <label class="btn btn-circle swap swap-rotate btn-ghost mb-1">
@@ -180,7 +180,7 @@
               {/if}
             </div>
             <button on:click={submit} class="btn btn-neutral rounded-xl"
-              >Continue<ArrowRight class="ml-1.5" />
+              >{$t("auth.continue")}<ArrowRight class="ml-1.5" />
             </button>
           </div>
         </div>
@@ -194,7 +194,7 @@
             <input
               id="email"
               type="text"
-              placeholder={$t("signin.l.email")}
+              placeholder={$t("auth.email")}
               class="input sm:w-full"
             />
             <div class="w-full flex space-x-2">
@@ -202,7 +202,7 @@
                 <input
                   type={pwdVisible}
                   id="pwd"
-                  placeholder={$t("signin.l.pwd")}
+                  placeholder={$t("auth.password")}
                   class="input sm:w-full max-sm:w-48 max-w-xs"
                 />
                 <label class="btn btn-circle swap swap-rotate btn-ghost">
@@ -218,7 +218,7 @@
             <input
               type="password"
               id="confPwd"
-              placeholder={$t("signin.l.cpwd")}
+              placeholder={$t("auth.confirmPassword")}
               class="input sm:w-full"
             />
 
@@ -233,7 +233,7 @@
                 {/if}
               </div>
               <button on:click={submit} class="btn btn-neutral rounded-xl"
-                >Continue<ArrowRight class="ml-1.5" />
+                >{$t("auth.continue")}<ArrowRight class="ml-1.5" />
               </button>
             </div>
           </div>

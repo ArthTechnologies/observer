@@ -60,11 +60,11 @@
           d="M19.686 8.314a12.501 12.501 0 0 1 1.356 10.225 1 1 0 0 1-1.751-.119 22 22 0 0 0-3.393-6.319"
         /></svg
       >
-      Welcome Back!
+      {$t("auth.welcomeBack")}
     </div>
     <!-- Signup Section-->
     <div class="p-4 md:p-6 md:w-96 rounded-xl">
-      <p class="text-[1.4rem] font-poppins-bold mb-3">Log in with</p>
+      <p class="text-[1.4rem] font-poppins-bold mb-3">{$t("auth.login.h")}</p>
       <div class="grid grid-cols-2 gap-3 w-full items-center">
         <div class="flex gap-2.5">
           <a
@@ -90,14 +90,14 @@
           >
         </div>
       </div>
-      <p class="text-[1.4rem] font-poppins-bold mb-3 mt-4">Or use a password</p>
+      <p class="text-[1.4rem] font-poppins-bold mb-3 mt-4">
+        {$t("auth.password.h")}
+      </p>
       <EmailSigninNew sign="in" />
       <div class="mt-8"></div>
       <span
         class="text-xs ml-1.5 font-poppins absolute bottom-3 left-2 w-[95%] text-center"
-        >Haven't subscribed? <a href="/signup" class="hover:link text-primary"
-          >Sign up here</a
-        >.</span
+        >{@html $t("auth.signupLink")}</span
       >
     </div>
   </div>

@@ -1,5 +1,20 @@
 export default {
   "en-US": {
+    "auth.welcomeBack": "Welcome Back!",
+    "auth.signup.h": "Sign up with",
+    "auth.login.h": "Log in with",
+    "auth.password.h": "Or use a password",
+    "auth.email": "Email Address",
+    "auth.password": "Password",
+    "auth.confirmPassword": "Confirm Password",
+    "auth.continue": "Continue",
+    "auth.loginLink": `Already have an account? <a
+          href="/login"
+          class="hover:link text-primary">Log in here</a
+        >.`,
+        "auth.signupLink": `Haven't subscribed? <a href="/signup" class="hover:link text-primary"
+          >Sign up here</a
+        >.`,
     "homepage.title": "Your Servers",
     "navbar.webname": "Your Servers",
     "site.webtitle": "Your Servers",
@@ -25,17 +40,7 @@ export default {
     "account.settings": "Account Settings",
     "account.logout": "Logout",
     "general.ex": "ex:",
-    "signin.title": "Welcome!",
-    "signin.h": "Your servers are just a few clicks away.",
-    "signin.h2": "Please enter your account details to continue.",
-    "signin.discord": "Continue With Discord",
-    "signin.metamask": "MetaMask (Coming Soon)",
-    "signin.h.email": "Sign in with Email:",
-    signin: "Signin",
-    signup: "Signup",
-    "signin.l.email": "Email Address",
-    "signin.l.pwd": "Password",
-    "signin.l.cpwd": "Confirm Password",
+    
     "button.submit": "Submit",
     "pay.h.subscribed": "Looks like you're subscribed.",
     "pay.h": "You'll be charged $7 per month after a 7 day free trial.",
@@ -311,6 +316,21 @@ export default {
 
   },
   "es-ES": {
+    "auth.welcomeBack": "¡Bienvenido de nuevo!",
+    "auth.signup.h": "Regístrate con",
+    "auth.login.h": "Inicia sesión con",
+    "auth.password.h": "O utiliza una contraseña",
+    "auth.email": "Dirección de correo electrónico",
+    "auth.password": "Contraseña",
+    "auth.confirmPassword": "Confirmar contraseña",
+    "auth.continue": "Continuar",
+    "auth.loginLink": `¿Ya tienes una cuenta? <a
+          href="/inicio de sesión"
+          class="hover:link text-primary">Entra aquí</a
+        >.`,
+        "auth.signupLink": `¿No te has suscrito? <a href="/signup" class="hover:link text-primary"
+          >Inscríbete aquí</a
+        >.`,
     "homepage.title": "Sus servidores",
     "navbar.webname": "Sus servidores",
     "site.webtitle": "Sus servidores",

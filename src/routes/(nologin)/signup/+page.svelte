@@ -49,7 +49,7 @@
     </ul>
     <!-- Signup Section-->
     <div class="p-4 md:p-6 md:w-96 rounded-xl">
-      <p class="text-[1.4rem] font-poppins-bold mb-3">Sign up with</p>
+      <p class="text-[1.4rem] font-poppins-bold mb-3">{$t("auth.signup.h")}</p>
       <div class="grid grid-cols-2 gap-3 w-full items-center">
         <div class="flex gap-2.5">
           <a
@@ -75,15 +75,14 @@
           >
         </div>
       </div>
-      <p class="text-[1.4rem] font-poppins-bold mb-3 mt-4">Or use a password</p>
+      <p class="text-[1.4rem] font-poppins-bold mb-3 mt-4">
+        {$t("auth.password.h")}
+      </p>
       <EmailSigninNew sign="up" />
       <div class="mt-8"></div>
       <span
         class="text-xs ml-1.5 font-poppins absolute bottom-3 left-2 md:w-[95%] text-center"
-        >Already have an account? <a
-          href="/login"
-          class="hover:link text-primary">Log in here</a
-        >.</span
+        >{@html $t("auth.loginLink")}</span
       >
     </div>
   </div>
