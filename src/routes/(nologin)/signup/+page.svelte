@@ -30,10 +30,10 @@
 
 <div
   style="background-size: cover;"
-  class="bg-[url('/images/hostingbg3.png')] 0 hero min-h-screen bg-base-100"
+  class="bg-[url('/images/hostingbg3.png')] 0 hero min-h-screen"
 >
   <div
-    class="-mt-16 absolute h-[60rem] min-[1000px]:h-[80rem] w-full bg-gradient-to-b from-[#331e21] to-[#99402b] z-[-1]"
+    class=" absolute h-screen w-full bg-gradient-to-b from-[#1a141c] to-[#99402b] z-[-1]"
   ></div>
   <div
     class="relative bg-base-300 rounded-xl shadow-xl px-5 md:px-8 xl:px-12 flex flex-col items-center max-sm:w-[95%]"
