@@ -9,7 +9,7 @@
   import { t } from "$lib/scripts/i18n";
   import { ClipboardIcon, ClipboardList, Info, Settings } from "lucide-svelte";
   import { bind, onMount } from "svelte/internal";
-  import { handleDesc } from "$lib/scripts/utils";
+  import { alert, handleDesc } from "$lib/scripts/utils";
   let id;
   let icon = "";
   let iconPreview = "/images/palceholder.webp";
@@ -19,11 +19,13 @@
 
   let software;
   let name;
+  let address = "arthmc.xyz";
   export let type = "smallBtn";
   if (browser) {
     name = localStorage.getItem("serverName");
     id = localStorage.getItem("serverID");
     software = localStorage.getItem("serverSoftware");
+    address = localStorage.getItem("address");
   }
   function get() {
     let baseurl = apiurl;
@@ -112,8 +114,40 @@
     }
   }
 
+  function claimSubdomain() {
+    console.log("claiming subdomain");
+    const subdomain = document.getElementById("subdomainInput").value;
+    fetch(apiurl + "server/" + id + "/claimSubdomain?subdomain=" + subdomain, {
+      method: "POST",
+      headers: {
+        username: localStorage.getItem("accountEmail"),
+        token: localStorage.getItem("token"),
+      },
+    })
+      .then((x) => x.json())
+      .then((x) => {
+        if (x.msg == "Done") {
+          alert("Subdomain claimed successfully!");
+          localStorage.setItem("serverSubdomain", subdomain);
+          let closeButton = document.getElementById("closeButton");
+          closeButton.click();
+          window.location.reload();
+        } else {
+          alert("Error: " + x.msg);
+        }
+      });
+  }
+
   function copyChar() {
     navigator.clipboard.writeText("§");
+  }
+  if (browser) {
+    const input = document.getElementById("subdomainInput");
+    if (input != undefined) {
+      input.addEventListener("subdomainInput", () => {
+        input.style.width = input.value.length + 1 + "ch"; // Adjust width based on character count
+      });
+    }
   }
 </script>
 
@@ -139,6 +173,7 @@
   <div class="p-4 md:p-5 modal-box bg-opacity-95 backdrop-blur relative">
     <label
       for="editInfo"
+      id="closeButton"
       class="btn btn-neutral btn-sm btn-circle fixed right-2 top-2">✕</label
     >
     <label
@@ -161,6 +196,17 @@
       id="serverName"
       class="input input-bordered"
     />
+    <label for="serverDescription" class="block font-bold mb-2 mt-4"
+      >Claim a subdomain
+    </label>
+
+    <div class="flex gap-2 relative">
+      <label class="input input-bordered flex items-center">
+        <input type="text" class="bg-transparent w-4" id="subdomainInput" />
+        <p class="opacity-80">.{address}</p>
+      </label>
+      <button class="btn btn-neutral" on:click={claimSubdomain}>Claim</button>
+    </div>
     <div class="divider mt-3 text-xl font-bold">
       {$t("settings.h.serverInfo")}
     </div>

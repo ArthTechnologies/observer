@@ -40,6 +40,7 @@
   export let id: number;
   export let webmap: boolean;
   export let voicechat: boolean;
+  export let subdomain;
 
   if (software == "velocity") {
     softwareType = "proxy";
@@ -62,6 +63,9 @@
       localStorage.setItem("serverCardRedrict", "true");
       localStorage.setItem("serverWebmap", webmap);
       localStorage.setItem("serverVoicechat", voicechat);
+      if (subdomain != undefined) {
+        localStorage.setItem("serverSubdomain", subdomain);
+      }
     }
   }
   function status() {
@@ -137,7 +141,11 @@
     <div class="card-body pr-0">
       <h2 class="card-title">{name}</h2>
       <p>
-        {address}:{10000 + parseInt(id)}
+        {#if subdomain == undefined}
+          {address}:{10000 + parseInt(id)}
+        {:else}
+          {subdomain}.{address}
+        {/if}
       </p>
       <!-- <div class="card-actions justify-beginning" /> -->
       <div class="card-actions justify-end">

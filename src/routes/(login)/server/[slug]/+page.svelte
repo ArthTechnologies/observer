@@ -67,6 +67,7 @@
   let voicechat = false;
   let chunky = false;
   let discordsrv = false;
+  let subdomain = undefined;
 
   if (browser) {
     if (localStorage.getItem("updateAlert") != "dynmap") {
@@ -89,6 +90,10 @@
       localStorage.getItem("serverSoftware") == "Forge"
     ) {
       modded = true;
+    }
+
+    if (localStorage.getItem("serverSubdomain") != undefined) {
+      subdomain = localStorage.getItem("serverSubdomain");
     }
 
     if (localStorage.getItem("serverWebmap") == "true") {
@@ -515,8 +520,10 @@
 
               <div class="">
                 <div class="stat-title">{$t("server.ip")}</div>
-                <div class="font-bold sm:text-lg md:text-[1.8rem] mt-1">
-                  {address}:{port}
+                <div class="font-bold sm:text-lg md:text-[1.6rem] mt-1">
+                  {#if subdomain == undefined}{address}:{port}{:else}
+                    {subdomain}.{address}
+                  {/if}
                 </div>
                 <div id="xDesc" class="text-xs font-light flex mt-1">
                   Description: {@html desc}
