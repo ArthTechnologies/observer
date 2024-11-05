@@ -65,6 +65,8 @@
       localStorage.setItem("serverVoicechat", voicechat);
       if (subdomain != undefined) {
         localStorage.setItem("serverSubdomain", subdomain);
+      } else {
+        localStorage.removeItem("serverSubdomain");
       }
     }
   }
