@@ -19,6 +19,7 @@
 
   let software;
   let name;
+  let subdomain;
   let address = "arthmc.xyz";
   export let type = "smallBtn";
   if (browser) {
@@ -26,6 +27,7 @@
     id = localStorage.getItem("serverID");
     software = localStorage.getItem("serverSoftware");
     address = localStorage.getItem("address");
+    subdomain = localStorage.getItem("serverSubdomain");
   }
   function get() {
     let baseurl = apiurl;
@@ -116,8 +118,8 @@
 
   function claimSubdomain() {
     console.log("claiming subdomain");
-    const subdomain = document.getElementById("subdomainInput").value;
-    fetch(apiurl + "server/" + id + "/claimSubdomain?subdomain=" + subdomain, {
+    const subdomain2 = document.getElementById("subdomainInput").value;
+    fetch(apiurl + "server/" + id + "/claimSubdomain?subdomain=" + subdomain2, {
       method: "POST",
       headers: {
         username: localStorage.getItem("accountEmail"),
@@ -127,8 +129,28 @@
       .then((x) => x.json())
       .then((x) => {
         if (x.msg == "Done") {
-          alert("Subdomain claimed successfully!");
-          localStorage.setItem("serverSubdomain", subdomain);
+          localStorage.setItem("serverSubdomain", subdomain2);
+          let closeButton = document.getElementById("closeButton");
+          closeButton.click();
+          window.location.reload();
+        } else {
+          alert("Error: " + x.msg);
+        }
+      });
+  }
+
+  function deleteSubdomain() {
+    fetch(apiurl + "server/" + id + "/deleteSubdomain?subdomain=" + subdomain, {
+      method: "POST",
+      headers: {
+        username: localStorage.getItem("accountEmail"),
+        token: localStorage.getItem("token"),
+      },
+    })
+      .then((x) => x.json())
+      .then((x) => {
+        if (x.msg == "Done") {
+          localStorage.removeItem("serverSubdomain");
           let closeButton = document.getElementById("closeButton");
           closeButton.click();
           window.location.reload();
@@ -140,14 +162,6 @@
 
   function copyChar() {
     navigator.clipboard.writeText("§");
-  }
-  if (browser) {
-    const input = document.getElementById("subdomainInput");
-    if (input != undefined) {
-      input.addEventListener("subdomainInput", () => {
-        input.style.width = input.value.length + 1 + "ch"; // Adjust width based on character count
-      });
-    }
   }
 </script>
 
@@ -197,15 +211,24 @@
       class="input input-bordered"
     />
     <label for="serverDescription" class="block font-bold mb-2 mt-4"
-      >Claim a subdomain
+      >Subdomain
     </label>
 
     <div class="flex gap-2 relative">
-      <label class="input input-bordered flex items-center">
-        <input type="text" class="bg-transparent w-4" id="subdomainInput" />
-        <p class="opacity-80">.{address}</p>
-      </label>
-      <button class="btn btn-neutral" on:click={claimSubdomain}>Claim</button>
+      {#if subdomain != undefined}
+        <div
+          class="h-12 p-6 w-fit rounded-xl bg-base-200 flex items-center justify-center"
+        >
+          {subdomain}
+        </div>
+        <button class="btn btn-error" on:click={deleteSubdomain}>Delete</button>
+      {:else}
+        <label class="input input-bordered flex items-center">
+          <input type="text" class="bg-transparent w-32" id="subdomainInput" />
+          <p class="opacity-80">.{address}</p>
+        </label>
+        <button class="btn btn-neutral" on:click={claimSubdomain}>Claim</button>
+      {/if}
     </div>
     <div class="divider mt-3 text-xl font-bold">
       {$t("settings.h.serverInfo")}
