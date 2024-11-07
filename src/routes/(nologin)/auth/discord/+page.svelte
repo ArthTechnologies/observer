@@ -19,10 +19,6 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        fetch("https://backend.arthmc.xyz/analytics/accountCreated", {
-          method: "POST",
-        });
-
         console.log(data);
         localStorage.setItem("avatar", data.avatar);
         localStorage.setItem("bannerColor", data.bannerColor);

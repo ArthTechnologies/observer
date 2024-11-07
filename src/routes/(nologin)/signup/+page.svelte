@@ -26,6 +26,14 @@
       window.dispatchEvent(new Event("redrict"));
     }
   }
+
+  function discordAnalytics() {
+    if (browser) {
+      fetch("https://backend.arthmc.xyz/analytics/accountCreated", {
+        method: "POST",
+      });
+    }
+  }
 </script>
 
 <div
@@ -53,6 +61,7 @@
       <div class="grid grid-cols-2 gap-3 w-full items-center">
         <div class="flex gap-2.5">
           <a
+            on:click={discordAnalytics}
             class="w-40 btn btn-neutral rounded-xl mb-2 btn-icon-text text-2xs"
             href="https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri={address}/auth/discord&response_type=token&scope=email+identify"
             ><img
