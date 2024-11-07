@@ -86,6 +86,9 @@
           if (x === true) {
             console.log("redricting...");
             if (localStorage.getItem("enablePay") == "true") {
+              fetch("https://backend.arthmc.xyz/analytics/accountCreated", {
+                method: "POST",
+              });
               //change this to your own stripe checkout link
               if (plan == undefined) {
                 goto("/subscribe/basic");

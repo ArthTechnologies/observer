@@ -19,6 +19,10 @@
     })
       .then((response) => response.json())
       .then((data) => {
+        fetch("https://backend.arthmc.xyz/analytics/accountCreated", {
+          method: "POST",
+        });
+
         console.log(data);
         localStorage.setItem("avatar", data.avatar);
         localStorage.setItem("bannerColor", data.bannerColor);
@@ -29,7 +33,6 @@
         updateReqTemplates();
         if (localStorage.getItem("enablePay") == "true" && data.firstTime) {
           goto("/subscribe/basic");
-          
         } else {
           goto("/");
           //this tells the navbar to update the icon that is highligted
