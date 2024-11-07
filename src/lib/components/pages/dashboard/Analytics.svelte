@@ -12,8 +12,10 @@
   let y1 = [];
 
   let y2 = [];
+  let y3 = [];
   let points = "";
   let points2 = "";
+  let points3 = "";
   let linux;
   let windows;
   let macos;
@@ -116,20 +118,25 @@
           if (res.days[i] == undefined) {
             y1.push(100);
             y2.push(100);
+            y3.push(100);
           } else {
             let bpageredirects = 0;
             if (res.days[i].redirectsB != undefined) {
               bpageredirects = res.days[i].redirectsB;
             }
-            y1.push(100 - (100 / res.max) * res.days[i].hits);
+            y1.push(150 - (150 / res.max) * res.days[i].hits);
             y2.push(
-              100 - (100 / res.max) * (res.days[i].redirects + bpageredirects),
+              150 - (150 / res.max) * (res.days[i].redirects + bpageredirects)
             );
+            if (res.days[i].accounts != undefined) {
+              y3.push(150 - (150 / res.max) * res.days[i].accounts);
+            }
           }
         }
         for (let i = 0; i <= 30; i++) {
           points += `${x1[i]},${y1[i]} `;
           points2 += `${x1[i]},${y2[i]} `;
+          points3 += `${x1[i]},${y3[i]} `;
         }
 
         linux = res.devices.linux;
@@ -148,8 +155,8 @@
   <div class="flex items-center flex-col">
     <p class="text-lg font-bold my-3 ml-8">Hits in the last 30 days</p>
     <div class="bg-base-200 rounded-xl shadow mb-5">
-      <svg width="300" height="100">
-        <g class="x" transform="translate(0,120)">
+      <svg width="300" height="150">
+        <g class="x" transform="translate(0,170)">
           <text x="0">30</text>
           <text x="60">24</text>
           <text x="120">18</text>
@@ -163,16 +170,22 @@
           x1="0"
           x2="0"
           y1="0"
-          y2="100"
+          y2="150"
           style="stroke: #000000; stroke-width: 2"
         />
         <g class="y" transform="translate(-10,0)">
-          <text y="100">0</text>
-          <text y="50">{res.max / 2}</text>
+          <text y="150">0</text>
+          <text y="75">{res.max / 2}</text>
           <text y="0">{res.max}</text>
         </g>
 
         <!-- data -->
+        <polyline
+          style="stroke: #58ed4e; stroke-width: 2"
+          points="
+  {points3}
+"
+        />
         <polyline
           style="stroke: #f8844e; stroke-width: 2"
           points="
@@ -190,8 +203,8 @@
           style="stroke: #000000; stroke-width: 2"
           x1="0"
           x2="300"
-          y1="100"
-          y2="100"
+          y1="150"
+          y2="150"
         />
       </svg>
     </div>
@@ -286,7 +299,7 @@
                   >{#if page.name.split("/").length > 2}/{page.name
                       .split("/")[1]
                       .split("")[0]}/{page.name.split(
-                      "/",
+                      "/"
                     )[2]}{:else}{page.name}{/if}:</span
                 >
                 {Math.round((page.hits / res.initial) * 100)}%
