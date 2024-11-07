@@ -9,7 +9,7 @@
     AlertTriangleIcon,
     BadgeDollarSign,
     Check,
-    CpuIcon,
+    ChevronDown,
     Cross,
     MemoryStick,
     XIcon,
@@ -51,9 +51,7 @@
 
   function selectBasic() {
     document.getElementById("basicSelect").classList.remove("btn-neutral");
-    document.getElementById("basicSelect").classList.add("from-[#c13841]");
-    document.getElementById("basicSelect").classList.add("to-[#db6429]");
-
+    document.getElementById("basicSelect").classList.add("bg-base-300");
     document.getElementById("basicSelect").classList.add("pointer-events-none");
     document.getElementById("basicSelect").innerHTML = "Selected";
 
@@ -70,8 +68,7 @@
   }
   function selectModded() {
     document.getElementById("moddedSelect").classList.remove("btn-neutral");
-    document.getElementById("moddedSelect").classList.add("from-[#c13841]");
-    document.getElementById("moddedSelect").classList.add("to-[#db6429]");
+    document.getElementById("moddedSelect").classList.add("bg-base-300");
     document
       .getElementById("moddedSelect")
       .classList.add("pointer-events-none");
@@ -91,8 +88,7 @@
   }
   function selectPremium() {
     document.getElementById("premiumSelect").classList.remove("btn-neutral");
-    document.getElementById("premiumSelect").classList.add("from-[#c13841]");
-    document.getElementById("premiumSelect").classList.add("to-[#db6429]");
+    document.getElementById("premiumSelect").classList.add("bg-base-300");
     document
       .getElementById("premiumSelect")
       .classList.add("pointer-events-none");
@@ -227,24 +223,22 @@
   <div
     class="px-[2.5rem] min-[1080px]:px-4 min-[1200px]:px-[2.5rem] 2xl:px-[7rem] py-[4.5rem] flex flex-col max-md:place-items-center relative"
   >
-    <p class="text-xl mb-4 font-poppins-bold">{$t("subscribe.pickAPlan")}</p>
+    <p class="text-xl mb-4 font-bold">{$t("subscribe.pickAPlan")}</p>
 
     <div class="sm:flex mb-2">
       <div class="flex flex-col gap-2">
-        <div class="flex gap-2 items-center">
-          {$t("basic")}
-          <div class="badge badge-neutral rounded-lg font-poppins gap-1.5">
-            <MemoryStick size="16" class="shrink-0" />
-            3GB
-          </div>
-        </div>
+        {$t("basic")}
         <div class="flex gap-2">
-          <p class="text-accent-content text-4xl font-poppins-bold">
+          <p class="text-accent-content text-4xl font-bold">
             ${basicPlanPrice}
           </p>
 
           <p class="w-5 text-sm">{billingCycle}</p>
         </div>
+        <img
+          src="/images/basicPlan.webp"
+          class="rounded-xl h-[5.75rem] w-[9.5rem]"
+        />
 
         <a
           on:click={() => {
@@ -253,7 +247,7 @@
             }, 100);
           }}
           id="basicSelect"
-          class="h-12 my-3 px-5 cursor-pointer flex items-center bg-gradient-to-b from-[#E93843] to-[#F56922] hover:brightness-90 rounded-full text-white whiteGradientStroke font-poppins-bold justify-center bg-gradient-to-b from-[#E93843] to-[#F56922]"
+          class="btn btn-neutral btn-sm my-0.5 w-full"
           href="/subscribe/basic">{$t("select")}</a
         >
         <p
@@ -279,21 +273,19 @@
         class="max-[1200px]:invisible max-[1200px]:m-0 divider divider-horizontal m-0 ml-2 mr-5 h-12 mt-7"
       ></div>
       <div class="flex flex-col gap-2">
-        <div class="flex gap-2 items-center">
-          {$t("modded")}
-          <div class="badge badge-neutral rounded-lg font-poppins gap-1.5">
-            <MemoryStick size="16" class="shrink-0" />
-            4GB
-          </div>
-        </div>
-
+        {$t("modded")}
         <div class="flex gap-2">
-          <p class="text-accent-content text-4xl font-poppins-bold">
+          <p class="text-accent-content text-4xl font-bold">
             ${moddedPlanPrice}
           </p>
 
           <p class="w-5 text-sm">{billingCycle}</p>
         </div>
+
+        <img
+          src="/images/moddedPlan.webp"
+          class="rounded-xl h-[5.75rem] w-[9.5rem]"
+        />
 
         <a
           on:click={() => {
@@ -302,7 +294,7 @@
             }, 100);
           }}
           id="moddedSelect"
-          class="h-12 my-3 px-5 cursor-pointer flex items-center bg-gradient-to-b from-[#E93843] to-[#F56922] hover:brightness-90 rounded-full text-white whiteGradientStroke font-poppins-bold justify-center"
+          class="btn btn-neutral btn-sm my-0.5 w-full"
           href="/subscribe/modded">{$t("select")}</a
         >
         <p
@@ -329,21 +321,19 @@
         class="max-[1200px]:invisible max-[1200px]:m-0 divider divider-horizontal m-0 ml-2 mr-5 h-12 mt-7"
       ></div>
       <div class="flex flex-col gap-2">
-        <div class="flex gap-2 items-center">
-          Premium <div
-            class="badge badge-neutral rounded-lg font-poppins gap-1.5"
-          >
-            <MemoryStick size="16" class="shrink-0" />
-            8GB
-          </div>
-        </div>
+        Premium
         <div class="flex gap-2">
-          <p class="text-accent-content text-4xl font-poppins-bold">
+          <p class="text-accent-content text-4xl font-bold">
             ${premiumPlanPrice}
           </p>
 
           <p class="w-5 text-sm">{billingCycle}</p>
         </div>
+
+        <img
+          src="/images/premiumPlan.webp"
+          class="rounded-xl h-[5.75rem] w-[9.5rem]"
+        />
 
         <a
           on:click={() => {
@@ -351,12 +341,10 @@
               location.reload();
             }, 100);
           }}
-          class="h-12 my-3 px-5 cursor-pointer flex items-center bg-gradient-to-b from-[#E93843] to-[#F56922] hover:brightness-90 rounded-full text-white whiteGradientStroke font-poppins-bold justify-center"
           id="premiumSelect"
-          href="/subscribe/premium"
+          class="btn btn-neutral btn-sm my-0.5 w-full"
+          href="/subscribe/premium">{$t("select")}</a
         >
-          <p>{$t("select")}</p>
-        </a>
         <p
           class="hidden sm:flex items-center gap-2 text-sm xl:text-[.95rem] w-[9.5rem]"
         >
@@ -415,30 +403,3 @@
 </div>
 
 <Footer navType="welcone" />
-
-<style>
-  .whiteGradientStroke {
-    position: relative;
-
-    z-index: 1;
-  }
-
-  .whiteGradientStroke::before {
-    content: "";
-    position: absolute;
-    top: 0px;
-
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    border-radius: inherit; /* Inherits button's border-radius */
-    padding: 2px; /* Space between button and border */
-    background: linear-gradient(180deg, #ffffff, #ffffff00);
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: destination-out;
-    mask-composite: exclude;
-    z-index: -1;
-  }
-</style>
