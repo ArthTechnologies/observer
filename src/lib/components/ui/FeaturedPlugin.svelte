@@ -24,7 +24,7 @@
   let version = "";
   if (browser) {
     software = localStorage.getItem("serverSoftware");
-    version = localStorage.getItem("serverVersion");
+    version = localStorage.getItem("serverVersion").split("*")[0];
   }
 
   function submit() {

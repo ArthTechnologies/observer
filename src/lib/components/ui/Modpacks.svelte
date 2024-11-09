@@ -90,7 +90,9 @@
         .getElementById("softwareDropdown")
         .value.split(" - ")[0]
         .toLowerCase();
-      let version = document.getElementById("versionDropdown").value;
+      let version = document
+        .getElementById("versionDropdown")
+        .value.split("*")[0];
       if (document.getElementById("sortByDropdown") != null) {
         sortBy = document.getElementById("sortByDropdown").value;
       }

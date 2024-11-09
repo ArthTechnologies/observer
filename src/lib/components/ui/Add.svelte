@@ -83,9 +83,9 @@
 
     if (browser) {
       software = localStorage.getItem("serverSoftware");
-      version = localStorage.getItem("serverVersion");
+      version = localStorage.getItem("serverVersion").split("*")[0];
       if (software == "Velocity") {
-        version = localStorage.getItem("latestVersion");
+        version = localStorage.getItem("latestVersion").split("*")[0];
       }
       if (document.getElementById("sortByDropdown") != null) {
         sortBy = document.getElementById("sortByDropdown").value;

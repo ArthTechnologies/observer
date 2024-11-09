@@ -68,7 +68,7 @@
 
   if (browser) {
     software = localStorage.getItem("serverSoftware");
-    version = localStorage.getItem("serverVersion");
+    version = localStorage.getItem("serverVersion").split("*")[0];
   }
   onMount(() => {
     if (browser) {
@@ -128,7 +128,7 @@
         "mod",
         offset,
         sortBy,
-        categories,
+        categories
       ).then((response) => {
         if (platform == "mr") {
           skeletonsLength = response.hits.length;
