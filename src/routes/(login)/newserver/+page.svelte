@@ -118,6 +118,7 @@
               }
             }
           }
+          console.log("free servers: " + json.freeServers);
           if (json.moddedSubscriptions + json.freeServers <= moddedServers) {
             canCreateModdedServer = false;
           }
@@ -190,7 +191,8 @@
   }
   function checkV() {
     if (browser) {
-      version = document.getElementById("versionDropdown").value.split("*")[0];
+      version = document.getElementById("versionDropdown").value;
+
       console.log("version selected: " + version);
     }
 

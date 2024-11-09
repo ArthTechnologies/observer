@@ -43,7 +43,7 @@
         .getElementById("softwareDropdown")
         .value.split(" - ")[0]
         .toLowerCase();
-      sVersion = document.getElementById("versionDropdown").value;
+      sVersion = document.getElementById("versionDropdown").value.split("*")[0];
     } else {
       software = localStorage.getItem("serverSoftware");
       sVersion = localStorage.getItem("serverVersion");
