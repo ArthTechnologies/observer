@@ -38,6 +38,9 @@
     FileCog,
     MemoryStick,
     Users,
+    Unplug,
+    ServerOff,
+    PowerOff,
   } from "lucide-svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
   import Versions from "$lib/components/buttons/Versions.svelte";
@@ -284,6 +287,10 @@
     changeServerState("stop", id, email);
   }
 
+  function kill() {
+    changeServerState("kill", id, email);
+  }
+
   onMount(() => {
     setTimeout(() => {
       getStatus();
@@ -487,9 +494,9 @@
           <Loader class="animate-spin mr-1.5" />
           {$t("button.starting")}
         </div>
-        <button on:click={stop} class="btn btn-error"
-          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
-        >
+        <button class="btn btn-neutral" on:click={kill}>
+          <Unplug class="mr-1.5" />Kill
+        </button>
       {:else if state == "installing"}
         <div
           class="inline-flex pointer-events-none bg-accent flex items-center px-4 py-3 text-center text-sm font-semibold text-base-300 uppercase rounded-md"
@@ -501,8 +508,8 @@
           ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "stopping"}
-        <button class="btn btn-disabled">
-          <PlayCircle class="mr-1.5" />{$t("button.start")}
+        <button class="btn btn-neutral" on:click={kill}>
+          <Unplug class="mr-1.5" />Kill
         </button>
         <div
           class="inline-flex pointer-events-none bg-error flex items-center px-4 py-3 text-center text-sm font-semibold text-black uppercase rounded-md"
