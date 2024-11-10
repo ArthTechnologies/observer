@@ -2,7 +2,6 @@
   import { browser, dev } from "$app/environment";
   import { onMount } from "svelte";
   import {
-    getPlayers,
     changeServerState,
     deleteServer,
     writeTerminal,
@@ -37,6 +36,8 @@
     ExternalLink,
     Send,
     FileCog,
+    MemoryStick,
+    Users,
   } from "lucide-svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
   import Versions from "$lib/components/buttons/Versions.svelte";
@@ -411,6 +412,45 @@
     writeTerminal(id, "chunky start world circle 0 0 " + radius);
     document.getElementById("pregenRadius").value = "";
   }
+
+  let ramUsage = "1.024GB";
+  let players = 0;
+  let maxPlayers = 20;
+
+  if (browser) {
+    fetchRam();
+    fetchPlayers();
+    setInterval(() => {
+      fetchRam();
+    }, 5000);
+    setInterval(() => {
+      fetchPlayers();
+    }, 15000);
+
+    function fetchRam() {
+      fetch(apiurl + "server/" + id + "/memoryInfo", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token"),
+          username: localStorage.getItem("accountEmail"),
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          ramUsage = data.data.replace("iB", "B").trim();
+        });
+    }
+
+    function fetchPlayers() {
+      fetch("https://api.mcsrvstat.us/3/arthmc.xyz:" + port)
+        .then((response) => response.json())
+        .then((data) => {
+          players = data.players.online;
+          maxPlayers = data.players.max;
+        });
+    }
+  }
 </script>
 
 <div class="lg:-mt-10">
@@ -519,7 +559,18 @@
               <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md" />
 
               <div class="">
-                <div class="stat-title">{$t("server.ip")}</div>
+                <div class="h-6 flex gap-2">
+                  <div
+                    class="bg-neutral rounded-lg px-2 text-sm flex items-center gap-1.5"
+                  >
+                    <MemoryStick size="16" />{ramUsage}
+                  </div>
+                  <div
+                    class="bg-neutral rounded-lg px-2 text-sm flex items-center gap-1.5"
+                  >
+                    <Users size="16" />{players}/{maxPlayers} Players
+                  </div>
+                </div>
                 <div class="font-bold sm:text-lg md:text-[1.6rem] mt-1">
                   {#if subdomain == undefined}{address}:{port}{:else}
                     {subdomain}.{address}
@@ -531,16 +582,6 @@
                 <div id="rawDesc" class="hidden"></div>
               </div>
             </div>
-            <a
-              href="https://arthmc.xyz/docs/how-to-join-servers"
-              target="_blank"
-              rel="noreferrer"
-              class="btn btn-ghost btn-sm md:btn-xs absolute bottom-2 right-2.5 md:top-3 md:right-11 md:-mb-2.5"
-            >
-              <HelpCircle size="18" class="md:mr-1.5" />
-              <p class="hidden md:block">How to join</p></a
-            >
-            <ServerSettings type="smallBtn" />
           </div>
         </div>
       </div>
