@@ -103,7 +103,7 @@
           } else {
             if (x.includes("Email already exists"))
               alert($t("alert.emailAlreadyExists"));
-            else if (x.inclues("Password is too short"))
+            else if (x.includes("Password is too short"))
               alert($t("alert.passwordIsTooShort"));
             else alert(x);
           }
