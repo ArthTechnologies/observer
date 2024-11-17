@@ -273,7 +273,7 @@
         class="max-[1200px]:invisible max-[1200px]:m-0 divider divider-horizontal m-0 ml-2 mr-5 h-12 mt-7"
       ></div>
       <div class="flex flex-col gap-2">
-        {$t("modded")}
+        {$t("plus")}
         <div class="flex gap-2">
           <p class="text-accent-content text-4xl font-bold">
             ${moddedPlanPrice}

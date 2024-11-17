@@ -391,11 +391,11 @@
                       {$t("basic")}
                     </div>
                   {/if}
-                  {#if sub.split(":")[0] === "modded"}
+                  {#if sub.split(":")[0] === "plus"}
                     <div
                       class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 rounded-md text-sm text-black"
                     >
-                      {$t("modded")}
+                      {$t("plus")}
                     </div>
                   {/if}
                   {#if sub.split(":")[0] === "premium"}
@@ -448,11 +448,11 @@
                       </div>
                     {/if}
                   {/if}
-                  {#if sub.split(":")[0] === "modded"}
+                  {#if sub.split(":")[0] === "plus"}
                     <div
                       class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 text-sm text-black rounded-l-md"
                     >
-                      {$t("modded")}
+                      {$t("plus")}
                     </div>
 
                     {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}

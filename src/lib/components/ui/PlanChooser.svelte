@@ -22,8 +22,8 @@
     if (browser && window.innerWidth > 768) {
       if (window.location.pathname == "/subscribe/basic") {
         selectBasic();
-      } else if (window.location.pathname == "/subscribe/modded") {
-        selectModded();
+      } else if (window.location.pathname == "/subscribe/plus") {
+        selectPlus();
       } else if (window.location.pathname == "/subscribe/premium") {
         selectPremium();
       }
@@ -51,31 +51,27 @@
 
   function selectBasic() {
     document.getElementById("basicSelect").classList.remove("btn-neutral");
-    document.getElementById("basicSelect").classList.add("from-[#c13841]");
-    document.getElementById("basicSelect").classList.add("to-[#db6429]");
+    document.getElementById("basicSelect").classList.add("opacity-70");
 
     document.getElementById("basicSelect").classList.add("pointer-events-none");
     document.getElementById("basicSelect").innerHTML = "Selected";
 
-    document.getElementById("moddedSelect").classList.add("btn-neutral");
+    document.getElementById("plusSelect").classList.add("btn-neutral");
     document
-      .getElementById("moddedSelect")
+      .getElementById("plusSelect")
       .classList.remove("pointer-events-none");
-    document.getElementById("moddedSelect").innerHTML = "Select";
+    document.getElementById("plusSelect").innerHTML = "Select";
     document.getElementById("premiumSelect").classList.add("btn-neutral");
     document
       .getElementById("premiumSelect")
       .classList.remove("pointer-events-none");
     document.getElementById("premiumSelect").innerHTML = "Select";
   }
-  function selectModded() {
-    document.getElementById("moddedSelect").classList.remove("btn-neutral");
-    document.getElementById("moddedSelect").classList.add("from-[#c13841]");
-    document.getElementById("moddedSelect").classList.add("to-[#db6429]");
-    document
-      .getElementById("moddedSelect")
-      .classList.add("pointer-events-none");
-    document.getElementById("moddedSelect").innerHTML = "Selected";
+  function selectPlus() {
+    document.getElementById("plusSelect").classList.remove("btn-neutral");
+    document.getElementById("plusSelect").classList.add("opacity-70");
+    document.getElementById("plusSelect").classList.add("pointer-events-none");
+    document.getElementById("plusSelect").innerHTML = "Selected";
 
     document.getElementById("basicSelect").classList.add("btn-neutral");
     document
@@ -91,8 +87,7 @@
   }
   function selectPremium() {
     document.getElementById("premiumSelect").classList.remove("btn-neutral");
-    document.getElementById("premiumSelect").classList.add("from-[#c13841]");
-    document.getElementById("premiumSelect").classList.add("to-[#db6429]");
+    document.getElementById("premiumSelect").classList.add("opacity-70");
     document
       .getElementById("premiumSelect")
       .classList.add("pointer-events-none");
@@ -104,14 +99,14 @@
       .classList.remove("pointer-events-none");
     document.getElementById("basicSelect").innerHTML = "Select";
 
-    document.getElementById("moddedSelect").classList.add("btn-neutral");
+    document.getElementById("plusSelect").classList.add("btn-neutral");
     document
-      .getElementById("moddedSelect")
+      .getElementById("plusSelect")
       .classList.remove("pointer-events-none");
-    document.getElementById("moddedSelect").innerHTML = "Select";
+    document.getElementById("plusSelect").innerHTML = "Select";
   }
   let basicPlanPrice = 3.49;
-  let moddedPlanPrice = 4.99;
+  let plusPlanPrice = 4.99;
   let premiumPlanPrice = 7.99;
 
   if (browser) {
@@ -121,7 +116,7 @@
           document.getElementById("billPeriod").selectedIndex = 1;
 
           basicPlanPrice = 9.99;
-          moddedPlanPrice = 13.99;
+          plusPlanPrice = 13.99;
           premiumPlanPrice = 23.49;
           billingCycle = $t("perQuarter");
         }
@@ -129,11 +124,11 @@
         let currency = localStorage.getItem("currency");
         if (currency == "mxn") {
           basicPlanPrice = (basicPlanPrice * 18).toFixed(0);
-          moddedPlanPrice = (moddedPlanPrice * 18).toFixed(0);
+          plusPlanPrice = (plusPlanPrice * 18).toFixed(0);
           premiumPlanPrice = (premiumPlanPrice * 18).toFixed(0);
           //round up to nearest 5
           basicPlanPrice = Math.ceil(basicPlanPrice / 5) * 5;
-          moddedPlanPrice = Math.ceil(moddedPlanPrice / 5) * 5;
+          plusPlanPrice = Math.ceil(plusPlanPrice / 5) * 5;
           premiumPlanPrice = Math.ceil(premiumPlanPrice / 5) * 5;
         }
       } else {
@@ -280,7 +275,7 @@
       ></div>
       <div class="flex flex-col gap-2">
         <div class="flex gap-2 items-center">
-          {$t("modded")}
+          {$t("plus")}
           <div class="badge badge-neutral rounded-lg font-poppins gap-1.5">
             <MemoryStick size="16" class="shrink-0" />
             4GB
@@ -289,7 +284,7 @@
 
         <div class="flex gap-2">
           <p class="text-accent-content text-4xl font-poppins-bold">
-            ${moddedPlanPrice}
+            ${plusPlanPrice}
           </p>
 
           <p class="w-5 text-sm">{billingCycle}</p>
@@ -301,9 +296,9 @@
               location.reload();
             }, 100);
           }}
-          id="moddedSelect"
+          id="plusSelect"
           class="h-12 my-3 px-5 cursor-pointer flex items-center bg-gradient-to-b from-[#E93843] to-[#F56922] hover:brightness-90 rounded-full text-white whiteGradientStroke font-poppins-bold justify-center"
-          href="/subscribe/modded">{$t("select")}</a
+          href="/subscribe/plus">{$t("select")}</a
         >
         <p
           class="hidden sm:flex items-center gap-2 text-sm xl:text-[.95rem] w-[9.5rem]"

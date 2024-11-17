@@ -87,7 +87,7 @@
               <div
                 class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 rounded-md text-sm text-black"
               >
-                {subs.moddedSubscriptions}x {$t("modded")}
+                {subs.moddedSubscriptions}x {$t("plus")}
               </div>
             {/if}
 
