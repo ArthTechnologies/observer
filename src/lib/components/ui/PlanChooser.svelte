@@ -278,7 +278,7 @@
           {$t("plus")}
           <div class="badge badge-neutral rounded-lg font-poppins gap-1.5">
             <MemoryStick size="16" class="shrink-0" />
-            4GB
+            5GB
           </div>
         </div>
 
