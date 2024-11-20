@@ -9,6 +9,7 @@
   import { onMount } from "svelte";
   import { parse } from "path";
   import { HelpCircle, Languages, ShoppingCart, User } from "lucide-svelte";
+  import ServerSkeleNew from "../ui/ServerSkeleNew.svelte";
 
   // NOTE: the element that is using one of the theme attributes must be in the DOM on mount
   let servers: any[] = [];
@@ -146,24 +147,37 @@
     <img src="/images/sitelogo.svg" class="w-40" />
     <div class="divider"></div>
     <div class="flex flex-col gap-3 w-full">
-      {#each servers as server}
-        {#if parseInt(server.id) + 10000 == slug}
-          <a
-            id="serverCard{10000 + parseInt(server.id)}"
-            class="primaryGradientStroke pointer-events-none flex gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
-          >
-            <ServerCardNew {...server} />
-          </a>
-        {:else}
-          <a
-            on:click={() => update(server.id, true)}
-            id="serverCard{10000 + parseInt(server.id)}"
-            class="neutralGradientStroke flex gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
-          >
-            <ServerCardNew {...server} />
-          </a>
-        {/if}
-      {/each}
+      {#await promise}
+        <div
+          class="pointer-events-none flex gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
+        >
+          <ServerSkeleNew />
+        </div>
+        <div
+          class="pointer-events-none flex gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
+        >
+          <ServerSkeleNew />
+        </div>
+      {:then}
+        {#each servers as server}
+          {#if parseInt(server.id) + 10000 == slug}
+            <a
+              id="serverCard{10000 + parseInt(server.id)}"
+              class="primaryGradientStroke pointer-events-none flex gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
+            >
+              <ServerCardNew {...server} />
+            </a>
+          {:else}
+            <a
+              on:click={() => update(server.id, true)}
+              id="serverCard{10000 + parseInt(server.id)}"
+              class="neutralGradientStroke flex gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
+            >
+              <ServerCardNew {...server} />
+            </a>
+          {/if}
+        {/each}
+      {/await}
     </div>
   </div>
   <div class="flex flex-col w-full gap-1">
