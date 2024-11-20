@@ -88,6 +88,7 @@
     } else {
       id = parseInt(window.location.href.split("/")[4]) - 10000;
     }
+
     if (
       localStorage.getItem("serverSoftware") == "Fabric" ||
       localStorage.getItem("serverSoftware") == "Quilt" ||
@@ -461,12 +462,8 @@
 </script>
 
 <div class="lg:-mt-10">
-  <div class=" flex justify-between mb-2">
+  <div class=" flex justify-between mb-2 w-full">
     <div class="space-x-2 space-y-2 mb-2 flex flex-col items-center md:block">
-      <a href="/" class="btn btn-info"
-        ><ArrowLeft class="mr-1.5" />
-        {$t("button.back")}</a
-      >
       <DeleteServer />
       <Updates />
       <World />
@@ -537,7 +534,7 @@
         <FullscreenTerminal />
         <div
           id="terminalContainer"
-          class="bg-base-300 rounded-xl overflow-auto w-[23rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem] h-[30rem] 2xl:h-[35rem]"
+          class="bg-base-100 rounded-xl overflow-auto w-[23rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem] h-[30rem] 2xl:h-[35rem]"
         >
           <div class="p-5 sm:text-xs xl:text-base font-mono relative">
             <p id="terminal" />
@@ -559,7 +556,7 @@
     >
       <div class="space-y-5 mb-4">
         <div
-          class="rounded-xl bg-base-200 shadow-xl image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
+          class="rounded-xl bg-base-100 bg-opacity-75 shadow-lg image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
         >
           <div class="flex relative w-[20rem] md:w-[22.4rem]">
             <div class="p-4 space-x-4 flex">
@@ -578,7 +575,7 @@
                     <Users size="16" />{players}/{maxPlayers} Players
                   </div>
                 </div>
-                <div class="font-bold sm:text-lg md:text-[1.6rem] mt-1">
+                <div class="font-poppins-bold sm:text-lg md:text-[1.5rem] mt-1">
                   {#if subdomain == undefined}{address}:{port}{:else}
                     {subdomain}.{address}
                   {/if}
@@ -751,7 +748,7 @@
           >
         </div>
       {/if}
-      <div class=" bg-base-200 mt-5 rounded-xl px-4 py-3 w-[20rem] md:w-auto">
+      <div class=" bg-base-100 mt-5 rounded-xl px-4 py-3 w-[20rem] md:w-auto">
         <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
         <div class="space-x-1.5 space-y-1.5">
           <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
