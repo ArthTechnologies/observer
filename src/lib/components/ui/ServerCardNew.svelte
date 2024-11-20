@@ -192,17 +192,20 @@
   class="w-[3.75rem] h-[3.75rem] rounded-lg max-lg:hidden"
 />
 <div class="-mt-1">
-  <p class="font-poppins-bold text-white text-lg truncate">{name}</p>
-  <p class="font-poppins text-xs mb-0.5 -mt-1">
-    {#if subdomain == undefined}
-      {address}:{10000 + parseInt(id)}
-    {:else}
-      {subdomain}.{address}
-    {/if}
-  </p>
-  <div class="flex gap-2">
-    <p class="bg-base-300 px-1.5 rounded text-xs font-poppins">{software}</p>
-    <p class="bg-base-300 px-1.5 rounded text-xs font-poppins">{version}</p>
+  <p class="font-poppins-bold text-white text-sm md:text-lg truncate">{name}</p>
+  <!-- Only shows in sidebar mode-->
+  <div class="max-md:hidden">
+    <p class="font-poppins text-xs mb-0.5 -mt-1">
+      {#if subdomain == undefined}
+        {address}:{10000 + parseInt(id)}
+      {:else}
+        {subdomain}.{address}
+      {/if}
+    </p>
+    <div class="flex gap-2">
+      <p class="bg-base-300 px-1.5 rounded text-xs font-poppins">{software}</p>
+      <p class="bg-base-300 px-1.5 rounded text-xs font-poppins">{version}</p>
+    </div>
   </div>
 </div>
 

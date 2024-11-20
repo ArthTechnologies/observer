@@ -8,7 +8,7 @@
     <Sidebar />
   </div>
   <div class="w-full md:hidden">
-    <Navbar />
+    <Sidebar />
   </div>
   <div class="m-4 sm:m-6 md:m-8 pb-12 lg:mt-16 w-[75%]">
     <slot />

@@ -8,7 +8,13 @@
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
   import { parse } from "path";
-  import { HelpCircle, Languages, ShoppingCart, User } from "lucide-svelte";
+  import {
+    HelpCircle,
+    Languages,
+    Menu,
+    ShoppingCart,
+    User,
+  } from "lucide-svelte";
   import ServerSkeleNew from "../ui/ServerSkeleNew.svelte";
 
   // NOTE: the element that is using one of the theme attributes must be in the DOM on mount
@@ -141,20 +147,22 @@
 </script>
 
 <div
-  class="shrink-0 fixed h-screen bg-base-100 p-5 flex flex-col items-center justify-between"
+  class="shrink-0 md:fixed md:h-screen bg-base-100 p-5 flex md:flex-col items-center justify-between max-md:w-full"
 >
-  <div class="flex flex-col items-center w-full">
-    <img src="/images/sitelogo.svg" class="w-40" />
-    <div class="divider"></div>
-    <div class="flex flex-col gap-3 w-full">
+  <div class="flex md:flex-col items-center w-full">
+    <img src="/favicon.png" class="w-12 md:hidden" />
+    <img src="/images/sitelogo.svg" class="w-40 max-md:hidden" />
+    <div class="divider max-md:divider-horizontal max-md:mx-2.5"></div>
+
+    <div class="flex md:flex-col gap-3 w-fit md:w-full">
       {#await promise}
         <div
-          class="pointer-events-none flex gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
+          class="pointer-events-none flex gap-2.5 items-center p-3 w-full lg:h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
         >
           <ServerSkeleNew />
         </div>
         <div
-          class="pointer-events-none flex gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
+          class="pointer-events-none flex gap-2.5 items-center p-3 w-full lg:h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
         >
           <ServerSkeleNew />
         </div>
@@ -163,7 +171,7 @@
           {#if parseInt(server.id) + 10000 == slug}
             <a
               id="serverCard{10000 + parseInt(server.id)}"
-              class="primaryGradientStroke pointer-events-none flex max-lg:px-4 gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
+              class="primaryGradientStroke pointer-events-none flex md:max-lg:px-4 gap-2.5 items-center p-3 w-14 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
             >
               <ServerCardNew {...server} />
             </a>
@@ -171,7 +179,7 @@
             <a
               on:click={() => update(server.id, true)}
               id="serverCard{10000 + parseInt(server.id)}"
-              class="neutralGradientStroke flex max-lg:px-4 gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
+              class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-14 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
             >
               <ServerCardNew {...server} />
             </a>
@@ -180,7 +188,7 @@
       {/await}
     </div>
   </div>
-  <div class="flex flex-col w-full gap-1">
+  <div class="max-md:hidden flex flex-col w-full gap-1">
     <button class="btn btn-ghost btn-sm flex justify-start">
       <User size="20" class="mr-2" />Manage Account</button
     >
@@ -194,6 +202,20 @@
     <button class="btn btn-ghost btn-sm flex justify-start">
       <HelpCircle size="20" class="mr-2" />Get Support</button
     >
+  </div>
+  <div class="md:hidden flex gap-1">
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="btn m-1 btn-ghost"><Menu /></div>
+      <ul
+        tabindex="0"
+        class="dropdown-content menu bg-base-300 rounded-box z-[1] w-52 p-2 shadow-xl"
+      >
+        <li><a>Manage Account</a></li>
+        <li><a>Subscriptions</a></li>
+        <li><a>Language</a></li>
+        <li><a>Get Support</a></li>
+      </ul>
+    </div>
   </div>
 </div>
 
