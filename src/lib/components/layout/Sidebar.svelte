@@ -141,7 +141,7 @@
 </script>
 
 <div
-  class="shrink-0 min-h-screen bg-base-100 p-5 flex flex-col items-center justify-between"
+  class="shrink-0 fixed h-screen bg-base-100 p-5 flex flex-col items-center justify-between"
 >
   <div class="flex flex-col items-center w-full">
     <img src="/images/sitelogo.svg" class="w-40" />
@@ -163,7 +163,7 @@
           {#if parseInt(server.id) + 10000 == slug}
             <a
               id="serverCard{10000 + parseInt(server.id)}"
-              class="primaryGradientStroke pointer-events-none flex gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
+              class="primaryGradientStroke pointer-events-none flex max-lg:px-4 gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
             >
               <ServerCardNew {...server} />
             </a>
@@ -171,7 +171,7 @@
             <a
               on:click={() => update(server.id, true)}
               id="serverCard{10000 + parseInt(server.id)}"
-              class="neutralGradientStroke flex gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
+              class="neutralGradientStroke flex max-lg:px-4 gap-2.5 items-center p-3 w-full h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
             >
               <ServerCardNew {...server} />
             </a>

@@ -78,7 +78,7 @@
       localStorage.setItem("updateAlert", "dynmap");
       alert(
         "Update: Dynmap & Simple Voice Chat support have been added.",
-        "info"
+        "info",
       );
     }
 
@@ -377,7 +377,7 @@
               .split("<p>").length -
               terminal.innerHTML.split("<p>").length);
           terminal.innerHTML = filteredResponse.substring(
-            filteredResponse.length - 100000
+            filteredResponse.length - 100000,
           );
         }
 
@@ -391,7 +391,7 @@
           let difference =
             terminalContainer.scrollHeight - terminalContainer.scrollTop;
           const terminalContainerContainer = document.getElementById(
-            "terminalContainerContainer"
+            "terminalContainerContainer",
           );
           if (difference <= terminalContainerContainer?.clientHeight) {
             setTimeout(() => {
@@ -462,7 +462,7 @@
 </script>
 
 <div class="lg:-mt-10">
-  <div class=" flex justify-between mb-2 w-full">
+  <div class=" flex justify-between mb-2">
     <div class="space-x-2 space-y-2 mb-2 flex flex-col items-center md:block">
       <DeleteServer />
       <Updates />
@@ -527,14 +527,14 @@
   </div>
 
   <div
-    class="space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between py-10 px-5 md:px-10"
+    class=" space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between py-10 px-5"
   >
-    <div class="flex flex-col items-center space-y-3 md:space-y-0">
-      <div id="terminalContainerContainer" class="relative mb-1.5">
+    <div class="flex flex-col items-center space-y-3 md:space-y-0 w-full">
+      <div id="terminalContainerContainer" class="relative mb-1.5 w-full">
         <FullscreenTerminal />
         <div
           id="terminalContainer"
-          class="bg-base-100 rounded-xl overflow-auto w-[23rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem] h-[30rem] 2xl:h-[35rem]"
+          class="bg-base-100 rounded-xl overflow-auto w-full h-[30rem] 2xl:h-[35rem]"
         >
           <div class="p-5 sm:text-xs xl:text-base font-mono relative">
             <p id="terminal" />
@@ -546,7 +546,7 @@
         id="input"
         type="text"
         placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 w-[23rem] lg:w-[30rem] xl:w-[50rem] 2xl:w-[60rem]"
+        class="input input-secondary bg-base-200 w-full"
       />
       <div class="divider md:hidden pt-5 pb-4" />
     </div>

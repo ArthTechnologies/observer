@@ -189,10 +189,10 @@
 
 <img
   src="/images/placeholder.webp"
-  class="w-[3.75rem] h-[3.75rem] rounded-lg"
+  class="w-[3.75rem] h-[3.75rem] rounded-lg max-lg:hidden"
 />
 <div class="-mt-1">
-  <p class="font-poppins-bold text-white text-lg">{name}</p>
+  <p class="font-poppins-bold text-white text-lg truncate">{name}</p>
   <p class="font-poppins text-xs mb-0.5 -mt-1">
     {#if subdomain == undefined}
       {address}:{10000 + parseInt(id)}
