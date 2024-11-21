@@ -250,11 +250,11 @@
     </div>
   </div>
   <div class="max-md:hidden flex flex-col w-full gap-1">
-    <button class="btn btn-ghost btn-sm flex justify-start">
-      <User size="20" class="mr-2" />Account</button
+    <a href="/account" class="btn btn-ghost btn-sm flex justify-start">
+      <User size="20" class="mr-2" />Account</a
     >
-    <button class="btn btn-ghost btn-sm flex justify-start">
-      <ShoppingCart size="20" class="mr-2" />Subscriptions</button
+    <a href="/billing" class="btn btn-ghost btn-sm flex justify-start">
+      <ShoppingCart size="20" class="mr-2" />Subscriptions</a
     >
 
     <button class="btn btn-ghost btn-sm flex justify-start">
@@ -274,8 +274,8 @@
         tabindex="0"
         class="dropdown-content menu bg-base-300 rounded-box z-[1] w-52 p-2 shadow-xl"
       >
-        <li><a>Account</a></li>
-        <li><a>Subscriptions</a></li>
+        <li><a href="/account">Account</a></li>
+        <li><a href="/billing">Subscriptions</a></li>
         <li><a>Language</a></li>
         <li><a>Get Support</a></li>
         <li><a>Logout</a></li>
