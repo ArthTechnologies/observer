@@ -5,7 +5,7 @@
   import { getServer } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
-  import { Loader, Plus } from "lucide-svelte";
+  import { Loader, Plus, PlusIcon } from "lucide-svelte";
   //Status variables
 
   let startcolor = "accent";
@@ -44,7 +44,8 @@
   class="bg-base-300 w-[3.75rem] h-[3.75rem] rounded-lg max-lg:hidden flex justify-center items-center"
 ><Plus size=32/></div>
 <div class="-mt-1">
-  <p class="font-poppins-bold text-white text-sm md:text-lg truncate">Create Server</p>
+  <p class="font-poppins-bold text-white text-sm md:text-lg truncate max-md:hidden">Create Server</p>
+  <div class="md:hidden flex items-center justify-center"><PlusIcon size=20/></div>
   <!-- Only shows in sidebar mode-->
   <div class="max-md:hidden">
     <p class="font-poppins text-xs mb-0.5 -mt-1">

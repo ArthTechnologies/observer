@@ -188,11 +188,11 @@
 </script>
 
 <div
-  class="shrink-0 md:fixed md:h-screen bg-base-100 px-5 py-3 md:py-5 flex md:flex-col items-center justify-between max-md:w-full"
+  class="shrink-0 md:fixed md:h-screen bg-base-100 px-5 py-3 md:py-5 flex md:flex-col items-center justify-between w-full md:w-[22%]"
 >
   <div class="flex md:flex-col items-center w-full">
     <img src="/favicon.png" class="w-12 md:hidden" />
-    <img src="/images/sitelogo.svg" class="w-40 max-md:hidden" />
+    <img src="/images/sitelogo.svg" class="w-32 lg:w-36 max-md:hidden" />
     <div class="divider max-md:divider-horizontal max-md:mx-2.5"></div>
 
     <div class="flex md:flex-col gap-3 w-fit md:w-full">
@@ -214,7 +214,7 @@
 <a
   on:click={() => createServer(parseInt(server.split(":")[0]))}
   id="serverCard{parseInt(server.split(":")[0])}"
-  class="primaryGradientStroke pointer-events-none flex md:max-lg:px-4 gap-2.5 items-center p-3 w-14 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
+  class="primaryGradientStroke pointer-events-none flex md:max-lg:px-4 gap-2.5 items-center p-3 w-12 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
 >
 <UncreatedServerCardNew id={parseInt(server.split(":")[0])}/>
 </a>
@@ -222,7 +222,7 @@
 <a
   on:click={() => createServer(parseInt(server.split(":")[0]))}
   id="serverCard{parseInt(server.split(":")[0])}"
-  class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-14 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
+  class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-12 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
 >
 <UncreatedServerCardNew id={parseInt(server.split(":")[0])}/>
 </a>

@@ -4,13 +4,10 @@
 </script>
 
 <div class="flex max-md:flex-col max-md:items-center bg-base-200 min-h-screen">
-  <div class="w-[25%] max-md:hidden">
+  <div class="w-full md:w-[22%]">
     <Sidebar />
   </div>
-  <div class="w-full md:hidden">
-    <Sidebar />
-  </div>
-  <div class="m-4 sm:m-6 md:m-8 pb-12 lg:mt-16 w-[75%]">
+  <div class="p-4 sm:p-6 md:p-8 pb-12 lg:pt-16 w-full md:w-[78%]">
     <slot />
   </div>
 </div>

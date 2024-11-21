@@ -529,7 +529,7 @@
   <div
     class=" space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between py-10 px-5"
   >
-    <div class="flex flex-col items-center space-y-3 md:space-y-0 w-full">
+    <div class="flex flex-col items-center space-y-3 md:space-y-0 w-2/3">
       <div id="terminalContainerContainer" class="relative mb-1.5 w-full">
         <FullscreenTerminal />
         <div
@@ -558,11 +558,11 @@
         <div
           class="rounded-xl bg-base-100 bg-opacity-75 shadow-lg image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
         >
-          <div class="flex relative w-[20rem] md:w-[22.4rem]">
-            <div class="p-4 space-x-4 flex">
-              <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md" />
+          <div class="flex flex-col items-center relative w-[18rem]">
+            <div class="p-4 ">
+              <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md hidden" />
 
-              <div class="">
+              <div class="flex flex-col items-center">
                 <div class="h-6 flex gap-2">
                   <div
                     class="bg-neutral rounded-lg px-2 text-sm flex items-center gap-1.5"
@@ -590,7 +590,7 @@
         </div>
       </div>
 
-      <div class="w-[10.6rem] flex place-content-center space-x-2 mb-2">
+      <div class="w-[10rem] flex place-content-center space-x-2 mb-2">
         {#if modded}<AddMod /><ManageMods />{:else if !vanilla}
           <Add /><Manage />
         {/if}

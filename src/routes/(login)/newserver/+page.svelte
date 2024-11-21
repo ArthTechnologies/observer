@@ -288,7 +288,7 @@
 
 <div class="flex place-content-center">
   <div class="flex-col mb-10">
-    <div class="divider px-10 text-3xl font-semibold">
+    <div class="divider px-10 text-3xl font-poppins-bold">
       {$t("newserver.title")}
     </div>
 
@@ -342,7 +342,7 @@
           <input
             bind:value={name}
             id="nameInput"
-            class="input-bordered input-primary input bg-base-300"
+            class="input-bordered input-primary input "
             type="text"
             placeholder="{$t('general.ex')} My Minecraft Server"
           />
