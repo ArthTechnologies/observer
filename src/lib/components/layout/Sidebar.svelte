@@ -11,6 +11,7 @@
   import {
     HelpCircle,
     Languages,
+    LogOut,
     Menu,
     ShoppingCart,
     User,
@@ -144,10 +145,16 @@
       localStorage.removeItem("serverSubdomain");
     }
   }
+
+  function logout() {
+    //clear all local storage
+    localStorage.clear();
+    window.location.href = "/login";
+  }
 </script>
 
 <div
-  class="shrink-0 md:fixed md:h-screen bg-base-100 p-5 flex md:flex-col items-center justify-between max-md:w-full"
+  class="shrink-0 md:fixed md:h-screen bg-base-100 px-5 py-3 md:py-5 flex md:flex-col items-center justify-between max-md:w-full"
 >
   <div class="flex md:flex-col items-center w-full">
     <img src="/favicon.png" class="w-12 md:hidden" />
@@ -190,7 +197,7 @@
   </div>
   <div class="max-md:hidden flex flex-col w-full gap-1">
     <button class="btn btn-ghost btn-sm flex justify-start">
-      <User size="20" class="mr-2" />Manage Account</button
+      <User size="20" class="mr-2" />Account</button
     >
     <button class="btn btn-ghost btn-sm flex justify-start">
       <ShoppingCart size="20" class="mr-2" />Subscriptions</button
@@ -202,6 +209,9 @@
     <button class="btn btn-ghost btn-sm flex justify-start">
       <HelpCircle size="20" class="mr-2" />Get Support</button
     >
+    <button class="btn btn-ghost btn-sm flex justify-start" on:click={logout}>
+      <LogOut size="20" class="mr-2" />Logout</button
+    >
   </div>
   <div class="md:hidden flex gap-1">
     <div class="dropdown dropdown-end">
@@ -210,10 +220,11 @@
         tabindex="0"
         class="dropdown-content menu bg-base-300 rounded-box z-[1] w-52 p-2 shadow-xl"
       >
-        <li><a>Manage Account</a></li>
+        <li><a>Account</a></li>
         <li><a>Subscriptions</a></li>
         <li><a>Language</a></li>
         <li><a>Get Support</a></li>
+        <li><a>Logout</a></li>
       </ul>
     </div>
   </div>
