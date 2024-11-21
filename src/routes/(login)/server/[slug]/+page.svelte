@@ -527,16 +527,16 @@
   </div>
 
   <div
-    class=" space-x-7 xs:flex xs:flex-col-reverse md:flex justify-between py-10 px-5"
+    class=" space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center max-xl:gap-10 justify-between py-10 px-5"
   >
-    <div class="flex flex-col items-center space-y-3 md:space-y-0 w-2/3">
+    <div class="flex flex-col items-center space-y-3 md:space-y-0 w-[100%] xl:w-2/3">
       <div id="terminalContainerContainer" class="relative mb-1.5 w-full">
         <FullscreenTerminal />
         <div
           id="terminalContainer"
           class="bg-base-100 rounded-xl overflow-auto w-full h-[30rem] 2xl:h-[35rem]"
         >
-          <div class="p-5 sm:text-xs xl:text-base font-mono relative">
+          <div class="p-5 text-sm xl:text-base font-mono relative">
             <p id="terminal" />
           </div>
         </div>
@@ -558,11 +558,11 @@
         <div
           class="rounded-xl bg-base-100 bg-opacity-75 shadow-lg image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
         >
-          <div class="flex flex-col items-center relative w-[18rem]">
-            <div class="p-4 ">
-              <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md hidden" />
+          <div class="flex items-center relative w-[20.6rem]">
+            <div class="p-4 flex  items-center gap-5">
+              <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md" />
 
-              <div class="flex flex-col items-center">
+              <div class="flex flex-col ">
                 <div class="h-6 flex gap-2">
                   <div
                     class="bg-neutral rounded-lg px-2 text-sm flex items-center gap-1.5"
