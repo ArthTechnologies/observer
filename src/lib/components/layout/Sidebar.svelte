@@ -17,6 +17,7 @@
     User,
   } from "lucide-svelte";
   import ServerSkeleNew from "../ui/ServerSkeleNew.svelte";
+    import UncreatedServerCardNew from "../ui/UncreatedServerCardNew.svelte";
 
   // NOTE: the element that is using one of the theme attributes must be in the DOM on mount
   let servers: any[] = [];
@@ -43,8 +44,20 @@
   let promise;
 
   if (browser) {
+     console.log(window.location.pathname)
+     if (window.location.pathname.includes("server")) {
+      slug == window.location.pathname.split("/")[2];
+     } else if (window.location.pathname.includes("newserver")) {
+      slug == window.location.pathname.split("?id=")[1];
+     }
+     loadServers();
+     window.addEventListener("redrict", loadServers);
+  }
+
+  function loadServers() {
     promise = getServers(email).then((response) => {
       if (browser) {
+
         noserverlock = true;
         console.log(response);
         if (response.amount != "undefined") {
@@ -65,6 +78,7 @@
           })
             .then((res) => res.json())
             .then((res) => {
+
               console.log(res);
               if (res.msg == "You haven't paid for a server.") {
                 goto("/billing");
@@ -72,21 +86,33 @@
                 window.dispatchEvent(new Event("redrict"));
               }
               promise = getServers(email).then((response) => {
+
                 if (browser) {
                   noserverlock = true;
+
                   console.log(response);
+
                   if (response.amount != "undefined") {
                     id = response.amount;
                   }
                   servers = response;
                   let slug2 = window.location.pathname;
+
                   if (slug2 == "/") {
-                    goto("/server/" + (10000 + parseInt(servers[0].id)));
+                    console.log(servers[0])
+                    if (typeof servers[0] != "string") {
+                   
+             
+                      goto("/server/" + (10000 + parseInt(servers[0].id)));
+                    }
                     update(servers[0].id, false);
                   }
                 }
               });
             });
+        } else if (servers.length > 0 && typeof servers[0] == "string") {
+         
+          createServer( parseInt(servers[0].split(":")[0]))
         }
       }
     });
@@ -151,6 +177,14 @@
     localStorage.clear();
     window.location.href = "/login";
   }
+
+  function createServer(id) {
+
+        slug = id;
+        goto("/newserver?id="+id);
+ 
+
+  }
 </script>
 
 <div
@@ -175,22 +209,42 @@
         </div>
       {:then}
         {#each servers as server}
-          {#if parseInt(server.id) + 10000 == slug}
-            <a
-              id="serverCard{10000 + parseInt(server.id)}"
-              class="primaryGradientStroke pointer-events-none flex md:max-lg:px-4 gap-2.5 items-center p-3 w-14 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
-            >
-              <ServerCardNew {...server} />
-            </a>
-          {:else}
-            <a
-              on:click={() => update(server.id, true)}
-              id="serverCard{10000 + parseInt(server.id)}"
-              class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-14 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
-            >
-              <ServerCardNew {...server} />
-            </a>
-          {/if}
+{#if typeof server == "string"}
+{#if parseInt(server.split(":")[0]) == slug}
+<a
+  on:click={() => createServer(parseInt(server.split(":")[0]))}
+  id="serverCard{parseInt(server.split(":")[0])}"
+  class="primaryGradientStroke pointer-events-none flex md:max-lg:px-4 gap-2.5 items-center p-3 w-14 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
+>
+<UncreatedServerCardNew id={parseInt(server.split(":")[0])}/>
+</a>
+{:else}
+<a
+  on:click={() => createServer(parseInt(server.split(":")[0]))}
+  id="serverCard{parseInt(server.split(":")[0])}"
+  class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-14 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
+>
+<UncreatedServerCardNew id={parseInt(server.split(":")[0])}/>
+</a>
+{/if}
+{:else}
+{#if parseInt(server.id) + 10000 == slug}
+<a
+  id="serverCard{10000 + parseInt(server.id)}"
+  class="primaryGradientStroke pointer-events-none flex md:max-lg:px-4 gap-2.5 items-center p-3 w-14 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-gradient-to-b from-base-200 to-[#1a2b40] cursor-pointer"
+>
+  <ServerCardNew {...server} />
+</a>
+{:else}
+<a
+  on:click={() => update(server.id, true)}
+  id="serverCard{10000 + parseInt(server.id)}"
+  class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-14 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
+>
+  <ServerCardNew {...server} />
+</a>
+{/if}
+{/if}
         {/each}
       {/await}
     </div>
