@@ -530,7 +530,7 @@
     class=" space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center max-xl:gap-10 justify-between py-10 px-5"
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0 w-[100%] xl:w-2/3">
-      <div id="terminalContainerContainer" class="relative mb-1.5 w-full">
+      <div id="terminalContainerContainer" class="relative mb-1.5 w-full z-[0]">
         <FullscreenTerminal />
         <div
           id="terminalContainer"

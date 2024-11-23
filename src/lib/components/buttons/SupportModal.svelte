@@ -1,49 +1,25 @@
-<script lang="ts">
-  import { browser } from "$app/environment";
+<script>
+    import { browser } from "$app/environment";
+    import { t } from "$lib/scripts/i18n";
 
-  import { t, locale, locales } from "$lib/scripts/i18n";
-  import { HelpCircle, Mail } from "lucide-svelte";
- 
-  type NavType = "default" | "welcome";
 
-  export let navType: NavType;
-  let accountId = "";
+    import { HelpCircle, Mail } from "lucide-svelte";
+    import { } from "os";
+    let accountId = "";
   if (browser) {
     accountId = localStorage.getItem("accountId");
   }
 </script>
 
-<footer
-  class="flex justify-between items-center p-4 fixed bottom-0 w-full z-50 pointer-events-none"
->
-
-  <label
-    for="support-modal"
-    style="margin:0rem;"
-    class="btn btn-sm btn-ghost flex items-center justify-self-end pointer-events-auto"
-  >
-    <HelpCircle class="mr-1.5 mt-[0.05rem]" size="18" />
-    {$t("support")}
-  </label>
-</footer>
-
-<!-- Support Modal -->
-<input
-  type="checkbox"
-  id="support-modal"
-  style="margin:0rem;"
-  class="modal-toggle"
-/>
-<div class="modal" style="margin:0rem;">
-  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+<dialog id="modal_support" class="modal" style="margin:0rem;">
+  <div class="modal-box bg-opacity-95 backdrop-blur absolute">
     <p class="opacity-50 absolute top-1.5 left-2.5 text-sm">
       Account ID: {accountId}
     </p>
-    <label
-      for="support-modal"
-      style="margin:0rem;"
-      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
-    >
+    <form method="dialog">
+    <button
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</button
+    ></form>
     <h3 class="text-2xl font-bold mb-2 mt-1">{$t("help.title")}</h3>
 
     <h3 class="text-lg font-bold mt-2 mb-1">{$t("help.l.tutorials")}</h3>
@@ -83,4 +59,4 @@
       us an email at <a class="hover:link text-accent">contact@arthmc.xyz</a>.
     </p>
   </div>
-</div>
+</dialog>

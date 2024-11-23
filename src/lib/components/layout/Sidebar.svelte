@@ -19,6 +19,9 @@
   import ServerSkeleNew from "../ui/ServerSkeleNew.svelte";
     import UncreatedServerCardNew from "../ui/UncreatedServerCardNew.svelte";
 
+    import SupportModal from "../buttons/SupportModal.svelte";
+    import LanguageSwitcherModal from "../buttons/LanguageSwitcherModal.svelte";
+
   // NOTE: the element that is using one of the theme attributes must be in the DOM on mount
   let servers: any[] = [];
   //Example
@@ -251,23 +254,26 @@
   </div>
   <div class="max-md:hidden flex flex-col w-full gap-1">
     <a href="/account" class="btn btn-ghost btn-sm flex justify-start">
-      <User size="20" class="mr-2" />Account</a
+      <User size="18" class="mr-2" />Account</a
     >
     <a href="/billing" class="btn btn-ghost btn-sm flex justify-start">
-      <ShoppingCart size="20" class="mr-2" />Subscriptions</a
+      <ShoppingCart size="18" class="mr-2" />Subscriptions</a
     >
 
-    <button class="btn btn-ghost btn-sm flex justify-start">
-      <Languages size="20" class="mr-2" />Language</button
+    <button onclick="modal_language.showModal()" class="btn btn-ghost btn-sm flex justify-start">
+      <Languages size="18" class="mr-2" />Language</button
     >
-    <button class="btn btn-ghost btn-sm flex justify-start">
-      <HelpCircle size="20" class="mr-2" />Get Support</button
+
+
+    <button onclick="modal_support.showModal()" class="btn btn-ghost btn-sm flex justify-start">
+      <HelpCircle size="18" class="mr-2" />Get Support</button
     >
     <button class="btn btn-ghost btn-sm flex justify-start" on:click={logout}>
-      <LogOut size="20" class="mr-2" />Logout</button
+      <LogOut size="18" class="mr-2" />Logout</button
     >
   </div>
   <div class="md:hidden flex gap-1">
+
     <div class="dropdown dropdown-end">
       <div tabindex="0" role="button" class="btn m-1 btn-ghost"><Menu /></div>
       <ul
@@ -276,14 +282,19 @@
       >
         <li><a href="/account">Account</a></li>
         <li><a href="/billing">Subscriptions</a></li>
-        <li><a>Language</a></li>
-        <li><a>Get Support</a></li>
-        <li><a>Logout</a></li>
+<li>        <a onclick="modal_language.showModal()">
+  Language</a
+ ></li>
+ <li>        <a onclick="modal_support.showModal()">
+  Get Support</a
+ ></li>
+        <li><a on:click={logout}>Logout</a></li>
       </ul>
     </div>
   </div>
 </div>
-
+<LanguageSwitcherModal/>
+<SupportModal/>
 <style>
   .primaryGradientStroke {
     position: relative;
