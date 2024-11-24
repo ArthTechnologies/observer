@@ -92,9 +92,9 @@
     }
 
     if (
-      localStorage.getItem("serverSoftware") == "Fabric" ||
-      localStorage.getItem("serverSoftware") == "Quilt" ||
-      localStorage.getItem("serverSoftware") == "Forge"
+      localStorage.getItem("serverSoftware") == "fabric" ||
+      localStorage.getItem("serverSoftware") == "quilt" ||
+      localStorage.getItem("serverSoftware") == "forge"
     ) {
       modded = true;
     }
