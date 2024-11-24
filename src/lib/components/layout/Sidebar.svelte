@@ -150,7 +150,10 @@
             goto("/server/" + slug);
             //reload
             setTimeout(() => {
-              window.location.reload();
+              let serverName = document.getElementById("serverName")?.innerHTML;
+              if (serverName != localStorage.getItem("serverName")) {
+                window.location.reload();
+              }
             }, 100);
           }
         }
@@ -188,6 +191,7 @@
  
 
   }
+  
 </script>
 
 <div
@@ -253,10 +257,10 @@
     </div>
   </div>
   <div class="max-md:hidden flex flex-col w-full gap-1">
-    <a href="/account" class="btn btn-ghost btn-sm flex justify-start">
+    <a on:click={()=>{update(undefined, false)}} href="/account" class="btn btn-ghost btn-sm flex justify-start">
       <User size="18" class="mr-2" />Account</a
     >
-    <a href="/billing" class="btn btn-ghost btn-sm flex justify-start">
+    <a on:click={()=>{update(undefined, false)}} href="/billing" class="btn btn-ghost btn-sm flex justify-start">
       <ShoppingCart size="18" class="mr-2" />Subscriptions</a
     >
 
@@ -280,8 +284,8 @@
         tabindex="0"
         class="dropdown-content menu bg-base-300 rounded-box z-[1] w-52 p-2 shadow-xl"
       >
-        <li><a href="/account">Account</a></li>
-        <li><a href="/billing">Subscriptions</a></li>
+        <li><a on:click={()=>{update(undefined, false)}} href="/account">Account</a></li>
+        <li><a on:click={()=>{update(undefined, false)}} href="/billing">Subscriptions</a></li>
 <li>        <a onclick="modal_language.showModal()">
   Language</a
  ></li>
