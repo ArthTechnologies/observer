@@ -2,11 +2,10 @@
   import { browser } from "$app/environment";
 
   import { t, locale, locales } from "$lib/scripts/i18n";
-  import { HelpCircle, Mail } from "lucide-svelte";
+  import { HelpCircle, Languages, Mail } from "lucide-svelte";
+    import LanguageSwitcherModal from "../buttons/LanguageSwitcherModal.svelte";
  
-  type NavType = "default" | "welcome";
 
-  export let navType: NavType;
   let accountId = "";
   if (browser) {
     accountId = localStorage.getItem("accountId");
@@ -14,8 +13,18 @@
 </script>
 
 <footer
-  class="flex justify-between items-center p-4 fixed bottom-0 w-full z-50 pointer-events-none"
+  class="flex justify-between items-start p-4 fixed top-0 w-full z-50 pointer-events-none "
 >
+<img src="/favicon.png" width="40" class="mx-2" />
+<div class="flex gap-1">
+  <button
+onclick="modal_language.show()"
+
+class="btn btn-sm btn-ghost btn-square pointer-events-auto"
+>
+<Languages  size="18" />
+
+</button>
 
   <label
     for="support-modal"
@@ -25,9 +34,12 @@
     <HelpCircle class="mr-1.5 mt-[0.05rem]" size="18" />
     {$t("support")}
   </label>
+</div>
+
 </footer>
 
 <!-- Support Modal -->
+ 
 <input
   type="checkbox"
   id="support-modal"
@@ -84,3 +96,4 @@
     </p>
   </div>
 </div>
+<LanguageSwitcherModal />

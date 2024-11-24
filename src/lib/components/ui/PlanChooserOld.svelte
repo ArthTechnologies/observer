@@ -1,8 +1,8 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
-  import Footer from "$lib/components/layout/Footer.svelte";
-  import Navbar from "$lib/components/layout/Navbar.svelte";
+  import Footer from "$lib/components/layout/SignedOutNav.svelte";
+
   import { t } from "$lib/scripts/i18n";
   import { apiurl } from "$lib/scripts/req";
   import {

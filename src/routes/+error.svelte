@@ -1,10 +1,12 @@
 <script lang="ts">
-  import Footer from "$lib/components/layout/Footer.svelte";
-  import Navbar from "$lib/components/layout/Navbar.svelte";
+    import SignedOutNav from "$lib/components/layout/SignedOutNav.svelte";
+
+
+
 </script>
 
 <div>
-  <Navbar navType="default" />
+  <SignedOutNav />
   <slot />
   <div class="hero min-h-screen">
     <div class="hero-content text-center">
@@ -23,5 +25,5 @@
       </div>
     </div>
   </div>
-  <Footer navType="default" />
+
 </div>

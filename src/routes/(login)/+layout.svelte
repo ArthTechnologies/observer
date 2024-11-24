@@ -1,6 +1,6 @@
 <script>
-  import Navbar from "$lib/components/layout/Navbar.svelte";
-  import Sidebar from "$lib/components/layout/Sidebar.svelte";
+
+  import Sidebar from "$lib/components/layout/Nav.svelte";
 </script>
 
 <div class="flex max-md:flex-col max-md:items-center bg-base-200 min-h-screen">

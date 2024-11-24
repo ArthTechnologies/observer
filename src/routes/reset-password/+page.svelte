@@ -1,10 +1,11 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
-  import Navbar from "$lib/components/layout/Navbar.svelte";
+
   import { ArrowLeft } from "lucide-svelte";
   import { apiurl } from "$lib/scripts/req";
   import { alert } from "$lib/scripts/utils";
+    import SignedOutNav from "$lib/components/layout/SignedOutNav.svelte";
   let enablePay = true;
   let backurl = "/login";
   if (browser) {
@@ -70,7 +71,7 @@
   }
 </script>
 
-<Navbar navType="welcome" />
+<SignedOutNav navType="welcome" />
 
 <div class="hero min-h-screen">
   <div class="hero-content flex flex-col place-items-start">

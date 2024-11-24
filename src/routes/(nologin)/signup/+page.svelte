@@ -20,7 +20,7 @@
     } else {
       address = "http://" + address;
     }
-    if (localStorage.getItem("token") != "") {
+    if (localStorage.getItem("token") != "" && localStorage.getItem("token") != undefined) {
       goto("/");
       //this tells the navbar to update the icon that is highligted
       window.dispatchEvent(new Event("redrict"));
@@ -44,7 +44,7 @@
     class=" absolute h-screen w-full bg-gradient-to-b from-[#1a141c] to-[#99402b] z-[-1]"
   ></div>
   <div
-    class="relative bg-base-300 rounded-xl shadow-xl px-5 md:px-8 xl:px-12 flex flex-col items-center max-sm:w-[95%]"
+    class="relative bg-base-100 rounded-xl shadow-xl px-5 md:px-8 xl:px-12 flex flex-col items-center max-sm:w-[95%]"
   >
     <ul class="steps scale-90 mt-5 w-2/3">
       <li class="step step-neutral step-primary" data-content="">

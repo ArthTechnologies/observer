@@ -2,7 +2,7 @@
   let steps = 0;
   import { t } from "$lib/scripts/i18n";
   import APISettings from "$lib/components/ui/ApiSettings.svelte";
-  import Navbar from "$lib/components/layout/Navbar.svelte";
+
   import { apiurl } from "$lib/scripts/req";
   import Settings from "$lib/components/ui/Settings.svelte";
   import { fade } from "svelte/transition";
