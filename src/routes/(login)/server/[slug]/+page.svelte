@@ -47,6 +47,7 @@
   import FullscreenMap from "$lib/components/pages/server/FullscreenMap.svelte";
   import { write } from "fs";
   import { alert } from "$lib/scripts/utils";
+    import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
 
   let scrollCorrected = false;
   let modded = false;
@@ -791,7 +792,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
           >
         </div>
       </div>
-      <div class="w-[20rem] flex flex-col items-center">
+      <div class="w-[19.5rem] flex flex-col items-center">
         <div class="flex space-x-2 mb-2 mt-4">
           <ServerSettings type="fullBtn" /><StorageLimit />
         </div>
@@ -801,6 +802,9 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
             href="/server/{parseInt(id) + 10000}/files"
             ><FolderClosed class="mr-1.5" />{$t("button.files")}</a
           ><Versions />
+        </div>
+        <div class="flex space-x-2 mt-2.5 w-[97%]">
+          <DeleteServer /><World />
         </div>
       </div>
     </div>

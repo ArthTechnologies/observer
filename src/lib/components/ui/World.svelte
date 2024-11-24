@@ -408,7 +408,7 @@
 </script>
 
 <!-- The button to open modal -->
-<label for="world" class="btn btn-accent" on:click={onclick}
+<label for="world" class="btn w-1/2 btn-accent" on:click={onclick}
   ><Map class="mr-1.5" />{$t("button.world")}</label
 >
 
