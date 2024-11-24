@@ -59,7 +59,7 @@
   <div class="flex flex-col grow max-w-[55rem] space-y-6">
     <div class="flex flex-col items-center">
       <h1 class="divider px-10 text-3xl font-semibold">{$t("bill.title")}</h1>
-      <div class="px-6 py-4 bg-base-200 rounded-xl w-3/4 shadow mt-6">
+      <div class="px-6 py-4 bg-base-100 rounded-xl w-3/4 shadow mt-6">
         <div>{$t("subscriptions")}</div>
         <div class="flex gap-1">
           {#await promise}

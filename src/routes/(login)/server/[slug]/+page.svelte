@@ -535,13 +535,12 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 </div>
   </div>
   <div
-  class=" divider"
- 
+  class="divider"
 />
 
 
   <div
-    class=" space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center max-xl:gap-10 justify-between py-10 px-5"
+    class=" space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center max-xl:gap-10 justify-between p-5"
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0 w-[100%] xl:w-2/3">
       <div id="terminalContainerContainer" class="relative mb-1.5 w-full z-[0]">
@@ -599,10 +598,10 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
         {/if}
       </div>
       {#if webmap}
-        <div class=" bg-base-300 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
           <img
             alt="dynmap-icon"
-            class="w-8 h-8 rounded-lg bg-base-100"
+            class="w-8 h-8 rounded-lg bg-base-200"
             src="/images/dynmap.webp"
           />
 
@@ -667,11 +666,11 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
         </div>!-->
       {/if}
       {#if voicechat}
-        <div class=" bg-base-300 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
           <div class="dropdown dropdown-hover">
             <img
               alt="dynmap-icon"
-              class="w-8 h-8 rounded-lg bg-base-100"
+              class="w-8 h-8 rounded-lg bg-base-200"
               src="/images/voicechat.webp"
             />
           </div>
@@ -699,11 +698,11 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
         </div>
       {/if}
       {#if chunky}
-        <div class=" bg-base-300 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
           <div class="dropdown dropdown-hover">
             <img
               alt="dynmap-icon"
-              class="w-8 h-8 rounded-lg bg-base-100"
+              class="w-8 h-8 rounded-lg bg-base-200"
               src="/images/chunky.webp"
             />
           </div>
@@ -730,11 +729,11 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
         </div>
       {/if}
       {#if discordsrv}
-        <div class=" bg-base-300 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
           <div class="dropdown dropdown-hover">
             <img
               alt="dynmap-icon"
-              class="w-8 h-8 rounded-lg bg-base-100"
+              class="w-8 h-8 rounded-lg bg-base-200"
               src="/images/discordsrv.webp"
             />
           </div>
