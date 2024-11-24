@@ -192,7 +192,7 @@
   class="w-[3.75rem] h-[3.75rem] rounded-lg max-lg:hidden"
 />
 <div class="-mt-1">
-  <p class="font-poppins-bold text-white text-sm md:text-lg truncate">{name}</p>
+  <p class="font-poppins-bold text-gray-200 text-sm md:text-lg truncate">{name}</p>
   <!-- Only shows in sidebar mode-->
   <div class="max-md:hidden">
     <p class="font-poppins text-xs mb-0.5 -mt-1">

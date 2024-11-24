@@ -107,9 +107,9 @@
           downloadBtn.style.width = "200px";
           if (theme == "dark") {
             downloadBtn.classList.add("text-accent-content");
-            downloadBtn.classList.remove("text-white");
+            downloadBtn.classList.remove("text-gray-200");
           } else if (theme == "light") {
-            downloadBtn.classList.add("text-white");
+            downloadBtn.classList.add("text-gray-200");
             downloadBtn.classList.remove("text-accent-content");
           }
           downloadBtn.classList.add("pointer-events-none");
@@ -143,7 +143,7 @@
           downloadBtn.classList.remove("pointer-events-none");
           if (theme == "dark")
             downloadBtn.classList.remove("text-accent-content");
-          else if (theme == "light") downloadBtn.classList.remove("text-white");
+          else if (theme == "light") downloadBtn.classList.remove("text-gray-200");
         }
       }
     });
@@ -216,7 +216,7 @@
 
         if (visualPercent < 100) {
           if (theme == "dark") uploadBtn.classList.add("text-accent-content");
-          else if (theme == "light") uploadBtn.classList.add("text-white");
+          else if (theme == "light") uploadBtn.classList.add("text-gray-200");
 
           uploadBtn.innerHTML = $t("uploading");
           //if its dark theme, gradient needs to be 90% transparency
@@ -243,7 +243,7 @@
           }
         } else {
           uploadBtn.classList.remove("text-accent-content");
-          uploadBtn.classList.remove("text-white");
+          uploadBtn.classList.remove("text-gray-200");
           if (virusScanningEnabled == "true") {
             uploadBtn.innerHTML = $t("scanningForViruses");
             uploadBtn.classList.add("text-lime-500");

@@ -36,7 +36,7 @@
 
         if (visualPercent < 100) {
           if (theme == "dark") uploadBtn.classList.add("text-accent-content");
-          else if (theme == "light") uploadBtn.classList.add("text-white");
+          else if (theme == "light") uploadBtn.classList.add("text-gray-200");
 
           uploadBtn.innerHTML = $t("uploading");
           //if its dark theme, gradient needs to be 90% transparency
@@ -63,7 +63,7 @@
           }
         } else {
           uploadBtn.classList.remove("text-accent-content");
-          uploadBtn.classList.remove("text-white");
+          uploadBtn.classList.remove("text-gray-200");
           if (virusScanningEnabled == "true") {
             uploadBtn.innerHTML = $t("scanningForViruses");
             uploadBtn.classList.add("text-lime-500");

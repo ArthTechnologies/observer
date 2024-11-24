@@ -42,7 +42,7 @@
     class="relative bg-base-300 rounded-xl shadow-xl px-5 md:px-8 xl:px-12 flex flex-col items-center max-sm:w-[95%]"
   >
     <div
-      class="max-md:hidden mt-5 px-4 py-2 bg-primary rounded-full text-white font-semibold text-sm flex items-center gap-2"
+      class="max-md:hidden mt-5 px-4 py-2 bg-primary rounded-full text-gray-200 font-semibold text-sm flex items-center gap-2"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

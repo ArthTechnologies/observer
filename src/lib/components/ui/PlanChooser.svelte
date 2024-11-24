@@ -248,7 +248,7 @@
             }, 100);
           }}
           id="basicSelect"
-          class="h-12 my-3 px-5 cursor-pointer flex items-center bg-gradient-to-b from-[#E93843] to-[#F56922] hover:brightness-90 rounded-full text-white whiteGradientStroke font-poppins-bold justify-center bg-gradient-to-b from-[#E93843] to-[#F56922]"
+          class="h-12 my-3 px-5 cursor-pointer flex items-center bg-gradient-to-b from-[#E93843] to-[#F56922] hover:brightness-90 rounded-full text-gray-200 whiteGradientStroke font-poppins-bold justify-center bg-gradient-to-b from-[#E93843] to-[#F56922]"
           href="/subscribe/basic">{$t("select")}</a
         >
         <p
@@ -297,7 +297,7 @@
             }, 100);
           }}
           id="plusSelect"
-          class="h-12 my-3 px-5 cursor-pointer flex items-center bg-gradient-to-b from-[#E93843] to-[#F56922] hover:brightness-90 rounded-full text-white whiteGradientStroke font-poppins-bold justify-center"
+          class="h-12 my-3 px-5 cursor-pointer flex items-center bg-gradient-to-b from-[#E93843] to-[#F56922] hover:brightness-90 rounded-full text-gray-200 whiteGradientStroke font-poppins-bold justify-center"
           href="/subscribe/plus">{$t("select")}</a
         >
         <p
@@ -346,7 +346,7 @@
               location.reload();
             }, 100);
           }}
-          class="h-12 my-3 px-5 cursor-pointer flex items-center bg-gradient-to-b from-[#E93843] to-[#F56922] hover:brightness-90 rounded-full text-white whiteGradientStroke font-poppins-bold justify-center"
+          class="h-12 my-3 px-5 cursor-pointer flex items-center bg-gradient-to-b from-[#E93843] to-[#F56922] hover:brightness-90 rounded-full text-gray-200 whiteGradientStroke font-poppins-bold justify-center"
           id="premiumSelect"
           href="/subscribe/premium"
         >

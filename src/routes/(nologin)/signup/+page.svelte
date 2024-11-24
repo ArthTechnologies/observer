@@ -48,7 +48,7 @@
   >
     <ul class="steps scale-90 mt-5 w-2/3">
       <li class="step step-neutral step-primary" data-content="">
-        <User size="18" class="-mt-10 z-50 text-white" />
+        <User size="18" class="-mt-10 z-50 text-gray-200" />
       </li>
 
       <li class="step step-neutral" data-content="">

@@ -47,6 +47,7 @@
   import FullscreenMap from "$lib/components/pages/server/FullscreenMap.svelte";
   import { write } from "fs";
   import { alert } from "$lib/scripts/utils";
+
   let scrollCorrected = false;
   let modded = false;
   let vanilla = false;
@@ -461,70 +462,82 @@
   }
 </script>
 
-<div class="lg:-mt-10">
-  <div class=" flex justify-between mb-2">
-    <div class="space-x-2 space-y-2 mb-2 flex flex-col items-center md:block">
-      <DeleteServer />
-      <Updates />
-      <World />
-    </div>
-    <!-- TODO: these should be on the right, add an if for not reaching the backend -->
-    <div class="space-x-2 space-y-2 flex flex-col items-center md:block">
-      {#if state == "true"}
-        <button on:click={start} class="btn btn-success"
-          ><Repeat class="mr-1.5" />{$t("button.restart")}</button
+<div class="lg:-mt-5">
+
+  <div class="flex justify-between mb-2 items-center">
+    <div>
+<div class="mb-2">
+  <span class="font-poppins-bold text-gray-200 text-3xl mr-0.5" id="serverName">{name}</span>
+
+</div>
+      <div class="flex gap-2">
+        {#if state == "true"}
+        <button on:click={start} class="btn btn-sm btn-success"
+          ><Repeat size=18 class="mr-1.5" />{$t("button.restart")}</button
         >
-        <button on:click={stop} class="btn btn-error"
-          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
+        <button on:click={stop} class="btn btn-sm btn-error"
+          ><StopCircle size=18 class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "false"}
-        <button on:click={start} class="btn btn-success"
-          ><PlayCircle class="mr-1.5" />{$t("button.start")}</button
+        <button on:click={start} class="btn btn-sm btn-success"
+          ><PlayCircle size=18 class="mr-1.5" />{$t("button.start")}</button
         >
-        <a href="/" class="btn btn-disabled"
-          ><StopCircle class="mr-1.5" />{$t("button.stop")}</a
+        <a href="/" class="btn btn-sm btn-disabled"
+          ><StopCircle size=18 class="mr-1.5" />{$t("button.stop")}</a
         >
       {:else if state == "starting"}
         <div
-          class="inline-flex pointer-events-none bg-success flex items-center px-4 py-3 text-center text-sm font-semibold text-black uppercase rounded-md"
+          class="inline-flex pointer-events-none bg-success flex items-center px-3 py-1 text-center text-sm font-semibold text-black uppercase rounded-lg"
         >
-          <Loader class="animate-spin mr-1.5" />
+          <Loader size=18 class="animate-spin mr-1.5" />
           {$t("button.starting")}
         </div>
-        <button class="btn btn-neutral" on:click={kill}>
-          <Unplug class="mr-1.5" />Kill
+        <button class="btn btn-sm btn-neutral" on:click={kill}>
+          <Unplug size=18 class="mr-1.5" />Kill
         </button>
       {:else if state == "installing"}
         <div
-          class="inline-flex pointer-events-none bg-accent flex items-center px-4 py-3 text-center text-sm font-semibold text-base-300 uppercase rounded-md"
+          class="inline-flex pointer-events-none bg-accent flex items-center px-3 py-1 text-center text-sm font-semibold text-base-300 uppercase rounded-lg"
         >
-          <Loader class="animate-spin mr-1.5" />
+          <Loader size=18 class="animate-spin mr-1.5" />
           {$t("button.installing")}
         </div>
-        <button on:click={stop} class="btn btn-error"
-          ><StopCircle class="mr-1.5" />{$t("button.stop")}</button
+        <button on:click={stop} class="btn btn-sm btn-error"
+          ><StopCircle size=18 class="mr-1.5" />{$t("button.stop")}</button
         >
       {:else if state == "stopping"}
-        <button class="btn btn-neutral" on:click={kill}>
-          <Unplug class="mr-1.5" />Kill
+        <button class="btn btn-sm btn-neutral" on:click={kill}>
+          <Unplug size=18 class="mr-1.5" />Kill
         </button>
         <div
-          class="inline-flex pointer-events-none bg-error flex items-center px-4 py-3 text-center text-sm font-semibold text-black uppercase rounded-md"
+          class="inline-flex pointer-events-none bg-error flex items-center px-3 py-1 text-center text-sm font-semibold text-black uppercase rounded-lg"
         >
-          <Loader class="animate-spin mr-1.5" />
+          <Loader size=18 class="animate-spin mr-1.5" />
           {$t("button.stopping")}
         </div>
       {/if}
+      </div>
     </div>
+<div class="flex flex-col gap-1.5">
+  <div
+  class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-1 h-fit"
+>
+  <MemoryStick size="16" />
+  {ramUsage}
+</div>
+<div
+class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-1 h-fit"
+>
+<Users size="16" />
+{players}/{maxPlayers} Players
+</div>
+</div>
   </div>
-  <div class="flex flex-col mt-5 md:mt-0">
-    <div
-      class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold divider"
-      id="serverName"
-    >
-      {name}
-    </div>
-  </div>
+  <div
+  class=" divider"
+ 
+/>
+
 
   <div
     class=" space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center max-xl:gap-10 justify-between py-10 px-5"
@@ -556,31 +569,20 @@
     >
       <div class="space-y-5 mb-4">
         <div
-          class="rounded-xl bg-base-100 bg-opacity-75 shadow-lg image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
+          class="rounded-xl bg-base-100 bg-opacity-75 shadow-sm image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
         >
           <div class="flex items-center relative w-[20.6rem]">
-            <div class="p-4 flex  items-center gap-5">
-              <img id="xIcon" src={icon} class="w-[4rem] h-[4rem] rounded-md" />
+            <div class="p-4 flex  items-center gap-4">
+              <img id="xIcon" src={icon} class="w-[3.65rem] h-[3.65rem] rounded-lg" />
 
               <div class="flex flex-col ">
-                <div class="h-6 flex gap-2">
-                  <div
-                    class="bg-neutral rounded-lg px-2 text-sm flex items-center gap-1.5"
-                  >
-                    <MemoryStick size="16" />{ramUsage}
-                  </div>
-                  <div
-                    class="bg-neutral rounded-lg px-2 text-sm flex items-center gap-1.5"
-                  >
-                    <Users size="16" />{players}/{maxPlayers} Players
-                  </div>
-                </div>
-                <div class="font-poppins-bold sm:text-lg md:text-[1.5rem] mt-1">
+
+                <div class="font-poppins-bold sm:text-lg md:text-[1.5rem]">
                   {#if subdomain == undefined}{address}:{port}{:else}
                     {subdomain}.{address}
                   {/if}
                 </div>
-                <div id="xDesc" class="text-xs font-light flex mt-1">
+                <div id="xDesc" class="text-xs font-light flex ">
                   Description: {@html desc}
                 </div>
                 <div id="rawDesc" class="hidden"></div>
