@@ -129,7 +129,7 @@
           if (
             version.name != vname &&
             version.loaders.includes(software) &&
-            version.game_versions.includes(sVersion)
+            version.game_versions.includes(sVersion.split("*")[0])
           ) {
             vname = version.name;
 
@@ -172,7 +172,7 @@
           data.forEach((version) => {
             if (
               version.name != vname &&
-              version.gameVersions.includes(sVersion)
+              version.gameVersions.includes(sVersion.split("*")[0])
             ) {
               vname = version.displayName;
               console.log(version.releaseType == 1);
