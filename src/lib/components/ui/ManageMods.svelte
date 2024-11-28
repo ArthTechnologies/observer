@@ -185,7 +185,7 @@
   }
 </script>
 
-<label for="manage" on:click={search} class="btn btn-block btn-primary relative"
+<label for="manage" on:click={search} class="btn btn-block btn-primary"
   >{$t("button.managemods")}</label
 >
 

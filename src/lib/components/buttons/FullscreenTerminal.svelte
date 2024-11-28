@@ -77,7 +77,7 @@
     <div id="terminalContainerContainer2" class="relative">
       <div
         id="terminalContainer2"
-        class="p-5 bg-base-300 rounded-xl shadow-xl overflow-auto h-[80vh] md:h-[85vh] rounded-xl w-[90vw]"
+        class="p-5 bg-base-100 rounded-xl shadow-xl overflow-auto h-[80vh] md:h-[85vh] rounded-xl w-[90vw] z-[999]"
       >
         <label
           for="fullscreenTerminal"

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { browser, dev } from "$app/environment";
   import { onMount } from "svelte";
+  import { readCmd } from "$lib/components/pages/server/Terminal.svelte";
   import {
     changeServerState,
     deleteServer,
@@ -48,6 +49,7 @@
   import { write } from "fs";
   import { alert } from "$lib/scripts/utils";
     import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
+    import Terminal from "$lib/components/pages/server/Terminal.svelte";
 
   let scrollCorrected = false;
   let modded = false;
@@ -136,10 +138,6 @@
 
       document.getElementById("alwaysDay").checked = false;
 
-      //wait 200 ms then read terminal
-      setTimeout(() => {
-        readCmd();
-      }, 200);
     } else {
       getStatus();
 
@@ -325,92 +323,7 @@
     getStatus();
   });
 
-  function writeCmd(event) {
-    //take input value
-    let input = document.getElementById("input").value;
-    //if theres a / at the beginning, remove it
-    if (input.startsWith("/")) {
-      input = input.substring(1);
-    }
-    //if key pressed is enter, send alert
-    if (event.keyCode == 13) {
-      getStatus();
-      writeTerminal(id, input);
-      //clear input
-      document.getElementById("input").value = "";
 
-      //wait 200 ms then read terminal
-      setTimeout(() => {
-        readCmd();
-      }, 200);
-    }
-  }
-
-  function readCmd() {
-    let rt;
-
-    if (browser) {
-      readTerminal(id).then((response) => {
-        const terminalContainer = document.getElementById("terminalContainer");
-        const terminal = document.getElementById("terminal");
-        const filteredResponse = response
-          .replace(/\x1B\[[0-9;]*[mG]/g, "")
-          .replace(/\n/g, "<p>");
-
-        //response replace newlines with <p>, remove things that start with [ and end with m
-        if (response.length < 100000) {
-          terminalContainer.scrollTop +=
-            50 *
-            (filteredResponse.split("<p>").length -
-              terminal.innerHTML.split("<p>").length);
-          if (
-            filteredResponse.length - terminal.innerHTML.length !=
-            difference
-          ) {
-            difference = filteredResponse.length - terminal.innerHTML.length;
-
-            terminal.innerHTML = filteredResponse;
-          }
-        } else {
-          terminalContainer.scrollTop +=
-            50 *
-            (filteredResponse
-              .substring(filteredResponse.length - 100000)
-              .split("<p>").length -
-              terminal.innerHTML.split("<p>").length);
-          terminal.innerHTML = filteredResponse.substring(
-            filteredResponse.length - 100000,
-          );
-        }
-
-        //scroll down the height of the new lines added
-        if (
-          terminal.innerHTML.split("<p>").length <
-          filteredResponse.split("<p>").length
-        ) {
-          //adding to scrollTop doesn't get it to the complete bottom,
-          //so this remedies that by snapping it to the bottom if needed.
-          let difference =
-            terminalContainer.scrollHeight - terminalContainer.scrollTop;
-          const terminalContainerContainer = document.getElementById(
-            "terminalContainerContainer",
-          );
-          if (difference <= terminalContainerContainer?.clientHeight) {
-            setTimeout(() => {
-              terminalContainer.scrollTop = terminalContainer.scrollHeight;
-            }, 1);
-          }
-        }
-
-        //if this is the first time the terminal is loaded, this will scroll to the bottom.
-        if (scrollCorrected == false) {
-          terminalContainer.scrollTop = terminalContainer.scrollHeight;
-
-          scrollCorrected = true;
-        }
-      });
-    }
-  }
   readCmd();
 
   function webmapRender() {
@@ -543,26 +456,9 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
     class=" space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center max-xl:gap-10 justify-between p-5"
   >
     <div class="flex flex-col items-center space-y-3 md:space-y-0 w-[100%] xl:w-2/3">
-      <div id="terminalContainerContainer" class="relative mb-1.5 w-full z-[0]">
-        <FullscreenTerminal />
-        <div
-          id="terminalContainer"
-          class="bg-base-100 rounded-xl overflow-auto w-full h-[30rem] 2xl:h-[35rem]"
-        >
-          <div class="p-5 text-sm xl:text-base font-mono relative">
-            <p id="terminal" />
-          </div>
-        </div>
-      </div>
-      <input
-        on:keypress={writeCmd}
-        id="input"
-        type="text"
-        placeholder={$t("p.enterCommand")}
-        class="input input-secondary bg-base-200 w-full"
-      />
-      <div class="divider md:hidden pt-5 pb-4" />
-    </div>
+<Terminal/>
+<div class="divider md:hidden pt-5 pb-4" />
+</div>
 
     <div
       class="flex flex-col items-center place-content-end mb-20 pr-6 md:pl-0"
@@ -571,7 +467,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
         <div
           class="rounded-xl bg-base-100 bg-opacity-75 shadow-sm image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
         >
-          <div class="flex items-center relative w-[20.6rem]">
+          <div class="flex items-center w-[20.6rem]">
             <div class="p-4 flex  items-center gap-4">
               <img id="xIcon" src={icon} class="w-[3.65rem] h-[3.65rem] rounded-lg" />
 
