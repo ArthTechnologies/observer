@@ -99,7 +99,7 @@
         if (
           version.name != vname &&
           version.loaders.includes(software) &&
-          (version.game_versions.includes(sVersions.split("*")[0]) || !versionFilter)
+          (version.game_versions.includes(sVersion.split("*")[0]) || !versionFilter)
         ) {
           vname = version.name;
           console.log(version);
