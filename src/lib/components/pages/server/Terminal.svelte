@@ -108,7 +108,7 @@
     <FullscreenTerminal />
     <div
       id="terminalContainer"
-      class="bg-base-100 rounded-xl overflow-auto w-full h-[30rem] 2xl:h-[35rem]"
+      class="bg-base-100 rounded-xl overflow-auto w-full h-[30rem] 2xl:h-[35rem] mb-2"
     >
       <div class="p-5 text-sm xl:text-base font-mono relative">
         <p id="terminal" />

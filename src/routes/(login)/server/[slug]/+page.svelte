@@ -50,8 +50,9 @@
   import { alert } from "$lib/scripts/utils";
     import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
     import Terminal from "$lib/components/pages/server/Terminal.svelte";
+    import Files from "$lib/components/pages/server/Files.svelte";
 
-  let scrollCorrected = false;
+  let tab = "terminal";
   let modded = false;
   let vanilla = false;
   let name: string = "-";
@@ -147,7 +148,7 @@
 
       //wait 200 ms then read terminal
       setTimeout(() => {
-        readCmd();
+        if(tab=="terminal"){readCmd();}
       }, 200);
     }
   }
@@ -163,7 +164,7 @@
 
     //wait 200 ms then read terminal
     setTimeout(() => {
-      readCmd();
+      if(tab=="terminal"){readCmd();}
     }, 200);
   }
 
@@ -178,7 +179,7 @@
 
     //wait 200 ms then read terminal
     setTimeout(() => {
-      readCmd();
+      if(tab=="terminal"){readCmd();}
     }, 200);
   }
 
@@ -295,7 +296,7 @@
   onMount(() => {
     setTimeout(() => {
       getStatus();
-      readCmd();
+      if(tab=="terminal"){readCmd();}
     }, 200);
     if (browser) {
       let count = 0;
@@ -316,7 +317,7 @@
         if (path == "/server/" + (10000 + parseInt(id))) {
           getStatus();
 
-          readCmd();
+          if(tab=="terminal"){readCmd();}
         }
       }, interval);
     }
@@ -324,7 +325,7 @@
   });
 
 
-  readCmd();
+  if(tab=="terminal"){readCmd();}
 
   function webmapRender() {
     writeTerminal(id, "dynmap fullrender world");
@@ -372,6 +373,24 @@
           players = data.players.online;
           maxPlayers = data.players.max;
         });
+    }
+  }
+
+  function updateTab(newTab) {
+    tab = newTab;
+    if (newTab == "terminal") {
+      document.getElementById("tab_terminal").classList.add("tab-active");
+      document.getElementById("tab_files").classList.remove("tab-active");
+      document.getElementById("tab_settings").classList.remove("tab-active");
+    } else if (newTab == "files") {
+
+      document.getElementById("tab_terminal").classList.remove("tab-active");
+      document.getElementById("tab_files").classList.add("tab-active");
+      document.getElementById("tab_settings").classList.remove("tab-active");
+    } else if (newTab == "settings") {
+      document.getElementById("tab_terminal").classList.remove("tab-active");
+      document.getElementById("tab_files").classList.remove("tab-active");
+      document.getElementById("tab_settings").classList.add("tab-active");
     }
   }
 </script>
@@ -453,15 +472,30 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 
 
   <div
-    class=" space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center max-xl:gap-10 justify-between p-5"
+    class=" space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center max-xl:gap-10 justify-between px-5"
   >
+  
     <div class="flex flex-col items-center space-y-3 md:space-y-0 w-[100%] xl:w-2/3">
+<div class="w-full mb-5">
+  <div role="tablist" class="tabs tabs-boxed w-1/4 p-0">
+    <a id="tab_terminal" role="tab" class="tab tab-active" on:click={() => updateTab("terminal")}>Terminal</a>
+    <a id="tab_files" role="tab" class="tab" on:click={() => updateTab("files")}>Files</a>
+    <a id="tab_settings" role="tab" class="tab" on:click={() => updateTab("settings")}>Settings</a>
+
+  </div>
+</div>
+      {#if tab == "terminal"}
 <Terminal/>
+{:else if tab == "files"}
+<Files/>
+{:else if tab == "settings"}
+<ServerSettings/>
+{/if}
 <div class="divider md:hidden pt-5 pb-4" />
 </div>
 
     <div
-      class="flex flex-col items-center place-content-end mb-20 pr-6 md:pl-0"
+      class="flex flex-col items-center place-content-start mb-20 pr-6 md:pl-0 mt-[3.25rem]"
     >
       <div class="space-y-5 mb-4">
         <div
@@ -687,20 +721,14 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
           >
         </div>
       </div>
-      <div class="w-[19.5rem] flex flex-col items-center">
-        <div class="flex space-x-2 mb-2 mt-4">
-          <ServerSettings type="fullBtn" /><StorageLimit />
+      <div class="w-[19.5rem] flex flex-col items-center mt-4">
+       
+          <StorageLimit />  
+       
+        <div class="flex  space-x-2 mb-2 mt-4">
+<Versions /> <World />
         </div>
-        <div class="flex">
-          <a
-            class="btn btn-primary mr-2"
-            href="/server/{parseInt(id) + 10000}/files"
-            ><FolderClosed class="mr-1.5" />{$t("button.files")}</a
-          ><Versions />
-        </div>
-        <div class="flex space-x-2 mt-2.5 w-[97%]">
-          <DeleteServer /><World />
-        </div>
+
       </div>
     </div>
   </div>

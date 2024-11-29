@@ -165,37 +165,18 @@
   }
 </script>
 
-{#if type == "smallBtn"}
-  <label for="editInfo"
-    ><div
-      class="btn btn-neutral btn-circle absolute right-2 top-2 md:btn-sm"
-      on:click={get}
-    >
-      <Settings class="w-[1.5rem] h-[1.5rem] md:w-[1rem] md:h-[1rem]" />
-    </div></label
-  >
-{:else if type == "fullBtn"}
-  <label for="editInfo"
-    ><div class="btn btn-neutral" on:click={get}>
-      <Settings class="mr-1.5" />{$t("button.settings")}
-    </div></label
-  >
-{/if}
 
-<input type="checkbox" id="editInfo" class="modal-toggle" />
-<div class="modal" style="margin:0rem;">
-  <div class="p-4 md:p-5 modal-box bg-opacity-95 backdrop-blur relative">
+
+
+
+  <div class="w-full relative">
+
     <label
       for="editInfo"
-      id="closeButton"
-      class="btn btn-neutral btn-sm btn-circle fixed right-2 top-2">✕</label
-    >
-    <label
-      for="editInfo"
-      class="btn btn-neutral btn-sm fixed right-12 top-2"
+      class="btn btn-neutral btn-sm absolute right-0 top-0"
       on:click={set}>{$t("apply")}</label
     >
-    <h3 class="text-2xl font-bold mb-1">{$t("button.settings")}</h3>
+
     <div class="flex p-1 text-sm items-center gap-1.5 mb-1.5">
       <Info size="16" />
       <span>{$t("settings.restartWarning")}</span>
@@ -342,7 +323,7 @@
       </p>
     {/if}
   </div>
-</div>
+
 
 <style>
   .nocopy {
