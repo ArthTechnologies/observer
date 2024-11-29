@@ -84,9 +84,9 @@
 
 <div
   id="ratioVisualizer"
-  class="relative bg-base-300 border-base-100 border-2 rounded-lg px-4 flex items-center w-3/4 h-10 font-semibold text-sm uppercase text-gray-200 gap-1.5 justify-center"
+  class="relative bg-base-300 border-base-100 border-2 rounded-lg px-4 flex items-center w-3/4 h-11 -my-1 font-semibold text-sm uppercase text-gray-200 gap-1.5 justify-center"
 >
-  <HardDrive class="z-[5]" />
+  <HardDrive class="z-[5]" size=22 />
   <span class="z-[5]">{$t("using")} {storageRatio}</span>
 
   <div

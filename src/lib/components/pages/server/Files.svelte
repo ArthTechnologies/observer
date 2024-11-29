@@ -91,7 +91,7 @@
   <div
     class="flex flex-col items-start gap-5 w-full"
   >
-    <div class="bg-base-300 rounded-xl md:p-2 w-full" id="filetree">
+    <div class="bg-base-100 rounded-xl md:p-2 w-full" id="filetree">
       {#each files as file}
         {#if typeof file == "string"}
           <File filename={file.split(":")[0]} url={file.split(":")[1]} />

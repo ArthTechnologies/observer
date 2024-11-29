@@ -34,11 +34,7 @@
     </a>
     <h3 class="text-lg font-bold mt-2 mb-1">{$t("help.l.contact")}</h3>
     <div class="md:flex md:space-x-2 space-y-2 md:space-y-0">
-      <h3
-        class="text-lg font-bold bg-base-200 w-[17rem] rounded-lg px-3 py-2 flex items-center"
-      >
-        <Mail class="mr-2.5" /> support@arthmc.xyz
-      </h3>
+
 
       <div class="flex">
         <a
@@ -48,11 +44,16 @@
           target="_blank"
           rel="noreferrer"
           ><img alt="discord logo" style="width:3ch" src="/discord.svg" />
-          <p id="text-shrink" class="w-28 ml-1.5 text-[.8rem]">
+          <p id="text-shrink" class=" ml-2.5">
             {$t("help.button.getHelpOnOurDiscord")}
           </p></a
         >
       </div>
+      <h3
+      class=" font-bold bg-base-200  rounded-lg px-4 py-2 flex items-center"
+    >
+      <Mail class="mr-2.5" size=22 /> support@arthmc.xyz
+    </h3>
     </div>
     <p class="text-sm mt-2">
       If you'd like to suggest a feature or give feedback don't hesitate to send

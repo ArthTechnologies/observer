@@ -472,10 +472,10 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 
 
   <div
-    class=" space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center max-xl:gap-10 justify-between px-5"
+    class=" md:space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center gap-0 justify-between px-5"
   >
   
-    <div class="flex flex-col items-center space-y-3 md:space-y-0 w-[100%] xl:w-2/3">
+    <div class="flex flex-col items-center space-y-3 md:space-y-0 w-full">
 <div class="w-full mb-5">
   <div role="tablist" class="tabs tabs-boxed w-1/4 p-0">
     <a id="tab_terminal" role="tab" class="tab tab-active" on:click={() => updateTab("terminal")}>Terminal</a>
@@ -495,19 +495,19 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 </div>
 
     <div
-      class="flex flex-col items-center place-content-start mb-20 pr-6 md:pl-0 mt-[3.25rem]"
+      class="flex flex-col items-center place-content-start mb-20 md:pl-0 mt-[3.25rem] gap-5 w-full md:w-[30rem]"
     >
-      <div class="space-y-5 mb-4">
+      <div class="space-y-5 w-full">
         <div
-          class="rounded-xl bg-base-100 bg-opacity-75 shadow-sm image-full mt-4 md:mt-0 w-[20rem] md:w-auto"
+          class="rounded-xl bg-base-100 bg-opacity-75 shadow-sm image-full mt-4 md:mt-0 w-full"
         >
-          <div class="flex items-center w-[20.6rem]">
-            <div class="p-4 flex  items-center gap-4">
+          <div class="flex items-center w-full md:w-[19.8rem]">
+            <div class="p-4 flex  items-center gap-3.5 w-full">
               <img id="xIcon" src={icon} class="w-[3.65rem] h-[3.65rem] rounded-lg" />
 
-              <div class="flex flex-col ">
+              <div class="flex flex-col -mt-1.5">
 
-                <div class="font-poppins-bold sm:text-lg md:text-[1.5rem]">
+                <div class="font-poppins-bold sm:text-lg md:text-[1.25rem]">
                   {#if subdomain == undefined}{address}:{port}{:else}
                     {subdomain}.{address}
                   {/if}
@@ -522,7 +522,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
         </div>
       </div>
 
-      <div class="w-[10rem] flex place-content-center space-x-2 mb-2">
+      <div class="w-[9.6rem] flex place-content-center space-x-2">
         {#if modded}<AddMod /><ManageMods />{:else if !vanilla}
           <Add /><Manage />
         {/if}
@@ -680,7 +680,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
           >
         </div>
       {/if}
-      <div class=" bg-base-100 mt-5 rounded-xl px-4 py-3 w-[20rem] md:w-auto">
+      <div class=" bg-base-100 rounded-xl px-4 py-3 ">
         <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
         <div class="space-x-1.5 space-y-1.5">
           <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
@@ -721,15 +721,15 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
           >
         </div>
       </div>
-      <div class="w-[19.5rem] flex flex-col items-center mt-4">
+    
        
           <StorageLimit />  
        
-        <div class="flex  space-x-2 mb-2 mt-4">
+        <div class="flex  space-x-2">
 <Versions /> <World />
         </div>
 
-      </div>
+    
     </div>
   </div>
 </div>

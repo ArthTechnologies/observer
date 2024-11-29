@@ -39,7 +39,7 @@
 
 <textarea
   on:input={saveIndicator}
-  class="textarea w-full bg-base-200"
+  class="textarea w-full bg-base-200 bg-opacity-25"
   id="textEditor"
 />
 
