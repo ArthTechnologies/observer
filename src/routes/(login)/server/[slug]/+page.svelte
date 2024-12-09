@@ -475,7 +475,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
     class=" md:space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center gap-0 justify-between px-5"
   >
   
-    <div class="flex flex-col items-center space-y-3 md:space-y-0 w-full xl:w-[63%]">
+    <div class="flex flex-col items-center space-y-3 md:space-y-0 w-full">
 <div class="w-full mb-5">
   <div role="tablist" class="tabs tabs-boxed w-1/4 p-0">
     <a id="tab_terminal" role="tab" class="tab tab-active" on:click={() => updateTab("terminal")}>Terminal</a>
