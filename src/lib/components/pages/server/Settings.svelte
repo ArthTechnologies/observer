@@ -132,8 +132,7 @@
       .then((x) => {
         if (x.msg == "Done") {
           localStorage.setItem("serverSubdomain", subdomain2);
-          let closeButton = document.getElementById("closeButton");
-          closeButton.click();
+
           window.location.reload();
         } else {
           alert("Error: " + x.msg);
@@ -153,8 +152,7 @@
       .then((x) => {
         if (x.msg == "Done") {
           localStorage.removeItem("serverSubdomain");
-          let closeButton = document.getElementById("closeButton");
-          closeButton.click();
+
           window.location.reload();
         } else {
           alert("Error: " + x.msg);
