@@ -66,7 +66,11 @@
     pluginName = pluginName.replace(/["']/g, "");
     pluginName = pluginName.replace(/[\(\)]/g, "");
     pluginName = pluginName.replace(/[\s_]/g, "-");
-    sendVersion(url, id, pluginId, pluginName, modtype);
+    sendVersion(url, id, pluginId, pluginName, modtype)?.then((response) => {
+      const event = new CustomEvent("refresh");
+      document.dispatchEvent(event);
+    });
+    
   }
   for (let i in dependencies) {
     if (platform == "mr") {

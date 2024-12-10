@@ -104,13 +104,21 @@
   }
 
 </script>
-<div id="terminalContainerContainer" class="relative mb-1.5 w-full z-[0]">
+<style>
+  #terminalContainerContainer {
+    @media (min-width: 1280px) {
+      width: calc(100vw - 46rem);
+    }
+  }
+</style>
+<div class="w-full" style="@media (min-width: 1280px) width: calc(100vw - 46rem);">
+  <div id="terminalContainerContainer" class="relative mb-1.5 w-full z-[0] ">
     <FullscreenTerminal />
     <div
       id="terminalContainer"
-      class="bg-base-100 rounded-xl overflow-auto w-full h-[30rem] 2xl:h-[35rem] mb-2"
+      class="bg-base-100 rounded-xl overflow-auto  h-[30rem] 2xl:h-[35rem] mb-2 "
     >
-      <div class="p-5 text-sm xl:text-[1rem] font-mono relative">
+      <div class="p-5 text-sm xl:text-[1rem] font-mono relative ">
         <p id="terminal" />
       </div>
     </div>
@@ -122,3 +130,5 @@
     placeholder={$t("p.enterCommand")}
     class="input input-secondary bg-base-100 w-full"
   />
+
+</div>

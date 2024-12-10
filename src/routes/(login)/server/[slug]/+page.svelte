@@ -51,6 +51,8 @@
     import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
     import Terminal from "$lib/components/pages/server/Terminal.svelte";
     import Files from "$lib/components/pages/server/Files.svelte";
+    import Plugins from "$lib/components/pages/server/Plugins.svelte";
+    import Mods from "$lib/components/pages/server/Mods.svelte";
 
   let tab = "terminal";
   let modded = false;
@@ -362,7 +364,11 @@
       })
         .then((response) => response.json())
         .then((data) => {
+          try {
           ramUsage = data.data.replace("iB", "B").trim();
+          } catch (e) {
+            console.log(e);
+          }
         });
     }
 
@@ -380,15 +386,22 @@
     tab = newTab;
     if (newTab == "terminal") {
       document.getElementById("tab_terminal").classList.add("tab-active");
+      document.getElementById("tab_plugins").classList.remove("tab-active");
+      document.getElementById("tab_files").classList.remove("tab-active");
+      document.getElementById("tab_settings").classList.remove("tab-active");
+    } else if (newTab == "plugins") {
+      document.getElementById("tab_terminal").classList.remove("tab-active");
+      document.getElementById("tab_plugins").classList.add("tab-active");
       document.getElementById("tab_files").classList.remove("tab-active");
       document.getElementById("tab_settings").classList.remove("tab-active");
     } else if (newTab == "files") {
-
       document.getElementById("tab_terminal").classList.remove("tab-active");
+      document.getElementById("tab_plugins").classList.remove("tab-active");
       document.getElementById("tab_files").classList.add("tab-active");
       document.getElementById("tab_settings").classList.remove("tab-active");
     } else if (newTab == "settings") {
       document.getElementById("tab_terminal").classList.remove("tab-active");
+      document.getElementById("tab_plugins").classList.remove("tab-active");
       document.getElementById("tab_files").classList.remove("tab-active");
       document.getElementById("tab_settings").classList.add("tab-active");
     }
@@ -472,20 +485,27 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 
 
   <div
-    class=" md:space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center gap-0 justify-between px-5"
+    class="md:space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center gap-0 justify-between px-5"
   >
   
     <div class="flex flex-col items-center space-y-3 md:space-y-0 w-full">
 <div class="w-full mb-5">
-  <div role="tablist" class="tabs tabs-boxed w-1/4 p-0">
-    <a id="tab_terminal" role="tab" class="tab tab-active" on:click={() => updateTab("terminal")}>Terminal</a>
-    <a id="tab_files" role="tab" class="tab" on:click={() => updateTab("files")}>Files</a>
-    <a id="tab_settings" role="tab" class="tab" on:click={() => updateTab("settings")}>Settings</a>
+  <div role="tablist" class="tabs tabs-boxed w-1/4 p-0 gap-1">
+    <a id="tab_terminal" role="tab" class="tab tab-active px-3.5" on:click={() => updateTab("terminal")}>Terminal</a>
+    <a id="tab_plugins" role="tab" class="tab px-3.5" on:click={() => updateTab("plugins")}>{#if modded}Mods{:else if !vanilla}Plugins{/if}</a>
+    <a id="tab_files" role="tab" class="tab px-3.5" on:click={() => updateTab("files")}>Files</a>
+    <a id="tab_settings" role="tab" class="tab px-3.5" on:click={() => updateTab("settings")}>Settings</a>
 
   </div>
 </div>
       {#if tab == "terminal"}
 <Terminal/>
+{:else if tab == "plugins"}
+{#if modded}
+<Mods/>
+{:else if !vanilla}
+<Plugins/>
+{/if}
 {:else if tab == "files"}
 <Files/>
 {:else if tab == "settings"}
@@ -495,7 +515,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 </div>
 
     <div
-      class="flex flex-col items-center place-content-start mb-20 md:pl-0 mt-[3.25rem] gap-5 w-full md:w-[30rem]"
+      class="flex flex-col items-center place-content-start mb-20 md:pl-0 mt-[3.25rem] gap-5 w-full md:w-[19.75rem]"
     >
       <div class="space-y-5 w-full">
         <div
@@ -522,11 +542,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
         </div>
       </div>
 
-      <div class="w-[9.6rem] flex place-content-center space-x-2">
-        {#if modded}<AddMod /><ManageMods />{:else if !vanilla}
-          <Add /><Manage />
-        {/if}
-      </div>
+
       {#if webmap}
         <div class=" bg-base-100 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
           <img
