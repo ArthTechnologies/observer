@@ -12,7 +12,7 @@
   import { alert, handleDesc } from "$lib/scripts/utils";
   let id;
   let icon = "";
-  let iconPreview = "/images/palceholder.webp";
+  let iconPreview = "/images/placeholder.webp";
   let desc = "";
   let fSecret = "";
   let proxiesEnabled = false;
