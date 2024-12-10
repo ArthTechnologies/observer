@@ -17,7 +17,7 @@
   import Manage from "$lib/components/ui/Manage.svelte";
   import AddMod from "$lib/components/ui/AddMod.svelte";
   import Add from "$lib/components/ui/Add.svelte";
-  import ServerSettings from "$lib/components/ui/ServerSettings.svelte";
+  import Settings from "$lib/components/pages/server/Settings.svelte";
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
   import Updates from "$lib/components/buttons/Updates.svelte";
@@ -509,7 +509,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 {:else if tab == "files"}
 <Files/>
 {:else if tab == "settings"}
-<ServerSettings/>
+<Settings/>
 {/if}
 <div class="divider md:hidden pt-5 pb-4" />
 </div>
