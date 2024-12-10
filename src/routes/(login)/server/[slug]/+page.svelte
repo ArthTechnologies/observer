@@ -544,14 +544,14 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 
 
       {#if webmap}
-        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
           <img
             alt="dynmap-icon"
             class="w-8 h-8 rounded-lg bg-base-200"
             src="/images/dynmap.webp"
           />
 
-          <div class="divider divider-horizontal m-0"></div>
+          <div class="w-0.5 h-8 bg-base-300 opacity-75 m-0"></div>
           <div
             style="text-wrap: nowrap;"
             class="tooltip tooltip-top tooltip-info z-50 hidden sm:block"
@@ -612,7 +612,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
         </div>!-->
       {/if}
       {#if voicechat}
-        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
           <div class="dropdown dropdown-hover">
             <img
               alt="dynmap-icon"
@@ -621,7 +621,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
             />
           </div>
 
-          <div class="divider divider-horizontal m-0"></div>
+          <div class="w-0.5 h-8 bg-base-300 opacity-75 m-0"></div>
           <a
             href="https://arthmc.xyz/docs/using-simple-voice-chat"
             target="_blank"
@@ -644,7 +644,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
         </div>
       {/if}
       {#if chunky}
-        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
           <div class="dropdown dropdown-hover">
             <img
               alt="dynmap-icon"
@@ -652,7 +652,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
               src="/images/chunky.webp"
             />
           </div>
-          <div class="divider divider-horizontal m-0"></div>
+          <div class="w-0.5 h-8 bg-base-300 opacity-75 m-0"></div>
           <input
             id="pregenRadius"
             class="input input-sm w-32 input-bordered"
@@ -675,7 +675,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
         </div>
       {/if}
       {#if discordsrv}
-        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex gap-2 w-[21.75rem]">
+        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
           <div class="dropdown dropdown-hover">
             <img
               alt="dynmap-icon"
@@ -684,7 +684,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
             />
           </div>
 
-          <div class="divider divider-horizontal m-0"></div>
+          <div class="w-0.5 h-8 bg-base-300 opacity-75 m-0"></div>
           <a
             href="https://docs.discordsrv.com/installation/initial-setup"
             target="_blank"
