@@ -383,40 +383,12 @@
     }
   }
 
-  function updateTab(newTab) {
-    tab = newTab;
-    if (newTab == "terminal") {
-      document.getElementById("tab_terminal").classList.add("tab-active");
-      document.getElementById("tab_plugins").classList.remove("tab-active");
-      document.getElementById("tab_datapacks").classList.remove("tab-active");
-      document.getElementById("tab_files").classList.remove("tab-active");
-      document.getElementById("tab_settings").classList.remove("tab-active");
-    } else if (newTab == "plugins") {
-      document.getElementById("tab_terminal").classList.remove("tab-active");
-      document.getElementById("tab_plugins").classList.add("tab-active");
-      document.getElementById("tab_datapacks").classList.remove("tab-active");
-      document.getElementById("tab_files").classList.remove("tab-active");
-      document.getElementById("tab_settings").classList.remove("tab-active");
-    } else if (newTab == "datapacks") {
-      document.getElementById("tab_terminal").classList.remove("tab-active");
-      document.getElementById("tab_plugins").classList.remove("tab-active");
-      document.getElementById("tab_datapacks").classList.add("tab-active");
-      document.getElementById("tab_files").classList.remove("tab-active");
-      document.getElementById("tab_settings").classList.remove("tab-active");
-    }
-    else if (newTab == "files") {
-      document.getElementById("tab_terminal").classList.remove("tab-active");
-      document.getElementById("tab_plugins").classList.remove("tab-active");
-      document.getElementById("tab_datapacks").classList.remove("tab-active");
-      document.getElementById("tab_files").classList.add("tab-active");
-      document.getElementById("tab_settings").classList.remove("tab-active");
-    } else if (newTab == "settings") {
-      document.getElementById("tab_terminal").classList.remove("tab-active");
-      document.getElementById("tab_plugins").classList.remove("tab-active");
-      document.getElementById("tab_datapacks").classList.remove("tab-active");
-      document.getElementById("tab_files").classList.remove("tab-active");
-      document.getElementById("tab_settings").classList.add("tab-active");
-    }
+  let tabs = ["terminal", "plugins", "datapacks", "files", "settings"];
+  if (modded) {
+    tabs = ["terminal", "mods", "datapacks", "files", "settings"];
+  }
+  if (vanilla) {
+    tabs = ["terminal", "datapacks", "files", "settings"];
   }
 </script>
 
@@ -503,12 +475,15 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
     <div class="flex flex-col items-center space-y-3 md:space-y-0 w-full">
 <div class="w-full mb-5">
   <div role="tablist" class="tabs tabs-boxed w-1/4 p-0 gap-1">
-    <a id="tab_terminal" role="tab" class="tab tab-active px-3.5" on:click={() => updateTab("terminal")}>Terminal</a>
-    <a id="tab_plugins" role="tab" class="tab px-3.5" on:click={() => updateTab("plugins")}>{#if modded}Mods{:else}Plugins{/if}</a>
-    <a id="tab_datapacks" role="tab" class="tab px-3.5" on:click={() => updateTab("datapacks")}>Datapacks</a>
-    <a id="tab_files" role="tab" class="tab px-3.5" on:click={() => updateTab("files")}>Files</a>
-    <a id="tab_settings" role="tab" class="tab px-3.5" on:click={() => updateTab("settings")}>Settings</a>
-
+    {#each tabs as label, index}
+      <a
+        role="tab"
+        class="tab px-3.5 {tab === label ? 'tab-active' : ''}"
+        on:click={() => (tab = label)}
+      >
+        {label[0].toUpperCase() + label.slice(1)}
+      </a>
+    {/each}
   </div>
 </div>
       {#if tab == "terminal"}
