@@ -31,17 +31,14 @@
     PlayCircle,
     Repeat,
     StopCircle,
-    Settings,
-    ClipboardList,
-    ArrowUpSquare,
+
     ExternalLink,
     Send,
     FileCog,
     MemoryStick,
     Users,
     Unplug,
-    ServerOff,
-    PowerOff,
+
   } from "lucide-svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
   import Versions from "$lib/components/buttons/Versions.svelte";

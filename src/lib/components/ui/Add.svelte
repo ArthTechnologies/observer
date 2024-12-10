@@ -33,7 +33,7 @@
     X,
     Zap,
   } from "lucide-svelte";
-  import Home from "../buttons/Home.svelte";
+
   let categories = [];
 
   function toggleCategory(category) {
