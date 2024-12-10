@@ -472,10 +472,10 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
     class="md:space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center gap-0 justify-between px-5"
   >
         <!-- Start Left Side-->
-    <div class="flex flex-col items-center space-y-3 md:space-y-0 w-full">
+    <div class="flex flex-col space-y-5 w-full">
 
-<div class="w-full space-y-5">
-  <div role="tablist" class="tabs tabs-boxed w-1/4 p-0 gap-1">
+
+  <div role="tablist" class="tabs tabs-boxed flex flex-wrap p-0 gap-1">
     {#each tabs as label, index}
       <a
         role="tab"
@@ -504,7 +504,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
   <Settings/>
   {/if}
 </div>
-</div>
+
 
 <div class="divider md:hidden pt-5 pb-4" />
 
