@@ -15,6 +15,7 @@
   export let desc: string;
   export let icon: string;
   export let buttonType: string = "default";
+  export let datapack: boolean;
   let suffix = "";
   if (buttonType != "default") {
     suffix = "manage";
@@ -32,6 +33,9 @@
     lang = lang.split("-")[0];
     lang = lang.split("_")[0];
     software = localStorage.getItem("serverSoftware");
+    if (datapack) {
+      software = "datapack";
+    }
     sVersion = localStorage.getItem("serverVersion");
 
     if (document.getElementById("versionFilterCheckbox")?.checked)
@@ -103,6 +107,10 @@
         ) {
           vname = version.name;
           console.log(version);
+          let modtype = "plugin";
+          if (datapack) {
+            modtype = "datapack";
+          }
           new Version({
             target: document.getElementById("list" + suffix),
             props: {
@@ -113,7 +121,7 @@
               pluginId: id,
               pluginName: name,
               dependencies: version.dependencies,
-              modtype: "plugin",
+              modtype: modtype,
               changelog: version.changelog,
               versionId: version.id,
             },

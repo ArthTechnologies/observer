@@ -53,6 +53,7 @@
     import Files from "$lib/components/pages/server/Files.svelte";
     import Plugins from "$lib/components/pages/server/Plugins.svelte";
     import Mods from "$lib/components/pages/server/Mods.svelte";
+    import Datapacks from "$lib/components/pages/server/Datapacks.svelte";
 
   let tab = "terminal";
   let modded = false;
@@ -387,21 +388,32 @@
     if (newTab == "terminal") {
       document.getElementById("tab_terminal").classList.add("tab-active");
       document.getElementById("tab_plugins").classList.remove("tab-active");
+      document.getElementById("tab_datapacks").classList.remove("tab-active");
       document.getElementById("tab_files").classList.remove("tab-active");
       document.getElementById("tab_settings").classList.remove("tab-active");
     } else if (newTab == "plugins") {
       document.getElementById("tab_terminal").classList.remove("tab-active");
       document.getElementById("tab_plugins").classList.add("tab-active");
+      document.getElementById("tab_datapacks").classList.remove("tab-active");
       document.getElementById("tab_files").classList.remove("tab-active");
       document.getElementById("tab_settings").classList.remove("tab-active");
-    } else if (newTab == "files") {
+    } else if (newTab == "datapacks") {
       document.getElementById("tab_terminal").classList.remove("tab-active");
       document.getElementById("tab_plugins").classList.remove("tab-active");
+      document.getElementById("tab_datapacks").classList.add("tab-active");
+      document.getElementById("tab_files").classList.remove("tab-active");
+      document.getElementById("tab_settings").classList.remove("tab-active");
+    }
+    else if (newTab == "files") {
+      document.getElementById("tab_terminal").classList.remove("tab-active");
+      document.getElementById("tab_plugins").classList.remove("tab-active");
+      document.getElementById("tab_datapacks").classList.remove("tab-active");
       document.getElementById("tab_files").classList.add("tab-active");
       document.getElementById("tab_settings").classList.remove("tab-active");
     } else if (newTab == "settings") {
       document.getElementById("tab_terminal").classList.remove("tab-active");
       document.getElementById("tab_plugins").classList.remove("tab-active");
+      document.getElementById("tab_datapacks").classList.remove("tab-active");
       document.getElementById("tab_files").classList.remove("tab-active");
       document.getElementById("tab_settings").classList.add("tab-active");
     }
@@ -492,7 +504,8 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 <div class="w-full mb-5">
   <div role="tablist" class="tabs tabs-boxed w-1/4 p-0 gap-1">
     <a id="tab_terminal" role="tab" class="tab tab-active px-3.5" on:click={() => updateTab("terminal")}>Terminal</a>
-    <a id="tab_plugins" role="tab" class="tab px-3.5" on:click={() => updateTab("plugins")}>{#if modded}Mods{:else if !vanilla}Plugins{/if}</a>
+    <a id="tab_plugins" role="tab" class="tab px-3.5" on:click={() => updateTab("plugins")}>{#if modded}Mods{:else}Plugins{/if}</a>
+    <a id="tab_datapacks" role="tab" class="tab px-3.5" on:click={() => updateTab("datapacks")}>Datapacks</a>
     <a id="tab_files" role="tab" class="tab px-3.5" on:click={() => updateTab("files")}>Files</a>
     <a id="tab_settings" role="tab" class="tab px-3.5" on:click={() => updateTab("settings")}>Settings</a>
 
@@ -506,6 +519,8 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 {:else if !vanilla}
 <Plugins/>
 {/if}
+{:else if tab == "datapacks"}
+<Datapacks/>
 {:else if tab == "files"}
 <Files/>
 {:else if tab == "settings"}

@@ -13,6 +13,7 @@
   export let id: string;
   export let recursive = false;
   export let downloads: number;
+  export let datapack = false;
 
   let software = "";
   let version = "";
@@ -90,6 +91,7 @@
         {desc}
         {author}
         {icon}
+        {datapack}
       />{/if}
   </div>
 </div>
