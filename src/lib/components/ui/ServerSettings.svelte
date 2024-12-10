@@ -113,6 +113,8 @@
             }
           });
       }
+
+      alert("Settings applied.", "success");
     }
   }
 
@@ -169,12 +171,12 @@
 
 
 
-  <div class="w-full relative">
+  <div class="bg-base-100 rounded-xl p-3 w-full relative">
 
-    <label
-      for="editInfo"
-      class="btn btn-neutral btn-sm absolute right-0 top-0"
-      on:click={set}>{$t("apply")}</label
+    <button
+ 
+      class="btn btn-neutral btn-sm absolute right-2 top-2"
+      on:click={set}>{$t("apply")}</button
     >
 
     <div class="flex p-1 text-sm items-center gap-1.5 mb-1.5">
