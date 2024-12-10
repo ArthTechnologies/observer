@@ -393,7 +393,7 @@
 </script>
 
 <div class="lg:-mt-5">
-
+<!-- Start Top Section-->
   <div class="flex justify-between mb-2 items-center">
     <div>
 <div class="mb-2">
@@ -448,6 +448,7 @@
       {/if}
       </div>
     </div>
+
 <div class="flex flex-col gap-1.5">
   <div
   class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-1 h-fit"
@@ -462,18 +463,21 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 {players}/{maxPlayers} Players
 </div>
 </div>
+
   </div>
+  <!-- End Top Section-->
   <div
   class="divider"
 />
 
-
+<!-- Start Bottom Section-->
   <div
     class="md:space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center gap-0 justify-between px-5"
   >
-  
+        <!-- Start Left Side-->
     <div class="flex flex-col items-center space-y-3 md:space-y-0 w-full">
-<div class="w-full mb-5">
+
+<div class="w-full space-y-5">
   <div role="tablist" class="tabs tabs-boxed w-1/4 p-0 gap-1">
     {#each tabs as label, index}
       <a
@@ -485,25 +489,31 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
       </a>
     {/each}
   </div>
+
+<div>
+  {#if tab == "terminal"}
+  <Terminal/>
+  {:else if tab == "plugins"}
+  {#if modded}
+  <Mods/>
+  {:else if !vanilla}
+  <Plugins/>
+  {/if}
+  {:else if tab == "datapacks"}
+  <Datapacks/>
+  {:else if tab == "files"}
+  <Files/>
+  {:else if tab == "settings"}
+  <Settings/>
+  {/if}
 </div>
-      {#if tab == "terminal"}
-<Terminal/>
-{:else if tab == "plugins"}
-{#if modded}
-<Mods/>
-{:else if !vanilla}
-<Plugins/>
-{/if}
-{:else if tab == "datapacks"}
-<Datapacks/>
-{:else if tab == "files"}
-<Files/>
-{:else if tab == "settings"}
-<Settings/>
-{/if}
-<div class="divider md:hidden pt-5 pb-4" />
 </div>
 
+<div class="divider md:hidden pt-5 pb-4" />
+
+</div>
+<!-- End Left Side-->
+<!-- Start Right Side-->
     <div
       class="flex flex-col items-center place-content-start mb-20 md:pl-0 mt-[3.25rem] gap-5 w-full md:w-[19.75rem]"
     >
@@ -573,33 +583,6 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
             ></a
           >
         </div>
-        <!--<div class="mt-5 relative">
-          <iframe
-            title="Webmap of the server's world"
-            type="text/html"
-            src="{webmapurl}:{parseInt(id) + 10200}"
-            class="shadow-xl w-full rounded-xl"
-            height="300"
-          />
-          <div
-            class="absolute bottom-0 w-full bg-neutral rounded-b-lg bg-opacity-50 backdrop-blur-xl p-2 flex gap-2"
-          >
-            <button on:click={webmapRender} class="btn btn-sm"
-              >Render World</button
-            >
-            <button
-              class="btn btn-sm btn-ghost"
-              on:click={() => {
-                navigator.clipboard.writeText(
-                  `${webmapurl}:${parseInt(id) + 10200}`
-                );
-              }}
-              ><ClipboardList size="16" class="mr-1" />
-              Copy Link</button
-            >
-          </div>
-          <FullscreenMap />
-        </div>!-->
       {/if}
       {#if voicechat}
         <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
@@ -740,5 +723,7 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 
     
     </div>
+    <!-- End Right Side-->	
   </div>
+  <!-- End Bottom Section-->
 </div>
