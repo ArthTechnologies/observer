@@ -127,7 +127,7 @@
               platform={mod.platform}
               filename={mod.filename.split(".disabled")[0]}
               date={mod.date}
-              modtype="plugin"
+              modtype="datapack"
               disabled={mod.filename.includes(".disabled")}
             />
           {:else}
