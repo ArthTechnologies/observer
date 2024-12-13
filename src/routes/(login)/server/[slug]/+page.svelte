@@ -443,6 +443,7 @@
           {$t("button.stopping")}
         </div>
       {/if}
+      <Updates/>
       </div>
     </div>
 

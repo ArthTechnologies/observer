@@ -98,10 +98,9 @@
     serverVersion = localStorage.getItem("serverVersion");
   }
 </script>
-
 {#if latestUpdate != serverVersion && jarAvailable && serverSoftware != "Forge"}
-  <label for="updates" class="btn btn-neutral" on:click={onclick}
-    ><ArrowDownCircle class="mr-2.5" />
+  <label for="updates" class="btn btn-neutral btn-sm" on:click={onclick}
+    ><ArrowDownCircle class="mr-1.5" size=18/>
     {$t("button.update")}</label
   >
 {/if}
