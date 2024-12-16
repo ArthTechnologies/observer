@@ -113,6 +113,11 @@
           alert($t("alert.virusDetected"));
         } else {
           alert($t("alert.worldUploaded"), "success");
+
+          //dispatch refresh event
+          const event = new CustomEvent("refresh");
+          document.dispatchEvent(event);
+          console.log("Dispatching refresh event");
         }
         requestFinished = true;
       });

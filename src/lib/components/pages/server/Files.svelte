@@ -20,6 +20,29 @@
         backurl = "proxy";
       }
       id = localStorage.getItem("serverID");
+      getFiles();
+
+
+      document.addEventListener("refresh", function () {
+        console.log("refreshing");
+      getFiles();
+    });
+  
+      document.addEventListener("keydown", function (event) {
+        // Check if the event key is 's' and the Ctrl/Cmd key is pressed
+        if (
+          (event.key === "s" || event.key === "S") &&
+          (event.ctrlKey || event.metaKey)
+        ) {
+          // Prevent the default browser behavior (saving the page)
+          event.preventDefault();
+  
+          save();
+        }
+      });
+    }
+
+    function getFiles() {
       let baseurl = apiurl;
       if (usingOcelot) baseurl = getServerNode(id);
       const url = baseurl + "server/" + id + "/files";
@@ -35,19 +58,6 @@
           files = data;
           console.log(data);
         });
-  
-      document.addEventListener("keydown", function (event) {
-        // Check if the event key is 's' and the Ctrl/Cmd key is pressed
-        if (
-          (event.key === "s" || event.key === "S") &&
-          (event.ctrlKey || event.metaKey)
-        ) {
-          // Prevent the default browser behavior (saving the page)
-          event.preventDefault();
-  
-          save();
-        }
-      });
     }
   
     function save() {
