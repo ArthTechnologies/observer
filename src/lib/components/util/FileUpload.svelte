@@ -107,7 +107,9 @@
       xhr.addEventListener("load", (e) => {
         console.log(e.target.response);
 
-        if (e.target.response.indexOf("No Viruses Detected") == -1) {
+        if (!e.target.response.includes("No Viruses Detected") &&
+      !e.target.response.includes("Upload Complete")
+      ) {
           alert($t("alert.virusDetected"));
         } else {
           alert($t("alert.worldUploaded"), "success");
