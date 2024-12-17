@@ -4,6 +4,7 @@
   export let url: string;
   export let filename: string;
   import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
+    import { downloadProgressShort } from "$lib/scripts/utils";
   import {
     File,
     FileText,
@@ -11,6 +12,9 @@
     Trash2,
     FileUp,
     AlertTriangle,
+    FileDown,
+    Download,
+    Loader,
   } from "lucide-svelte";
   import { Warning } from "postcss";
   let id;
@@ -91,6 +95,76 @@
         }
       });
   }
+  let downloading = false;
+  let downloadProgress = "0/0MB";
+  let gradientBackground = "#1fb2a5";
+  
+  function download() {
+    downloading = true;
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", apiurl + "server/" + id + "/file/download/" + url, true);
+    xhr.setRequestHeader("token", localStorage.getItem("token"));
+    xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
+    xhr.responseType = "blob";
+    let lhref = window.location.href;
+    const downloadBtn = document.getElementById("downloadBtn");
+    xhr.addEventListener("progress", (event) => {
+      if (event.lengthComputable && browser) {
+        const percentComplete = (event.loaded / event.total) * 100;
+
+        // You can update a progress bar or display the percentage to the user
+        if (percentComplete < 100 && window.location.href == lhref) {
+          downloadProgress = downloadProgressShort(event.loaded, event.total);
+
+          downloadBtn.style.width = "200px";
+
+            downloadBtn.classList.add("text-accent-content");
+            downloadBtn.classList.remove("text-gray-200");
+
+          downloadBtn.classList.add("pointer-events-none");
+
+            gradientBackground = "#1fb2a5";
+            downloadBtn.style.background = `linear-gradient(
+  to right,
+  rgba(0, 0, 0, 0.9) 0%,
+  rgba(0, 0, 0, 0.0) ${(event.loaded / event.total) * 100}%,
+  ${gradientBackground} ${(event.loaded / event.total) * 100}%,
+  ${gradientBackground} 100%
+)`;
+
+        } else if (percentComplete >= 100) {
+          downloadProgress = "0/0MB";
+
+          downloadBtn.style.width = ``;
+          downloadBtn.style.background = ``;
+          downloadBtn.classList.remove("pointer-events-none");
+        
+            downloadBtn.classList.remove("text-accent-content");
+
+        }
+      }
+    });
+
+    xhr.onload = function () {
+      downloading = false;
+      if (xhr.status === 200) {
+        const blob = xhr.response;
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a); // Clean up the temporary <a> element
+        window.URL.revokeObjectURL(url); // Clean up the object URL
+      } else {
+        console.error("Error downloading file. Status:", xhr.status);
+        // Handle the error case
+      }
+    };
+
+    xhr.send();
+  }
 </script>
 
 <div class="flex gap-1 justify-between">
@@ -122,6 +196,13 @@
       class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center btn-disabled opacity-50"
     >
       <FileUp class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+    </label>
+    <label
+      for="download{filename}"
+      on:click={getText}
+      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
+      >
+    <Download class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     </label>
   </div>
 </div>
@@ -179,3 +260,33 @@
     </div>
   </div>
 </div>
+
+<!-- Put this part before </body> tag -->
+<input type="checkbox" id="download{filename}" class="modal-toggle" />
+<div class="modal" style="margin:0rem;">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+    <label
+      for="download{filename}"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
+    >
+    <h3 class="text-lg font-bold mb-5">Download {filename}</h3>
+
+    <div class="flex gap-1">
+      <button
+      id="downloadBtn"
+      class="btn btn-accent btn-sm"
+      on:click={download}
+      >{#if !downloading}<Download size="18" />{:else}<div
+          class="animate-spin"
+        >
+          <Loader />
+        </div>{/if}
+      <p class="ml-1.5">
+        {#if downloading}{downloadProgress}{:else}{$t(
+            "button.download"
+          )}{/if}
+      </p></button
+    >
+    </div>
+  </div>
+  </div>
