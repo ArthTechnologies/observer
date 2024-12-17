@@ -83,7 +83,8 @@
         console.log(data);
         if (data.msg == "Done") {
           document.getElementById("delete" + foldername).checked = false;
-          location.reload();
+          const event = new CustomEvent("refresh");
+          document.dispatchEvent(event);
         } else {
           alert("Error: " + data.msg);
         }

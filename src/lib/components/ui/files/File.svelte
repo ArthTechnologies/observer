@@ -86,7 +86,8 @@
         console.log(data);
         if (data.msg == "Done") {
           document.getElementById("delete" + filename).checked = false;
-          location.reload();
+          const event = new CustomEvent("refresh");
+          document.dispatchEvent(event);
         }
       });
   }
