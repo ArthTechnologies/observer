@@ -113,7 +113,7 @@
       ) {
           alert($t("alert.virusDetected"));
         } else {
-          alert($t("alert.worldUploaded"), "success");
+          alert($t("alert.fileUploaded"), "success");
 
           //dispatch refresh event
           const event = new CustomEvent("refresh");
