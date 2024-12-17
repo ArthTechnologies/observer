@@ -99,7 +99,7 @@
     <FolderClosed
       class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]"
     />
-    <p class="text-xs md:text-sm w-full">{path}</p>
+    <p class="text-xs md:text-sm w-full">{foldername}</p>
 
     {#if files.length >= 1}
       <p id="toggleIndicator{folderId}"><ChevronDown /></p>
@@ -177,7 +177,7 @@
       for="upload{foldername}"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
-    <h3 class="text-lg font-bold">Upload File to /{uploadpath.split("*").join("/")}</h3>
+    <h3 class="text-lg font-bold">Upload File to /{foldername}</h3>
 
     <FileUpload {foldername} {uploadpath} {id} />
   </div>
