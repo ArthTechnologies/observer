@@ -17,14 +17,19 @@
   export let foldername;
   export let files;
   export let path;
+  let uploadpath;
   let open = false;
   let folderId;
   let id;
   let accountType;
 
   if (browser) {
-    console.error(path);
+
     id = localStorage.getItem("serverID");
+     if (path != undefined) {
+     uploadpath = path.split("servers/" + id + "//")[1].split("/").join("*");
+     }
+
     if (localStorage.getItem("accountEmail").includes("@")) {
       accountType = "email";
     } else {
@@ -94,7 +99,7 @@
     <FolderClosed
       class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]"
     />
-    <p class="text-xs md:text-sm w-full">{foldername}</p>
+    <p class="text-xs md:text-sm w-full">{path}</p>
 
     {#if files.length >= 1}
       <p id="toggleIndicator{folderId}"><ChevronDown /></p>
@@ -172,8 +177,8 @@
       for="upload{foldername}"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
-    <h3 class="text-lg font-bold">Upload File to /{foldername}</h3>
+    <h3 class="text-lg font-bold">Upload File to /{uploadpath.split("*").join("/")}</h3>
 
-    <FileUpload {foldername} {id} />
+    <FileUpload {foldername} {uploadpath} {id} />
   </div>
 </div>

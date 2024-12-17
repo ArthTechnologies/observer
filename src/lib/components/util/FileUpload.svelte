@@ -4,6 +4,7 @@
   import { apiurl, getServerNode, usingOcelot } from "$lib/scripts/req";
   import { alert } from "$lib/scripts/utils";
   export let foldername;
+  export let uploadpath;
   export let id;
   let gradientBackground = "#1fb2a5";
   function uploadFile() {
@@ -132,7 +133,7 @@
           "server/" +
           id +
           "/file/upload/" +
-          foldername +
+          uploadpath +
           "?filename=" +
           file.name,
         true
