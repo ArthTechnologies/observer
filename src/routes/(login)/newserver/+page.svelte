@@ -61,7 +61,7 @@
 
     latestVersion = localStorage.getItem("latestVersion");
     version = latestVersion;
-    fetch("https://api.jarsmc.xyz/jars/arthHosting", {
+    fetch("https://api.jarsmc.xyz/jars/", {
       method: "GET",
     })
       .then((res) => res.json())

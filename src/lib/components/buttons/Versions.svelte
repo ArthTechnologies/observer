@@ -39,7 +39,7 @@
       areWorldgenMods = false;
     }
     if (serverSoftware != "Forge") {
-      fetch("https://api.jarsmc.xyz/jars/arthHosting")
+      fetch("https://api.jarsmc.xyz/jars/")
         .then((x) => x.json())
         .then((x) => {
           jarsIndex = x;
@@ -90,7 +90,7 @@
 
   function onclick() {
     serverVersion = localStorage.getItem("serverVersion");
-    fetch("https://api.jarsmc.xyz/jars/arthHosting")
+    fetch("https://api.jarsmc.xyz/jars/")
       .then((x) => x.json())
       .then((x) => {
         jarsIndex = x;
