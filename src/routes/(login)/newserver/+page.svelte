@@ -68,7 +68,6 @@
       .then((res) => {
         console.log(res);
         index = res;
-        index["quilt"] = index["paper"];
         findVersions();
         checkV();
       });
@@ -191,7 +190,7 @@
   }
   function checkV() {
     if (browser) {
-      version = document.getElementById("versionDropdown").value;
+      version = document.getElementById("versionDropdown").value.split(" ").join("*").toLowerCase();
 
       console.log("version selected: " + version);
     }
@@ -236,14 +235,25 @@
     let CVS = software.split(" - ")[0].toLowerCase();
     let versionOptions = [];
 
-    index[CVS].forEach((item) => {
-      console.log(item.version);
-      let option = {
-        value: item.version,
-        label: item.version,
-      };
-      versionOptions.push(item.version);
-    });
+    for (let i in index) {
+
+      let filename = i;
+      let software2 = filename.split("-")[0];
+      let version = filename.split("-")[1];
+      let channel = "";
+      if (filename.split("-")[2] != undefined) {
+        channel = filename.split("-")[2].split(".")[0];
+        if (channel == "release") {
+          channel = "";
+        }
+      }
+      if (software2 == CVS) {
+        
+        versionOptions.push(version+" "+channel.substring(0, 1).toUpperCase() + channel.substring(1));
+      }
+    }
+
+
 
     // Append versions to dropdown
     let versionDropdown = document.getElementById("versionDropdown");
