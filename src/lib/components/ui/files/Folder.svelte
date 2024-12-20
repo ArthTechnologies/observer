@@ -206,7 +206,7 @@
   <div class="ml-3 md:ml-5">
     {#each files as file}
       {#if typeof file == "string"}
-        <File foldername={file.split(":")[0]} url={file.split(":")[1]} />
+        <File filename={file.split(":")[0]} url={file.split(":")[1]} />
       {:else}
         <Folder
           foldername={file[0].split(":")[0]}
