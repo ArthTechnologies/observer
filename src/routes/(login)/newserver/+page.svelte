@@ -181,7 +181,7 @@
   }
   function checkV() {
     if (browser) {
-      version = document.getElementById("versionDropdown").value.split(" ").join("*").toLowerCase();
+      version = document.getElementById("versionDropdown").value.trim().split(" ").join("*").toLowerCase();
 
       console.log("version selected: " + version);
     }
