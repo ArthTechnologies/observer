@@ -18,7 +18,6 @@
   let modpacks = false;
   let modpackURL = "";
   let latestVersion = "1.20.1";
-  let index = {};
   let worldgenMods = [
     { name: "terralith", tooltip: "Terralith - Overworld Evolved" },
     { name: "incendium", tooltip: "Incendium - Nether Expansion" },
@@ -61,16 +60,7 @@
 
     latestVersion = localStorage.getItem("latestVersion");
     version = latestVersion;
-    fetch("https://api.jarsmc.xyz/jars/", {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        index = res;
-        findVersions();
-        checkV();
-      });
+
     fetch(apiurl + "info/jars", {
       method: "GET",
       headers: {
@@ -83,6 +73,7 @@
       .then((res) => {
         console.log(res);
         jarsList = res;
+        findVersions();
         checkV();
       });
 
@@ -247,6 +238,10 @@
         }
       } else {
         version = version.split(".jar")[0].split(".zip")[0];
+      }
+      if (version.includes("*")) {
+        let versionComponents = version.split("*");
+      version = versionComponents[0] + " " + versionComponents[1].charAt(0).toUpperCase() + versionComponents[1].slice(1);
       }
       if (software2 == CVS) {
         versionOptions.push(version + " " + channel.substring(0, 1).toUpperCase() + channel.substring(1));
