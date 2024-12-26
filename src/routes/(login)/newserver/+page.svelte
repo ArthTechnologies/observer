@@ -235,9 +235,8 @@
     let CVS = software.split(" - ")[0].toLowerCase();
     let versionOptions = [];
 
-    for (let i in index) {
-
-      let filename = i;
+    for (let i in jarsList) {
+      let filename = jarsList[i];
       let software2 = filename.split("-")[0];
       let version = filename.split("-")[1];
       let channel = "";
@@ -246,10 +245,11 @@
         if (channel == "release") {
           channel = "";
         }
+      } else {
+        version = version.split(".jar")[0].split(".zip")[0];
       }
       if (software2 == CVS) {
-        
-        versionOptions.push(version+" "+channel.substring(0, 1).toUpperCase() + channel.substring(1));
+        versionOptions.push(version + " " + channel.substring(0, 1).toUpperCase() + channel.substring(1));
       }
     }
 
