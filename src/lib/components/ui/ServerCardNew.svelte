@@ -35,6 +35,13 @@
 
   export let name: string;
   export let version: string;
+  let version2;
+  if (version.includes("*")) {
+    let array = version.split("*");
+    version2 = array[0] + " " + array[1].charAt(0).toUpperCase() + array[1].slice(1);
+  } else {
+    version2 = version;
+  }
   export let software: string;
   export let state: string;
   export let id: number;
@@ -204,7 +211,7 @@
     </p>
     <div class="flex gap-2">
       <p class="bg-base-300 px-1.5 rounded text-xs font-poppins">{software}</p>
-      <p class="bg-base-300 px-1.5 rounded text-xs font-poppins">{version}</p>
+      <p class="bg-base-300 px-1.5 rounded text-xs font-poppins">{version2}</p>
     </div>
   </div>
 </div>
