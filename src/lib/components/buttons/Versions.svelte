@@ -2,7 +2,7 @@
   import { browser } from "$app/environment";
   import { AlertTriangle, ArrowDownCircle } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
-  import { updateServer } from "../../scripts/req";
+  import { apiurl, updateServer } from "../../scripts/req";
   import AccountButton from "./AccountButton.svelte";
   let latestUpdate = "";
   let version = "";
@@ -11,7 +11,8 @@
   let updateReady = true;
   let serverVersion = "";
   let serverSoftware = "";
-  let jarsIndex = {};
+  let jarsList = [];
+  let availableVersions = [];
 
   function update() {
     if (updateReady && browser) {
@@ -19,6 +20,7 @@
     }
   }
   if (browser) {
+
     //this interval runs checkV in case the users has gone to a different
     //server, where there might be a different amount of worldgen mods.
 
@@ -31,6 +33,7 @@
 
     serverVersion = localStorage.getItem("serverVersion");
     serverSoftware = localStorage.getItem("serverSoftware");
+
     if (localStorage.getItem("serverAddons") != null) {
       serverAddons = localStorage.getItem("serverAddons").split(",");
     }
@@ -38,27 +41,10 @@
     if (serverAddons[0] == "") {
       areWorldgenMods = false;
     }
-    if (serverSoftware != "Forge") {
-      fetch("https://api.jarsmc.xyz/jars/")
-        .then((x) => x.json())
-        .then((x) => {
-          jarsIndex = x;
-          let html = "";
-          if (jarsIndex[serverSoftware.toLowerCase()] != undefined) {
-            jarsIndex[serverSoftware.toLowerCase()].forEach((x) => {
-              if (x.version != serverVersion) {
-                html +=
-                  "<option value=" + x.version + ">" + x.version + "</option>";
-              }
-            });
-            document.getElementById("versionDropdown").innerHTML = html;
-            checkV();
-          }
-        });
-    }
+
   }
   export function checkV() {
-    version = document.getElementById("versionDropdown").value;
+     version = document.getElementById("versionDropdown").value;
     if (localStorage.getItem("serverAddons") != null) {
       serverAddons = localStorage.getItem("serverAddons").split(",");
     }
@@ -69,11 +55,20 @@
     updateReady = false;
     if (areWorldgenMods) {
       serverAddons.forEach((item) => {
-        let worldgenMod = jarsIndex[item.toLowerCase()];
-        if (worldgenMod != undefined) {
-          worldgenMod.forEach((x) => {
+        let worldgenMods = [];
+        for (let i in jarsList) {
+          let software = jarsList[i].split("-")[0];
+          let version2 = jarsList[i].split("-")[1];
+          if (software == item.toLowerCase()) {
+            if (version == version2) {
+              worldgenMods.push(software);
+            }
+          }
+        }
+          let readyWorldgenMods = 0;
+          worldgenMods.forEach((x) => {
             if (x.version == version) {
-              updateReady = true;
+              readyWorldgenMods++;
               /* This doesnt work for some reason if you add the grayscale class to every image by default.
           document
             .getElementById(item + "Versions")
@@ -81,7 +76,10 @@
             */
             }
           });
-        }
+          if (readyWorldgenMods == worldgenMods.length) {
+            updateReady = true;
+          }
+        
       });
     } else {
       updateReady = true;
@@ -89,14 +87,39 @@
   }
 
   function onclick() {
+    if (browser) {
+      let html = "";
     serverVersion = localStorage.getItem("serverVersion");
-    fetch("https://api.jarsmc.xyz/jars/")
+    fetch(apiurl + "info/jars")
       .then((x) => x.json())
       .then((x) => {
-        jarsIndex = x;
-        let html = "";
-        if (jarsIndex[serverSoftware.toLowerCase()] != undefined) {
-          jarsIndex[serverSoftware.toLowerCase()].forEach((x) => {
+        jarsList = x;
+        for (let i in jarsList) {
+      let software = jarsList[i].split("-")[0];
+      let version = jarsList[i].split("-")[1].split(".jar")[0];
+      let version2 = version;
+      if (version.includes("*")) {
+        let array = version.split("*");
+        version2 = array[0] + " " + array[1].charAt(0).toUpperCase() + array[1].slice(1);
+      }
+      if (software == serverSoftware.toLowerCase()) {
+        if (version != serverVersion) {
+          html += "<option value=" + version2 + ">" + version2 + "</option>";
+        }
+      }
+      document.getElementById("versionDropdown").innerHTML = html;
+      checkV();
+    }
+
+      });
+    }
+    /*fetch("https://api.jarsmc.xyz/jars/")
+      .then((x) => x.json())
+      .then((x) => {
+        jarsList = x;
+        
+        if (jarsList[serverSoftware.toLowerCase()] != undefined) {
+          jarsList[serverSoftware.toLowerCase()].forEach((x) => {
             if (x.version != serverVersion) {
               html +=
                 "<option value=" + x.version + ">" + x.version + "</option>";
@@ -105,8 +128,9 @@
           document.getElementById("versionDropdown").innerHTML = html;
           checkV();
         }
-      });
-  }
+      });*/
+    }
+  
 </script>
 
 {#if serverSoftware != "Forge"}
