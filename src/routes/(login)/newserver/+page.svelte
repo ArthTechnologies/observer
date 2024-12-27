@@ -278,7 +278,8 @@
     } else if (
       software.split(" - ")[0] == "Quilt" ||
       software.split(" - ")[0] == "Fabric" ||
-      software.split(" - ")[0] == "Forge"
+      software.split(" - ")[0] == "Forge" ||
+      software.split(" - ")[0] == "NeoForge"
     ) {
       worldgen.classList.add("hidden");
       modpackElement.classList.remove("hidden");
@@ -315,6 +316,7 @@
             <option>{$t("software.paper")}</option>
             {#if canCreateModdedServer}
               <option>{$t("software.forge")} </option>
+              <option>{$t("software.neoForge")}</option>
               <option>{$t("software.fabric")}</option>
               <option>{$t("software.quilt")}</option>
             {/if}
