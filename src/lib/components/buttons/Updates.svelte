@@ -4,14 +4,14 @@
   import { apiurl } from "../../scripts/req";
   import { updateServer } from "../../scripts/req";
   import { t } from "$lib/scripts/i18n";
-  let latestUpdate = "";
   let worldgenMods = [];
+  let latestUpdate = "1.19.4";
   let serverAddons = [];
   let areWorldgenMods = true;
   let updateReady = true;
   let serverVersion = "";
   let serverSoftware = "";
-  let jarAvailable = false;
+  let newerVersionAvailable = false;
 
   function update() {
     if (updateReady && browser) {
@@ -37,6 +37,51 @@
     fetch(apiurl + "info/jars")
       .then((x) => x.json())
       .then((x) => {
+        let worldgenModsAvailable = 0;
+        for (let i in x) {
+          let software = x[i].split("-")[0];
+          let version = x[i].split("-")[1].split(".jar")[0].split("*")[0].split(".zip")[0];
+          if (software == serverSoftware.toLowerCase()) {
+            if (version != serverVersion) {
+              let versionPart1 = version.split(".")[0];
+              let versionPart2 = version.split(".")[1];
+              let versionPart3 = version.split(".")[2];
+              let serverVersionPart1 = serverVersion.split(".")[0];
+              let serverVersionPart2 = serverVersion.split(".")[1];
+              let serverVersionPart3 = serverVersion.split(".")[2];
+              
+              let part1diff = versionPart1 - serverVersionPart1;
+              let part2diff = versionPart2 - serverVersionPart2;
+              let part3diff = versionPart3 - serverVersionPart3;
+              if (
+                part1diff > 0 ||
+                (part1diff == 0 && part2diff > 0) ||
+                (part1diff == 0 && part2diff == 0 && part3diff > 0)
+              ) {
+                latestUpdate = version;
+                newerVersionAvailable = true;
+              }
+            }
+          }
+          //Worldgen Check
+          if (areWorldgenMods) {
+            serverAddons.forEach((item) => {
+              console.log(item + " " + software + version);
+              if (software == item.toLowerCase()) {
+                if (version == serverVersion) {
+                  worldgenModsAvailable++;
+                  //remove grayscale
+                  document
+                    .getElementById(item + "Updates")
+                    .classList.remove("grayscale");
+                }
+              }
+            });
+          }
+        }
+        console.log(worldgenModsAvailable + " " + serverAddons.length);
+        updateReady = serverAddons.length == worldgenModsAvailable;
+
         console.log(x);
         if (
           x.includes(
@@ -49,56 +94,15 @@
           jarAvailable = true;
         }
       });
-    //fetch https://launchermeta.mojang.com/mc/game/version_manifest.json
-    //get latest release version
-
-    fetch("https://launchermeta.mojang.com/mc/game/version_manifest.json")
-      .then((x) => x.json())
-      .then((x) => {
-        latestUpdate = x.latest.release;
-        fetch(apiurl + "info/worldgenMods?version=" + latestUpdate)
-          .then((x) => x.json())
-          .then((x) => {
-            console.log("x" + x);
-            worldgenMods = x;
-            //for each worldgen mod
-            if (areWorldgenMods) {
-              for (var i = 0; i < worldgenMods.length; i++) {
-                //display the mod's image
-                if (browser && serverAddons.includes(worldgenMods[i])) {
-                  console.log(worldgenMods[i]);
-                  console.log(worldgenMods);
-                  document
-                    .getElementById(worldgenMods[i] + "Updates")
-                    .classList.remove("grayscale");
-                }
-              }
-              for (var i = 0; i < serverAddons.length; i++) {
-                console.log(
-                  "worldgenb" +
-                    worldgenMods +
-                    worldgenMods.includes(serverAddons[i])
-                );
-                if (!worldgenMods.includes(serverAddons[i])) {
-                  updateReady = false;
-                  //add class disabled to id "confirmBtn"
-                  if (browser) {
-                    document
-                      .getElementById("confirmBtn")
-                      .classList.add("btn-disabled");
-                  }
-                }
-              }
-            }
-          });
-      });
+    
+    
   }
 
   function onclick() {
     serverVersion = localStorage.getItem("serverVersion");
   }
 </script>
-{#if latestUpdate != serverVersion && jarAvailable && serverSoftware != "Forge"}
+{#if newerVersionAvailable && serverSoftware != "Forge"}
   <label for="updates" class="btn btn-neutral btn-sm" on:click={onclick}
     ><ArrowDownCircle class="mr-1.5" size=18/>
     {$t("button.update")}</label
