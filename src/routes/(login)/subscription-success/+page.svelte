@@ -1,3 +1,23 @@
+<script>
+    import { apiurl } from "$lib/scripts/req";
+  import { onMount } from "svelte";
+  import { alert } from "$lib/scripts/utils";
+
+
+  onMount(async () => {
+    let reservedId = localStorage.getItem("reservedId");
+    fetch(apiurl + "server/claim/" + reservedId, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.msg.includes("Success")) {
+          alert(data.msg, "error");
+        }
+      });
+  });
+  </script>
+
 <div class="flex justify-center hero bg-base-100 rounded-xl">
   <div class="flex flex-col hero-content">
     <div class="space-x-10">

@@ -68,11 +68,11 @@
         }
         servers = response;
         if (
-          servers.length == 0 ||
-          !JSON.stringify(servers).includes(":not created yet")
+          servers.length == 0
         ) {
-          console.log("claiming an id...");
-          fetch(apiurl + "server/claimId", {
+          let reservedId = localStorage.getItem("reservedId");
+          console.log("claiming an id..." + reservedId);
+          fetch(apiurl + "server/claim/" + reservedId, {
             method: "GET",
             headers: {
               token: localStorage.getItem("token"),
@@ -83,7 +83,7 @@
             .then((res) => {
 
               console.log(res);
-              if (res.msg == "You haven't paid for a server.") {
+              if (!res.msg.includes("Success")) {
                 goto("/billing");
                 //this tells the navbar to update the icon that is highligted
                 window.dispatchEvent(new Event("redrict"));

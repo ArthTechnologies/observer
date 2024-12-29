@@ -42,10 +42,22 @@
       }
     }
 
-    fetch(apiurl + "info/capacity")
-      .then((x) => x.json())
-      .then((x) => {
-        atCapacity = x.atCapacity;
+    fetch(apiurl + "server/reserve",
+      {
+        method: "GET",
+        headers: {
+          "username": localStorage.getItem("accountEmail"),
+          "token": localStorage.getItem("token"),
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.atCapacity || data.id == -1) {
+          atCapacity = true;
+        } else {
+          localStorage.setItem("reservedId", data.id);
+        }
       });
   });
 
