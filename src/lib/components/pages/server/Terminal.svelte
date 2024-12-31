@@ -102,16 +102,49 @@
       });
     }
   }
+  function calculateElementWidth(screenWidth) {
+  let ratio;
 
-</script>
-<style>
-  #terminalContainerContainer {
-    @media (min-width: 1280px) {
-      width: calc(100vw - 46rem);
-    }
+  if (screenWidth <= 1500) {
+    ratio = 0.0002335 * screenWidth + 0.13105; // Segment 1
+  } else if (screenWidth <= 1700) {
+    ratio = 0.000176 * screenWidth + 0.2173;   // Segment 2
+  } else if (screenWidth <= 1900) {
+    ratio = 0.0001385 * screenWidth + 0.28105; // Segment 3
+  } else if (screenWidth <= 2100) {
+    ratio = 0.0001125 * screenWidth + 0.33045; // Segment 4
+  } else if (screenWidth <= 2300) {
+    ratio = 0.0000905 * screenWidth + 0.37665; // Segment 5
+  } else {
+    // Extrapolate for larger widths (use last segment's slope)
+    ratio = 0.0000905 * screenWidth + 0.37665;
   }
-</style>
-<div class="w-full" style="@media (min-width: 1280px) width: calc(100vw - 46rem);">
+
+  return ratio * screenWidth;
+}
+
+function updateElementWidth() {
+  const screenWidth = window.innerWidth;
+  const elementWidth = calculateElementWidth(screenWidth);
+  //if larger than 1280px, set to elementWidth. otherwise, full
+  const terminalContainer = document.getElementById("terminalContainerContainer");
+  const input = document.getElementById("input");
+  if (screenWidth > 1280) {
+    terminalContainer.style.width = elementWidth + "px";
+    input.style.width = elementWidth + "px";
+  } else {
+    terminalContainer.style.width = "100%";
+    input.style.width = "100%";
+  }
+}
+
+if (browser) {
+  window.addEventListener('resize', updateElementWidth);
+updateElementWidth(); // Initial call
+}
+</script>
+
+
   <div id="terminalContainerContainer" class="relative mb-1.5 w-full z-[0] ">
     <FullscreenTerminal />
     <div
@@ -131,4 +164,3 @@
     class="input input-secondary bg-base-100 w-full"
   />
 
-</div>
