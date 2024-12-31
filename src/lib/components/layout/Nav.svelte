@@ -70,6 +70,27 @@
         if (
           servers.length == 0
         ) {
+          if (localStorage.getItem("reservedId") != null) {
+          claim();
+        } else {
+          fetch(apiurl + "server/reserve",
+      {
+        method: "GET",
+        headers: {
+          "username": localStorage.getItem("accountEmail"),
+          "token": localStorage.getItem("token"),
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.atCapacity && data.id > -1) {
+          localStorage.setItem("reservedId", data.id);
+          claim();
+        }
+      });
+        }
+        function claim() {
           let reservedId = localStorage.getItem("reservedId");
           console.log("claiming an id..." + reservedId);
           fetch(apiurl + "server/claim/" + reservedId, {
@@ -113,11 +134,14 @@
                 }
               });
             });
-        } else if (servers.length > 0 && typeof servers[0] == "string") {
-         
-          createServer( parseInt(servers[0].split(":")[0]))
         }
-      }
+      }else if (servers.length > 0 && typeof servers[0] == "string") {
+         
+         createServer( parseInt(servers[0].split(":")[0]))
+       }
+    } else {
+
+    }
     });
   }
 
