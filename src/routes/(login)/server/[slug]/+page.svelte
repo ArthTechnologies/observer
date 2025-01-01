@@ -698,9 +698,14 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
           >
         </div>
       </div>
-    
+      <StorageLimit />  
+      <div class="flex flex-col gap-2 items-center">
+        <div class="flex  space-x-2">
+          <Versions /> <World />
+                  </div>
+                  <DeleteServer/>
+                  </div>	
        
-          <StorageLimit />  
        
 
 
