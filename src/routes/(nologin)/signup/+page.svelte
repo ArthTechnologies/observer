@@ -6,12 +6,32 @@
 
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { getSettings } from "$lib/scripts/req";
+    import { alert } from "$lib/scripts/utils";
   import { PersonStanding, ShoppingCart, User } from "lucide-svelte";
   let address;
   let plan = undefined;
   getSettings();
 
   if (browser) {
+   //find a node
+    
+    fetch('https://backend.arthmc.xyz/availableNode')
+        .then(response => response.text())
+        .then(data => {
+            
+            if (data != "null") {
+                //if data doesn't have a / at the end, add it
+                if (data[data.length - 1] != '/') {
+                    data += '/';
+                }
+                console.log(data + " is the node");
+                localStorage.setItem('userNode', data);
+                
+            } else {
+              alert("We may be at capacity, try again later", "error");
+            }
+        });
+
     plan = document.location.search.split("plan=")[1];
     address = window.location.host;
     //add in http or https depending on the protocol
