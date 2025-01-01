@@ -182,15 +182,15 @@ function selectPlus() {
       <div
     
       class="w-[3.25rem] h-[3.25rem] rounded-lg bg-base-300 bg-opacity-80 flex items-center justify-center"
-    ><Castle />
+    ><Home />
   </div>
     <div class="-mt-1">
       <p class="font-poppins-bold text-gray-200 text-sm md:text-lg truncate">Basic</p>
 
 
         <div class="flex gap-2">
-          <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">$4.99</p>
-          <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">5GB RAM</p>
+          <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">$3.49</p>
+          <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">3GB RAM</p>
 
         </div>
     
