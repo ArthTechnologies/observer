@@ -365,7 +365,7 @@
           try {
           ramUsage = data.data.replace("iB", "B").trim();
           } catch (e) {
-            console.log(e);
+            //console.log(e);
           }
         });
     }
