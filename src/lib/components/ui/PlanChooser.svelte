@@ -17,7 +17,7 @@
   let basicClass="neutralGradientStroke bg-base-100";	
   let plusClass="neutralGradientStroke bg-base-100";
   let premiumClass="neutralGradientStroke bg-base-100";
-  let atCapacity = false;
+
   let billingCycle = $t("perMonth");
   onMount(() => {
     
@@ -42,23 +42,6 @@
       }
     }
 
-    fetch(apiurl + "server/reserve",
-      {
-        method: "GET",
-        headers: {
-          "username": localStorage.getItem("accountEmail"),
-          "token": localStorage.getItem("token"),
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.atCapacity || data.id == -1) {
-          atCapacity = true;
-        } else {
-          localStorage.setItem("reservedId", data.id);
-        }
-      });
   });
 
 
@@ -134,16 +117,7 @@ function selectPlus() {
 
 
 <div class="min-[1080px]:flex relative bg-base-200 h-full w-full">
- {#if atCapacity}
-    <div
-      class="absolute w-screen h-screen bg-black bg-opacity-70 z-[999] flex place-items-center justify-center"
-    >
-      <div role="alert" class="alert alert-error w-96">
-        <AlertTriangleIcon />
-        <span>{$t("atCapacity")}</span>
-      </div>
-    </div>
-  {/if}
+
   <div
     class="absolute top-3 right-3 max-[1080px]:right-16 z-50 flex flex-col gap-1.5 items-end"
   >
