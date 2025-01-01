@@ -171,14 +171,8 @@
           console.log(slug);
           select(servers[i]);
           if (redirect) {
-            goto("/server/" + slug);
-            //reload
-            setTimeout(() => {
-              let serverName = document.getElementById("serverName")?.innerHTML;
-              if (serverName != localStorage.getItem("serverName")) {
-                window.location.reload();
-              }
-            }, 100);
+            window.location.href = "/server/" + slug;
+
           }
         }
       }

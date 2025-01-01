@@ -216,21 +216,7 @@
 
           secret = data.secret;
 
-          //add checked property to toggle
-
-          if (data.proxiesEnabled) {
-            document.getElementById("proxiesEnabled").checked = true;
-          } else {
-            document.getElementById("proxiesEnabled").checked = false;
-          }
-
-          if (data.automaticRestart) {
-            document.getElementById("automaticRestart").checked = true;
-          } else {
-            document.getElementById("automaticRestart").checked = false;
-          }
-
-          document.getElementById("fSecret").value = data.secret;
+        
           if (data.iconUrl != undefined) {
             icon = data.iconUrl;
           } else {
@@ -374,8 +360,12 @@
       fetch("https://api.mcsrvstat.us/3/arthmc.xyz:" + port)
         .then((response) => response.json())
         .then((data) => {
+          try {
           players = data.players.online;
           maxPlayers = data.players.max;
+          } catch (e) {
+            //console.log(e);
+          }
         });
     }
   }
