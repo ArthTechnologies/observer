@@ -102,11 +102,11 @@
 </script>
 
 <div class="flex relative">
-  <div class="hidden min-[1080px]:flex w-2/5 min-h-screen">
+  <div class="hidden min-[1080px]:flex w-1/3 min-h-screen">
 <PlanChooser/>
   </div>
   <div
-    class="bg-[#525f7f] max-[1080px]:w-screen min-[1080px]:w-3/5 min-h-screen pt-10 pb-16 relative"
+    class="bg-[#525f7f] max-[1080px]:w-screen min-[1080px]:w-2/3 min-h-screen pt-10 pb-16 relative"
   >
     <a
       href="/subscribe/choosePlan"
