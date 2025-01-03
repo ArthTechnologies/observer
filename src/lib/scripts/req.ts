@@ -312,8 +312,12 @@ export function searchMods(
 ) {
   sortBy = sortBy.toLowerCase();
   if(browser) {
-      if (version == "Latest") {
-    version = "1.19.3";
+      if (version.includes("*")) {
+        version = version.split("*")[0];
+      }
+      if (version.includes(" ")) {
+        version = version.split(" ")[0];
+      }
 
   }
   query = query.replace(" ", "-");
@@ -388,7 +392,7 @@ export function searchMods(
       .catch((err) => console.error(err));
   }
 }
-}
+
 
 export function getSettings() {
   if(browser) {
