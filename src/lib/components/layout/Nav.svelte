@@ -58,8 +58,10 @@
   }
 
   function loadServers() {
+
     promise = getServers(email).then((response) => {
-      if (browser && !JSON.stringify(response.includes("Invalid Credentials."))) {
+      console.log(JSON.stringify(response));
+      if (browser && response != "error") {
 
         noserverlock = true;
         console.log(response);
