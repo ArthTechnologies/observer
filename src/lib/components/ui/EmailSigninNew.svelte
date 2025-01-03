@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { signupEmail } from "$lib/scripts/req";
+  import { allnodes, signupEmail } from "$lib/scripts/req";
   import { loginEmail } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
@@ -110,22 +110,42 @@
         });
       }
     } else if (sign == "in") {
-      const res = loginEmail(
+ 
+      let requestsFinished = 0;
+      let totalRequests = allnodes.length;
+      let found = false;
+      for (let i in allnodes) {
+       
+        setTimeout(()=>{
+          const res = loginEmail(
         document.getElementById("email").value,
         document.getElementById("pwd").value,
-        cloudflareVerifyToken
+        cloudflareVerifyToken,
+        allnodes[i]
       ).then((x) => {
+        requestsFinished++;
         console.log("x: " + x);
         if (x === true) {
+          found = true;
           console.log("REDIRECTING...");
-          goto("/");
-          //this tells the navbar to update the icon that is highligted
-          window.dispatchEvent(new Event("redrict"));
+          localStorage.setItem("userNode", allnodes[i]);
+        
+            goto("/");
+            //this tells the navbar to update the icon that is highligted
+            window.dispatchEvent(new Event("redrict"));
+            
+         
         } else {
           visible = true;
           alert("Invalid email or password");
         }
+        if (requestsFinished == totalRequests && !found) {
+          visible = true;
+          alert("Invalid email or password");
+        }
       });
+    },parseInt(i)*1000);
+      }
     }
   }
   $: if (!matchPwd) {

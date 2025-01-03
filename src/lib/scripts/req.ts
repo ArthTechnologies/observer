@@ -17,6 +17,12 @@ export let customerPortalLink = "";
 
 //set apiurl & usingOcelot to the enviroment variable if it exists
 if (browser) {
+  //event listener for redrict event
+  window.addEventListener("redrict", function () {
+    if (localStorage.getItem("userNode") != null && localStorage.getItem("userNode") != "null") { 
+      apiurl = localStorage.getItem("userNode");
+    }
+  });
   if (env.PUBLIC_API_URL) {
     apiurl = env.PUBLIC_API_URL;
   }
@@ -499,10 +505,10 @@ export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:strin
 }
 }
 
-export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string = "") {
+export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string = "", url: string) {
   if(browser) {
   return fetch(
-    apiurl +
+    url +
       "accounts/email/signin?" +
       new URLSearchParams({
         username: em,

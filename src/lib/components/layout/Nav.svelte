@@ -143,6 +143,9 @@
        }
     } else {
         servers[0] = "-1:invalid accoount";
+        setTimeout(()=>{//logout(); 
+        }, 5000);
+
     }
     });
   }
