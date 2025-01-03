@@ -13,6 +13,7 @@
     import ManagePluginSkele from "$lib/components/ui/ManagePluginSkele.svelte";
     import ManagePlugin from "$lib/components/ui/ManagePlugin.svelte";
     import AddMod from "./AddMod.svelte";
+    import ChooseVersionModpack from "$lib/components/ui/ChooseVersionModpack.svelte";
 
   let promise;
   let res = { mods: [], modpack: {} };
