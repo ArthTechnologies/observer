@@ -59,7 +59,7 @@
 
   function loadServers() {
     promise = getServers(email).then((response) => {
-      if (browser) {
+      if (browser && !JSON.stringify(response.includes("Invalid Credentials."))) {
 
         noserverlock = true;
         console.log(response);
@@ -140,7 +140,7 @@
          createServer( parseInt(servers[0].split(":")[0]))
        }
     } else {
-
+        servers[0] = "-1:invalid accoount";
     }
     });
   }
@@ -235,6 +235,9 @@
       {:then}
         {#each servers as server}
 {#if typeof server == "string"}
+{#if parseInt(server.split(":")[0]) == -1}
+Invalid Account
+{:else}
 {#if parseInt(server.split(":")[0]) == slug}
 <a
   on:click={() => createServer(parseInt(server.split(":")[0]))}
@@ -251,6 +254,7 @@
 >
 <UncreatedServerCardNew id={parseInt(server.split(":")[0])}/>
 </a>
+{/if}
 {/if}
 {:else}
 {#if parseInt(server.id) + 10000 == slug}

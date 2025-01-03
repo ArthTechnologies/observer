@@ -6,6 +6,7 @@ import Alert from "$lib/components/ui/Alert.svelte";
 import { alert } from "./utils";
 
 export let apiurl = "http://localhost:4000/";
+export let allnodes = [];
 export let arthHosting = false;
 export let usingOcelot = false;
 export let lrurl = "https://api.modrinth.com/v2/";
@@ -18,6 +19,9 @@ export let customerPortalLink = "";
 if (browser) {
   if (env.PUBLIC_API_URL) {
     apiurl = env.PUBLIC_API_URL;
+  }
+  if (env.PUBLIC_ALL_NODES) {
+    allnodes = env.PUBLIC_ALL_NODES.split(",");
   }
   if (localStorage.getItem("userNode") != null && localStorage.getItem("userNode") != "null") { 
     apiurl = localStorage.getItem("userNode");
