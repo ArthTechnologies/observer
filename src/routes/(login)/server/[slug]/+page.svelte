@@ -468,13 +468,24 @@ class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-
 
   <div role="tablist" class="tabs tabs-boxed flex flex-wrap p-0 gap-1">
     {#each tabs as label, index}
-      <a
-        role="tab"
-        class="tab px-3.5 {tab === label ? 'tab-active' : ''}"
-        on:click={() => (tab = label)}
-      >
-        {label[0].toUpperCase() + label.slice(1)}
-      </a>
+{#if label == "mods"}
+<a
+role="tab"
+class="tab px-3.5 {tab === "plugins" ? 'tab-active' : ''}"
+on:click={() => (tab = "plugins")}
+>
+{label[0].toUpperCase() + label.slice(1)}
+</a>
+{:else}
+<a
+role="tab"
+class="tab px-3.5 {tab === label ? 'tab-active' : ''}"
+on:click={() => (tab = label)}
+>
+{label[0].toUpperCase() + label.slice(1)}
+</a>
+{/if}
+
     {/each}
   </div>
 
