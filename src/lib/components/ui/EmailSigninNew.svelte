@@ -78,6 +78,8 @@
     if (sign == "up") {
       checkPwd();
       if (goodPwd && matchPwd) {
+                    //this tells the navbar to update the icon that is highligted
+                    window.dispatchEvent(new Event("redrict"));
         const res = signupEmail(
           document.getElementById("email").value,
           document.getElementById("pwd").value,
@@ -86,9 +88,7 @@
           if (x === true) {
             console.log("redricting...");
             if (localStorage.getItem("enablePay") == "true") {
-              fetch("https://backend.arthmc.xyz/analytics/accountCreated", {
-                method: "POST",
-              });
+
               //change this to your own stripe checkout link
               if (plan == undefined) {
                 goto("/subscribe/basic");
