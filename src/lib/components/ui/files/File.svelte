@@ -15,6 +15,7 @@
     FileDown,
     Download,
     Loader,
+    FileLock2,
   } from "lucide-svelte";
   import { Warning } from "postcss";
   let id;
@@ -40,6 +41,9 @@
     default:
       clickable = "auto";
       break;
+  }
+  if (filename == "server.json") {
+    clickable = "none";
   }
   function getText() {
     if (url != undefined) {
@@ -173,7 +177,9 @@
     on:click={getText}
     class="w-[65%] px-1.5 p-1 rounded-lg btn-ghost pointer-events-{clickable} gap-1 flex items-center"
   >
-    {#if extension == "png" || extension == "jpg" || extension == "jpeg"}
+  {#if clickable == "none"} 
+    <FileLock2 class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+    {:else if extension == "png" || extension == "jpg" || extension == "jpeg"}
       <Image class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {:else if extension == "yml" || extension == "yaml" || extension == "json" || extension == "txt"}
       <FileText class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
