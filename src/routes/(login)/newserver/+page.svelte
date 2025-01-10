@@ -162,7 +162,7 @@
         localStorage.setItem("modpackVersionID", "");
         if (res == true) {
           console.log("redricting to homepage...");
-          goto("/");
+          goto("/server/"+(10000 + id));
           //this tells the navbar to update the icon that is highligted
           window.dispatchEvent(new Event("redrict"));
         } else {
