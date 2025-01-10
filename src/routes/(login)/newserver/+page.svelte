@@ -244,7 +244,7 @@
       version = versionComponents[0] + " " + versionComponents[1].charAt(0).toUpperCase() + versionComponents[1].slice(1);
       }
       if (software2 == CVS) {
-        versionOptions.push(version + " " + channel.substring(0, 1).toUpperCase() + channel.substring(1));
+        versionOptions.push((version + " " + channel.substring(0, 1).toUpperCase() + channel.substring(1)).trim());
       }
     }
 
