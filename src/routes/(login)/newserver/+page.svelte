@@ -321,6 +321,7 @@
               <option>{$t("software.quilt")}</option>
             {/if}
             <option>{$t("software.velocity")}</option>
+            <option>{$t("software.vanilla")}</option>
             <option>{$t("software.snapshot")}</option>
           </select>
 
