@@ -163,7 +163,9 @@
         if (res == true) {
           console.log("redricting to homepage...");
           goto("/server/"+(10000 + id));
-          location.reload();
+          setTimeout(() => {
+      location.reload();
+    }, 300); 
           //this tells the navbar to update the icon that is highligted
           window.dispatchEvent(new Event("redrict"));
         } else {
