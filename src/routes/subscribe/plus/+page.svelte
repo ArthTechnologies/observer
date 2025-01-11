@@ -85,7 +85,7 @@
       alert("Please enter a valid address.", "error");
       return;
     }
-    localStorage.setItem("email", email);
+    localStorage.setItem("email", email.toLowerCase());
     fetch(apiurl + "accounts/email?email=" + email, {
       method: "POST",
       headers: {

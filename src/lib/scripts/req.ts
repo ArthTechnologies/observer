@@ -466,7 +466,7 @@ export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:strin
   if(browser) {
   console.log("Request Sent");
   localStorage.setItem("accountEmail", "email:" + em.toLowerCase());
-  localStorage.setItem("email", em);
+  localStorage.setItem("email", em.toLowerCase());
   return fetch(
     apiurl +
       "accounts/email/signup?" +
@@ -541,7 +541,7 @@ export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string
           localStorage.setItem("loggedIn", "true");
           localStorage.setItem("accountId", JSON.parse(input).accountId);
           localStorage.setItem("avatar", "");
-          localStorage.setItem("email", em);  
+          localStorage.setItem("email", em.toLowerCase());  
           updateReqTemplates();
         }
         return true;
