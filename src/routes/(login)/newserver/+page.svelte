@@ -27,7 +27,7 @@
   let worldgen = null;
   let jarsList = [];
   let id = -1;
-  let canCreateModdedServer = true;
+
 
   if (browser) {
     let email = localStorage.getItem("accountEmail");
@@ -108,10 +108,7 @@
               }
             }
           }
-          console.log("free servers: " + json.freeServers);
-          if (json.moddedSubscriptions + json.freeServers <= moddedServers) {
-            canCreateModdedServer = false;
-          }
+
         }
       });
   }
@@ -317,12 +314,12 @@
             class="select select-primary p-2 bg-base-100"
           >
             <option>{$t("software.paper")}</option>
-            {#if canCreateModdedServer}
+   
               <option>{$t("software.forge")} </option>
               <option>{$t("software.neoForge")}</option>
               <option>{$t("software.fabric")}</option>
               <option>{$t("software.quilt")}</option>
-            {/if}
+        
             <option>{$t("software.velocity")}</option>
             <option>{$t("software.vanilla")}</option>
             <option>{$t("software.snapshot")}</option>
