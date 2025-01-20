@@ -35,7 +35,9 @@
         .then(response => response.text())
         .then(data => {
           localStorage.setItem('userNode', data);
-    goto("https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri="+address+"/auth/discord&response_type=token&scope=email+identify");
+          setTimeout(() => {
+            goto("https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri="+address+"/auth/discord&response_type=token&scope=email+identify");
+          }, 100);
         })
         }
 </script>
