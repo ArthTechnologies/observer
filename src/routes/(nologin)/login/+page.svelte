@@ -29,6 +29,15 @@
       window.dispatchEvent(new Event("redrict"));
     }
   }
+
+  function discord() {
+    fetch('https://backend.arthmc.xyz/availableNode')
+        .then(response => response.text())
+        .then(data => {
+          localStorage.setItem('userNode', data);
+    goto("https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri="+address+"/auth/discord&response_type=token&scope=email+identify");
+        })
+        }
 </script>
 
 <div
@@ -70,14 +79,14 @@
       <p class="text-[1.4rem] font-poppins-bold mb-3">{$t("auth.login.h")}</p>
       <div class="grid grid-cols-2 gap-3 w-full items-center">
         <div class="flex gap-2.5">
-          <a
+          <button
             class="w-40 btn btn-neutral rounded-xl mb-2 btn-icon-text text-2xs"
-            href="https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri={address}/auth/discord&response_type=token&scope=email+identify"
+            on:click={discord}
             ><img
               alt="microsoft logo"
               style="width:2.5ch"
               src="/discord.svg"
-            />Discord</a
+            />Discord</button
           >
           <a
             class="max-sm:hidden w-40 btn btn-neutral rounded-xl mb-2 btn-icon-text btn-disabled"
