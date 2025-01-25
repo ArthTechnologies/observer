@@ -3,13 +3,15 @@
   import { t, locale, locales } from "$lib/scripts/i18n";
   import DeleteAccount from "$lib/components/buttons/DeleteAccount.svelte";
   import { browser } from "$app/environment";
-  import { FileType2, Hash, Mail } from "lucide-svelte";
+  import { FileType2, Hash, Mail, MapPin } from "lucide-svelte";
   import { goto } from "$app/navigation";
   let accountType = "email";
   let accountName;
   let accountEmail;
   let accountId;
+  let serverLocation;
   if (browser) {
+    serverLocation = localStorage.getItem("userNode")?.split("://")[1].split(".")[0];
     accountName = localStorage.getItem("accountEmail")?.split(":")[1];
 
     if (localStorage.getItem("accountEmail").includes("@")) {
@@ -67,6 +69,16 @@
         </div>
 
         {accountId}
+      </div>
+      <div class="flex gap-2 items-center">
+        <div
+          class="flex bg-neutral p-1.5 rounded-lg items-center text-sm font-bold gap-1"
+        >
+          <MapPin size="16" />
+          Server Location
+        </div>
+
+        {serverLocation}
       </div>
     </div>
 
