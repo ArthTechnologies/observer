@@ -37,7 +37,9 @@
 
     import PluginResult from "$lib/components/ui/PluginResult.svelte";
     import FeaturedPlugin from "$lib/components/ui/FeaturedPlugin.svelte";
+    import FileUpload from "$lib/components/util/FileUpload.svelte";
   let categories = [];
+  let id;
 
   function toggleCategory(category) {
     let categoryFound = false;
@@ -62,6 +64,7 @@
   let sortBy = "relevance";
   onMount(() => {
     if (browser) {
+      id = localStorage.getItem("serverID");
       //uncheck every checkbox
       let checkboxes = document.getElementsByClassName("checkbox");
       for (let i = 0; i < checkboxes.length; i++) {
@@ -153,12 +156,23 @@
       tab = "ft";
       document.getElementById("ft").classList.add("tab-active");
       document.getElementById("mr").classList.remove("tab-active");
+      document.getElementById("up").classList.remove("tab-active");
     }
   }
   function mr() {
     if (browser) {
       tab = "mr";
       document.getElementById("mr").classList.add("tab-active");
+      document.getElementById("ft").classList.remove("tab-active");
+      document.getElementById("up").classList.remove("tab-active");
+    }
+  }
+
+  function up() {
+    if (browser) {
+      tab = "up";
+      document.getElementById("up").classList.add("tab-active");
+      document.getElementById("mr").classList.remove("tab-active");
       document.getElementById("ft").classList.remove("tab-active");
     }
   }
@@ -185,6 +199,7 @@
       <div class="tabs tabs-boxed">
         <button id="ft" on:click={ft} class="tab">{$t("featured")}</button>
         <button id="mr" on:click={mr} class="tab tab-active">Modrinth</button>
+        <button id="up" on:click={up} class="tab">Upload</button>
       </div>
     </div>
     {#if tab == "mr"}
@@ -526,6 +541,13 @@
           downloads="null"
         />
       </div>
+    {:else}
+      <div class="flex justify-center mt-96">
+        <div class="bg-base-200 rounded-xl p-5 mt-8">
+          <p>Upload to <code class="bg-base-100 rounded text-sm p-1">/plugins</code></p>
+        <FileUpload id={id} foldername="plugins" modal={false} uploadpath="plugins" />
+        </div>
+        </div>
     {/if}
   </div>
 </div>

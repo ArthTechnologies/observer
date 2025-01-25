@@ -37,6 +37,7 @@
 
     import PluginResult from "$lib/components/ui/PluginResult.svelte";
     import FeaturedPlugin from "$lib/components/ui/FeaturedPlugin.svelte";
+    import FileUpload from "$lib/components/util/FileUpload.svelte";
   let categories = [];
 
   function toggleCategory(category) {
@@ -60,8 +61,10 @@
   let allowLoadMore = true;
   let offset = 0;
   let sortBy = "relevance";
+  let id;
   onMount(() => {
     if (browser) {
+      id = localStorage.getItem("serverID");
       //uncheck every checkbox
       let checkboxes = document.getElementsByClassName("checkbox");
       for (let i = 0; i < checkboxes.length; i++) {
@@ -149,18 +152,18 @@
   }
 
   let tab = "mr";
-  function ft() {
+  function up() {
     if (browser) {
-      tab = "ft";
-      document.getElementById("ft").classList.add("tab-active");
+      tab = "up";
       document.getElementById("mr").classList.remove("tab-active");
+      document.getElementById("up").classList.add("tab-active");
     }
   }
   function mr() {
     if (browser) {
       tab = "mr";
       document.getElementById("mr").classList.add("tab-active");
-      document.getElementById("ft").classList.remove("tab-active");
+      document.getElementById("up").classList.remove("tab-active");
     }
   }
 </script>
@@ -186,6 +189,7 @@
       <div class="tabs tabs-boxed">
 
         <button id="mr" on:click={mr} class="tab tab-active">Modrinth</button>
+        <button id="up" on:click={up} class="tab">Upload</button>
       </div>
     </div>
     {#if tab == "mr"}
@@ -489,43 +493,12 @@
           </div>
         {/await}
       </div>
-    {:else if tab == "ft"}
-      <div class="space-y-2">
-        <FeaturedPlugin
-          icon="https://www.spigotmc.org/data/resource_icons/34/34315.jpg?1483592228"
-          name="Vault"
-          desc="Vault is a Permissions, Chat, & Economy API required by many plugins."
-          author="milkbowl"
-          authorLink="https://github.com/MilkBowl"
-          pluginId="MilkBowl/Vault"
-          link="https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar"
-          disclaimer="This plugin has not been tested on minecraft versions before 1.13."
-        />
-
-        <PluginResult
-          name="WorldEdit (FAWE)"
-          author="NotMyFault"
-          desc="Blazingly fast world manipulation for artists, builders and everyone else."
-          icon="https://cdn.modrinth.com/data/z4HZZnLr/1dab3e5596f37ade9a65f3587254ff61a9cf3c43.svg"
-          id="z4HZZnLr"
-          downloads="null"
-        />
-        <PluginResult
-          name="Dynmap®"
-          author="mikeprimm"
-          desc="A Google Maps-like map for your Minecraft server that can be viewed in a browser. Easy to set up when making use of Dynmap's integrated webserver, while also supporting advanced deployment with Apache and other web servers."
-          icon="https://cdn.modrinth.com/data/fRQREgAc/99327619930da6a9943d475540f268ddfe585a82.png"
-          id="fRQREgAc"
-          downloads="null"
-        />
-        <PluginResult
-          name="Simple Voice Chat"
-          author="henkelmax"
-          desc="A working voice chat in Minecraft!"
-          icon="https://cdn.modrinth.com/data/9eGKb6K1/icon.png"
-          id="9eGKb6K1"
-          downloads="null"
-        />
+    {:else if tab == "up"}
+    <div class="flex justify-center mt-96">
+      <div class="bg-base-200 rounded-xl p-5 mt-8">
+        <p>Upload to <code class="bg-base-100 rounded text-sm p-1">/world/datapacks</code></p>
+      <FileUpload id={id} foldername="datapacks" modal={false} uploadpath="world*datapacks" />
+      </div>
       </div>
     {/if}
   </div>

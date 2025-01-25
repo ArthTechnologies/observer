@@ -40,6 +40,7 @@
   } from "lucide-svelte";
     import ResultSkele from "$lib/components/ui/ResultSkele.svelte";
     import ModResult from "$lib/components/ui/ModResult.svelte";
+    import FileUpload from "$lib/components/util/FileUpload.svelte";
   let promise;
   let cfResults = [];
   let mrResults = [];
@@ -67,7 +68,10 @@
     search(tab);
   }
 
+  let id;
+
   if (browser) {
+    id = localStorage.getItem("serverID");
     software = localStorage.getItem("serverSoftware");
     version = localStorage.getItem("serverVersion").split("*")[0];
   }
@@ -208,6 +212,7 @@
       tab = "mr";
       document.getElementById("mr").classList.add("tab-active");
       document.getElementById("cf").classList.remove("tab-active");
+      document.getElementById("up").classList.remove("tab-active");
     }
   }
   function cf() {
@@ -220,6 +225,22 @@
       }
       tab = "cf";
       document.getElementById("cf").classList.add("tab-active");
+      document.getElementById("mr").classList.remove("tab-active");
+      document.getElementById("up").classList.remove("tab-active");
+    }
+  }
+
+  function up() {
+    if (browser) {
+      categories = [];
+      //uncheck every checkbox
+      let checkboxes = document.getElementsByClassName("checkbox");
+      for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false;
+      }
+      tab = "up";
+      document.getElementById("up").classList.add("tab-active");
+      document.getElementById("cf").classList.remove("tab-active");
       document.getElementById("mr").classList.remove("tab-active");
     }
   }
@@ -250,30 +271,33 @@
         {#if usingCurseForge}
           <button id="cf" class="tab" on:click={cf}>Curseforge</button>
         {/if}
+        <button id="up" class="tab" on:click={up}>Upload</button>
       </div>
     </div>
 
-    <div class="flex justify-between space-x-2">
-      <input
-        bind:value={query}
-        on:input={() => search(tab)}
-        type="text"
-        placeholder={$t("search")}
-        class="searchBar input input-bordered input-sm max-sm:w-32"
-        id="search"
-      />
-      <div class="flex items-center">
-        {$t("sortBy")}<select
-          id="sortByDropdown"
-          class="select select-sm ml-2 bg-base-300"
-          on:change={() => search(tab)}
-        >
-          <option>{$t("dropdown.sortBy.relevance")}</option>
-          <option>{$t("dropdown.sortBy.downloads")}</option>
-          <option>{$t("dropdown.sortBy.lastUpdated")}</option></select
-        >
-      </div>
+   {#if tab != "up"}
+   <div class="flex justify-between space-x-2">
+    <input
+      bind:value={query}
+      on:input={() => search(tab)}
+      type="text"
+      placeholder={$t("search")}
+      class="searchBar input input-bordered input-sm max-sm:w-32"
+      id="search"
+    />
+    <div class="flex items-center">
+      {$t("sortBy")}<select
+        id="sortByDropdown"
+        class="select select-sm ml-2 bg-base-300"
+        on:change={() => search(tab)}
+      >
+        <option>{$t("dropdown.sortBy.relevance")}</option>
+        <option>{$t("dropdown.sortBy.downloads")}</option>
+        <option>{$t("dropdown.sortBy.lastUpdated")}</option></select
+      >
     </div>
+  </div>
+  {/if}
     {#if tab == "mr"}
       <div class="flex max-md:flex-col md:space-x-4">
         <div class="flex flex-col items-left">
@@ -547,7 +571,15 @@
           </div>
         </div>
       </div>
+    {:else if tab=="up"}
+    <div class="flex justify-center mt-96">
+      <div class="bg-base-200 rounded-xl p-5 mt-8">
+        <p>Upload to <code class="bg-base-100 rounded text-sm p-1">/mods</code></p>
+      <FileUpload id={id} foldername="mods" modal={false} uploadpath="mods" />
+      </div>
+      </div>
     {/if}
+    {#if tab != "up"}
     <div id="mods" class="space-y-2">
       {#await promise}
         {#each Array.from({ length: skeletonsLength }) as _}
@@ -577,5 +609,6 @@
         </div>
       {/await}
     </div>
+    {/if}
   </div>
 </div>

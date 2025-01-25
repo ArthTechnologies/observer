@@ -6,6 +6,7 @@
   export let foldername;
   export let uploadpath;
   export let id;
+  export let modal = true;
   let gradientBackground = "#1fb2a5";
   function uploadFile() {
     const formData = new FormData();
@@ -169,6 +170,7 @@
   }
 </script>
 
+{#if modal}
 <div class="flex gap-1 mt-2">
   <input
     id="upload{foldername}file"
@@ -179,3 +181,15 @@
     {$t("button.upload")}</button
   >
 </div>
+{:else}
+<div class="flex gap-1 mt-2">
+  <input
+    id="upload{foldername}file"
+    type="file"
+    class="file-input file-input-bordered file-input-secondary w-full max-w-xs"
+  />
+  <button id="uploadBtn" on:click={uploadFile} class="btn btn-error">
+    {$t("button.upload")}</button
+  >
+</div>
+{/if}
