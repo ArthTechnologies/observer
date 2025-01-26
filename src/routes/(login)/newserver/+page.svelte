@@ -157,6 +157,7 @@
         localStorage.setItem("modpackURL", "");
         localStorage.setItem("modpackID", "");
         localStorage.setItem("modpackVersionID", "");
+        localStorage.setItem("serverSoftware", sSoftware);
         if (res == true) {
           console.log("redricting to homepage...");
           goto("/server/"+(10000 + id));
