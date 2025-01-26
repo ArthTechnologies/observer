@@ -195,7 +195,7 @@
 
     console.error("uploading");
     if (browser) {
-      const uploadBtn = document.getElementById("uploadBtn");
+      const worldUploadBtn = document.getElementById("worldUploadBtn");
       //we normally use fetch, but we have to use XMLHttpRequest for this because fetch doesnt give progress of uploads.
       const xhr = new XMLHttpRequest();
       let fileSize = 200;
@@ -211,67 +211,55 @@
 
         if (!requestFinished) {
           //disable clicks to the button
-          uploadBtn.classList.add("pointer-events-none");
+          worldUploadBtn.classList.add("pointer-events-none");
         }
 
         if (visualPercent < 100) {
-          if (theme == "dark") uploadBtn.classList.add("text-accent-content");
-          else if (theme == "light") uploadBtn.classList.add("text-gray-200");
+          if (theme == "dark") worldUploadBtn.classList.add("text-accent-content");
+          else if (theme == "light") worldUploadBtn.classList.add("text-gray-200");
 
-          uploadBtn.innerHTML = $t("uploading");
-          //if its dark theme, gradient needs to be 90% transparency
-          //to 0% transparency, where light should be from 90% to 70%.
-
-          if (theme == "dark") {
+          worldUploadBtn.innerHTML = $t("uploading");
+          
             gradientBackground = "#1fb2a5";
-            uploadBtn.style.background = `linear-gradient(
+            worldUploadBtn.style.background = `linear-gradient(
   to right,
-  rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.0) ${visualPercent}%,
-  ${gradientBackground} ${visualPercent}%,
-  ${gradientBackground} 100%
+ #13171e 0%,
+  #13171e ${visualPercent}%,
+  #2b364f ${visualPercent}%,
+  #2b364f 100%
 )`;
-          } else if (theme == "light") {
-            gradientBackground = "#88c0d0";
-            uploadBtn.style.background = `linear-gradient(
-  to right,
-  rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.7) ${visualPercent}%,
-  ${gradientBackground} ${visualPercent}%,
-  ${gradientBackground} 100%
-)`;
-          }
+         
         } else {
-          uploadBtn.classList.remove("text-accent-content");
-          uploadBtn.classList.remove("text-gray-200");
+          worldUploadBtn.classList.remove("text-accent-content");
+          worldUploadBtn.classList.remove("text-gray-200");
           if (virusScanningEnabled == "true") {
-            uploadBtn.innerHTML = $t("scanningForViruses");
-            uploadBtn.classList.add("text-lime-500");
-            uploadBtn.style.background = ``;
-            if (theme == "dark") uploadBtn.classList.add("bg-[#112100]");
-            if (theme == "light") uploadBtn.classList.add("bg-[#143f04]");
-            uploadBtn.classList.add("skeleton");
+            worldUploadBtn.innerHTML = $t("scanningForViruses");
+            worldUploadBtn.classList.add("text-lime-500");
+            worldUploadBtn.style.background = ``;
+            if (theme == "dark") worldUploadBtn.classList.add("bg-[#112100]");
+            if (theme == "light") worldUploadBtn.classList.add("bg-[#143f04]");
+            worldUploadBtn.classList.add("skeleton");
             visualPercent++;
             if (requestFinished && visualPercent > 108) {
-              if (theme == "dark") uploadBtn.classList.remove("bg-[#112100]");
-              if (theme == "light") uploadBtn.classList.remove("bg-[#143f04]");
-              uploadBtn.classList.remove("skeleton");
+              if (theme == "dark") worldUploadBtn.classList.remove("bg-[#112100]");
+              if (theme == "light") worldUploadBtn.classList.remove("bg-[#143f04]");
+              worldUploadBtn.classList.remove("skeleton");
 
-              uploadBtn.classList.remove("text-lime-500");
+              worldUploadBtn.classList.remove("text-lime-500");
 
-              uploadBtn.innerHTML = $t("button.upload");
+              worldUploadBtn.innerHTML = $t("button.upload");
 
               //re-enable clicks to the button
-              uploadBtn.classList.remove("pointer-events-none");
+              worldUploadBtn.classList.remove("pointer-events-none");
               clearInterval(intervalId);
             }
           } else if (requestFinished) {
-            uploadBtn.style.background = ``;
+            worldUploadBtn.style.background = ``;
 
-            uploadBtn.innerHTML = $t("button.upload");
+            worldUploadBtn.innerHTML = $t("button.upload");
 
             //re-enable clicks to the button
-            uploadBtn.classList.remove("pointer-events-none");
+            worldUploadBtn.classList.remove("pointer-events-none");
 
             clearInterval(intervalId);
           }
@@ -287,10 +275,17 @@
       xhr.addEventListener("load", (e) => {
         console.log(e.target.response);
 
-        if (e.target.response.indexOf("No Viruses Detected") == -1) {
+        if (!e.target.response.includes("No Viruses Detected") &&
+      !e.target.response.includes("Upload Complete")
+      ) {
           alert($t("alert.virusDetected"));
         } else {
           alert($t("alert.fileUploaded"), "success");
+
+          //dispatch refresh event
+          const event = new CustomEvent("refresh");
+          document.dispatchEvent(event);
+          console.log("Dispatching refresh event");
         }
         requestFinished = true;
       });
@@ -299,7 +294,14 @@
         console.error("Error:", error);
       });
 
-      xhr.open("POST", apiurl + "server/" + id + "/world", true);
+      xhr.open(
+        "POST",
+        apiurl +
+          "server/" +
+          id +
+          "/world",
+        true
+      );
       xhr.setRequestHeader("token", localStorage.getItem("token"));
       xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
       xhr.send(formData);
@@ -310,7 +312,7 @@
         //to 0% transparency, where light should be from 90% to 70%.
         let theme = localStorage.getItem("theme");
         if (theme == "dark") {
-          uploadBtn.style.background = `linear-gradient(
+          worldUploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.0) 100%,
@@ -318,7 +320,7 @@
   ${gradientBackground} 100%
 )`;
         } else if (theme == "light") {
-          uploadBtn.style.background = `linear-gradient(
+          worldUploadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.7) 100}%,
@@ -554,7 +556,7 @@
           />
           <button
             on:click={upload}
-            id="uploadBtn"
+            id="worldUploadBtn"
             class="btn btn-neutral rounded-lg relative"
             >{$t("button.upload")}</button
           >
