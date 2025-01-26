@@ -41,28 +41,16 @@
           else if (theme == "light") uploadBtn.classList.add("text-gray-200");
 
           uploadBtn.innerHTML = $t("uploading");
-          //if its dark theme, gradient needs to be 90% transparency
-          //to 0% transparency, where light should be from 90% to 70%.
-
-          if (theme == "dark") {
+          
             gradientBackground = "#1fb2a5";
             uploadBtn.style.background = `linear-gradient(
   to right,
-  rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.0) ${visualPercent}%,
-  ${gradientBackground} ${visualPercent}%,
-  ${gradientBackground} 100%
+ #13171e 0%,
+  #13171e ${visualPercent}%,
+  #2b364f ${visualPercent}%,
+  #2b364f 100%
 )`;
-          } else if (theme == "light") {
-            gradientBackground = "#88c0d0";
-            uploadBtn.style.background = `linear-gradient(
-  to right,
-  rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.7) ${visualPercent}%,
-  ${gradientBackground} ${visualPercent}%,
-  ${gradientBackground} 100%
-)`;
-          }
+         
         } else {
           uploadBtn.classList.remove("text-accent-content");
           uploadBtn.classList.remove("text-gray-200");
@@ -177,7 +165,7 @@
     type="file"
     class="file-input file-input-bordered file-input-secondary w-full max-w-xs"
   />
-  <button id="uploadBtn" on:click={uploadFile} class="btn btn-error">
+  <button id="uploadBtn" on:click={uploadFile} class="btn btn-neutral">
     {$t("button.upload")}</button
   >
 </div>
@@ -188,7 +176,7 @@
     type="file"
     class="file-input file-input-bordered file-input-secondary w-full max-w-xs"
   />
-  <button id="uploadBtn" on:click={uploadFile} class="btn btn-error">
+  <button id="uploadBtn" on:click={uploadFile} class="btn btn-neutral">
     {$t("button.upload")}</button
   >
 </div>
