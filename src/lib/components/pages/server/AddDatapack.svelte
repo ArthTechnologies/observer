@@ -169,7 +169,7 @@
 </script>
 
 <label for="addPluginModal" class="btn btn-neutral btn-sm" on:click={search}
-  ><PlusIcon size=18/>Add Datapack</label
+  ><PlusIcon size=18 class="mr-1"/>Add Datapack</label
 >
 
 <!-- Put this part before </body> tag -->
