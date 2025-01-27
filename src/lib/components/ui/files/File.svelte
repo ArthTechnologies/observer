@@ -187,7 +187,7 @@
     {:else}
       <File class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {/if}
-    <p class="text-xs md:text-sm truncate w-[8rem] md:w-[14rem]">{filename}</p>
+    <p class="text-xs md:text-sm truncate w-[8rem] md:w-[14rem] flex justify-left">{filename}</p>
 </button>
   <div class="flex gap-1">
     <label
