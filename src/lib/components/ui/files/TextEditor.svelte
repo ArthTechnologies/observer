@@ -13,14 +13,14 @@
   function saveIndicator() {
     if (document.getElementById("textEditor") != null) {
       if (document.getElementById("textEditor").value == origionalText) {
-        document.getElementById("filename").innerHTML = document
-          .getElementById("filename")
+        document.getElementById("filepath").innerHTML = document
+          .getElementById("filepath")
           .innerHTML.replace("*", "");
         document.getElementById("saveButton").classList.add("btn-disabled");
       } else {
         //the * indicates it needs to be saved
-        if (!document.getElementById("filename").innerHTML.endsWith("*")) {
-          document.getElementById("filename").innerHTML += "*";
+        if (!document.getElementById("filepath").innerHTML.endsWith("*")) {
+          document.getElementById("filepath").innerHTML += "*";
         }
 
         //remove btn-disabled from save button

@@ -4,13 +4,15 @@
     import Folder from "$lib/components/ui/files/Folder.svelte";
     import TextEditor from "$lib/components/ui/files/TextEditor.svelte";
     import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
-    import { ArrowLeft } from "lucide-svelte";
+    import { ArrowLeft, ArrowLeftIcon } from "lucide-svelte";
     import { t } from "$lib/scripts/i18n";
     import HistoryButton from "$lib/components/buttons/HistoryButton.svelte";
   
     let files = ["server.properties", ["folder1", ["file1.txt", "file2.txt"]]];
     let id;
     let backurl = "server";
+    let tab = "list";
+    let filepath = "file.txt";
   
     if (browser) {
       if (window.location.href.includes("proxy")) {
@@ -62,12 +64,15 @@
   
     function save() {
       document.dispatchEvent(new Event("updatedTextEditor"));
+      document.getElementById("filepath").innerHTML = document
+        .getElementById("filepath")
+        .innerHTML.replace("*", "");
       fetch(
         apiurl +
           "server/" +
           id +
           "/file/" +
-          document.getElementById("filepath").value,
+          filepath.split("/").join("*"),
         {
           method: "POST",
           headers: {
@@ -84,20 +89,28 @@
         .then((data) => {
           console.log(data);
   
-          document.getElementById("filename").innerHTML = document
-            .getElementById("filename")
-            .innerHTML.replace("*", "");
   
           document.getElementById("saveButton").classList.add("btn-disabled");
         });
     }
   
-    function getFilepath() {
-      return document.getElementById("filepath").value;
+
+    //listen for "openTextEditor" event
+    if (browser) {
+      document.addEventListener("openTextEditor", function (event) {
+    
+        tab = "editor";
+        setTimeout(function () {
+        filepath = event.detail.path;
+
+        document.getElementById("textEditor").value = event.detail.content;
+        }, 100);
+     
+      });
     }
   </script>
   
-
+{#if tab == "list"}
   <div
     class="flex flex-col items-start gap-5 w-full"
   >
@@ -115,23 +128,32 @@
         {/if}
       {/each}
     </div>
-    <div
-      class="bg-base-100 rounded-xl p-3 h-[30rem] w-full lg:h-[35rem]  xl:h-[45rem]"
-    >
-      <div class="flex justify-between">
-        <div class="flex space-x-2 mb-2">
-          <div id="filepath" class="hidden" />
-          <h1 class="text-xl font-bold" id="filename">{$t("file")}</h1>
-          <button
-            class="btn btn-sm btn-neutral btn-disabled"
-            id="saveButton"
-            on:click={save}>{$t("save")}</button
-          >
-        </div>
-        <!--<HistoryButton />-->
-      </div>
-      <TextEditor />
-    </div>
+   
     <div />
   </div>
-  
+  {:else if tab == "editor"}
+  <div
+  class="bg-base-100 rounded-xl p-3 h-[30rem] w-full lg:h-[35rem]  xl:h-[45rem]"
+>
+  <div class="flex justify-between">
+    <div class="flex mb-2 justify-between w-full">
+
+      <button
+      class="btn btn-sm btn-neutral btn-circle"
+    
+      on:click={() => {
+        tab = "list";
+      }}><ArrowLeftIcon class="w-5 h-5" /></button>
+      <h1 class="text-xl font-bold" id="filepath"
+      >{filepath}</h1>
+      <button
+        class="btn btn-sm btn-neutral btn-disabled"
+        id="saveButton"
+        on:click={save}>{$t("save")}</button
+      >
+    </div>
+    <!--<HistoryButton />-->
+  </div>
+  <TextEditor />
+</div>
+{/if}

@@ -67,14 +67,15 @@
       .then((data) => {
         console.log(data);
         let content = data.content.replace(/\\n/g, "\n").replace(/\\"/g, '"');
-        document.getElementById("textEditor").value = content;
-        document.dispatchEvent(new Event("updatedTextEditor"));
-
-        localStorage.setItem("fileVersions", data.versions.toString());
-        document.dispatchEvent(new Event("updateVersionsList"));
-
-        document.getElementById("filename").innerHTML = filename;
-        document.getElementById("filepath").value = url;
+        //broadcast openTextEditor event
+        const event = new CustomEvent("openTextEditor", {
+          detail: {
+            content: content,
+            filename: filename,
+            path: url.split("*").join("/"),
+          },
+        });
+        document.dispatchEvent(event);
       });
   }
 
@@ -172,8 +173,8 @@
 </script>
 
 <div class="flex gap-1 justify-between">
-  <a
-    href="#textEditor"
+  <button
+    
     on:click={getText}
     class="w-[65%] px-1.5 p-1 rounded-lg btn-ghost pointer-events-{clickable} gap-1 flex items-center"
   >
@@ -187,7 +188,7 @@
       <File class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {/if}
     <p class="text-xs md:text-sm truncate w-[8rem] md:w-[14rem]">{filename}</p>
-  </a>
+</button>
   <div class="flex gap-1">
     <label
       for="delete{filename}"
