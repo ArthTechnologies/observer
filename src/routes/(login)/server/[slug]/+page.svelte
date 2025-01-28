@@ -572,7 +572,7 @@ on:click={() => (tab = label)}
             ></a
           >
           <a
-            href="{webmapurl}:{parseInt(id) + 10200}"
+            href="{webmapurl}:{parseInt(id) + 10066}"
             target="_blank"
             rel="noreferrer"
           >
