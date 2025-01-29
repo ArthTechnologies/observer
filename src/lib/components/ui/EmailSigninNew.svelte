@@ -172,7 +172,7 @@
               id="email"
               type="text"
               placeholder={$t("auth.email")}
-              class="input w-full"
+              class="input w-full bg-base-200"
             />
 
             <div class="w-full flex space-x-2">
@@ -181,7 +181,7 @@
                   type={pwdVisible}
                   id="pwd"
                   placeholder={$t("auth.password")}
-                  class="input w-full max-w-xs"
+                  class="input w-full max-w-xs bg-base-200"
                 />
                 <label class="btn btn-circle swap swap-rotate btn-ghost mb-1">
                   <!-- this hidden checkbox controls the state -->
@@ -218,7 +218,7 @@
               id="email"
               type="text"
               placeholder={$t("auth.email")}
-              class="input sm:w-full"
+              class="input sm:w-full bg-base-200"
             />
             <div class="w-full flex space-x-2">
               <div class="w-full flex space-x-2">
@@ -226,7 +226,7 @@
                   type={pwdVisible}
                   id="pwd"
                   placeholder={$t("auth.password")}
-                  class="input sm:w-full max-sm:w-48 max-w-xs"
+                  class="input sm:w-full max-sm:w-48 max-w-xs bg-base-200"
                 />
                 <label class="btn btn-circle swap swap-rotate btn-ghost">
                   <!-- this hidden checkbox controls the state -->
@@ -242,7 +242,7 @@
               type="password"
               id="confPwd"
               placeholder={$t("auth.confirmPassword")}
-              class="input sm:w-full"
+              class="input sm:w-full bg-base-200"
             />
 
             <div class="space-y-5 flex flex-col md:items-center md:w-full">
