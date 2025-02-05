@@ -30,6 +30,14 @@
     } else {
       accountType = localStorage.getItem("accountEmail").split(":")[0];
     }
+    if (url != undefined) {
+      if (url.includes("//")) {
+        url = url.split("//")[1];
+        if (url.includes("/")) {
+          url = url.split("/").join("*");
+        }
+      }
+    }
   }
   switch (extension) {
     case "png":
@@ -46,14 +54,7 @@
     clickable = "none";
   }
   function getText() {
-    if (url != undefined) {
-      if (url.includes("//")) {
-        url = url.split("//")[1];
-        if (url.includes("/")) {
-          url = url.split("/").join("*");
-        }
-      }
-    }
+
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
     fetch(baseurl + "server/" + id + "/file/" + url, {
