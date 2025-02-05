@@ -338,7 +338,7 @@
     }, 15000);
 
     function fetchRam() {
-      fetch(apiurl + "server/" + id + "/memoryInfo", {
+      fetch(apiurl + "server/" + id + "/liveStats", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -349,7 +349,7 @@
         .then((response) => response.json())
         .then((data) => {
           try {
-          ramUsage = data.data.replace("iB", "B").trim();
+          ramUsage = data.memory.replace("iB", "B").trim();
           } catch (e) {
             //console.log(e);
           }
