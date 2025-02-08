@@ -230,7 +230,7 @@
     //get server status
     getServer(id).then((response) => {
       //convert addons array to string, save it to "serverAddons" array
-      localStorage.setItem("serverAddons", response.addons.toString());
+      localStorage.setItem("serverAddons", response.specialDatapacks.toString());
       localStorage.setItem("serverVersion", response.version);
       localStorage.setItem("serverWebmap", response.webmap);
       localStorage.setItem("serverVoicechat", response.voicechat);
