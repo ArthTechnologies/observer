@@ -11,8 +11,13 @@
   let accountId;
   let serverLocation;
   if (browser) {
+    try {
     serverLocation = localStorage.getItem("userNode")?.split("://")[1].split(".")[0];
+    } catch (e) {
+      serverLocation = "Unknown";
+    }
     accountName = localStorage.getItem("accountEmail")?.split(":")[1];
+    
 
     if (localStorage.getItem("accountEmail").includes("@")) {
       accountType = "email";
