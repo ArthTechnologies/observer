@@ -21,6 +21,7 @@
   let name;
   let subdomain;
   let address = "arthmc.xyz";
+  let allowedAccounts = [];
   export let type = "smallBtn";
   if (browser) {
     name = localStorage.getItem("serverName");
@@ -28,6 +29,7 @@
     software = localStorage.getItem("serverSoftware");
     address = localStorage.getItem("address");
     subdomain = localStorage.getItem("serverSubdomain");
+    get();
   }
   function get() {
     let baseurl = apiurl;
@@ -45,6 +47,7 @@
       .then((data) => {
         desc = data.desc;
         fSecret = data.secret;
+        allowedAccounts = data.allowedAccounts;
 
         document.getElementById("fSecret").value = data.secret;
         if (data.iconUrl != undefined) {
@@ -163,6 +166,27 @@
   function copyChar() {
     navigator.clipboard.writeText("§");
   }
+
+  function allowAccount() {
+    const account = document.getElementById("allowAccountInput").value;
+    //clear input
+    document.getElementById("allowAccountInput").value = "";
+    fetch(apiurl + "server/" + id + "/allowAccount?accountId=" + account, {
+      method: "POST",
+      headers: {
+        username: localStorage.getItem("accountEmail"),
+        token: localStorage.getItem("token"),
+      },
+    })
+      .then((x) => x.json())
+      .then((x) => {
+        if (x.msg == "Done") {
+          window.location.reload();
+        } else {
+          alert("Error: " + x.msg);
+        }
+      });
+  }
 </script>
 
 
@@ -211,6 +235,19 @@
         <button class="btn btn-neutral" on:click={claimSubdomain}>Claim</button>
       {/if}
     </div>
+    <label for="serverDescription" class="block font-bold mb-2 mt-4"
+    >Accounts with Panel Access
+  </label>
+  {#each allowedAccounts as account}
+    <div class="flex items-center gap-2 mt-2">
+      <p class="px-2 pb-0.5 rounded-lg bg-base-200">{account.split(":")[1]}</p>
+      <p class="px-2 pb-0.5 rounded-lg bg-base-300">{account.split(":")[0]}</p>
+    </div>
+  {/each}
+  <div class="flex items-center gap-2 mt-2">
+    <input id="allowAccountInput" type="text" placeholder="Enter Account ID (Ex: 73190d64-95ee-4857-a6e5-0848e9efb29a)" class="input input-bordered input-sm w-full max-w-xs" />
+    <button class="btn btn-xs btn-neutral" on:click={allowAccount}>Add</button>
+  </div>
     <div class="divider mt-3 text-xl font-bold">
       {$t("settings.h.serverInfo")}
     </div>
