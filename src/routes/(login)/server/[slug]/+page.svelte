@@ -576,7 +576,7 @@ on:click={() => (tab = label)}
             >
           </div>
           <a
-            href="https://arthmc.xyz/docs/using-dynmap"
+            href="https://arthmc.xyz/knowledgebase/using-dynmap"
             target="_blank"
             rel="noreferrer"
             ><button class="btn btn-neutral btn-sm items-center"
@@ -608,7 +608,7 @@ on:click={() => (tab = label)}
 
         <div class="w-0.5 h-8 bg-base-300 opacity-75 m-0"></div>
         <a
-          href="https://bluemap.bluecolored.de/wiki/"
+          href="https://arthmc.xyz/knowledgebase/using-bluemap"
           target="_blank"
           rel="noreferrer"
           ><button class="btn btn-neutral btn-sm items-center"
@@ -640,7 +640,7 @@ on:click={() => (tab = label)}
 
           <div class="w-0.5 h-8 bg-base-300 opacity-75 m-0"></div>
           <a
-            href="https://arthmc.xyz/docs/using-simple-voice-chat"
+            href="https://arthmc.xyz/knowledgebase/using-simple-voice-chat"
             target="_blank"
             rel="noreferrer"
             ><button class="btn btn-neutral btn-sm items-center"
@@ -703,7 +703,7 @@ on:click={() => (tab = label)}
 
           <div class="w-0.5 h-8 bg-base-300 opacity-75 m-0"></div>
           <a
-            href="https://docs.discordsrv.com/installation/initial-setup"
+            href="https://knowledgebase.discordsrv.com/installation/initial-setup"
             target="_blank"
             rel="noreferrer"
             ><button class="btn btn-neutral btn-sm items-center"
