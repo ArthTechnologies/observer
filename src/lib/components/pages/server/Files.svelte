@@ -7,6 +7,7 @@
     import { ArrowLeft, ArrowLeftIcon } from "lucide-svelte";
     import { t } from "$lib/scripts/i18n";
     import HistoryButton from "$lib/components/buttons/HistoryButton.svelte";
+    import MainFolder from "$lib/components/ui/files/MainFolder.svelte";
   
     let files = ["server.properties", ["folder1", ["file1.txt", "file2.txt"]]];
     let id;
@@ -115,7 +116,9 @@
     class="flex flex-col items-start gap-5 w-full"
   >
     <div class="bg-base-100 rounded-xl md:p-2 w-full" id="filetree">
+      <MainFolder />
       {#each files as file}
+
         {#if typeof file == "string"}
           <File filename={file.split(":")[0]} url={file.split(":")[1]} />
         {:else}
