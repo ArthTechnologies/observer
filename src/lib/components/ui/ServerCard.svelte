@@ -38,7 +38,7 @@
   export let software: string;
   export let state: string;
   export let id: number;
-  export let webmap: boolean;
+  export let dynmap: boolean;
   export let voicechat: boolean;
   export let subdomain;
 
@@ -61,7 +61,7 @@
       localStorage.setItem("serverSoftware", software);
       localStorage.setItem("serverVersion", version);
       localStorage.setItem("serverCardRedrict", "true");
-      localStorage.setItem("serverWebmap", webmap);
+      localStorage.setItem("serverDynmap", dynmap);
       localStorage.setItem("serverVoicechat", voicechat);
       if (subdomain != undefined) {
         localStorage.setItem("serverSubdomain", subdomain);

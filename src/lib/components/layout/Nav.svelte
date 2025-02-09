@@ -192,7 +192,7 @@
     localStorage.setItem("serverSoftware", server.software);
     localStorage.setItem("serverVersion", server.version);
     localStorage.setItem("serverCardRedrict", "true");
-    localStorage.setItem("serverWebmap", server.webmap);
+    localStorage.setItem("serverDynmap", server.webmap);
     localStorage.setItem("serverVoicechat", server.voicechat);
     if (server.subdomain != undefined) {
       localStorage.setItem("serverSubdomain", server.subdomain);

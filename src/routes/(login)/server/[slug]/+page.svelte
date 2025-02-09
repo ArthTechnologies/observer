@@ -70,7 +70,8 @@
   let secret = "";
   let difference = -1;
   let baseurl = apiurl;
-  let webmap = false;
+  let dynmap = false;
+  let bluemap = false;
   let webmapurl =
     "http://" + apiurl.substring(0, apiurl.length - 1).split("https://")[1];
   let voicechat = false;
@@ -79,10 +80,10 @@
   let subdomain = undefined;
 
   if (browser) {
-    if (localStorage.getItem("updateAlert") != "dynmap") {
-      localStorage.setItem("updateAlert", "dynmap");
+    if (localStorage.getItem("updateAlert") != "bluemap") {
+      localStorage.setItem("updateAlert", "bluemap");
       alert(
-        "Update: Dynmap & Simple Voice Chat support have been added.",
+        "Update: BlueMap (3D Webmap) support has been added.",
         "info",
       );
     }
@@ -106,8 +107,12 @@
       subdomain = localStorage.getItem("serverSubdomain");
     }
 
-    if (localStorage.getItem("serverWebmap") == "true") {
-      webmap = true;
+    if (localStorage.getItem("serverDynmap") == "true") {
+      dynmap = true;
+    }
+
+    if (localStorage.getItem("serverBluemap") == "true") {
+      bluemap = true;
     }
 
     if (localStorage.getItem("serverVoicechat") == "true") {
@@ -232,30 +237,38 @@
       //convert addons array to string, save it to "serverAddons" array
       localStorage.setItem("serverAddons", response.specialDatapacks.toString());
       localStorage.setItem("serverVersion", response.version);
-      localStorage.setItem("serverWebmap", response.webmap);
-      localStorage.setItem("serverVoicechat", response.voicechat);
-      localStorage.setItem("serverChunky", response.chunky);
-      localStorage.setItem("serverDiscordSRV", response.discordsrv);
+      if (response.specialPlugins != undefined) {
+        localStorage.setItem("serverDynmap", response.specialPlugins.includes("dynmap"));
+      localStorage.setItem("serverBluemap", response.specialPlugins.includes("bluemap"));
+      localStorage.setItem("serverChunky", response.specialPlugins.includes("chunky"));
+      localStorage.setItem("serverDiscordSRV", response.specialPlugins.includes("discordsrv"));
+      localStorage.setItem("serverVoicechat", response.specialPlugins.includes("voicechat"));
+      }
 
-      if (response.webmap == true && webmap == false) {
+      if (response.specialPlugins.includes("dynmap") && dynmap == false) {  
         setTimeout(() => {
-          webmap = true;
+          dynmap = true;
         }, 5000);
       }
-      if (response.voicechat == true && voicechat == false) {
+      if (response.specialPlugins.includes("bluemap") && bluemap == false) {
+        setTimeout(() => {
+          bluemap = true;
+        }, 5000);
+      } 
+      if (response.specialPlugins.includes("voicechat") && voicechat == false) {
         setTimeout(() => {
           voicechat = true;
-        }, 500);
+        }, 5000);
       }
-
-      if (response.chunky == true && chunky == false) {
+      if (response.specialPlugins.includes("chunky") && chunky == false) {
         setTimeout(() => {
           chunky = true;
-        }, 2000);
+        }, 5000);
       }
-
-      if (response.discordsrv == true && discordsrv == false) {
-        discordsrv = true;
+      if (response.specialPlugins.includes("discordsrv") && discordsrv == false) {
+        setTimeout(() => {
+          discordsrv = true;
+        }, 5000);
       }
 
       //set state to response
@@ -313,7 +326,7 @@
 
   if(tab=="terminal"){readCmd();}
 
-  function webmapRender() {
+  function dynmapRender() {
     writeTerminal(id, "dynmap fullrender world");
   }
 
@@ -542,7 +555,7 @@ on:click={() => (tab = label)}
       </div>
 
 
-      {#if webmap}
+      {#if dynmap}
         <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
           <img
             alt="dynmap-icon"
@@ -557,7 +570,7 @@ on:click={() => (tab = label)}
             data-tip="Only renders overworld. See guide for more info."
           >
             <button
-              on:click={webmapRender}
+              on:click={dynmapRender}
               class="btn btn-neutral btn-sm items-center"
               >{$t("plugins.dynmap.render")}</button
             >
@@ -583,6 +596,38 @@ on:click={() => (tab = label)}
           >
         </div>
       {/if}
+      {#if bluemap}
+      <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
+        <div class="dropdown dropdown-hover">
+          <img
+            alt="bluemap-icon"
+            class="w-8 h-8 rounded-lg bg-base-200"
+            src="/images/bluemap.webp"
+          />
+        </div>
+
+        <div class="w-0.5 h-8 bg-base-300 opacity-75 m-0"></div>
+        <a
+          href="https://bluemap.bluecolored.de/wiki/"
+          target="_blank"
+          rel="noreferrer"
+          ><button class="btn btn-neutral btn-sm items-center"
+            >{$t("plugins.voicechat.guide")}
+            <ExternalLink size="18" class="ml-1" /></button
+          ></a
+        >
+        <a
+        href="{webmapurl}:{parseInt(id) + 10066}"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <button class="btn btn-sm items-center hover:bg-base-100"
+          >Open Webmap
+          <ExternalLink size="18" class="ml-1" /></button
+        ></a
+      >
+      </div>
+    {/if}
       {#if voicechat}
         <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
           <div class="dropdown dropdown-hover">

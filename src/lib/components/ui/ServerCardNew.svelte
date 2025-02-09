@@ -45,7 +45,7 @@
   export let software: string;
   export let state: string;
   export let id: number;
-  export let webmap: boolean;
+  export let dynmap: boolean;
   export let voicechat: boolean;
   export let subdomain;
 
