@@ -29,7 +29,7 @@
 </script>
 
 <div class="bg-base-200 rounded-lg p-3 relative">
-  {#if name.includes("Dynmap") || name.includes("Simple Voice Chat") || name.includes("Chunky") || name.includes("DiscordSRV")}
+  {#if name.includes("Dynmap") || name.includes("BlueMap") || name.includes("Simple Voice Chat") || name.includes("Chunky") || name.includes("DiscordSRV")}
     <div
       class="absolute h-6 bg-base-300 rounded-lg pl-[0.2rem] px-2 mt-1 text-sm flex items-center top-0.5 right-1 z-10"
     >
