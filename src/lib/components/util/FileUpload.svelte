@@ -7,6 +7,7 @@
   export let uploadpath;
   export let id;
   export let modal = true;
+  let uniqueId = Math.floor(Math.random() * 1000000);
   let gradientBackground = "#1fb2a5";
   function uploadFile() {
     const formData = new FormData();
@@ -17,7 +18,7 @@
 
     console.error("uploading");
     if (browser) {
-      const uploadBtn = document.getElementById("uploadBtn");
+      const uploadBtn = document.getElementById("uploadBtn" + uniqueId);
       //we normally use fetch, but we have to use XMLHttpRequest for this because fetch doesnt give progress of uploads.
       const xhr = new XMLHttpRequest();
       let fileSize = 200;
@@ -165,7 +166,7 @@
     type="file"
     class="file-input file-input-bordered file-input-secondary w-full max-w-xs"
   />
-  <button id="uploadBtn" on:click={uploadFile} class="btn btn-neutral">
+  <button id="uploadBtn{uniqueId}" on:click={uploadFile} class="btn btn-neutral">
     {$t("button.upload")}</button
   >
 </div>
@@ -176,7 +177,7 @@
     type="file"
     class="file-input file-input-bordered file-input-secondary w-full max-w-xs"
   />
-  <button id="uploadBtn" on:click={uploadFile} class="btn btn-neutral">
+  <button id="uploadBtn{uniqueId}" on:click={uploadFile} class="btn btn-neutral">
     {$t("button.upload")}</button
   >
 </div>
