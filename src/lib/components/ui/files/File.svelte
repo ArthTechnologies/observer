@@ -47,6 +47,7 @@
     case "png":
     case "jpg":
     case "jpeg":
+    case "zip":
     case "jar":
       clickable = "none";
       break;
