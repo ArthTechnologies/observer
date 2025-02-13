@@ -17,6 +17,9 @@
     Loader,
     FileLock2,
     PackageOpen,
+    Package,
+    FileBox,
+    Box,
   } from "lucide-svelte";
   import { Warning } from "postcss";
   let id;
@@ -205,10 +208,14 @@
     on:click={getText}
     class="w-[65%] px-1.5 p-1 rounded-lg btn-ghost pointer-events-{clickable} gap-1 flex items-center"
   >
-  {#if clickable == "none"} 
+  {#if filename == "server.json" || filename == "server.jar"}		 
     <FileLock2 class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+    {:else if extension == "jar"}
+    <Box class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {:else if extension == "png" || extension == "jpg" || extension == "jpeg"}
       <Image class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+    {:else if extension == "zip"}
+      <Package class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {:else if extension == "yml" || extension == "yaml" || extension == "json" || extension == "txt"}
       <FileText class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {:else}
