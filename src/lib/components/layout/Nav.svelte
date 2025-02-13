@@ -92,6 +92,7 @@
         }
       });
         }
+    
         function claim() {
           let reservedId = localStorage.getItem("reservedId");
           console.log("claiming an id..." + reservedId);
@@ -106,10 +107,10 @@
             .then((res) => {
 
               console.log(res);
+             
               if (!res.msg.includes("Success")) {
+               
                 goto("/billing");
-                //this tells the navbar to update the icon that is highligted
-                window.dispatchEvent(new Event("redrict"));
               }
               promise = getServers(email).then((response) => {
 
