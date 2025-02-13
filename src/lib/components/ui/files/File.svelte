@@ -275,6 +275,7 @@ class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
   </div>
 </div>
 
+{#if filename.includes(".zip")}
 <!-- Extract Modal -->
 <input type="checkbox" id="extract{filename}" class="modal-toggle" />
 <div class="modal" style="margin:0rem;">
@@ -293,6 +294,7 @@ class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     </div>
   </div>
 </div>
+{/if} 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="upload" class="modal-toggle" />
 <div class="modal" style="margin:0rem;">
