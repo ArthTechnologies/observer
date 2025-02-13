@@ -549,10 +549,12 @@
       {/if}
       {#if tab == "upload"}
         <div class="flex space-x-2">
+          
           <input
             id="worldFile"
             type="file"
             class="file-input file-input-bordered file-input-secondary max-w-xs w-2/3"
+            accept="application/zip, application/x-zip-compressed, application/x-zip"
           />
           <button
             on:click={upload}
