@@ -16,6 +16,7 @@
     Download,
     Loader,
     FileLock2,
+    PackageOpen,
   } from "lucide-svelte";
   import { Warning } from "postcss";
   let id;
@@ -100,6 +101,31 @@
           document.dispatchEvent(event);
         }
       });
+  }
+
+  function extractFile() {
+    let baseurl = apiurl;
+    if (usingOcelot) baseurl = getServerNode(id);
+
+    fetch(`${baseurl}server/${id}/extractfile/${url}`, {
+      method: "POST",
+      headers: {
+        token: localStorage.getItem("token"),
+        username: localStorage.getItem("accountEmail"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.msg === "Done") {
+          // Close the modal by unchecking the checkbox
+          (document.getElementById(`extract${filename}`) as HTMLInputElement).checked = false;
+          // Optionally, refresh or dispatch an event
+          const event = new CustomEvent("refresh");
+          document.dispatchEvent(event);
+        }
+      })
+      .catch((err) => console.error("Error extracting file:", err));
   }
   let downloading = false;
   let downloadProgress = "0/0MB";
@@ -191,6 +217,15 @@
     <p class="text-xs md:text-sm truncate w-[8rem] md:w-[14rem] flex justify-left">{filename}</p>
 </button>
   <div class="flex gap-1">
+{#if filename.includes(".zip")}
+<label
+for="extract{filename}"
+
+class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
+>
+<PackageOpen class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+</label>
+{/if}
     <label
       for="delete{filename}"
       
@@ -236,6 +271,25 @@
       <button on:click={deleteFile} id="delButton" class="btn btn-error">
         {$t("button.delete")}</button
       >
+    </div>
+  </div>
+</div>
+
+<!-- Extract Modal -->
+<input type="checkbox" id="extract{filename}" class="modal-toggle" />
+<div class="modal" style="margin:0rem;">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+    <label
+      for="extract{filename}"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+      >✕</label
+    >
+    <h3 class="text-lg font-bold mb-5">Extract {filename}</h3>
+    <p class="mb-5">The contents of this will be extracted to <code class="bg-base-300 px-1 rounded">/{url.split("*").join("/").split(".zip")[0]}</code>.</p>
+    <div class="flex gap-1">
+      <button on:click={extractFile} class="btn btn-success">
+        Extract
+      </button>
     </div>
   </div>
 </div>
