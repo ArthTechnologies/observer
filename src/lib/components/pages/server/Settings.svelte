@@ -49,7 +49,10 @@
         fSecret = data.secret;
         allowedAccounts = data.allowedAccounts;
 
+        if (document.getElementById("fSecret") != null) {
+       
         document.getElementById("fSecret").value = data.secret;
+      }
         if (data.iconUrl != undefined) {
           console.log("icon is " + data.iconUrl);
           icon = data.iconUrl;
@@ -238,12 +241,14 @@
     <label for="serverDescription" class="block font-bold mb-2 mt-4"
     >Accounts with Panel Access
   </label>
+  {#if allowedAccounts != undefined}
   {#each allowedAccounts as account}
     <div class="flex items-center gap-2 mt-2">
       <p class="px-2 pb-0.5 rounded-lg bg-base-200">{account.split(":")[1]}</p>
       <p class="px-2 pb-0.5 rounded-lg bg-base-300">{account.split(":")[0]}</p>
     </div>
   {/each}
+  {/if}
   <div class="flex items-center gap-2 mt-2">
     <input id="allowAccountInput" type="text" placeholder="Enter Account ID (Ex: 73190d64-95ee-4857-a6e5-0848e9efb29a)" class="input input-bordered input-sm w-full max-w-xs" />
     <button class="btn btn-xs btn-neutral" on:click={allowAccount}>Add</button>
