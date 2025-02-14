@@ -111,7 +111,7 @@
       <div class="mt-8"></div>
       <span
         class="text-xs ml-1.5 font-poppins absolute bottom-3 left-2 w-[95%] text-center"
-        >{@html $t("auth.signupLink")}</span
+        ><a href="/signup" class="hover:link">Sign Up & Subscribe</a> · <a class="hover:link"href="/reset-password">{$t("account.button.resetPassword")}</a></span
       >
     </div>
   </div>
