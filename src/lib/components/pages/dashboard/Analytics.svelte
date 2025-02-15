@@ -30,7 +30,7 @@
 
   let getStartedButtonClicks;
   if (browser) {
-    promise = fetch("https://backend.arthmc.xyz/analytics")
+    promise = fetch("https://ocelot.arthmc.xyz/analytics")
       .then((response) => response.json())
       .then((json) => {
         res = json;

@@ -15,7 +15,7 @@
   if (browser) {
    //find a node
     
-    fetch('https://backend.arthmc.xyz/availableNode')
+    fetch('https://ocelot.arthmc.xyz/availableNode')
         .then(response => response.text())
         .then(data => {
             
@@ -51,7 +51,7 @@
 
   
   function discord() {
-    fetch('https://backend.arthmc.xyz/availableNode')
+    fetch('https://ocelot.arthmc.xyz/availableNode')
         .then(response => response.text())
         .then(data => {
           localStorage.setItem('userNode', data);
