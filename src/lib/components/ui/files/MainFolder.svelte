@@ -91,7 +91,7 @@
   function download() {
     downloading = true;
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", apiurl + "server/" + id + "/file/download/" + uploadpath, true);
+    xhr.open("GET", apiurl + "server/" + id + "/download/", true);
     xhr.setRequestHeader("token", localStorage.getItem("token"));
     xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
     xhr.responseType = "blob";
@@ -169,7 +169,7 @@
     </label>
     <label
       for="download{foldername}"
-      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center btn-disabled opacity-50"
+      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     >
       <Download class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     </label>
