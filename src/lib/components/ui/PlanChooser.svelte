@@ -26,7 +26,7 @@
 
     if (browser) {
 
-      if (localStorage.getItem("userNode") == "null") {
+      if (!localStorage.getItem("userNode")?.includes("http")) {
         atCapacity = true;
       }
       if (window.location.pathname == "/subscribe/basic") {
