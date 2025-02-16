@@ -19,10 +19,16 @@
   let premiumClass="neutralGradientStroke bg-base-100";
 
   let billingCycle = $t("perMonth");
+
+  let atCapacity = false;
   onMount(() => {
     
 
     if (browser) {
+
+      if (localStorage.getItem("userNode") == "null") {
+        atCapacity = true;
+      }
       if (window.location.pathname == "/subscribe/basic") {
         basicClass="primaryGradientStroke bg-gradient-to-b from-base-100 to-[#192a3e]";
       } else if (window.location.pathname == "/subscribe/plus") {
@@ -115,7 +121,16 @@ function selectPlus() {
 </script>
 
 
-
+{#if atCapacity}
+<div
+  class="absolute w-screen h-screen bg-black bg-opacity-70 z-[999] flex place-items-center justify-center"
+>
+  <div role="alert" class="alert alert-error w-96">
+    <AlertTriangleIcon />
+    <span>{$t("atCapacity")}</span>
+  </div>
+</div>
+{/if}
 <div class="min-[1080px]:flex relative bg-base-200 h-full w-full">
 
   <div
