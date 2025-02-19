@@ -142,6 +142,7 @@
     if (url.startsWith("/")) {
       url = url.substring(1);
     }
+    console.log(url)
     xhr.open("GET", apiurl + "server/" + id + "/file/download/" + url, true);
     xhr.setRequestHeader("token", localStorage.getItem("token"));
     xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
