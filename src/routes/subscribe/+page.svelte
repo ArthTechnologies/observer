@@ -7,11 +7,11 @@
     //because there is a bug with displaying the checkout and plan chooser
     //on the same page on mobile.
     if (window.innerWidth < 768) {
-      goto("/subscribe/choosePlan");
+      goto("/signup/subscribe/choosePlan");
     } else {
       //there is a bug with embedding the plans into the plan chooser's page,
       //so we have to embed the plan choose into each plan's page instead.
-      goto("/subscribe/basic");
+      goto("/signup/subscribe/basic");
     }
   }
 </script>

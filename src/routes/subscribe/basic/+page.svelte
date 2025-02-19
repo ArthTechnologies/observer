@@ -109,7 +109,7 @@
     class="bg-[#525f7f] max-[1080px]:w-screen min-[1080px]:w-2/3 min-h-screen pt-10 pb-16 relative"
   >
     <a
-      href="/subscribe/choosePlan"
+      href="/signup/subscribe/choosePlan"
       class="absolute top-2 left-2 btn btn-ghost btn-sm min-[1080px]:hidden"
       ><ArrowLeft class="mr-1.5" size="18" /> Back</a
     >

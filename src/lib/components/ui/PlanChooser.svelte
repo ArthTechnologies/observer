@@ -29,11 +29,11 @@
       if (!localStorage.getItem("userNode")?.includes("http")) {
         atCapacity = true;
       }
-      if (window.location.pathname == "/subscribe/basic") {
+      if (window.location.pathname == "/signup/subscribe/basic") {
         basicClass="primaryGradientStroke bg-gradient-to-b from-base-100 to-[#192a3e]";
-      } else if (window.location.pathname == "/subscribe/plus") {
+      } else if (window.location.pathname == "/signup/subscribe/plus") {
         plusClass="primaryGradientStroke bg-gradient-to-b from-base-100 to-[#192a3e]";
-      } else if (window.location.pathname == "/subscribe/premium") {
+      } else if (window.location.pathname == "/signup/subscribe/premium") {
         premiumClass="primaryGradientStroke bg-gradient-to-b from-base-100 to-[#192a3e]";
       }
       const usd = document.getElementById("usd");
@@ -85,6 +85,22 @@
         addonChooser?.classList.add("hidden");
       }
     });
+
+    fetch(
+      "https://ocelot.arthmc.xyz/nodeInfo"
+    ).then((response) => {
+      if (response.status == 200) {
+        response.json().then((data) => {
+          for (let i = 0; i < data.length; i++) {
+            if (data[i][0] == localStorage.getItem("userNode")) {
+              if (parseInt(data[i][1]) >= parseInt(data[i][2])) {
+                atCapacity = true;
+              }
+            }
+          }
+        });
+      } 
+    });
   }
 
   function updateBillPeriod() {
@@ -99,21 +115,21 @@
 
   function selectBasic() {
     
-    goto("/subscribe/basic");
+    goto("/signup/subscribe/basic");
     setTimeout(() => {
       location.reload();
     }, 300);  
   }
 function selectPlus() {
     
-    goto("/subscribe/plus");
+    goto("/signup/subscribe/plus");
     setTimeout(() => {
       location.reload();
     }, 300);  
   }
   function selectPremium() {
     
-    goto("/subscribe/premium");
+    goto("/signup/subscribe/premium");
     setTimeout(() => {
       location.reload();
     }, 300);  

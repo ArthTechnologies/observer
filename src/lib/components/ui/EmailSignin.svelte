@@ -110,9 +110,9 @@
             if (localStorage.getItem("enablePay") == "true") {
               //change this to your own stripe checkout link
               if (plan == undefined) {
-                goto("/subscribe/basic");
+                goto("/signup/subscribe/basic");
               } else {
-                goto("/subscribe/" + plan);
+                goto("/signup/subscribe/" + plan);
               }
             } else {
               goto("/");

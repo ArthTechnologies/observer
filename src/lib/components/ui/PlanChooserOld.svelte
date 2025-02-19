@@ -20,11 +20,11 @@
   let billingCycle = $t("perMonth");
   onMount(() => {
     if (browser && window.innerWidth > 768) {
-      if (window.location.pathname == "/subscribe/basic") {
+      if (window.location.pathname == "/signup/subscribe/basic") {
         selectBasic();
-      } else if (window.location.pathname == "/subscribe/modded") {
+      } else if (window.location.pathname == "/signup/subscribe/modded") {
         selectModded();
-      } else if (window.location.pathname == "/subscribe/premium") {
+      } else if (window.location.pathname == "/signup/subscribe/premium") {
         selectPremium();
       }
     }
@@ -248,7 +248,7 @@
           }}
           id="basicSelect"
           class="btn btn-neutral btn-sm my-0.5 w-full"
-          href="/subscribe/basic">{$t("select")}</a
+          href="/signup/subscribe/basic">{$t("select")}</a
         >
         <p
           class="hidden sm:flex items-center gap-2 text-sm xl:text-[.95rem] w-[9.5rem]"
@@ -295,7 +295,7 @@
           }}
           id="moddedSelect"
           class="btn btn-neutral btn-sm my-0.5 w-full"
-          href="/subscribe/modded">{$t("select")}</a
+          href="/signup/subscribe/modded">{$t("select")}</a
         >
         <p
           class="hidden sm:flex items-center gap-2 text-sm xl:text-[.95rem] w-[9.5rem]"
@@ -343,7 +343,7 @@
           }}
           id="premiumSelect"
           class="btn btn-neutral btn-sm my-0.5 w-full"
-          href="/subscribe/premium">{$t("select")}</a
+          href="/signup/subscribe/premium">{$t("select")}</a
         >
         <p
           class="hidden sm:flex items-center gap-2 text-sm xl:text-[.95rem] w-[9.5rem]"
