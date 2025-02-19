@@ -138,9 +138,9 @@
   function download() {
     downloading = true;
     const xhr = new XMLHttpRequest();
-    //if theres a / at the beginning of the url, remove it
-    if (url.startsWith("/")) {
-      url = url.substring(1);
+    console.log(url.includes("//"));
+    if (url.includes("//")) {
+      url = url.split("//")[1];
     }
     console.log(url)
     xhr.open("GET", apiurl + "server/" + id + "/file/download/" + url, true);
