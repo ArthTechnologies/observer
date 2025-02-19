@@ -62,6 +62,9 @@ class="relative bg-base-100 rounded-xl shadow-xl  flex flex-col items-center max
             <div class="flex flex-col gap-2 w-3/4">
               {#each nodeInfo as node}
               <div class="flex gap-2.5 bg-neutral bg-opacity-75 px-2 p-1 rounded-xl items-center">
+                {#if parseInt(node[1]) >= parseInt(node[2])}
+                <input type="radio" name="radio-2" class="radio pointer-events-none opacity-50" />
+                {:else}
                   <input type="radio" name="radio-2" class="radio"  id={node[0]} value={node[0]} on:change={() => {
                     let nodeurl = node[0];
                     //add the / to the end of the url
@@ -70,7 +73,7 @@ class="relative bg-base-100 rounded-xl shadow-xl  flex flex-col items-center max
                     }
                       localStorage.setItem("userNode", nodeurl);
                         selectedNode = node[0].split("https://")[1].split(".")[0];
-                  }} />
+                  }} />{/if}
     <span class="text-4xl">
       {#if node[0].includes("us")}
     &#127482;&#127480;

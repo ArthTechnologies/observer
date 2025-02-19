@@ -77,9 +77,9 @@ class="relative bg-base-100 rounded-xl shadow-xl  flex flex-col items-center max
                    <div class="flex gap-2">
                       
                       {#if parseInt(node[1]) >= parseInt(node[2])}
-                      <div class="bg-error text-black border border-black rounded-full text-xs px-1.5">At Capacity</div>
+                      <div class="bg-base-200 text-black border border-black rounded-full text-xs px-1.5">At Capacity</div>
                       {:else if parseInt(node[2]) - parseInt(node[1]) < 5 }
-                      <div class="bg-warning text-black outline rounded-full text-xs px-1.5">Only {parseInt(node[2]) - parseInt(node[1]) } Servers Left</div>
+                      <div class="bg-base-200 text-black outline rounded-full text-xs px-1.5">Only {parseInt(node[2]) - parseInt(node[1]) } Servers Left</div>
                       {:else}
                       <div class="bg-success
                       text-black outline rounded-full text-xs px-1.5">Available</div>
