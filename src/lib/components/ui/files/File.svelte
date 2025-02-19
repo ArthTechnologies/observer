@@ -138,6 +138,10 @@
   function download() {
     downloading = true;
     const xhr = new XMLHttpRequest();
+    //if theres a / at the beginning of the url, remove it
+    if (url.startsWith("/")) {
+      url = url.substring(1);
+    }
     xhr.open("GET", apiurl + "server/" + id + "/file/download/" + url, true);
     xhr.setRequestHeader("token", localStorage.getItem("token"));
     xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
