@@ -22,6 +22,8 @@
   let subdomain;
   let address = "arthmc.xyz";
   let allowedAccounts = [];
+
+  let numberIp = "Loading";
   export let type = "smallBtn";
   if (browser) {
     name = localStorage.getItem("serverName");
@@ -29,7 +31,13 @@
     software = localStorage.getItem("serverSoftware");
     address = localStorage.getItem("address");
     subdomain = localStorage.getItem("serverSubdomain");
+    let userNode = localStorage.getItem("userNode");
     get();
+    fetch("https://dns.google/resolve?name="+userNode?.split("https://")[1].split("/")[0]+"&type=A")
+      .then((x) => x.json())
+      .then((x) => {
+        numberIp = x.Answer[0].data;
+      });
   }
   function get() {
     let baseurl = apiurl;
@@ -218,6 +226,10 @@
       id="serverName"
       class="input input-bordered"
     />
+    <label for="serverDescription" class="block font-bold mb-2 mt-4"
+      >Number IP Address
+    </label>
+    {numberIp}
     <label for="serverDescription" class="block font-bold mb-2 mt-4"
       >Subdomain
     </label>
