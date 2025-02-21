@@ -49,7 +49,7 @@
     class=" absolute h-screen w-full bg-gradient-to-b from-[#1a141c] to-[#99402b] z-[-1]"
   ></div>
   <div
-    class="relative bg-base-100 rounded-xl shadow-xl px-5 md:px-8 xl:px-12 flex flex-col items-center max-sm:w-[95%]"
+    class="relative bg-base-100 rounded-xl shadow-xl px-6 sm:px-8 xl:px-12 flex flex-col items-center h-[83%] w-[95%] md:w-[36rem]"
   >
     <ul class="steps scale-90 mt-5 w-full">
       <li class="step step-neutral step-primary" data-content="">
@@ -65,7 +65,7 @@
       </li>
     </ul>
     <!-- Signup Section-->
-    <div class="p-4 md:p-6 md:w-96 rounded-xl">
+    <div class="p-4 md:p-6 md:w-[30rem] rounded-xl">
       <p class="text-[1.4rem] font-poppins-bold mb-3">{$t("auth.signup.h")}</p>
       <div class="grid grid-cols-2 gap-3 w-full items-center">
         <div class="flex gap-2.5">

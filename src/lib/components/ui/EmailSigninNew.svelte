@@ -193,7 +193,7 @@
                 </label>
               </div>
             </div>
-            <div class="w-[100%] flex justify-center h-[4.1rem]">
+            <div class="w-[100%] flex justify-start h-[4.1rem]">
               {#if !checkingIfCloudflareVerify}
                 <Turnstile
                   on:turnstile-callback={cloudflareVerifyCallback}
@@ -245,8 +245,8 @@
               class="input sm:w-full bg-base-200"
             />
 
-            <div class="space-y-5 flex flex-col md:items-center md:w-full">
-              <div class="w-[100%] flex justify-center h-[4.1rem]">
+            <div class="space-y-5 flex flex-col md:items-start md:w-full">
+              <div class="w-[100%] flex justify-start h-[4.1rem]">
                 {#if !checkingIfCloudflareVerify}
                   <Turnstile
                     on:turnstile-callback={cloudflareVerifyCallback}
