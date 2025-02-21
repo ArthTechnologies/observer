@@ -22,7 +22,7 @@
   let subdomain;
   let address = "arthmc.xyz";
   let allowedAccounts = [];
-
+  let userNode;
   let numberIp = "Loading";
   export let type = "smallBtn";
   if (browser) {
@@ -31,7 +31,7 @@
     software = localStorage.getItem("serverSoftware");
     address = localStorage.getItem("address");
     subdomain = localStorage.getItem("serverSubdomain");
-    let userNode = localStorage.getItem("userNode");
+   userNode = localStorage.getItem("userNode");
     get();
     fetch("https://dns.google/resolve?name="+userNode?.split("https://")[1].split("/")[0]+"&type=A")
       .then((x) => x.json())
@@ -133,9 +133,11 @@
   }
 
   function claimSubdomain() {
-    console.log("claiming subdomain");
+
+    let baseUrl = userNode.split("https://")[1].split("/")[0].split(".")[0];
+    console.log("claiming subdomain" + baseUrl);
     const subdomain2 = document.getElementById("subdomainInput").value;
-    fetch(apiurl + "server/" + id + "/claimSubdomain?subdomain=" + subdomain2, {
+    fetch(apiurl + "server/" + id + "/claimSubdomain?subdomain=" + subdomain2+"&baseUrl="+baseUrl, {
       method: "POST",
       headers: {
         username: localStorage.getItem("accountEmail"),
