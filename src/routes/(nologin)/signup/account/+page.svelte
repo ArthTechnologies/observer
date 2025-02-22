@@ -23,11 +23,7 @@
     } else {
       address = "http://" + address;
     }
-    if (localStorage.getItem("token") != "" && localStorage.getItem("token") != undefined) {
-      goto("/");
-      //this tells the navbar to update the icon that is highligted
-      window.dispatchEvent(new Event("redrict"));
-    }
+
   }
 
 
