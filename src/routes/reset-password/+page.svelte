@@ -8,22 +8,41 @@
     import SignedOutNav from "$lib/components/layout/SignedOutNav.svelte";
   let enablePay = true;
   let backurl = "/login";
+  let locations = [];
   if (browser) {
     if (localStorage.getItem("enablePay") == "false") {
       enablePay = false;
     }
+
+    fetch("https://ocelot.arthmc.xyz/nodeInfo")
+      .then((res) => res.json())
+      .then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          locations.push(data[i][0].split("https://")[1].split(".")[0]);
+        }
+        let select = document.getElementById("locationSelect");
+        select.innerHTML = "";
+        locations.forEach((location) => {
+          let option = document.createElement("option");
+          option.value = location;
+          option.innerHTML = location;
+          select.appendChild(option);
+        });
+      });
   }
   function reset() {
     let email = document.getElementById("email").value;
     let cc = document.getElementById("cc").value;
     let password = document.getElementById("password").value;
     let confPassword = document.getElementById("confirmPassword").value;
-
+    const select = document.getElementById("locationSelect");
+    const location = select.options[select.selectedIndex].value;
+    let reseturl = "https://" + location + ".arthmc.xyz/";
     if (password != confPassword) {
       alert($t("alert.passwordsDontMatch"));
     } else {
       fetch(
-        apiurl +
+        reseturl +
           "accounts/email/resetPassword" +
           "?email=" +
           email +
@@ -54,7 +73,7 @@
               );
             else alert(data.reason);
           } else {
-            alert($t("alert.passwordResetSuccess"));
+            alert($t("alert.passwordResetSuccess"), "success");
             window.location.href = "/login";
           }
         });
@@ -98,6 +117,15 @@
           <input id="cc" class="input input-bordered" type="text" />
         </div>
       {/if}
+
+      <div class="flex flex-col mt-2">
+        <label for="password " class="font-bold"
+          >Select Location</label
+        >
+        <select id="locationSelect" class="select select-bordered w-full">
+          <option disabled selected>Loading...</option>
+        </select>
+      </div>
       <div class="flex flex-col mt-2">
         <label for="password " class="font-bold"
           >{$t("account.resetPassword.l.newPassword")}</label
