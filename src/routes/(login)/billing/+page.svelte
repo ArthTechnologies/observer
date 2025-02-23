@@ -132,7 +132,7 @@
 
         <a
           id="subscribe"
-          href="/subscribe"
+          href="/signup/subscribe"
           class="btn btn-success btn-block md:grow sm:w-44 mt-2.5 sm:m-0"
           on:click={subscribe}
         >
