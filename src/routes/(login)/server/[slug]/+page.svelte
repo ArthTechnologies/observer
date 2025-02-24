@@ -98,7 +98,8 @@
     if (
       localStorage.getItem("serverSoftware") == "fabric" ||
       localStorage.getItem("serverSoftware") == "quilt" ||
-      localStorage.getItem("serverSoftware") == "forge"
+      localStorage.getItem("serverSoftware") == "forge" ||
+      localStorage.getItem("serverSoftware") == "neoforge"
     ) {
       modded = true;
     }
