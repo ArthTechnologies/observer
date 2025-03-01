@@ -189,7 +189,7 @@ export default {
     forwardingSecret: "Forwarding Secret",
     "server.delete.title": "Are you sure?",
     "server.delete.desc":
-      "Your server will be instantly deleted. This cannot be undone. Consider downloading your world first.",
+      "This cannot be undone. Consider downloading your world first.",
     disable: "Disable",
     enable: "Enable",
     file: "File",

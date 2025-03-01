@@ -8,7 +8,7 @@
   import { t } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
   import World from "./World.svelte";
-  import { AlertTriangle, Loader, Trash2 } from "lucide-svelte";
+  import { AlertTriangle, Info, Loader, Trash2 } from "lucide-svelte";
   import { getDefaultSettings } from "http2";
   let id = -1;
   let accountType = "email";
@@ -64,11 +64,17 @@
     >
     <h3 class="text-lg font-bold">{$t("server.delete.title")}</h3>
     <div
-      class="bg-warning w-86 h-16 rounded-lg text-black p-2 flex items-center mb-6 space-x-2 mt-2"
+      class="bg-warning w-86  rounded-lg text-black p-2 flex items-center space-x-2 mt-2"
     >
-      <AlertTriangle size="48" />
+      <AlertTriangle />
       <span class="text-sm">{$t("server.delete.desc")}</span>
     </div>
+    <div
+    class="bg-neutral w-86  rounded-lg p-2 flex items-center mb-4 space-x-2 mt-2"
+  >
+    <Info />
+    <span class="text-sm">You can only do this if you are the main owner of this server.</span>
+  </div>
     <div class="flex gap-1">
       {#if accountType == "email"}
         <input
