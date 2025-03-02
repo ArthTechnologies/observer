@@ -111,7 +111,7 @@
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
 
-    fetch(`${baseurl}server/${id}/extractfile/${url}`, {
+    fetch(`${baseurl}server/${id}/extractfile/${url.split("*").join("/")}`, {
       method: "POST",
       headers: {
         token: localStorage.getItem("token"),
