@@ -110,7 +110,10 @@
   function extractFile() {
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
-
+    //if url starts with /, remove it
+    if (url.startsWith("/")) {
+      url = url.substring(1);
+    }
     fetch(`${baseurl}server/${id}/extractfile/${url.split("*").join("/")}`, {
       method: "POST",
       headers: {
