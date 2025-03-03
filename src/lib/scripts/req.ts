@@ -639,6 +639,11 @@ export function createServer(
               "servers",
               (parseInt(localStorage.getItem("amountOfServers")) + 1).toString()
             );
+
+            localStorage.setItem("serverID", id);
+            localStorage.setItem("serverName", n);
+            localStorage.setItem("serverSoftware", s);
+            localStorage.setItem("serverVersion", v);
           }
           return true;
         }
