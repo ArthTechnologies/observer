@@ -10,7 +10,7 @@
     FileText,
     Image,
     Trash2,
-    FileUp,
+    Upload,
     AlertTriangle,
     FileDown,
     Download,
@@ -251,10 +251,10 @@ class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     </label>
     <label
       for="upload"
-     
-      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center btn-disabled opacity-50"
+      data-tip="Upload"
+      class="tooltip px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center btn-disabled opacity-50"
     >
-      <FileUp class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+      <Upload class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     </label>
     <label
       for="download{filename}"
