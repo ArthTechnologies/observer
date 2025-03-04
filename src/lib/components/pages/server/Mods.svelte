@@ -42,6 +42,7 @@
         let mrRequestIds = [];
         let cfPromiseList = ["haventStartedYet"];
         for (let i in res.mods) {
+ 
           res.mods[i].time = new Date(res.mods[i].date).toLocaleString();
 
           if (res.mods[i].platform == "mr") {
@@ -64,7 +65,7 @@
                         res.mods[j].name != "CFMod" &&
                         res.mods[j].name != res.mods[j].id
                       ) {
-                        if (res.mods[i].name < res.mods[j].name) {
+                        if (res.mods[i].name.toLowerCase() < res.mods[j].name.toLowerCase()) {
                           let temp = res.mods[i];
                           res.mods[i] = res.mods[j];
                           res.mods[j] = temp;
@@ -79,6 +80,19 @@
                 res.mods[i].author = data.authors[0].name;
                 res.mods[i].icon = data.logo.thumbnailUrl;
               });
+          } else {
+            //sort alphabetically
+            for (let i in res.mods) {
+              for (let j in res.mods) {
+               
+                  if (res.mods[i].filename.toLowerCase() < res.mods[j].filename.toLowerCase()) {
+                    let temp = res.mods[i];
+                    res.mods[i] = res.mods[j];
+                    res.mods[j] = temp;
+                  }
+                
+              }
+            }
           }
         }
         if (mrRequestIds.length > 0) {
