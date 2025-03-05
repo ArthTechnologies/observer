@@ -133,7 +133,10 @@ class="relative bg-base-100 rounded-xl shadow-xl  flex flex-col items-center h-[
  
 </div>
 {/if}
-        
+<span
+class="text-xs ml-1.5 font-poppins absolute bottom-3 left-2 md:w-[95%] text-center"
+>{@html $t("auth.loginLink")}</span
+>
             
         </div>
 </div>
