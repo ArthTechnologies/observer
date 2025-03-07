@@ -2,7 +2,10 @@
   import { browser } from "$app/environment";
   import Analytics from "$lib/components/pages/dashboard/Analytics.svelte";
   import FeedbackTooltip from "$lib/components/pages/dashboard/FeedbackTooltip.svelte";
+    import MemoryChart from "$lib/components/pages/dashboard/MemoryChart.svelte";
   import Status from "$lib/components/pages/dashboard/Status.svelte";
+    import ThreadCharts from "$lib/components/pages/dashboard/ThreadCharts.svelte";
+
   import { t } from "$lib/scripts/i18n";
   import { apiurl } from "$lib/scripts/req";
   import { alert, fileSizeShort } from "$lib/scripts/utils";
@@ -15,6 +18,8 @@
     User,
     Gamepad2,
     DollarSign,
+    RotateCcw,
+   
   } from "lucide-svelte";
   import { split } from "postcss/lib/list";
   import { fade } from "svelte/transition";
@@ -29,7 +34,12 @@
   let token = "";
   let accountDetails = {};
   let folders = [];
+  let tab = "performance";
+
+  let performance = [];
+  let performanceReq = null;
   if (browser) {
+    getPerformance();
     address = localStorage.getItem("address");
     fetch(apiurl + "info/capacity", {
       method: "GET",
@@ -44,6 +54,13 @@
         });
         folders = res.folders;
       });
+
+      setTimeout(() => {
+        //try logging in if the box is prefilled with a string 10 characters or longer
+        if (document.getElementById("input")?.value.length > 9) {
+          login();
+        }
+      }, 1000);
   }
 
   function getAccount(accountID) {
@@ -186,14 +203,43 @@
     }
     return ret;
   }
+  let canRefresh = false;
+  let secondsAgo = 0;
+  function getPerformance() {
+    if (browser) {
+      performanceReq = fetch(apiurl + "dashboard/snapshot", {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          performance = data;
+          console.log(performance[performance.length - 1].timestamp);
+          console.log(Date.now());
+          //if latest timestamp is less than 1 minute ago dont allow
+          if (Date.now() - performance[performance.length-1].timestamp < 60000) {
+            canRefresh = false;
+            setTimeout(() => {
+              canRefresh = true;
+            }, 60000 - (Date.now() - performance[performance.length-1].timestamp));
+            setInterval(() => {
+              secondsAgo = Math.floor((Date.now() - performance[performance.length-1].timestamp) / 1000);
+            }, 1000);
+          } else {
+            canRefresh = true;
+          }
+        });
+      }
+  }
 </script>
 
 {#if !isLoggedIn}
+
   <div
     transition:fade={{ duration: 1200 }}
     class="absolute h-[200rem] w-screen bg-base-100 z-40 backdrop-blur-sm bg-opacity-70 -mt-6"
   ></div>
   <div class="absolute mt-4 w-96 z-50" transition:fade={{ duration: 600 }}>
+    
     <div class="bg-base-100 w-96 shadow-xl">
       <figure>
         <img src="images/dashboard_bg.png" alt="bg" class="rounded-t-lg" />
@@ -228,7 +274,26 @@
     </div>
   </div>
 {/if}
-<div class="flex max-md:flex-col gap-5 justify-between md:px-16 md:-mt-4">
+<div role="tablist" class="tabs tabs-boxed w-1/4">
+  {#if tab == "performance"}
+  <a role="tab" class="tab" on:click={() => (tab = "slots")}
+    >Slots</a>
+    {:else}
+    <a role="tab" class="tab tab-active" 
+      >Slots</a
+    >{/if}
+  {#if tab == "slots"}
+  <a role="tab" class="tab" on:click={() => (tab = "performance")}
+    >Performance</a
+  >
+  {:else}
+  <a role="tab" class="tab tab-active" 
+    >Performance</a
+  >{/if}
+
+</div>
+{#if tab == "slots"}
+<div class=" flex max-md:flex-col gap-5 justify-between md:px-16 md:mt-4">
   {#if !customersLoaded}
     <Status />
   {:else}
@@ -493,3 +558,34 @@
   {/if}
   <Analytics />
 </div>
+
+{:else if tab == "performance"}
+{#await performanceReq}
+  <div class="flex flex-col gap-5 w-96 items-center">
+    {#each Array.from({ length: 10 }) as _}
+      <div class="p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
+        <div class="bg-slate-700 animate-pulse w-14 h-5 rounded-md"></div>
+        <div class="bg-slate-700 animate-pulse w-32 h-5 rounded-md"></div>
+        <div class="bg-slate-700 animate-pulse w-8 h-5 rounded-md"></div>
+      </div>
+    {/each}
+  </div>
+{:then}
+<div class="relative">
+  <div class="flex place-content-end absolute -top-10 right-2">
+    {#if canRefresh}
+    <button class="btn btn-neutral btn-sm items-center flex" on:click={getPerformance}>
+      <RotateCcw size=18 class="mr-1.5"/>Refresh</button>
+      
+    {:else}
+    <button class="btn btn-neutral btn-sm items-center flex" disabled><RotateCcw size=18 class="mr-1.5"/>Updated {secondsAgo}s Ago</button>
+    {/if}
+  </div>
+  <MemoryChart {performance} />
+    <ThreadCharts {performance} />
+
+</div>
+{/await}
+{/if}
+
+

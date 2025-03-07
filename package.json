@@ -30,6 +30,7 @@
 	"dependencies": {
 		"@stripe/stripe-js": "^2.2.1",
 		"appwrite": "^10.1.0",
+		"chart.js": "^4.4.8",
 		"lucide-svelte": "^0.263.0",
 		"marked": "^7.0.5",
 		"node": "^18.11.0",
