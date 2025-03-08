@@ -10,6 +10,7 @@
     let total;
     let lowest;
     let highest;
+    let percentOfAverage;
     onMount(() => {
         console.log(performance);
 
@@ -29,17 +30,17 @@
 
         // Create the canvas element
         let canvas = document.createElement('canvas');
-        canvas.classList.add('chart-item', 'bg-gradient-to-t', 'from-[#152036]', 'to-[#362f20]', 'rounded-xl', 'shadow-lg', 'p-2');
+        canvas.classList.add('chart-item', 'bg-gradient-to-t', 'from-[#152036]', 'to-[#2c2a27]', 'rounded-xl', 'shadow-lg', 'p-2');
 
         // Create the text element for thread label
         let text = document.createElement('p');
         text.classList.add('text-white', 'text-center', 'font-bold', 'text-lg', 'absolute', 'top-2', 'left-3');
-        text.innerHTML = 'Memory';
-
+         percentOfAverage = (highest/total*100).toFixed(1);
+        text.innerHTML = `RAM`;
         // Create the text element for the most recent CPU usage value
         let text2 = document.createElement('p');
         text2.classList.add('text-center', 'absolute', 'top-2', 'right-3');
-        text2.innerHTML = `${(threadValues[threadValues.length - 1]/1024).toFixed(1)}GB`;
+        text2.innerHTML = `${percentOfAverage}% (${(threadValues[threadValues.length - 1]/1024).toFixed(1)}GB)`;
 
         // Append the canvas and text elements to the container
         container.appendChild(canvas);
@@ -69,14 +70,14 @@
             options: {
                 scales: {
                     y: {
-                        min: ((highest+lowest)/2)-1024,
-                        max: ((highest+lowest)/2)+1024,
+                        min: ((highest+lowest)/2)-1024*(parseInt(percentOfAverage)/100),
+                        max: (((highest+lowest)/2)+1024),
                         ticks: {
                             display: false,
                             font: {
                                 size: 16
                             }
-                        },
+                        }
                     },
                     x: {
                         ticks: {
