@@ -8,6 +8,8 @@
 
     let chartLabels = Array(60).fill("");
     let total;
+    let lowest;
+    let highest;
     onMount(() => {
         console.log(performance);
 
@@ -15,6 +17,11 @@
         let threadValues = performance.map(perf => perf.memory.used);
         total = performance[0].memory.total;
         console.log(threadValues);
+
+        //find lowest and highest
+
+        lowest = Math.min(...threadValues);
+        highest = Math.max(...threadValues);
 
         // Create a parent container div
         let container = document.createElement('div');
@@ -62,8 +69,8 @@
             options: {
                 scales: {
                     y: {
-                        min: 0,
-                        max: total,
+                        min: ((highest+lowest)/2)-1024,
+                        max: ((highest+lowest)/2)+1024,
                         ticks: {
                             display: false,
                             font: {
