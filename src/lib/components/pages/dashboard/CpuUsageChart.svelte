@@ -8,22 +8,16 @@
     Chart.register(LineController, LineElement, PointElement, LinearScale, Title, CategoryScale);
 
     let chartLabels = Array(60).fill("");
-    let total;
-    let lowest;
-    let highest;
-    let percentOfAverage;
+    let cpuPercent = 0;
     onMount(() => {
         console.log(performance);
 
         // Extract CPU usage data for thread 0
-        let threadValues = performance.map(perf => perf.memory.used);
-        total = performance[performance.length-1].memory.total;
-        console.log("total" + total);
+        let threadValues = performance.map(perf => perf.cpu/4);
+  
+      
 
-        //find lowest and highest
-
-        lowest = Math.min(...threadValues);
-        highest = Math.max(...threadValues);
+  
 
         // Create a parent container div
         let container = document.createElement('div');
@@ -35,26 +29,24 @@
 
         // Create the canvas element
         let canvas = document.createElement('canvas');
-        canvas.classList.add('chart-item', 'bg-gradient-to-t', 'from-[#152036]', 'to-[#2c2a27]', 'rounded-xl', 'shadow-lg', 'p-2');
+        canvas.classList.add('chart-item', 'bg-gradient-to-t', 'from-[#152036]', 'to-[#152436]', 'rounded-xl', 'shadow-lg', 'p-2');
 
         // Create the text element for thread label
         let text = document.createElement('p');
         text.classList.add('text-white', 'text-center', 'font-bold', 'text-lg', 'absolute', 'top-2', 'left-3');
-         percentOfAverage = (threadValues[threadValues.length - 1]/total*100).toFixed(1);
-        text.innerHTML = `RAM`;
+      
+        text.innerHTML = `CPU`;
         // Create the text element for the most recent CPU usage value
         let text2 = document.createElement('p');
         text2.classList.add('text-center', 'absolute', 'top-1.5', 'right-4');
-        if (type == 1) text2.innerHTML = `${percentOfAverage}% (${(threadValues[threadValues.length - 1]/1024).toFixed(1)}GB)`;
-        else if (type ==2) text2.innerHTML = `${(threadValues[threadValues.length - 1]/1024).toFixed(1)}/${(total/1024).toFixed(1)}GB`;
+        text2.innerHTML = `${(threadValues[threadValues.length - 1]).toFixed(2)}%`;
 
-        //append a bar at the top behind the text that bulurs whats behind it.
-        let bar = document.createElement('div');
-        bar.classList.add('absolute', 'top-0', 'left-0', 'w-[92%]', 'h-12', 'bg-gradient-to-t', 'from-[#24262a]', 'to-[#2c2a27]' ,'rounded-t-xl');
+                //append a bar at the top behind the text that bulurs whats behind it.
+                let bar = document.createElement('div');
+        bar.classList.add('absolute', 'top-0', 'left-0', 'w-[92%]', 'h-12', 'bg-gradient-to-t', 'from-[#142134]', 'to-[#152436]' ,'rounded-t-xl');
         bar.style.opacity = '0.6';
         bar.style.filter = 'blur(3px)';
         container.appendChild(bar);
-
 
         // Append the canvas and text elements to the container
         container.appendChild(canvas);
@@ -72,8 +64,8 @@
                 labels: chartLabels,
                 datasets: [{
                     label: 'Thread 0',
-                    backgroundColor: '#f56922',
-                    borderColor: '#f56922',
+                    backgroundColor: '#088385',
+                    borderColor: '#088385',
                     data: threadValues,
                     fill: false,
                     borderWidth: 3,
@@ -85,7 +77,7 @@
                 scales: {
                     y: {
                         min: 0,
-                        max: total,
+                        max: 100,
                         ticks: {
                             display: false,
                             font: {

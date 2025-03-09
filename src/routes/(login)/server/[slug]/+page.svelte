@@ -52,6 +52,7 @@
     import Mods from "$lib/components/pages/server/Mods.svelte";
     import Datapacks from "$lib/components/pages/server/Datapacks.svelte";
     import MemoryChart from "$lib/components/pages/dashboard/MemoryChart.svelte";
+    import CpuUsageChart from "$lib/components/pages/dashboard/CpuUsageChart.svelte";
 
 
   let tab = "terminal";
@@ -562,13 +563,18 @@ on:click={() => (tab = label)}
           </div>
         </div>
       </div>
-<div class="flex w-full hidden">
-<div class="hidden">
+<div class="flex w-full">
+
+<div class="scale-95 w-full -ml-1.5">
   {#await memoryReq}
-d
+  <div class="w-[10rem]  h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"></div>
   {:then}
   <MemoryChart performance={memoryStats} type=2/>
-  {/await}</div>
+  <CpuUsageChart performance={memoryStats} type=2/>
+  {:catch}
+  <div class="w-[10rem]  h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"></div>
+  {/await}
+</div>
 </div>
 
       {#if dynmap}
