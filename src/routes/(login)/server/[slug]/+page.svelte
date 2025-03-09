@@ -736,7 +736,7 @@ on:click={() => (tab = label)}
         </div>
       {/if}
       <div class=" bg-base-100 rounded-xl px-4 py-3 ">
-        <p class="text-xl font-bold">{$t("shortcuts.title")}</p>
+        <p class="text-lg font-poppins-bold">{$t("shortcuts.title")}</p>
         <div class="space-x-1.5 space-y-1.5">
           <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
 
