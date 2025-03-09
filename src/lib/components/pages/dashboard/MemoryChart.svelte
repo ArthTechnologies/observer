@@ -2,6 +2,7 @@
     import { Chart, LineController, LineElement, PointElement, LinearScale, Title, CategoryScale } from 'chart.js';
     import { onMount } from 'svelte';
     export let performance = [];
+    export let type = 1;
 
     // Register the required components
     Chart.register(LineController, LineElement, PointElement, LinearScale, Title, CategoryScale);
@@ -16,8 +17,8 @@
 
         // Extract CPU usage data for thread 0
         let threadValues = performance.map(perf => perf.memory.used);
-        total = performance[0].memory.total;
-        console.log(threadValues);
+        total = performance[performance.length-1].memory.total;
+        console.log("total" + total);
 
         //find lowest and highest
 
@@ -40,7 +41,8 @@
         // Create the text element for the most recent CPU usage value
         let text2 = document.createElement('p');
         text2.classList.add('text-center', 'absolute', 'top-2', 'right-3');
-        text2.innerHTML = `${percentOfAverage}% (${(threadValues[threadValues.length - 1]/1024).toFixed(1)}GB)`;
+        if (type == 1) text2.innerHTML = `${percentOfAverage}% (${(threadValues[threadValues.length - 1]/1024).toFixed(1)}GB)`;
+        else if (type ==2) text2.innerHTML = `${(threadValues[threadValues.length - 1]/1024).toFixed(2)}/${(total/1024).toFixed(1)}GB`;
 
         // Append the canvas and text elements to the container
         container.appendChild(canvas);
@@ -105,4 +107,4 @@
     }
 </style>
 
-<div id="chartsContainer" class="rounded p-4 w-[17rem] h-auto"></div>
+<div id="chartsContainer" class="rounded pr-4 w-[17rem] h-auto"></div>

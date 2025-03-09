@@ -51,6 +51,8 @@
     import Plugins from "$lib/components/pages/server/Plugins.svelte";
     import Mods from "$lib/components/pages/server/Mods.svelte";
     import Datapacks from "$lib/components/pages/server/Datapacks.svelte";
+    import MemoryChart from "$lib/components/pages/dashboard/MemoryChart.svelte";
+    import MemoryChartSkele from "$lib/components/pages/dashboard/MemoryChartSkele.svelte";
 
   let tab = "terminal";
   let modded = false;
@@ -78,6 +80,8 @@
   let chunky = false;
   let discordsrv = false;
   let subdomain = undefined;
+  let memoryStats = [];
+  let memoryReq = null;
 
   if (browser) {
     if (localStorage.getItem("updateAlert") != "bluemap") {
@@ -350,7 +354,7 @@
     }, 15000);
 
     function fetchRam() {
-      fetch(apiurl + "server/" + id + "/liveStats", {
+      memoryReq = fetch(apiurl + "server/" + id + "/liveStats", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -361,7 +365,13 @@
         .then((response) => response.json())
         .then((data) => {
           try {
-          ramUsage = (parseInt(data[data.length-1].memory.used) / 1024 / 1024 / 1024).toFixed(3) +"/"+(parseInt(data[data.length-1].memory.total) / 1024 / 1024 / 1024).toFixed(0)+ "GB";
+            memoryStats = data; 
+            // for reach item in the array change memory.used and memory.total from byes to mb
+            data.forEach((item) => {
+              item.memory.used = (parseInt(item.memory.used) / 1024 / 1024).toFixed(2);
+              item.memory.total = (parseInt(item.memory.total) / 1024 / 1024).toFixed(2);
+            });
+          ramUsage = (parseInt(data[data.length-1].memory.used) / 1024).toFixed(3) +"/"+(parseInt(data[data.length-1].memory.total) / 1024 / 1024 / 1024).toFixed(0)+ "GB";
           } catch (e) {
             //console.log(e);
           }
@@ -552,7 +562,14 @@ on:click={() => (tab = label)}
           </div>
         </div>
       </div>
-
+<div class="flex w-full hidden">
+<div class="hidden">
+  {#await memoryReq}
+d
+  {:then}
+  <MemoryChart performance={memoryStats} type=2/>
+  {/await}</div>
+</div>
 
       {#if dynmap}
         <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
