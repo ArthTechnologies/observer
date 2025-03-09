@@ -35,7 +35,7 @@
         // Create the text element for thread label
         let text = document.createElement('p');
         text.classList.add('text-white', 'text-center', 'font-bold', 'text-lg', 'absolute', 'top-2', 'left-3');
-         percentOfAverage = (highest/total*100).toFixed(1);
+         percentOfAverage = (threadValues[threadValues.length - 1]/total*100).toFixed(1);
         text.innerHTML = `RAM`;
         // Create the text element for the most recent CPU usage value
         let text2 = document.createElement('p');
@@ -70,8 +70,8 @@
             options: {
                 scales: {
                     y: {
-                        min: ((highest+lowest)/2)-1024*(parseInt(percentOfAverage)/100),
-                        max: (((highest+lowest)/2)+1024),
+                        min: 0,
+                        max: total,
                         ticks: {
                             display: false,
                             font: {
