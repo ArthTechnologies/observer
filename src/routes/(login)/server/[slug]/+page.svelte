@@ -567,12 +567,18 @@ on:click={() => (tab = label)}
 
 <div class="scale-95 w-full -ml-1.5">
   {#await memoryReq}
-  <div class="w-[10rem]  h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"></div>
+  <div class="flex gap-12">
+    <div class="w-[10rem]  h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"></div>
+  <div class="w-[10rem]  h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#152436] rounded-xl"></div>
+  </div>
   {:then}
   <MemoryChart performance={memoryStats} type=2/>
   <CpuUsageChart performance={memoryStats} type=2/>
   {:catch}
-  <div class="w-[10rem]  h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"></div>
+  <div class="flex gap-12">
+    <div class="w-[10rem]  h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"></div>
+  <div class="w-[10rem]  h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#152436] rounded-xl"></div>
+  </div>
   {/await}
 </div>
 </div>
@@ -735,7 +741,7 @@ on:click={() => (tab = label)}
           >
         </div>
       {/if}
-      <div class=" bg-base-100 rounded-xl px-4 py-3 ">
+      <div class=" bg-base-100 rounded-xl px-4 pt-3 pb-6 ">
         <p class="text-lg font-poppins-bold">{$t("shortcuts.title")}</p>
         <div class="space-x-1.5 space-y-1.5">
           <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
@@ -762,16 +768,6 @@ on:click={() => (tab = label)}
             type="text"
           />
           <button on:click={gamemode} class="btn btn-secondary btn-sm"
-            >{$t("button.send")}</button
-          >
-        </div>
-
-        <label class="label" for="alwaysDay"
-          >{$t("shortcuts.l.alwaysDay")}</label
-        >
-        <div class="flex items-center space-x-2 ml-2">
-          <input id="alwaysDay" type="checkbox" class="toggle" />
-          <button on:click={alwaysDay} class="btn btn-secondary btn-sm"
             >{$t("button.send")}</button
           >
         </div>
