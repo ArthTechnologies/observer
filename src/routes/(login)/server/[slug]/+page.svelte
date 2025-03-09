@@ -52,7 +52,7 @@
     import Mods from "$lib/components/pages/server/Mods.svelte";
     import Datapacks from "$lib/components/pages/server/Datapacks.svelte";
     import MemoryChart from "$lib/components/pages/dashboard/MemoryChart.svelte";
-    import MemoryChartSkele from "$lib/components/pages/dashboard/MemoryChartSkele.svelte";
+
 
   let tab = "terminal";
   let modded = false;
