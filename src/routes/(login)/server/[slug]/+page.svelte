@@ -345,10 +345,8 @@
     fetchRam();
     fetchPlayers();
     setInterval(() => {
-      fetchRam();
-    }, 5000);
-    setInterval(() => {
       fetchPlayers();
+      fetchRam();
     }, 15000);
 
     function fetchRam() {
