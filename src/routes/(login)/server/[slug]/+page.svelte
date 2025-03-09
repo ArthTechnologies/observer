@@ -363,7 +363,7 @@
         .then((response) => response.json())
         .then((data) => {
           try {
-          ramUsage = data.memory.replace("iB", "B").trim();
+          ramUsage = (parseInt(data[data.length-1].memory.used) / 1024 / 1024 / 1024).toFixed(3) +"/"+(parseInt(data[data.length-1].memory.total) / 1024 / 1024 / 1024).toFixed(0)+ "GB";
           } catch (e) {
             //console.log(e);
           }
