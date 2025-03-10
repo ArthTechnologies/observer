@@ -223,7 +223,7 @@
           <UserIcon size="16" />
           Username
         </div>
-        {localStorage.getItem("accountId")?.split("-")[0]}
+        {localStorage.getItem("accountId")?.split("-")[0]+"."+localStorage.getItem("serverID")}
 
         </div>
 
