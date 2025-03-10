@@ -4,10 +4,11 @@
   import Folder from "$lib/components/ui/files/Folder.svelte";
   import TextEditor from "$lib/components/ui/files/TextEditor.svelte";
   import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
-  import { ArrowLeft, ArrowLeftIcon } from "lucide-svelte";
+  import { ArrowLeft, ArrowLeftIcon, HardDriveDownload, Hash, KeyIcon, LinkIcon, UserIcon } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
   import HistoryButton from "$lib/components/buttons/HistoryButton.svelte";
   import MainFolder from "$lib/components/ui/files/MainFolder.svelte";
+    import { alert } from "$lib/scripts/utils";
 
   let files = ["server.properties", ["folder1", ["file1.txt", "file2.txt"]]];
   let id;
@@ -122,6 +123,30 @@
       }, 100);
     });
   }
+
+  function copyPassword() {
+    // Create a temporary textarea to hold the password
+    const textarea = document.createElement("textarea");
+    // Ensure there are no leading/trailing spaces or characters
+    textarea.value = ftpPassword.trim();
+    
+    // Append to the document body
+    document.body.appendChild(textarea);
+    
+    // Select the text inside the textarea
+    textarea.select();
+    textarea.setSelectionRange(0, 99999); // For mobile devices
+    
+    // Execute the copy command
+    document.execCommand("copy");
+    
+    // Remove the temporary textarea from the document
+    document.body.removeChild(textarea);
+    
+    alert("Password copied to clipboard", "success");
+  }
+
+
 </script>
 
 {#if tab == "list"}
@@ -166,28 +191,65 @@
 {/if}
 
 <!-- FTP info -->
-<div class="flex flex-col items-start gap-5 w-full">
+<div class="flex flex-col items-start gap-5 w-full mb-12 mt-2">
   <div class="bg-base-100 rounded-xl px-5 py-3 w-full">
-    <h1 class="text-xl font-poppins-bold">FTP Info</h1>
+    <h1 class="text-xl font-poppins-bold mb-1">SFTP Info</h1>
     <div class="flex flex-col gap-2">
-      <p class="text-sm">
-        Host: sftp://{localStorage.getItem("userNode")?.split("https://")[1].split("/")[0]}
-      </p>
-      <p class="text-sm">Port: 2222</p>
-      <p class="text-sm">
-        Username: {localStorage.getItem("accountId")?.split("-")[0]}
-      </p>
-      <p class="text-sm">
-        Password:
-        {#if showFtpPassword}
-          {ftpPassword}
-        {:else}
-          ********
-        {/if}
-        <button class="btn btn-xs ml-2" on:click={toggleFtpPassword}>
-          {#if showFtpPassword}Hide{:else}Show{/if}
-        </button>
-      </p>
+
+        <div class="flex gap-2 items-center">
+          <div
+            class="flex bg-neutral p-1.5 rounded-lg items-center text-sm font-bold gap-1"
+          >
+            <LinkIcon size="16" />
+            Host
+          </div>
+          sftp://{localStorage.getItem("userNode")?.split("https://")[1].split("/")[0]}
+  
+          </div>
+      <div class="flex gap-2 items-center">
+        <div
+          class="flex bg-neutral p-1.5 rounded-lg items-center text-sm font-bold gap-1"
+        >
+          <Hash size="16" />
+          Port
+        </div>
+        {10000+(Math.floor(parseInt(localStorage.getItem("serverID")) / 100) * 100)+99}
+
+        </div>
+      <div class="flex gap-2 items-center">
+        <div
+          class="flex bg-neutral p-1.5 rounded-lg items-center text-sm font-bold gap-1"
+        >
+          <UserIcon size="16" />
+          Username
+        </div>
+        {localStorage.getItem("accountId")?.split("-")[0]}
+
+        </div>
+
+      <div class="flex gap-2 items-center">
+        <div
+          class="flex bg-neutral p-1.5 rounded-lg items-center text-sm font-bold gap-1"
+        >
+          <KeyIcon size="16" />
+          Password
+        </div>
+
+<p>
+  {#if showFtpPassword}
+  {ftpPassword}
+{:else}
+  ********
+{/if}
+</p>
+<button class="btn btn-xs" on:click={toggleFtpPassword}>
+  {#if showFtpPassword}Hide{:else}Show{/if}
+</button>
+
+ <button class="btn btn-xs btn-neutral" on:click={copyPassword}>
+  Copy
+</button>
+      </div>
     </div>
   </div>
 </div>
