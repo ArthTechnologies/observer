@@ -4,7 +4,7 @@
   import Folder from "$lib/components/ui/files/Folder.svelte";
   import TextEditor from "$lib/components/ui/files/TextEditor.svelte";
   import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
-  import { ArrowLeft, ArrowLeftIcon, HardDriveDownload, Hash, KeyIcon, LinkIcon, UserIcon } from "lucide-svelte";
+  import { ArrowLeft, ArrowLeftIcon, FlaskConical, HardDriveDownload, Hash, KeyIcon, LinkIcon, UserIcon } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
   import HistoryButton from "$lib/components/buttons/HistoryButton.svelte";
   import MainFolder from "$lib/components/ui/files/MainFolder.svelte";
@@ -192,7 +192,8 @@
 
 <!-- FTP info -->
 <div class="flex flex-col items-start gap-5 w-full mb-12 mt-2">
-  <div class="bg-base-100 rounded-xl px-5 py-3 w-full">
+  <div class="bg-base-100 rounded-xl px-5 py-3 w-full relative">
+    <div class="badge badge-outline absolute top-2 right-2 badge-lg text-sm flex gap-1 items-center"><FlaskConical size="14" class="mt-0.5"/>Beta</div>
     <h1 class="text-xl font-poppins-bold mb-1">SFTP Info</h1>
     <div class="flex flex-col gap-2">
 
