@@ -92,7 +92,7 @@
       if (response.status == 200) {
         response.json().then((data) => {
           for (let i = 0; i < data.length; i++) {
-            if (data[i][0] == localStorage.getItem("userNode")) {
+            if (data[i][0]+"/" == localStorage.getItem("userNode")) {
               if (parseInt(data[i][1]) >= parseInt(data[i][2])) {
                 atCapacity = true;
               }
