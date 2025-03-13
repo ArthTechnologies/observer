@@ -220,8 +220,8 @@ function selectPlus() {
 
 
         <div class="flex gap-2">
-          <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">$3.49</p>
-          <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">3GB RAM</p>
+          <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">$3.99</p>
+          <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">4GB RAM</p>
 
         </div>
     
@@ -239,8 +239,8 @@ function selectPlus() {
 
 
           <div class="flex gap-2">
-            <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">$4.99</p>
-            <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">5GB RAM</p>
+            <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">$5.99</p>
+            <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">6GB RAM</p>
 
           </div>
       

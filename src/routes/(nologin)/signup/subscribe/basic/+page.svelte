@@ -50,9 +50,9 @@
 
       let billQuarterly = localStorage.getItem("billQuarterly");
       if (billQuarterly == "true") {
-        priceId = "price_1PnqvuJYPXquzaSzV1xarMTP";
+        priceId = "price_1R2G07JYPXquzaSz2ABwCb0U";
       } else {
-        priceId = "price_1OuLohJYPXquzaSzUZUBHLjc";
+        priceId = "price_1R2FxgJYPXquzaSzQyzJBmsx";
       }
       stripe = await loadStripe(stripeKey);
       clientSecret = await fetch(
