@@ -169,7 +169,6 @@ updateElementWidth(); // Initial call
   placeholder={$t("p.enterCommand")}
   class="input input-secondary bg-base-100 w-full"
 />
-
 <button class="md:hidden btn btn-secondary btn-square" on:click={()=>send(document.getElementById("input").value)}
 ><SendIcon  /></button>
 
