@@ -6,6 +6,7 @@
     import FullscreenTerminal from "$lib/components/buttons/FullscreenTerminal.svelte";
     import { t } from "$lib/scripts/i18n";
     import { readTerminal, writeTerminal } from "$lib/scripts/req";
+    import { SendIcon } from "lucide-svelte";
     
     export let id: number;
 
@@ -22,7 +23,12 @@
     }
     //if key pressed is enter, send alert
     if (event.keyCode == 13) {
-      writeTerminal(id, input);
+send(input);
+    }
+  }
+
+  function send(input) {
+    writeTerminal(id, input);
       //clear input
       document.getElementById("input").value = "";
 
@@ -30,7 +36,6 @@
       setTimeout(() => {
         readCmd();
       }, 200);
-    }
   }
   let scrollCorrected = false;
   export function readCmd() {
@@ -156,11 +161,17 @@ updateElementWidth(); // Initial call
       </div>
     </div>
   </div>
+<div class=" w-full flex items-center gap-2">
   <input
-    on:keypress={writeCmd}
-    id="input"
-    type="text"
-    placeholder={$t("p.enterCommand")}
-    class="input input-secondary bg-base-100 w-full"
-  />
+  on:keypress={writeCmd}
+  id="input"
+  type="text"
+  placeholder={$t("p.enterCommand")}
+  class="input input-secondary bg-base-100 w-full"
+/>
 
+<button class="md:hidden btn btn-secondary btn-square" on:click={()=>send(document.getElementById("input").value)}
+><SendIcon  /></button>
+
+
+</div>
