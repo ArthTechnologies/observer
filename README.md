@@ -1,8 +1,11 @@
 [![Get at Docker Hub](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/arthmc/observer)
 
+# Arth Panel Beta 1.5
+This version was released on Aug 14, 2024. Please see the `next` branch for development on the next version
+
 ### Warnings
 
-- Arth Panel is in beta and should not be used in production yet.
+Arth Panel is in beta and should not be used in production yet.
 
 # About Observer
 
