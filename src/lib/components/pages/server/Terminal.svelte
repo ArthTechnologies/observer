@@ -150,7 +150,7 @@ updateElementWidth(); // Initial call
 </script>
 
 
-  <div id="terminalContainerContainer" class="relative mb-1.5 w-full z-[0] ">
+  <div id="terminalContainerContainer" class="relative mb-1.5 w-full ">
     <FullscreenTerminal />
     <div
       id="terminalContainer"
