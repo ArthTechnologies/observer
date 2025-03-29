@@ -194,7 +194,9 @@
       worldgenMods.forEach((item) => {
         let checkbox = document.getElementById(item);
         if (checkbox != null) {
-          if (jarsList.includes(item + "-" + version.split("*")[0] + ".zip")) {
+          if (jarsList.includes(item + "-" + version.split("*")[0] + ".zip")
+        || jarsList.includes(item + "-" + version.split("*")[0] + "*beta.zip")
+      || jarsList.includes(item + "-" + version.split("*")[0] + "*alpha.zip")) {
             worldgenModsAvailable = true;
             checkbox.disabled = false;
           } else {
