@@ -17,7 +17,7 @@
 
         // Extract CPU usage data for thread 0
         let threadValues = performance.map(perf => perf.memory.used);
-        total = performance[performance.length-1].memory.total;
+        total = parseInt(performance[performance.length-1].memory.total);
         console.log("total" + total);
 
         //find lowest and highest
@@ -45,8 +45,15 @@
         // Create the text element for the most recent CPU usage value
         let text2 = document.createElement('p');
         text2.classList.add('text-center', 'absolute', 'top-1.5', 'right-4');
+        let currentRam = parseInt((threadValues[threadValues.length - 1]/1024).toFixed(1));
+        let maxRam = parseInt((total/1024).toFixed(1));
+        //if the limit has .1 round it down
+        if (maxRam % 1 == 0) maxRam = Math.floor(maxRam).toFixed(1);
+        //if current ram is bigger than max ram, set it to max ram
+        if (currentRam > maxRam) currentRam = maxRam;
+        currentRam = currentRam.toFixed(1);
         if (type == 1) text2.innerHTML = `${percentOfAverage}% (${(threadValues[threadValues.length - 1]/1024).toFixed(1)}GB)`;
-        else if (type ==2) text2.innerHTML = `${(threadValues[threadValues.length - 1]/1024).toFixed(1)}/${(total/1024).toFixed(1)}GB`;
+        else if (type ==2) text2.innerHTML = `${currentRam}/${maxRam}GB`;
 
         //append a bar at the top behind the text that bulurs whats behind it.
         let bar = document.createElement('div');
