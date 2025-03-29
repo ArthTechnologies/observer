@@ -108,7 +108,7 @@
 
               console.log(res);
              
-              if (!res.msg.includes("Success")) {
+              if (!res.msg.includes("Success") && !res.msg.includes("already claimed")) {
                
                 goto("/billing");
               }
