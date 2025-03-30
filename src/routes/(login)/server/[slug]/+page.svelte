@@ -342,7 +342,7 @@
     document.getElementById("pregenRadius").value = "";
   }
 
-  let ramUsage = "1.024GB";
+  let ramUsage = "0.000/0GB";
   let players = 0;
   let maxPlayers = 20;
 
@@ -372,7 +372,14 @@
               item.memory.used = (parseInt(item.memory.used) / 1024 / 1024).toFixed(2);
               item.memory.total = (parseInt(item.memory.total) / 1024 / 1024).toFixed(2);
             });
-          ramUsage = (parseInt(data[data.length-1].memory.used) / 1024).toFixed(3) +"/"+(parseInt(data[data.length-1].memory.total) / 1024 / 1024 / 1024).toFixed(0)+ "GB";
+            let currentRam = parseInt(data[data.length-1].memory.used)/1024;
+            let maxRam = parseInt(data[data.length-1].memory.total)/1024;
+            currentRam = parseFloat(currentRam.toFixed(3));
+            maxRam = Math.floor(maxRam);
+            if (currentRam > maxRam) {
+              currentRam = maxRam; 
+            }
+          ramUsage = currentRam +"/"+maxRam+ "GB";
           } catch (e) {
             //console.log(e);
           }
