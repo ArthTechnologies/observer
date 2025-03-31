@@ -16,10 +16,7 @@
             });
     }
 
-    function discord() {
-      let address = window.location.protocol + "//" + window.location.host;
-      goto("https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri="+address+"/auth/discord&response_type=token&scope=email+identify");
-    }
+
 </script>
 <div
 style="background-size: cover;"
@@ -76,14 +73,14 @@ class="relative bg-base-100 rounded-xl shadow-xl  flex flex-col items-center max
                    <p class="font-bold">  {node[0].split("https://")[1].split(".")[0]}</p>
                    <div class="flex gap-2">
                       
-                      {#if parseInt(node[1]) >= parseInt(node[2])}
-                      <div class="bg-base-200 text-black border border-black rounded-full text-xs px-1.5">At Capacity</div>
-                      {:else if parseInt(node[2]) - parseInt(node[1]) < 5 }
-                      <div class="bg-base-200 text-black outline rounded-full text-xs px-1.5">Only {parseInt(node[2]) - parseInt(node[1]) } Servers Left</div>
-                      {:else}
-                      <div class="bg-success
-                      text-black outline rounded-full text-xs px-1.5">Available</div>
-                      {/if}
+                    {#if parseInt(node[1]) >= parseInt(node[2])}
+                    <div class="bg-warning text-black border border-black rounded-lg md:rounded-full text-xs px-1.5">At Capacity</div>
+                    {:else if parseInt(node[2]) - parseInt(node[1]) < 5 }
+                    <div class="bg-warning text-black border border-black rounded-lg md:rounded-full text-xs px-1.5">Only {parseInt(node[2]) - parseInt(node[1]) } Servers Left</div>
+                    {:else}
+                    <div class="bg-success
+                    text-black border border-black rounded-full text-xs px-1.5">Available</div>
+                    {/if}
                   
                    </div>
                   </div>
