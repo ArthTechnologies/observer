@@ -42,8 +42,8 @@
   function discord() {
 
           setTimeout(() => {
-            goto("/auth/chooseLocation");
-            //goto("https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri="+address+"/auth/discord&response_type=token&scope=email+identify");
+           
+            goto("https://discord.com/api/oauth2/authorize?client_id=1025856388297150475&redirect_uri="+address+"/auth/discord&response_type=token&scope=email+identify");
           }, 100);
   }
         

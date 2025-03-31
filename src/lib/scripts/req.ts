@@ -505,10 +505,10 @@ export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:strin
 }
 }
 
-export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string = "", url: string) {
+export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string = "") {
   if(browser) {
   return fetch(
-    url +
+    apiurl +
       "accounts/email/signin?" +
       new URLSearchParams({
         username: em,
