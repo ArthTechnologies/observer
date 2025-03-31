@@ -13,13 +13,17 @@
   getSettings();
 
   if (browser) {
-    locationName = localStorage.getItem("userNode");
+    if (localStorage.getItem("userNode") != undefined) {
+      locationName = localStorage.getItem("userNode");
     if (locationName.includes("https://")) {
       locationName = locationName.split("https://")[1];
       locationName = locationName.split(".")[0];
     
     } else {
       goto("/auth/chooseLocation");	  
+    }
+    } else {
+      goto("/auth/chooseLocation");
     }
     plan = document.location.search.split("plan=")[1];
     address = window.location.host;
