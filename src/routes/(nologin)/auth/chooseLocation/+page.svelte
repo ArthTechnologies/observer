@@ -104,9 +104,7 @@ class="relative bg-base-100 rounded-xl shadow-xl  flex flex-col items-center max
         &#127465;&#127466;
         {/if} <span class="text-base font-poppins-bold">{selectedNode}</span></p>
 
-    <button class="btn btn-base-200 btn-sm" on:click={() => {
-      discord();
-    }}>Continue</button>
+    <a href="/login" class="btn btn-base-200 btn-sm">Continue</a>
  
    
 </div>
