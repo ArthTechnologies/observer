@@ -551,19 +551,19 @@ on:click={() => (tab = label)}
           class="rounded-xl bg-base-100 bg-opacity-75 shadow-sm image-full mt-4 md:mt-0 w-full"
         >
           <div class="flex items-center w-full md:w-[19.8rem]">
-            <div class="p-4 flex  items-center gap-3.5 w-full">
-              <img id="xIcon" src={icon} class="w-[3.65rem] h-[3.65rem] rounded-lg" />
+            <div class="p-3 flex  items-center gap-3.5 w-full">
+              <img id="xIcon" src={icon} class="w-[3.5rem] h-[3.5rem] rounded-lg" />
 
-              <div class="flex flex-col -mt-1.5">
-
-                <div class="font-poppins-bold sm:text-lg md:text-[1.25rem]">
+              <div class="flex flex-col">
+                <div class="text-sm font-light flex font-poppins">
+                  IP Address
+                </div>
+                <div class="font-poppins-bold text-sm md:text-lg -mt-1">
                   {#if subdomain == undefined}{address}:{port}{:else}
                     {subdomain}.{address}
                   {/if}
                 </div>
-                <div id="xDesc" class="text-xs font-light flex ">
-                  Description: {@html desc}
-                </div>
+             
                 <div id="rawDesc" class="hidden"></div>
               </div>
             </div>
