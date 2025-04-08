@@ -10,22 +10,17 @@ if [ $? -eq 0 ]; then
     # Check if the output contains information about authentication
     if echo "$docker_info" | grep -q "Username:"; then
         
-  echo "Enter the name of the container (ex: arthmc/observer):"
-  read container_name
+  
   CI= npm run build
 
 
   arch=$(uname -m)
-  # Check if the user is on an ARM device
-  if [ "$arch" == "armv7l" ] || [ "$arch" == "aarch64" ]; then
-    echo "Building docker image for ARM devices..."
-    docker buildx build --platform linux/arm64 . -t arthmc/observer:latest
-  else
+  
     echo "Building docker image..."
-    docker build -t $container_name .
-  fi
+    docker build -t arthmc/observer:latest .
+  
 
-  docker push $container_name
+  docker push arthmc/observer:latest
   exit 0
     else
         echo "You are not logged into Docker."
