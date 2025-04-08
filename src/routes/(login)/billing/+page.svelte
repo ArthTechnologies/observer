@@ -10,9 +10,8 @@
   let accountId;
   //gets subs and servers from localstorage
   var subs = {
-    subscriptions: 0,
-    basicSubscriptions: 0,
-    moddedSubscriptions: 0,
+    subscriptions: [],
+    servers: [],
   };
   let address;
   if (browser) {
@@ -20,7 +19,7 @@
     servers = JSON.parse(localStorage.getItem("servers"));
     address = localStorage.getItem("address");
 
-    promise = fetch(apiurl + "info/subscriptions", {
+    promise = fetch(apiurl + "info/billing", {
       method: "GET",
       headers: {
         username: localStorage.getItem("accountEmail"),
@@ -31,12 +30,7 @@
       .then((json) => {
         console.log(json);
         subs = json;
-        if (subs.subscriptions == 0) {
-          //greys out the manage button
-          document.getElementById("manage").classList.add("btn-disabled");
-        } else {
-          document.getElementById("subscribe").classList.add("btn-disabled");
-        }
+        
       });
 
     //sets email to the value of localstorage.getItem("email")
@@ -59,62 +53,51 @@
   <div class="flex flex-col grow max-w-[55rem] space-y-6">
     <div class="flex flex-col items-center">
       <h1 class="divider px-10 text-3xl font-semibold">{$t("bill.title")}</h1>
-      <div class="px-6 py-4 bg-base-100 rounded-xl w-3/4 shadow mt-6">
-        <div>{$t("subscriptions")}</div>
-        <div class="flex gap-1">
-          {#await promise}
-            <div
-              class="bg-slate-700 animate-pulse
-           w-14 h-5 rounded-md"
-            ></div>
-          {:then}
-            {#if subs.subscriptions > 0 && subs.basicSubscriptions == 0 && subs.moddedSubscriptions == 0}
-              <div
-                class="bg-gradient-to-tr from-orange-500 to-pink-600 w-min px-1.5 rounded-md text-sm text-black font-bold"
-              >
-                {subs.subscriptions}
-              </div>
-            {/if}
-            {#if subs.basicSubscriptions > 0}
-              <div
-                class="bg-gradient-to-tr from-orange-400 to-pink-500 px-1.5 rounded-md text-sm text-black"
-              >
-                {subs.basicSubscriptions}x {$t("basic")}
-              </div>
-            {/if}
+      <div class="flex px-6 py-4 bg-base-100 rounded-xl w-3/4 shadow mt-6">
+<div class="w-1/2">    
+      <div class="font-poppins mb-1.5">{$t("subscriptions")}</div>
+<div class="flex gap-1">
+  {#await promise}
+    <div
+      class="bg-slate-700 animate-pulse
+   w-14 h-5 rounded-md"
+    ></div>
+  {:then}
+    {#each subs.subscriptions as subscription}
+      <div class="bg-base-300 p-1.5 rounded-md">
+       <p class="font-poppins-bold text-sm text-gray-200">
+        {subscription.name.charAt(0).toUpperCase() + subscription.name.slice(1)} Plan
+        </p>
+        <p class="text-sm">
+          {subscription.price} {subscription.currency} / {subscription.interval}
+        </p>
+        <p class="text-sm">
+          Status: {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}  
+</p>
+      </div>  
+    {/each}
+  {/await}
+</div>
+</div>
 
-            {#if subs.moddedSubscriptions > 0}
-              <div
-                class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 rounded-md text-sm text-black"
-              >
-                {subs.moddedSubscriptions}x {$t("plus")}
-              </div>
-            {/if}
-
-            {#if subs.freeServers > 0}
-              <div class="bg-success px-1.5 rounded-md text-sm text-black">
-                {subs.freeServers}x {$t("free")}
-              </div>
-            {/if}
-          {/await}
+ <div class="w-1/2">
+  <div class="font-poppins mb-1.5">{$t("navbar.servers")}</div>
+  <div class="flex gap-1">
+    {#each servers as server}
+      {#if JSON.stringify(server).includes(":not created yet")}
+        <div
+          class="bg-base-300 w-min px-1.5 rounded-md text-sm text-gray-500"
+        >
+          {address}:{10000 + parseInt(server.split(":")[0])}
         </div>
-
-        <div class="mt-1">{$t("navbar.servers")}</div>
-        <div class="flex gap-1">
-          {#each servers as server}
-            {#if JSON.stringify(server).includes(":not created yet")}
-              <div
-                class="bg-base-300 w-min px-1.5 rounded-md text-sm text-gray-500"
-              >
-                {address}:{10000 + parseInt(server.split(":")[0])}
-              </div>
-            {:else}
-              <div class="bg-base-300 w-min px-1.5 rounded-md text-sm">
-                {address}:{10000 + parseInt(server.id)}
-              </div>
-            {/if}
-          {/each}
+      {:else}
+        <div class="bg-base-300 w-min px-1.5 rounded-md text-sm">
+          {address}:{10000 + parseInt(server.id)}
         </div>
+      {/if}
+    {/each}
+  </div>
+ </div>
       </div>
       <div
         class="flex flex-wrap justify-center button-container sm:space-x-3 w-[90%] mt-6"
