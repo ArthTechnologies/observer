@@ -3,7 +3,7 @@
 
   import { browser } from "$app/environment";
   import { onMount } from "svelte";
-  import { AlertCircle, Check, Clock, Plus } from "lucide-svelte";
+  import { AlertCircle, BadgeCheck, Check, CheckCheck, CheckIcon, Clock, Plus } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
   import Changelog from "./Changelog.svelte";
 
@@ -60,11 +60,12 @@
           }
           alternateFile.downloadUrl = res.downloadUrl;
           alternateFile.loaded = true;
+          alternateFile.enabled = true;
+          versionId = alternateFileId;
+          localStorage.setItem("modpackVersionID", alternateFileId);
         });
     }
 
-    //listens for versionSet events, so that if another
-    //version is selected the checkbox is unchecked
     window.addEventListener("versionSet", (e) => {
       if (e.detail.versionId != versionId) {
         let checkbox = document.getElementById("addBtn" + uniqueId);
@@ -76,7 +77,6 @@
     });
 
     onMount(() => {
-      //checks checkbox if the version is selected
       if (localStorage.getItem("modpackVersionID") == versionId) {
         let checkbox = document.getElementById("addBtn" + uniqueId);
         if (checkbox) {
@@ -141,7 +141,6 @@
     <div>
       <div>
         <span class="text-xl font-bold">{name}</span>
-
         <span class="text-warning mt-1">{type}</span>
       </div>
       <div class="flex gap-2 flex-wrap mt-2">
@@ -152,23 +151,8 @@
           {time}
         </div>
         {#if alternateFile.loaded}
-          <div
-            class="btn px-2.5 text-xs btn-ghost w-[13rem] h-[1.625rem] flex justify-start rounded-md text-left"
-            on:click={() => {
-              alternateFile.enabled = !alternateFile.enabled;
-              if (alternateFile.enabled) {
-                versionId = alternateFileId;
-                localStorage.setItem("modpackVersionID", alternateFileId);
-              } else {
-                versionId = id;
-                localStorage.setItem("modpackVersionID", id);
-              }
-            }}
-          >
-            {#if alternateFile.enabled}
-              {$t("switchToTheOriginalVersion")}
-            {:else}{$t("switchTo")} "{alternateFile.name}"
-            {/if}
+          <div class="px-2 py-1  text-sm w-[13rem] h-[1.625rem] flex items-center">
+            <BadgeCheck size="16" class="mr-1.5"/>  Server Pack
           </div>
         {/if}
         {#if changelog != "" || platform == "cf"}
