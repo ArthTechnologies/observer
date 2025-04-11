@@ -7,6 +7,7 @@
     import { t } from "$lib/scripts/i18n";
     import { readTerminal, writeTerminal } from "$lib/scripts/req";
     import { SendIcon } from "lucide-svelte";
+  
     
     export let id: number;
 
@@ -143,9 +144,17 @@ function updateElementWidth() {
   }
 }
 
-if (browser) {
-  window.addEventListener('resize', updateElementWidth);
-updateElementWidth(); // Initial call
+
+</script>
+
+<script lang="ts">
+import { onMount } from "svelte";
+  if (browser) {
+  onMount(() => {
+    window.addEventListener("resize", updateElementWidth);
+    updateElementWidth(); // Initial call to set width on mount
+  });
+
 }
 </script>
 
