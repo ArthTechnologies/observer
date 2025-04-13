@@ -17,8 +17,12 @@
   let filepath = "file.txt";
   let ftpPassword = "loading...";
   let showFtpPassword = false; // toggle for obfuscation
+  let username;
 
   if (browser) {
+    let accountId = localStorage.getItem("accountId");
+    if (accountId?.includes("acc_")) accountId = accountId.split("acc_")[1];  
+    username = accountId.slice(0,6)+"."+localStorage.getItem("serverID")
     if (window.location.href.includes("proxy")) {
       backurl = "proxy";
     }
@@ -224,7 +228,7 @@
           <UserIcon size="16" />
           Username
         </div>
-        {localStorage.getItem("accountId")?.split("-")[0]+"."+localStorage.getItem("serverID")}
+        {username}
 
         </div>
 
