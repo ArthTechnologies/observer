@@ -26,11 +26,19 @@
   let accountType;
 
   if (browser) {
-
     id = localStorage.getItem("serverID");
-     if (path != undefined) {
-     uploadpath = path.split("servers/" + id + "//")[1].split("/").join("*");
-     }
+    if (path != undefined) {
+      if (path.includes("servers/" + id + "//"))
+        uploadpath = path
+          .split("servers/" + id + "//")[1]
+          .split("/")
+          .join("*");
+      if (path.includes("servers/" + id + "/"))
+        uploadpath = path
+          .split("servers/" + id + "/")[1]
+          .split("/")
+          .join("*");
+    }
 
     if (localStorage.getItem("accountEmail").includes("@")) {
       accountType = "email";
@@ -93,15 +101,18 @@
       });
   }
 
-
   let downloading = false;
   let downloadProgress = "0/0MB";
   let gradientBackground = "#1fb2a5";
-  
+
   function download() {
     downloading = true;
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", apiurl + "server/" + id + "/file/download/" + uploadpath, true);
+    xhr.open(
+      "GET",
+      apiurl + "server/" + id + "/file/download/" + uploadpath,
+      true
+    );
     xhr.setRequestHeader("token", localStorage.getItem("token"));
     xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
     xhr.responseType = "blob";
@@ -117,29 +128,27 @@
 
           downloadBtn.style.width = "200px";
 
-            downloadBtn.classList.add("text-accent-content");
-            downloadBtn.classList.remove("text-gray-200");
+          downloadBtn.classList.add("text-accent-content");
+          downloadBtn.classList.remove("text-gray-200");
 
           downloadBtn.classList.add("pointer-events-none");
 
-            gradientBackground = "#1fb2a5";
-            downloadBtn.style.background = `linear-gradient(
+          gradientBackground = "#1fb2a5";
+          downloadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.0) ${(event.loaded / event.total) * 100}%,
   ${gradientBackground} ${(event.loaded / event.total) * 100}%,
   ${gradientBackground} 100%
 )`;
-
         } else if (percentComplete >= 100) {
           downloadProgress = "0/0MB";
 
           downloadBtn.style.width = ``;
           downloadBtn.style.background = ``;
           downloadBtn.classList.remove("pointer-events-none");
-        
-            downloadBtn.classList.remove("text-accent-content");
 
+          downloadBtn.classList.remove("text-accent-content");
         }
       }
     });
@@ -189,7 +198,7 @@
     </label>
     <label
       for="upload{foldername}"
-       data-tip="Upload File"
+      data-tip="Upload File"
       class="tooltip px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     >
       <Upload class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
@@ -198,7 +207,6 @@
       for="download{foldername}"
       class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     >
-
       <Download class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     </label>
   </div>
@@ -277,21 +285,16 @@
     <h3 class="text-lg font-bold mb-5">Download /{foldername}</h3>
 
     <div class="flex gap-1">
-      <button
-      id="downloadBtn"
-      class="btn btn-accent btn-sm"
-      on:click={download}
-      >{#if !downloading}<Download size="18" />{:else}<div
-          class="animate-spin"
-        >
-          <Loader />
-        </div>{/if}
-      <p class="ml-1.5">
-        {#if downloading}{downloadProgress}{:else}{$t(
-            "button.download"
-          )}{/if}
-      </p></button
-    >
+      <button id="downloadBtn" class="btn btn-accent btn-sm" on:click={download}
+        >{#if !downloading}<Download size="18" />{:else}<div
+            class="animate-spin"
+          >
+            <Loader />
+          </div>{/if}
+        <p class="ml-1.5">
+          {#if downloading}{downloadProgress}{:else}{$t("button.download")}{/if}
+        </p></button
+      >
     </div>
   </div>
-  </div>
+</div>
