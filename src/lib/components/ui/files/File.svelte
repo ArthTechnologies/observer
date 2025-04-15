@@ -4,7 +4,7 @@
   export let url: string;
   export let filename: string;
   import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
-    import { downloadProgressShort } from "$lib/scripts/utils";
+  import { downloadProgressShort } from "$lib/scripts/utils";
   import {
     File,
     FileText,
@@ -41,6 +41,12 @@
           url = url.split("/").join("*");
         }
       }
+      if (url.includes("/")) {
+        url = url.split("/").join("*");
+      }
+      if (url.includes("servers*" + id + "*")) {
+        url = url.split("servers*" + id + "*")[1];
+      }
     }
   }
   switch (extension) {
@@ -59,7 +65,6 @@
     clickable = "none";
   }
   function getText() {
-
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
     fetch(baseurl + "server/" + id + "/file/" + url, {
@@ -126,7 +131,9 @@
         console.log(data);
         if (data.msg === "Done") {
           // Close the modal by unchecking the checkbox
-          (document.getElementById(`extract${filename}`) as HTMLInputElement).checked = false;
+          (
+            document.getElementById(`extract${filename}`) as HTMLInputElement
+          ).checked = false;
           // Optionally, refresh or dispatch an event
           const event = new CustomEvent("refresh");
           document.dispatchEvent(event);
@@ -137,7 +144,7 @@
   let downloading = false;
   let downloadProgress = "0/0MB";
   let gradientBackground = "#1fb2a5";
-  
+
   function download() {
     downloading = true;
     const xhr = new XMLHttpRequest();
@@ -145,7 +152,7 @@
     if (url.includes("//")) {
       url = url.split("//")[1];
     }
-    console.log(url)
+    console.log(url);
     xhr.open("GET", apiurl + "server/" + id + "/file/download/" + url, true);
     xhr.setRequestHeader("token", localStorage.getItem("token"));
     xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
@@ -162,29 +169,27 @@
 
           downloadBtn.style.width = "200px";
 
-            downloadBtn.classList.add("text-accent-content");
-            downloadBtn.classList.remove("text-gray-200");
+          downloadBtn.classList.add("text-accent-content");
+          downloadBtn.classList.remove("text-gray-200");
 
           downloadBtn.classList.add("pointer-events-none");
 
-            gradientBackground = "#1fb2a5";
-            downloadBtn.style.background = `linear-gradient(
+          gradientBackground = "#1fb2a5";
+          downloadBtn.style.background = `linear-gradient(
   to right,
   rgba(0, 0, 0, 0.9) 0%,
   rgba(0, 0, 0, 0.0) ${(event.loaded / event.total) * 100}%,
   ${gradientBackground} ${(event.loaded / event.total) * 100}%,
   ${gradientBackground} 100%
 )`;
-
         } else if (percentComplete >= 100) {
           downloadProgress = "0/0MB";
 
           downloadBtn.style.width = ``;
           downloadBtn.style.background = ``;
           downloadBtn.classList.remove("pointer-events-none");
-        
-            downloadBtn.classList.remove("text-accent-content");
 
+          downloadBtn.classList.remove("text-accent-content");
         }
       }
     });
@@ -213,14 +218,13 @@
 
 <div class="flex gap-1 justify-between">
   <button
-    
     on:click={getText}
     class="w-[65%] px-1.5 p-1 rounded-lg btn-ghost pointer-events-{clickable} gap-1 flex items-center"
   >
-  {#if filename == "server.json" || filename == "server.jar"}		 
-    <FileLock2 class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+    {#if filename == "server.json" || filename == "server.jar"}
+      <FileLock2 class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {:else if extension == "jar"}
-    <Box class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+      <Box class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {:else if extension == "png" || extension == "jpg" || extension == "jpeg"}
       <Image class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {:else if extension == "zip"}
@@ -230,21 +234,23 @@
     {:else}
       <File class="shrink-0 w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     {/if}
-    <p class="text-xs md:text-sm truncate w-[8rem] md:w-[14rem] flex justify-left">{filename}</p>
-</button>
+    <p
+      class="text-xs md:text-sm truncate w-[8rem] md:w-[14rem] flex justify-left"
+    >
+      {filename}
+    </p>
+  </button>
   <div class="flex gap-1">
-{#if filename.includes(".zip")}
-<label
-for="extract{filename}"
-
-class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
->
-<PackageOpen class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
-</label>
-{/if}
+    {#if filename.includes(".zip")}
+      <label
+        for="extract{filename}"
+        class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
+      >
+        <PackageOpen class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+      </label>
+    {/if}
     <label
       for="delete{filename}"
-      
       class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     >
       <Trash2 class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
@@ -258,10 +264,9 @@ class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     </label>
     <label
       for="download{filename}"
-     
       class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
-      >
-    <Download class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
+    >
+      <Download class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
     </label>
   </div>
 </div>
@@ -292,25 +297,30 @@ class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
 </div>
 
 {#if filename.includes(".zip")}
-<!-- Extract Modal -->
-<input type="checkbox" id="extract{filename}" class="modal-toggle" />
-<div class="modal" style="margin:0rem;">
-  <div class="modal-box bg-opacity-95 backdrop-blur relative">
-    <label
-      for="extract{filename}"
-      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
-      >✕</label
-    >
-    <h3 class="text-lg font-bold mb-5">Extract {filename}</h3>
-    <p class="mb-5">The contents of this will be extracted to <code class="bg-base-300 px-1 rounded">/{url.split("*").join("/").split(".zip")[0]}</code>.</p>
-    <div class="flex gap-1">
-      <button on:click={extractFile} class="btn btn-success">
-        Extract
-      </button>
+  <!-- Extract Modal -->
+  <input type="checkbox" id="extract{filename}" class="modal-toggle" />
+  <div class="modal" style="margin:0rem;">
+    <div class="modal-box bg-opacity-95 backdrop-blur relative">
+      <label
+        for="extract{filename}"
+        class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2"
+        >✕</label
+      >
+      <h3 class="text-lg font-bold mb-5">Extract {filename}</h3>
+      <p class="mb-5">
+        The contents of this will be extracted to <code
+          class="bg-base-300 px-1 rounded"
+          >/{url.split("*").join("/").split(".zip")[0]}</code
+        >.
+      </p>
+      <div class="flex gap-1">
+        <button on:click={extractFile} class="btn btn-success">
+          Extract
+        </button>
+      </div>
     </div>
   </div>
-</div>
-{/if} 
+{/if}
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="upload" class="modal-toggle" />
 <div class="modal" style="margin:0rem;">
@@ -352,21 +362,16 @@ class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     <h3 class="text-lg font-bold mb-5">Download {filename}</h3>
 
     <div class="flex gap-1">
-      <button
-      id="downloadBtn"
-      class="btn btn-accent btn-sm"
-      on:click={download}
-      >{#if !downloading}<Download size="18" />{:else}<div
-          class="animate-spin"
-        >
-          <Loader />
-        </div>{/if}
-      <p class="ml-1.5">
-        {#if downloading}{downloadProgress}{:else}{$t(
-            "button.download"
-          )}{/if}
-      </p></button
-    >
+      <button id="downloadBtn" class="btn btn-accent btn-sm" on:click={download}
+        >{#if !downloading}<Download size="18" />{:else}<div
+            class="animate-spin"
+          >
+            <Loader />
+          </div>{/if}
+        <p class="ml-1.5">
+          {#if downloading}{downloadProgress}{:else}{$t("button.download")}{/if}
+        </p></button
+      >
     </div>
   </div>
-  </div>
+</div>
