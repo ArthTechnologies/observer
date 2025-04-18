@@ -3,7 +3,7 @@
   import { apiurl } from "$lib/scripts/req";
   import { fileSizeShort } from "$lib/scripts/utils";
   import { error } from "console";
-  import { FlaskConical, HardDriveDownload } from "lucide-svelte";
+  import { Download, FlaskConical, HardDriveDownload } from "lucide-svelte";
 
   let promise = null;
   let backups = [];
@@ -24,6 +24,42 @@
       .catch((error) => {
         console.error("Error fetching backups:", error);
         promise = Promise.reject(error);
+      });
+  }
+
+  function download(timestamp) {
+    fetch(
+      apiurl +
+        "server/" +
+        localStorage.getItem("serverID") +
+        "/backup/" +
+        timestamp,
+      {
+        method: "GET",
+        headers: {
+          token: localStorage.getItem("token"),
+          username: localStorage.getItem("accountEmail"),
+        },
+      }
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.blob();
+        } else {
+          throw new Error("Failed to download backup");
+        }
+      })
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `backup-${timestamp}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      })
+      .catch((error) => {
+        console.error("Error downloading backup:", error);
       });
   }
 </script>
@@ -56,15 +92,28 @@
       {#each backups as backup}
         <div class="flex flex-col">
           <div
-            class="h-[3rem] bg-base-200 rounded-lg px-3 pt-[1.125rem] pb-[.75rem] flex flex-col justify-between"
+            class="h-[3rem] bg-base-200 rounded-lg px-3 py-2 flex flex-col justify-between"
           >
-            <div class="flex space-x-1 items-end">
-              <p>{new Date(backup.timestamp).toString().split("00 (")[0]}</p>
-              <div
-                class="badge badge-outline badge-lg text-sm flex gap-1 items-center"
-              >
-                {fileSizeShort(backup.size).toUpperCase()}
+            <div class="flex space-x-1 items-center justify-between">
+              <div class="flex space-x-1 items-center">
+                <p>{new Date(backup.timestamp).toString().split("00 (")[0]}</p>
+                <div
+                  class="badge badge-outline badge-lg text-sm flex gap-1 items-center"
+                >
+                  {fileSizeShort(backup.size).toUpperCase()}
+                </div>
               </div>
+              <a
+                href={apiurl +
+                  "server/" +
+                  localStorage.getItem("serverID") +
+                  "/backup/" +
+                  backup.timestamp +
+                  "?key=" +
+                  backup.key}
+                class="btn btn-sm btn-ghost flex"
+                ><Download size="18" class="mr-1.5" />download</a
+              >
             </div>
           </div>
         </div>
