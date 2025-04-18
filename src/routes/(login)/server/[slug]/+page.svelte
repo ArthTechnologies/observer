@@ -31,29 +31,27 @@
     PlayCircle,
     Repeat,
     StopCircle,
-
     ExternalLink,
     Send,
     FileCog,
     MemoryStick,
     Users,
     Unplug,
-
   } from "lucide-svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
   import Versions from "$lib/components/buttons/Versions.svelte";
   import FullscreenMap from "$lib/components/pages/server/FullscreenMap.svelte";
   import { write } from "fs";
   import { alert } from "$lib/scripts/utils";
-    import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
-    import Terminal from "$lib/components/pages/server/Terminal.svelte";
-    import Files from "$lib/components/pages/server/Files.svelte";
-    import Plugins from "$lib/components/pages/server/Plugins.svelte";
-    import Mods from "$lib/components/pages/server/Mods.svelte";
-    import Datapacks from "$lib/components/pages/server/Datapacks.svelte";
-    import MemoryChart from "$lib/components/pages/dashboard/MemoryChart.svelte";
-    import CpuUsageChart from "$lib/components/pages/dashboard/CpuUsageChart.svelte";
-
+  import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
+  import Terminal from "$lib/components/pages/server/Terminal.svelte";
+  import Files from "$lib/components/pages/server/Files.svelte";
+  import Plugins from "$lib/components/pages/server/Plugins.svelte";
+  import Mods from "$lib/components/pages/server/Mods.svelte";
+  import Datapacks from "$lib/components/pages/server/Datapacks.svelte";
+  import MemoryChart from "$lib/components/pages/dashboard/MemoryChart.svelte";
+  import CpuUsageChart from "$lib/components/pages/dashboard/CpuUsageChart.svelte";
+  import Backups from "$lib/components/pages/server/Backups.svelte";
 
   let tab = "terminal";
   let modded = false;
@@ -87,10 +85,7 @@
   if (browser) {
     if (localStorage.getItem("updateAlert") != "bluemap") {
       localStorage.setItem("updateAlert", "bluemap");
-      alert(
-        "Update: BlueMap (3D Webmap) support has been added.",
-        "info",
-      );
+      alert("Update: BlueMap (3D Webmap) support has been added.", "info");
     }
 
     name = localStorage.getItem("serverName");
@@ -149,7 +144,6 @@
       writeTerminal(id, "gamerule doDaylightCycle false");
 
       document.getElementById("alwaysDay").checked = false;
-
     } else {
       getStatus();
 
@@ -159,7 +153,9 @@
 
       //wait 200 ms then read terminal
       setTimeout(() => {
-        if(tab=="terminal"){readCmd();}
+        if (tab == "terminal") {
+          readCmd();
+        }
       }, 200);
     }
   }
@@ -175,7 +171,9 @@
 
     //wait 200 ms then read terminal
     setTimeout(() => {
-      if(tab=="terminal"){readCmd();}
+      if (tab == "terminal") {
+        readCmd();
+      }
     }, 200);
   }
 
@@ -190,7 +188,9 @@
 
     //wait 200 ms then read terminal
     setTimeout(() => {
-      if(tab=="terminal"){readCmd();}
+      if (tab == "terminal") {
+        readCmd();
+      }
     }, 200);
   }
 
@@ -227,7 +227,6 @@
 
           secret = data.secret;
 
-        
           if (data.iconUrl != undefined) {
             icon = data.iconUrl;
           } else {
@@ -241,17 +240,35 @@
     //get server status
     getServer(id).then((response) => {
       //convert addons array to string, save it to "serverAddons" array
-      localStorage.setItem("serverAddons", response.specialDatapacks.toString());
+      localStorage.setItem(
+        "serverAddons",
+        response.specialDatapacks.toString()
+      );
       localStorage.setItem("serverVersion", response.version);
       if (response.specialPlugins != undefined) {
-        localStorage.setItem("serverDynmap", response.specialPlugins.includes("dynmap"));
-      localStorage.setItem("serverBluemap", response.specialPlugins.includes("bluemap"));
-      localStorage.setItem("serverChunky", response.specialPlugins.includes("chunky"));
-      localStorage.setItem("serverDiscordSRV", response.specialPlugins.includes("discordsrv"));
-      localStorage.setItem("serverVoicechat", response.specialPlugins.includes("voicechat"));
+        localStorage.setItem(
+          "serverDynmap",
+          response.specialPlugins.includes("dynmap")
+        );
+        localStorage.setItem(
+          "serverBluemap",
+          response.specialPlugins.includes("bluemap")
+        );
+        localStorage.setItem(
+          "serverChunky",
+          response.specialPlugins.includes("chunky")
+        );
+        localStorage.setItem(
+          "serverDiscordSRV",
+          response.specialPlugins.includes("discordsrv")
+        );
+        localStorage.setItem(
+          "serverVoicechat",
+          response.specialPlugins.includes("voicechat")
+        );
       }
 
-      if (response.specialPlugins.includes("dynmap") && dynmap == false) {  
+      if (response.specialPlugins.includes("dynmap") && dynmap == false) {
         setTimeout(() => {
           dynmap = true;
         }, 5000);
@@ -260,7 +277,7 @@
         setTimeout(() => {
           bluemap = true;
         }, 5000);
-      } 
+      }
       if (response.specialPlugins.includes("voicechat") && voicechat == false) {
         setTimeout(() => {
           voicechat = true;
@@ -271,7 +288,10 @@
           chunky = true;
         }, 5000);
       }
-      if (response.specialPlugins.includes("discordsrv") && discordsrv == false) {
+      if (
+        response.specialPlugins.includes("discordsrv") &&
+        discordsrv == false
+      ) {
         setTimeout(() => {
           discordsrv = true;
         }, 5000);
@@ -301,7 +321,9 @@
   onMount(() => {
     setTimeout(() => {
       getStatus();
-      if(tab=="terminal"){readCmd();}
+      if (tab == "terminal") {
+        readCmd();
+      }
     }, 200);
     if (browser) {
       let count = 0;
@@ -322,15 +344,18 @@
         if (path == "/server/" + (10000 + parseInt(id))) {
           getStatus();
 
-          if(tab=="terminal"){readCmd();}
+          if (tab == "terminal") {
+            readCmd();
+          }
         }
       }, interval);
     }
     getStatus();
   });
 
-
-  if(tab=="terminal"){readCmd();}
+  if (tab == "terminal") {
+    readCmd();
+  }
 
   function dynmapRender() {
     writeTerminal(id, "dynmap fullrender world");
@@ -366,20 +391,28 @@
         .then((response) => response.json())
         .then((data) => {
           try {
-            memoryStats = data; 
+            memoryStats = data;
             // for reach item in the array change memory.used and memory.total from byes to mb
             data.forEach((item) => {
-              item.memory.used = (parseInt(item.memory.used) / 1024 / 1024).toFixed(2);
-              item.memory.total = (parseInt(item.memory.total) / 1024 / 1024).toFixed(2);
+              item.memory.used = (
+                parseInt(item.memory.used) /
+                1024 /
+                1024
+              ).toFixed(2);
+              item.memory.total = (
+                parseInt(item.memory.total) /
+                1024 /
+                1024
+              ).toFixed(2);
             });
-            let currentRam = parseInt(data[data.length-1].memory.used)/1024;
-            let maxRam = parseInt(data[data.length-1].memory.total)/1024;
+            let currentRam = parseInt(data[data.length - 1].memory.used) / 1024;
+            let maxRam = parseInt(data[data.length - 1].memory.total) / 1024;
             currentRam = parseFloat(currentRam.toFixed(3));
             maxRam = Math.floor(maxRam);
             if (currentRam > maxRam) {
-              currentRam = maxRam; 
+              currentRam = maxRam;
             }
-          ramUsage = currentRam +"/"+maxRam+ "GB";
+            ramUsage = currentRam + "/" + maxRam + "GB";
           } catch (e) {
             //console.log(e);
           }
@@ -391,8 +424,8 @@
         .then((response) => response.json())
         .then((data) => {
           try {
-          players = data.players.online;
-          maxPlayers = data.players.max;
+            players = data.players.online;
+            maxPlayers = data.players.max;
           } catch (e) {
             //console.log(e);
           }
@@ -400,149 +433,151 @@
     }
   }
 
-  let tabs = ["terminal", "plugins", "datapacks", "files", "settings"];
+  let tabs = [
+    "terminal",
+    "plugins",
+    "datapacks",
+    "files",
+    "backups",
+    "settings",
+  ];
   if (modded) {
-    tabs = ["terminal", "mods", "datapacks", "files", "settings"];
+    tabs = ["terminal", "mods", "datapacks", "files", "backups", "settings"];
   }
   if (vanilla) {
-    tabs = ["terminal", "datapacks", "files", "settings"];
+    tabs = ["terminal", "datapacks", "files", "backups", "settings"];
   }
 </script>
 
 <div class="lg:-mt-5">
-<!-- Start Top Section-->
+  <!-- Start Top Section-->
   <div class="flex justify-between mb-2 items-center">
     <div>
-<div class="mb-2">
-  <span class="font-poppins-bold text-gray-200 text-3xl mr-0.5" id="serverName">{name}</span>
-
-</div>
+      <div class="mb-2">
+        <span
+          class="font-poppins-bold text-gray-200 text-3xl mr-0.5"
+          id="serverName">{name}</span
+        >
+      </div>
       <div class="flex gap-2">
         {#if state == "true"}
-        <button on:click={start} class="btn btn-sm btn-success"
-          ><Repeat size=18 class="mr-1.5" />{$t("button.restart")}</button
-        >
-        <button on:click={stop} class="btn btn-sm btn-error"
-          ><StopCircle size=18 class="mr-1.5" />{$t("button.stop")}</button
-        >
-      {:else if state == "false"}
-        <button on:click={start} class="btn btn-sm btn-success"
-          ><PlayCircle size=18 class="mr-1.5" />{$t("button.start")}</button
-        >
-        <a href="/" class="btn btn-sm btn-disabled"
-          ><StopCircle size=18 class="mr-1.5" />{$t("button.stop")}</a
-        >
-      {:else if state == "starting"}
-        <div
-          class="inline-flex pointer-events-none bg-success flex items-center px-3 py-1 text-center text-sm font-semibold text-black uppercase rounded-lg"
-        >
-          <Loader size=18 class="animate-spin mr-1.5" />
-          {$t("button.starting")}
-        </div>
-        <button class="btn btn-sm btn-neutral" on:click={kill}>
-          <Unplug size=18 class="mr-1.5" />Kill
-        </button>
-      {:else if state == "installing"}
-        <div
-          class="inline-flex pointer-events-none bg-accent flex items-center px-3 py-1 text-center text-sm font-semibold text-base-300 uppercase rounded-lg"
-        >
-          <Loader size=18 class="animate-spin mr-1.5" />
-          {$t("button.installing")}
-        </div>
-        <button on:click={stop} class="btn btn-sm btn-error"
-          ><StopCircle size=18 class="mr-1.5" />{$t("button.stop")}</button
-        >
-      {:else if state == "stopping"}
-        <button class="btn btn-sm btn-neutral" on:click={kill}>
-          <Unplug size=18 class="mr-1.5" />Kill
-        </button>
-        <div
-          class="inline-flex pointer-events-none bg-error flex items-center px-3 py-1 text-center text-sm font-semibold text-black uppercase rounded-lg"
-        >
-          <Loader size=18 class="animate-spin mr-1.5" />
-          {$t("button.stopping")}
-        </div>
-      {/if}
-      <Updates/>
+          <button on:click={start} class="btn btn-sm btn-success"
+            ><Repeat size="18" class="mr-1.5" />{$t("button.restart")}</button
+          >
+          <button on:click={stop} class="btn btn-sm btn-error"
+            ><StopCircle size="18" class="mr-1.5" />{$t("button.stop")}</button
+          >
+        {:else if state == "false"}
+          <button on:click={start} class="btn btn-sm btn-success"
+            ><PlayCircle size="18" class="mr-1.5" />{$t("button.start")}</button
+          >
+          <a href="/" class="btn btn-sm btn-disabled"
+            ><StopCircle size="18" class="mr-1.5" />{$t("button.stop")}</a
+          >
+        {:else if state == "starting"}
+          <div
+            class="inline-flex pointer-events-none bg-success flex items-center px-3 py-1 text-center text-sm font-semibold text-black uppercase rounded-lg"
+          >
+            <Loader size="18" class="animate-spin mr-1.5" />
+            {$t("button.starting")}
+          </div>
+          <button class="btn btn-sm btn-neutral" on:click={kill}>
+            <Unplug size="18" class="mr-1.5" />Kill
+          </button>
+        {:else if state == "installing"}
+          <div
+            class="inline-flex pointer-events-none bg-accent flex items-center px-3 py-1 text-center text-sm font-semibold text-base-300 uppercase rounded-lg"
+          >
+            <Loader size="18" class="animate-spin mr-1.5" />
+            {$t("button.installing")}
+          </div>
+          <button on:click={stop} class="btn btn-sm btn-error"
+            ><StopCircle size="18" class="mr-1.5" />{$t("button.stop")}</button
+          >
+        {:else if state == "stopping"}
+          <button class="btn btn-sm btn-neutral" on:click={kill}>
+            <Unplug size="18" class="mr-1.5" />Kill
+          </button>
+          <div
+            class="inline-flex pointer-events-none bg-error flex items-center px-3 py-1 text-center text-sm font-semibold text-black uppercase rounded-lg"
+          >
+            <Loader size="18" class="animate-spin mr-1.5" />
+            {$t("button.stopping")}
+          </div>
+        {/if}
+        <Updates />
       </div>
     </div>
 
-<div class="flex flex-col gap-1.5">
-  <div
-  class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-1 h-fit"
->
-  <MemoryStick size="16" />
-  {ramUsage}
-</div>
-<div
-class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-1 h-fit"
->
-<Users size="16" />
-{players}/{maxPlayers} Players
-</div>
-</div>
-
+    <div class="flex flex-col gap-1.5">
+      <div
+        class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-1 h-fit"
+      >
+        <MemoryStick size="16" />
+        {ramUsage}
+      </div>
+      <div
+        class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-1 h-fit"
+      >
+        <Users size="16" />
+        {players}/{maxPlayers} Players
+      </div>
+    </div>
   </div>
   <!-- End Top Section-->
-  <div
-  class="divider"
-/>
+  <div class="divider" />
 
-<!-- Start Bottom Section-->
+  <!-- Start Bottom Section-->
   <div
     class="md:space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center gap-0 justify-between px-5"
   >
-        <!-- Start Left Side-->
+    <!-- Start Left Side-->
     <div class="flex flex-col space-y-5 w-full">
+      <div role="tablist" class="tabs tabs-boxed flex flex-wrap p-0 gap-1">
+        {#each tabs as label, index}
+          {#if label == "mods"}
+            <a
+              role="tab"
+              class="tab px-3.5 {tab === 'plugins' ? 'tab-active' : ''}"
+              on:click={() => (tab = "plugins")}
+            >
+              {label[0].toUpperCase() + label.slice(1)}
+            </a>
+          {:else}
+            <a
+              role="tab"
+              class="tab px-3.5 {tab === label ? 'tab-active' : ''}"
+              on:click={() => (tab = label)}
+            >
+              {label[0].toUpperCase() + label.slice(1)}
+            </a>
+          {/if}
+        {/each}
+      </div>
 
+      <div>
+        {#if tab == "terminal"}
+          <Terminal />
+        {:else if tab == "plugins"}
+          {#if modded}
+            <Mods />
+          {:else if !vanilla}
+            <Plugins />
+          {/if}
+        {:else if tab == "datapacks"}
+          <Datapacks />
+        {:else if tab == "files"}
+          <Files />
+        {:else if tab == "backups"}
+          <Backups />{:else if tab == "settings"}
+          <Settings />
+        {/if}
+      </div>
 
-  <div role="tablist" class="tabs tabs-boxed flex flex-wrap p-0 gap-1">
-    {#each tabs as label, index}
-{#if label == "mods"}
-<a
-role="tab"
-class="tab px-3.5 {tab === "plugins" ? 'tab-active' : ''}"
-on:click={() => (tab = "plugins")}
->
-{label[0].toUpperCase() + label.slice(1)}
-</a>
-{:else}
-<a
-role="tab"
-class="tab px-3.5 {tab === label ? 'tab-active' : ''}"
-on:click={() => (tab = label)}
->
-{label[0].toUpperCase() + label.slice(1)}
-</a>
-{/if}
-
-    {/each}
-  </div>
-
-<div>
-  {#if tab == "terminal"}
-  <Terminal/>
-  {:else if tab == "plugins"}
-  {#if modded}
-  <Mods/>
-  {:else if !vanilla}
-  <Plugins/>
-  {/if}
-  {:else if tab == "datapacks"}
-  <Datapacks/>
-  {:else if tab == "files"}
-  <Files/>
-  {:else if tab == "settings"}
-  <Settings/>
-  {/if}
-</div>
-
-
-<div class="divider md:hidden pt-5 pb-4" />
-
-</div>
-<!-- End Left Side-->
-<!-- Start Right Side-->
+      <div class="divider md:hidden pt-5 pb-4" />
+    </div>
+    <!-- End Left Side-->
+    <!-- Start Right Side-->
     <div
       class="flex flex-col items-center place-content-start mb-20 md:pl-0 mt-[3.25rem] gap-5 w-full md:w-[19.75rem]"
     >
@@ -551,8 +586,12 @@ on:click={() => (tab = label)}
           class="rounded-xl bg-base-100 bg-opacity-75 shadow-sm image-full mt-4 md:mt-0 w-full"
         >
           <div class="flex items-center w-full md:w-[19.8rem]">
-            <div class="p-3 flex  items-center gap-3.5 w-full">
-              <img id="xIcon" src={icon} class="w-[3.5rem] h-[3.5rem] rounded-lg" />
+            <div class="p-3 flex items-center gap-3.5 w-full">
+              <img
+                id="xIcon"
+                src={icon}
+                class="w-[3.5rem] h-[3.5rem] rounded-lg"
+              />
 
               <div class="flex flex-col">
                 <div class="text-sm font-light flex font-poppins">
@@ -563,37 +602,46 @@ on:click={() => (tab = label)}
                     {subdomain}.{address}
                   {/if}
                 </div>
-             
+
                 <div id="rawDesc" class="hidden"></div>
               </div>
             </div>
           </div>
         </div>
       </div>
-<div class="flex w-full">
-
-<div class="scale-95 w-full -ml-1.5">
-  {#await memoryReq}
-  <div class="flex gap-12">
-    <div class="w-[12rem]  h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"></div>
-  <div class="w-[12rem]  h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#152436] rounded-xl"></div>
-  </div>
-  {:then}
-{#if memoryStats != undefined && memoryStats.length > 0}
-<MemoryChart performance={memoryStats} type=2/>
-<CpuUsageChart performance={memoryStats} type=2/>
-{/if}
-  {:catch}
-  <div class="flex gap-12">
-    <div class="w-[12rem]  h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"></div>
-  <div class="w-[12rem]  h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#152436] rounded-xl"></div>
-  </div>
-  {/await}
-</div>
-</div>
+      <div class="flex w-full">
+        <div class="scale-95 w-full -ml-1.5">
+          {#await memoryReq}
+            <div class="flex gap-12">
+              <div
+                class="w-[12rem] h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"
+              ></div>
+              <div
+                class="w-[12rem] h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#152436] rounded-xl"
+              ></div>
+            </div>
+          {:then}
+            {#if memoryStats != undefined && memoryStats.length > 0}
+              <MemoryChart performance={memoryStats} type="2" />
+              <CpuUsageChart performance={memoryStats} type="2" />
+            {/if}
+          {:catch}
+            <div class="flex gap-12">
+              <div
+                class="w-[12rem] h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"
+              ></div>
+              <div
+                class="w-[12rem] h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#152436] rounded-xl"
+              ></div>
+            </div>
+          {/await}
+        </div>
+      </div>
 
       {#if dynmap}
-        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
+        <div
+          class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]"
+        >
           <img
             alt="dynmap-icon"
             class="w-8 h-8 rounded-lg bg-base-200"
@@ -634,39 +682,43 @@ on:click={() => (tab = label)}
         </div>
       {/if}
       {#if bluemap}
-      <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
-        <div class="dropdown dropdown-hover">
-          <img
-            alt="bluemap-icon"
-            class="w-8 h-8 rounded-lg bg-base-200"
-            src="/images/bluemap.webp"
-          />
-        </div>
-
-        <div class="w-0.5 h-8 bg-base-300 opacity-75 m-0"></div>
-        <a
-          href="https://arthmc.xyz/knowledgebase/using-bluemap"
-          target="_blank"
-          rel="noreferrer"
-          ><button class="btn btn-neutral btn-sm items-center"
-            >{$t("plugins.voicechat.guide")}
-            <ExternalLink size="18" class="ml-1" /></button
-          ></a
+        <div
+          class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]"
         >
-        <a
-        href="{webmapurl}:{parseInt(id) + 10066}"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <button class="btn btn-sm items-center hover:bg-base-100"
-          >Open Webmap
-          <ExternalLink size="18" class="ml-1" /></button
-        ></a
-      >
-      </div>
-    {/if}
+          <div class="dropdown dropdown-hover">
+            <img
+              alt="bluemap-icon"
+              class="w-8 h-8 rounded-lg bg-base-200"
+              src="/images/bluemap.webp"
+            />
+          </div>
+
+          <div class="w-0.5 h-8 bg-base-300 opacity-75 m-0"></div>
+          <a
+            href="https://arthmc.xyz/knowledgebase/using-bluemap"
+            target="_blank"
+            rel="noreferrer"
+            ><button class="btn btn-neutral btn-sm items-center"
+              >{$t("plugins.voicechat.guide")}
+              <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+          <a
+            href="{webmapurl}:{parseInt(id) + 10066}"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <button class="btn btn-sm items-center hover:bg-base-100"
+              >Open Webmap
+              <ExternalLink size="18" class="ml-1" /></button
+            ></a
+          >
+        </div>
+      {/if}
       {#if voicechat}
-        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
+        <div
+          class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]"
+        >
           <div class="dropdown dropdown-hover">
             <img
               alt="dynmap-icon"
@@ -698,7 +750,9 @@ on:click={() => (tab = label)}
         </div>
       {/if}
       {#if chunky}
-        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
+        <div
+          class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]"
+        >
           <div class="dropdown dropdown-hover">
             <img
               alt="dynmap-icon"
@@ -729,7 +783,9 @@ on:click={() => (tab = label)}
         </div>
       {/if}
       {#if discordsrv}
-        <div class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]">
+        <div
+          class=" bg-base-100 rounded-lg mt-3 p-2 flex items-center gap-2 w-[20.75rem]"
+        >
           <div class="dropdown dropdown-hover">
             <img
               alt="dynmap-icon"
@@ -750,7 +806,7 @@ on:click={() => (tab = label)}
           >
         </div>
       {/if}
-      <div class=" bg-base-100 rounded-xl px-4 pt-3 pb-6 ">
+      <div class=" bg-base-100 rounded-xl px-4 pt-3 pb-6">
         <p class="text-lg font-poppins-bold">{$t("shortcuts.title")}</p>
         <div class="space-x-1.5 space-y-1.5">
           <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
@@ -781,20 +837,16 @@ on:click={() => (tab = label)}
           >
         </div>
       </div>
-      <StorageLimit />  
+      <StorageLimit />
       <div class="flex flex-col gap-2 items-center">
-        <div class="flex  space-x-2">
-          <Versions /> <World />
-                  </div>
-                  <DeleteServer/>
-                  </div>	
-       
-       
-
-
-    
+        <div class="flex space-x-2">
+          <Versions />
+          <World />
+        </div>
+        <DeleteServer />
+      </div>
     </div>
-    <!-- End Right Side-->	
+    <!-- End Right Side-->
   </div>
   <!-- End Bottom Section-->
 </div>
