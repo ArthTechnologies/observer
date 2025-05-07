@@ -35,10 +35,19 @@
   let accountDetails = {};
   let folders = [];
   let tab = "performance";
+  let tempToken = "";
+  let privateUrl = "";
 
   let performance = [];
   let performanceReq = null;
   if (browser) {
+    if(localStorage.getItem("dashboard") != null) {
+      let dashboard = JSON.parse(localStorage.getItem("dashboard"));
+      //insert values into the input fields and submit
+      document.getElementById("urlInput").value = dashboard.url;
+      document.getElementById("tokenInput").value = dashboard.token;
+      login();
+    }
     getPerformance();
     address = localStorage.getItem("address");
     fetch(apiurl + "info/capacity", {
@@ -55,12 +64,7 @@
         folders = res.folders;
       });
 
-      setTimeout(() => {
-        //try logging in if the box is prefilled with a string 10 characters or longer
-        if (document.getElementById("input")?.value.length > 9) {
-          login();
-        }
-      }, 1000);
+
   }
 
   function getAccount(accountID) {
@@ -79,18 +83,38 @@
   }
   function login() {
     if (browser) {
-      let input = document.getElementById("input")?.value;
+
+      let input = document.getElementById("tokenInput")?.value;
+      let urlInput = document.getElementById("urlInput")?.value;
+      //if the url doesnt have a / at the end add one
+      if (urlInput[urlInput.length - 1] != "/") {
+        urlInput += "/";
+      }
       token = input;
 
-      fetch(apiurl + "dashboard/verifyToken?tempToken=" + input, {
-        method: "GET",
+      //this will porbably be http. set headers so cors doesnt have iossues
+      fetch(urlInput + "verifyToken?tempToken=" + input, {
+        method: "GET"
+
       })
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
             isLoggedIn = true;
+            alert("Logged in", "success");  
+            tempToken = input;
+            privateUrl = urlInput;
+            fetchInfo();
+          } else {
+            alert("Expired or invalid token");
+          }
+        });
+        
+    }
+  }
 
-            fetch(apiurl + "dashboard/customers?tempToken=" + input, {
+  function fetchInfo() {
+    fetch(privateUrl + "customers?tempToken=" + tempToken, {
               method: "GET",
             })
               .then((res) => res.json())
@@ -141,7 +165,7 @@
                 serversLoaded = true;
               });
 
-            fetch(apiurl + "dashboard/servers?tempToken=" + input, {
+            fetch(privateUrl + "servers?tempToken=" + token, {
               method: "GET",
             })
               .then((res) => res.json())
@@ -152,11 +176,6 @@
                   return a.serverId - b.serverId;
                 });
               });
-          } else {
-            alert("Expired or invalid token");
-          }
-        });
-    }
   }
 
   function timeConverter(UNIX_timestamp) {
@@ -246,7 +265,29 @@
       </figure>
       <div class="card-body bg-base-300 rounded-b-lg">
         <h2 class="card-title">Dashboard</h2>
-        <p>Enter your temporary token</p>
+        <p>Private URL</p>
+        <label class="input input-bordered flex items-center gap-2 w-2/3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            class="h-4 w-4 opacity-70"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <input
+            id="urlInput"
+            type="text"
+            placeholder="ex: http://193.0.2.1:4001/"
+            class="bg-base-100 w-3/4"
+          />
+        </label>
+        <p>Temporary token</p>
+        
         <div class="flex gap-2">
           <label class="input input-bordered flex items-center gap-2 w-2/3">
             <svg
@@ -262,8 +303,8 @@
               />
             </svg>
             <input
-              id="input"
-              type="password"
+              id="tokenInput"
+              type="text"
               placeholder="Type here"
               class="bg-base-100 w-3/4"
             />
