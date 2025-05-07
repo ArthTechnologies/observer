@@ -34,7 +34,7 @@
   let token = "";
   let accountDetails = {};
   let folders = [];
-  let tab = "performance";
+  let tab = "slots";
   let tempToken = "";
   let privateUrl = "";
 
@@ -114,58 +114,9 @@
   }
 
   function fetchInfo() {
-    fetch(privateUrl + "customers?tempToken=" + tempToken, {
-              method: "GET",
-            })
-              .then((res) => res.json())
-              .then((data) => {
-                customers = data;
-                //sort by server id
-                for (let i = customers.length - 1; i >= 0; i--) {
-                  if (
-                    customers[i][1].servers == undefined ||
-                    customers[i][1].servers.length == 0
-                  ) {
-                    customers.splice(i, 1);
-                  }
-                }
 
-                console.log(customers);
-                customers.sort((a, b) => {
-                  return a[1].servers[0] - b[1].servers[0];
-                });
 
-                customersLoaded = true;
-                for (let i = 0; i < servers.length; i++) {
-                  let stripeOwner = false;
-                  let activeOwner = false;
-                  for (let j = 0; j < customers.length; j++) {
-                    if (
-                      customers[j][1].servers.includes(
-                        parseInt(servers[i].serverId)
-                      ) ||
-                      customers[j][1].servers.includes(servers[i].serverId)
-                    ) {
-                      stripeOwner = true;
-                      if (
-                        customers[j][0].subscriptions[0].split(":")[1] ==
-                          "active" ||
-                        (customers[j][0].subscriptions[0].split(":")[1] ==
-                          "canceled" &&
-                          customers[j][0].subscriptions[0].split(":")[2] >
-                            Date.now() / 1000)
-                      ) {
-                        activeOwner = true;
-                      }
-                    }
-                  }
-                  servers[i].stripeOwner = stripeOwner;
-                  servers[i].activeOwner = activeOwner;
-                }
-                serversLoaded = true;
-              });
-
-            fetch(privateUrl + "servers?tempToken=" + token, {
+    fetch(privateUrl + "servers?tempToken=" + token, {
               method: "GET",
             })
               .then((res) => res.json())
@@ -175,6 +126,7 @@
                 servers.sort((a, b) => {
                   return a.serverId - b.serverId;
                 });
+                serversLoaded = true;
               });
   }
 
@@ -335,11 +287,7 @@
 </div>
 {#if tab == "slots"}
 <div class=" flex max-md:flex-col gap-5 justify-between md:px-16 md:mt-4">
-  {#if !customersLoaded}
     <Status />
-  {:else}
-    <Status {customers} />
-  {/if}
   {#if !serversLoaded}
     <div class="flex flex-col gap-5 w-96 items-center">
       {#each Array.from({ length: 10 }) as _}
@@ -418,185 +366,7 @@
     </div>
   {/if}
 
-  {#if !customersLoaded}
-    <div class="flex flex-col gap-5 w-96 items-center">
-      {#each Array.from({ length: 10 }) as _}
-        <div class="p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5">
-          <div class="bg-slate-700 animate-pulse w-20 h-5 rounded-md"></div>
-          <div class="bg-slate-700 animate-pulse w-14 h-5 rounded-md"></div>
-          <div class="bg-slate-700 animate-pulse w-14 h-5 rounded-md"></div>
-        </div>
-      {/each}
-    </div>
-  {:else}
-    <div class="flex flex-col gap-5 w-96 items-center">
-      <div
-        class="relative h-[6.875rem] px-5 py-3 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
-      >
-        {#if Object.keys(accountDetails).length > 0}
-          <btn
-            on:click={() => (accountDetails = {})}
-            class="absolute btn btn-ghost btn-square btn-sm top-2 right-2"
-            ><ArrowLeft size="16" /></btn
-          >
-          <div class="flex items-center gap-1">
-            <div
-              class="bg-neutral h-6 w-6 rounded-md text-sm flex items-center justify-center gap-1"
-            >
-              {#if accountDetails.type == "email"}<Mail />{:else}<Gamepad2
-                  size="16"
-                />{/if}
-            </div>
 
-            {accountDetails.name.split(":")[1]}
-          </div>
-          <div class="flex items-center gap-1">
-            <div
-              class="bg-neutral h-6 w-6 rounded-md text-sm flex items-center justify-center gap-1"
-            >
-              <DollarSign size="16" />
-            </div>
-
-            {accountDetails.email}
-          </div>
-          <div class="flex items-center gap-1">
-            {#each accountDetails.servers as server}
-              <div class="bg-neutral px-1.5 rounded-md text-sm">
-                {address}:{server}
-              </div>
-            {/each}
-          </div>
-        {:else}<p>Get Account Info</p>
-          <div class="flex gap-2">
-            <input
-              id="accountID"
-              type="text"
-              class="input input-bordered input-sm w-2/3"
-              placeholder="Account ID"
-            />
-
-            <button on:click={getAccount} class="btn btn-sm btn-primary"
-              >Check</button
-            >
-          </div>
-        {/if}
-      </div>
-      {#each customers as customer}
-        {#if customer[0].subscriptions == "active" || (customer[0].subscriptions == "canceled" && customer[0].subscriptions > Date.now() / 1000) || customer[1].servers.length > 0}
-          <div
-            class="h-[6.875rem] p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative"
-          >
-            {customer[0].email}
-            <div class="flex gap-1">
-              {#each customer[0].subscriptions as sub}
-                {#if sub.split(":")[1] == "active"}
-                  {#if sub.split(":")[0] === "basic"}
-                    <div
-                      class="bg-gradient-to-tr from-orange-400 to-pink-500 px-1.5 rounded-md text-sm text-black"
-                    >
-                      {$t("basic")}
-                    </div>
-                  {/if}
-                  {#if sub.split(":")[0] === "plus"}
-                    <div
-                      class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 rounded-md text-sm text-black"
-                    >
-                      {$t("plus")}
-                    </div>
-                  {/if}
-                  {#if sub.split(":")[0] === "premium"}
-                    <div class="bg-neutral px-1.5 rounded-md text-sm">
-                      Premium
-                    </div>
-                  {/if}
-                {:else}
-                  {#if sub.split(":")[0] === "basic"}
-                    <div
-                      class="bg-gradient-to-tr from-orange-400 to-pink-500 px-1.5 text-sm text-black rounded-l-md"
-                    >
-                      {$t("basic")}
-                    </div>
-                    {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
-                      <div
-                        class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
-                      >
-                        {format(sub.split(":")[1], sub.split(":")[2])}
-
-                        <FeedbackTooltip feedback={sub.split(":")[3]} />
-                      </div>
-                    {:else}
-                      <div
-                        class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
-                      >
-                        {format(sub.split(":")[1], sub.split(":")[2])}
-                        <FeedbackTooltip feedback={sub.split(":")[3]} />
-                      </div>
-                    {/if}
-                  {/if}
-                  {#if sub.split(":")[0] === "premium"}
-                    <div class="bg-neutral px-1.5 text-sm rounded-l-md">
-                      Premium
-                    </div>
-                    {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
-                      <div
-                        class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
-                      >
-                        {format(sub.split(":")[1], sub.split(":")[2])}
-
-                        <FeedbackTooltip feedback={sub.split(":")[3]} />
-                      </div>
-                    {:else}
-                      <div
-                        class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
-                      >
-                        {format(sub.split(":")[1], sub.split(":")[2])}
-                        <FeedbackTooltip feedback={sub.split(":")[3]} />
-                      </div>
-                    {/if}
-                  {/if}
-                  {#if sub.split(":")[0] === "plus"}
-                    <div
-                      class="bg-gradient-to-tr from-cyan-400 to-indigo-500 px-1.5 text-sm text-black rounded-l-md"
-                    >
-                      {$t("plus")}
-                    </div>
-
-                    {#if sub.split(":")[1] == "canceled" && parseInt(sub.split(":")[2]) > Date.now() / 1000}
-                      <div
-                        class="bg-slate-700 rounded-r-md text-sm px-1.5 flex gap-1"
-                      >
-                        {format(sub.split(":")[1], sub.split(":")[2])}
-                        <FeedbackTooltip feedback={sub.split(":")[3]} />
-                      </div>
-                    {:else}
-                      <div
-                        class="bg-error text-black rounded-r-md text-sm px-1.5 flex gap-1"
-                      >
-                        {format(sub.split(":")[1], sub.split(":")[2])}
-                        <FeedbackTooltip feedback={sub.split(":")[3]} />
-                      </div>
-                    {/if}
-                  {/if}
-                {/if}
-              {/each}
-            </div>
-            <div class="flex gap-1">
-              {#each customer[1].servers as server}
-                <div class="bg-neutral px-1.5 rounded-md text-sm">
-                  {address}:{server}
-                </div>
-              {/each}
-              {#if customer[1].servers.length == 0}
-                <div
-                  class="absolute h-full w-full bg-error blur-sm rounded-xl top-0 right-0 z-[-1]"
-                ></div>
-              {/if}
-            </div>
-          </div>
-        {/if}
-      {/each}
-    </div>
-  {/if}
   <Analytics />
 </div>
 
