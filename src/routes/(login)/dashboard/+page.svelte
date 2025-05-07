@@ -3,7 +3,7 @@
   import Analytics from "$lib/components/pages/dashboard/Analytics.svelte";
   import FeedbackTooltip from "$lib/components/pages/dashboard/FeedbackTooltip.svelte";
     import MemoryChart from "$lib/components/pages/dashboard/MemoryChart.svelte";
-  import Status from "$lib/components/pages/dashboard/Status.svelte";
+
     import ThreadCharts from "$lib/components/pages/dashboard/ThreadCharts.svelte";
 
   import { t } from "$lib/scripts/i18n";
@@ -286,8 +286,8 @@
 
 </div>
 {#if tab == "slots"}
-<div class=" flex max-md:flex-col gap-5 justify-between md:px-16 md:mt-4">
-    <Status />
+<div class=" flex max-md:flex-col gap-5 justify-between md:pr-16 md:mt-4">
+  <iframe class="rounded-lg scale-90 -ml-3" src="https://status.arthmc.xyz" width="300" height="700"></iframe>
   {#if !serversLoaded}
     <div class="flex flex-col gap-5 w-96 items-center">
       {#each Array.from({ length: 10 }) as _}
