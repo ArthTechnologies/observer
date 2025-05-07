@@ -15,6 +15,7 @@
     Menu,
     ShoppingCart,
     User,
+    Crown
   } from "lucide-svelte";
   import ServerSkeleNew from "../ui/ServerSkeleNew.svelte";
     import UncreatedServerCardNew from "../ui/UncreatedServerCardNew.svelte";
@@ -27,6 +28,8 @@
   //Example
 
   var id = 0;
+
+  let devMode = false;
 
   let noserverlock = false;
   let amountOfServersForSkeletons = 1;
@@ -41,6 +44,10 @@
   if (browser) {
     email = localStorage.getItem("accountEmail");
     amountOfServersForSkeletons = localStorage.getItem("amountOfServers");
+    if (localStorage.getItem("devMode") == "true") {
+      console.log("dev mode");  
+      devMode = true;
+    }
   }
 
   // getServers and store "amount" given in the response in a variable
@@ -300,6 +307,11 @@ Invalid Account
     <button onclick="modal_support.showModal()" class="btn btn-ghost btn-sm flex justify-start">
       <HelpCircle size="18" class="mr-2" />Get Support</button
     >
+    {#if devMode}
+    <a href="/dashboard" class="btn btn-ghost btn-sm flex justify-start">
+      <Crown size="18" class="mr-2" />Dashboard</a
+    >
+    {/if}
     <button class="btn btn-ghost btn-sm flex justify-start" on:click={logout}>
       <LogOut size="18" class="mr-2" />Logout</button
     >
@@ -320,6 +332,7 @@ Invalid Account
  <li>        <a onclick="modal_support.showModal()">
   Get Support</a
  ></li>
+
         <li><a on:click={logout}>Logout</a></li>
       </ul>
     </div>
