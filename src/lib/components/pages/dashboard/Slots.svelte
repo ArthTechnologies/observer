@@ -65,29 +65,32 @@ fetch(privateUrl + "servers?tempToken=" + token, {
         <div class="h-[6.875rem] grid grid-cols-8 gap-1">
           {#each folders as folder}
             {#if folder.split(":")[1] == "normal"}
-              <div
-                class="p-1 bg-base-200 rounded-lg w-8 h-6 shadow space-y-1.5 flex items-center justify-center text-sm"
+              <a
+              href="#server-{folder.split(":")[0]}"
+                class="p-1 bg-base-300 bg-opacity-50 rounded-lg w-8 h-6 shadow space-y-1.5 flex items-center justify-center text-sm"
               >
                 {folder.split(":")[0]}
-              </div>
+        </a>
             {:else if folder.split(":")[1] == "admin"}
               <div
-                class="p-1 bg-base-300 rounded-lg w-8 h-6 shadow space-y-1.5 flex items-center justify-center text-sm"
+                class="p-1 bg-info rounded-lg w-8 h-6 shadow space-y-1.5 flex items-center justify-center text-sm"
               >
                 {folder.split(":")[0]}
               </div>
             {:else if folder.split(":")[1] == "error"}
-              <div
+              <a
+               href="#server-{folder.split(":")[0]}"
                 class="p-1 bg-error text-black rounded-lg w-8 h-6 shadow space-y-1.5 flex items-center justify-center text-sm"
               >
                 {folder.split(":")[0]}
-              </div>
+            </a>
             {/if}
           {/each}
         </div>
         {#each servers as server}
           <div
-            class="h-[6.875rem] p-5 bg-base-200 rounded-xl w-3/4 shadow space-y-1.5 relative overflow-x-hidden"
+          id="server-{server.serverId}"
+            class="h-[6.875rem] p-5 bg-base-100 bg-opacity-75 rounded-xl w-3/4 shadow space-y-1.5 relative overflow-x-hidden"
           >
             {address}:{server.serverId}
             {#if server.owner != null}
