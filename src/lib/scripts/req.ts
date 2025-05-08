@@ -507,6 +507,7 @@ export function signupEmail(em: string, pwd: string, cloudflareVerifyToken:strin
 
 export function loginEmail(em: string, pwd: string, cloudflareVerifyToken:string = "") {
   if(browser) {
+    apiurl = localStorage.getItem("userNode");
   return fetch(
     apiurl +
       "accounts/email/signin?" +
