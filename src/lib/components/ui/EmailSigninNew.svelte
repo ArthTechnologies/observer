@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import {  signupEmail } from "$lib/scripts/req";
+  import {  refreshApiUrl, signupEmail } from "$lib/scripts/req";
   import { loginEmail } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
@@ -33,6 +33,7 @@
   }
 
   if (browser) {
+    refreshApiUrl();
     plan = document.location.search.split("plan=")[1];
     let intervalId = setInterval(() => {
       if (localStorage.getItem("enableCloudflareVerify") != undefined) {

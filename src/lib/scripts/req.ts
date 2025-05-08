@@ -62,6 +62,12 @@ let lock = false;
 let GET = {};
 let POST = {};
 let DELETE = {};
+
+export function refreshApiUrl() {
+  if (browser) {
+    apiurl = localStorage.getItem("userNode");
+  }
+}
 export function updateReqTemplates() {
 //set email from local storage to variable
 if (browser) {
