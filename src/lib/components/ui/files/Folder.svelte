@@ -5,7 +5,7 @@
   import FileUpload from "$lib/components/util/FileUpload.svelte";
   import { t } from "$lib/scripts/i18n";
   import { apiurl, getServerNode, usingOcelot } from "$lib/scripts/req";
-  import { alert, downloadProgressShort } from "$lib/scripts/utils";
+  import { alert, downloadProgressShort, fileSizeShort } from "$lib/scripts/utils";
   import {
     ChevronDown,
     FolderClosed,
@@ -19,6 +19,7 @@
   export let foldername;
   export let files;
   export let path;
+  export let size: number;
   let uploadpath;
   let open = false;
   let folderId;
@@ -177,7 +178,7 @@
 
 <div class="flex gap-1 justify-between">
   <a
-    class="w-[78%] px-1.5 p-1 rounded-lg btn-ghost gap-1 flex items-center cursor-pointer"
+    class="w-[75%] px-1.5 p-1 rounded-lg btn-ghost gap-1 flex items-center cursor-pointer"
     on:click={toggleOpen}
   >
     <FolderClosed
@@ -189,7 +190,13 @@
       <p id="toggleIndicator{folderId}"><ChevronDown /></p>
     {/if}
   </a>
-  <div class="flex gap-1">
+  <div class="flex gap-1 items-center">
+    <div
+  
+    class="px-1.5 h-5 rounded-lg  text-xs outline outline-1 gap-1 flex items-center mr-0.5"
+  >
+    {fileSizeShort(size)}
+    </div>
     <label
       for="delete{foldername}"
       class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"

@@ -159,12 +159,13 @@
       <MainFolder />
       {#each files as file}
         {#if typeof file == "string"}
-          <File filename={file.split(":")[0]} url={file.split(":")[1]} />
+          <File filename={file.split(":")[0]} url={file.split(":")[1]} size={file.split(":")[2]}/>
         {:else}
           <Folder
             foldername={file[0].split(":")[0]}
             files={file[1]}
             path={file[0].split(":")[1]}
+            size={file[0].split(":")[2]}
           />
         {/if}
       {/each}

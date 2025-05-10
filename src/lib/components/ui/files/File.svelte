@@ -3,8 +3,9 @@
   import { t } from "$lib/scripts/i18n";
   export let url: string;
   export let filename: string;
+  export let size: number;
   import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
-  import { downloadProgressShort } from "$lib/scripts/utils";
+  import { downloadProgressShort, fileSizeShort } from "$lib/scripts/utils";
   import {
     File,
     FileText,
@@ -240,7 +241,7 @@
       {filename}
     </p>
   </button>
-  <div class="flex gap-1">
+  <div class="flex gap-1 items-center">
     {#if filename.includes(".zip")}
       <label
         for="extract{filename}"
@@ -249,6 +250,12 @@
         <PackageOpen class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
       </label>
     {/if}
+    <div
+  
+    class="px-1.5 h-5 rounded-lg  text-xs outline outline-1 gap-1 flex items-center mr-0.5"
+  >
+    {fileSizeShort(size)}
+    </div>
     <label
       for="delete{filename}"
       class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
