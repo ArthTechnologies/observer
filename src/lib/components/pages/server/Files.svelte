@@ -208,7 +208,9 @@
             <LinkIcon size="16" />
             Host
           </div>
-          sftp://{localStorage.getItem("userNode")?.split("https://")[1].split("/")[0]}
+          sftp://{localStorage.getItem("userNode")?.includes("https://")
+  ? localStorage.getItem("userNode").split("https://")[1].split("/")[0]
+  : ''}
   
           </div>
       <div class="flex gap-2 items-center">
