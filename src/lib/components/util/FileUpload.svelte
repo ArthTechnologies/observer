@@ -51,7 +51,19 @@
   #2b364f ${visualPercent}%,
   #2b364f 100%
 )`;
-         
+         //listen for refresh event
+          document.addEventListener("refresh", function () {
+            console.log("ending loading thing");
+
+            clearInterval(intervalId);
+setTimeout(() => {
+  uploadBtn.innerHTML = $t("button.upload");
+            uploadBtn.classList.remove("pointer-events-none");
+            uploadBtn.style.background = ``;
+            uploadBtn.classList.remove("text-accent-content");
+            uploadBtn.classList.remove("text-gray-200");
+            }, 100);
+          });
         } else {
           uploadBtn.classList.remove("text-accent-content");
           uploadBtn.classList.remove("text-gray-200");
@@ -103,7 +115,8 @@
       ) {
           alert($t("alert.virusDetected"));
         } else {
-          alert($t("alert.fileUploaded"), "success");
+          alert($t("alert.fileUploaded"), "success")
+
 
           //dispatch refresh event
           const event = new CustomEvent("refresh");
