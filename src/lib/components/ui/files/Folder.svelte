@@ -15,11 +15,13 @@
     AlertTriangle,
     Download,
     Loader,
+    MenuIcon,
   } from "lucide-svelte";
   export let foldername;
   export let files;
   export let path;
   export let size: number;
+  let uniqueId = Math.floor(Math.random() * 1000000000);
   let uploadpath;
   let open = false;
   let folderId;
@@ -173,6 +175,62 @@
 
     xhr.send();
   }
+
+    if (browser) {
+    //if the user clicks outside the dropdown, close it
+    document.addEventListener("click", (event) => {
+      const dropdown = document.getElementById("dropdown" + uniqueId);
+      const target = event.target as HTMLElement;
+      if (dropdown && !dropdown.contains(target)) {
+        dropdown.removeAttribute("open");
+      }
+    });
+  }
+
+    function checkRenameText() {
+    const renameInput = document.getElementById("renameInput"+uniqueId) as HTMLInputElement;
+    const renameBtn = document.getElementById("renameBtn"+uniqueId) as HTMLButtonElement;
+    if (renameInput.value.length > 0 && renameInput.value != foldername) {
+      renameBtn.classList.remove("btn-disabled");
+    } else {
+      renameBtn.classList.add("btn-disabled");
+    }
+  }
+
+    function rename() {
+    let baseurl = apiurl;
+    if (usingOcelot) baseurl = getServerNode(id);
+    const renameInput = document.getElementById("renameInput"+uniqueId) as HTMLInputElement;
+    const newName = renameInput.value;
+        path = path.replace(/\/\//g, "/");
+    fetch(
+      baseurl +
+        "server/" +
+        id +
+        "/file/rename/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token"),
+          username: localStorage.getItem("accountEmail"),
+        },
+        body: JSON.stringify({
+          from: uploadpath,
+          to: newName,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.msg == "Rename successful.") {
+          document.getElementById("rename" + foldername).checked = false;
+          const event = new CustomEvent("refresh");
+          document.dispatchEvent(event);
+        }
+      }); 
+  }
 </script>
 
 <div class="flex gap-1 justify-between">
@@ -196,12 +254,36 @@
   >
     {fileSizeShort(size)}
     </div>
-    <label
+    <details id="dropdown{uniqueId}" class="dropdown dropdown-end">
+
+  <summary class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center">     <MenuIcon class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" /></summary>
+  <ul class="z-50 menu dropdown-content bg-neutral bg-opacity-75 backdrop-blur rounded-box z-1 w-32 p-1.5 shadow-sm">
+    <li>    <label
       for="delete{foldername}"
-      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
+      
     >
-      <Trash2 class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
-    </label>
+      Delete
+    </label></li>
+    <li>
+      <label
+        for="rename{foldername}"
+       
+      >
+        Rename
+      </label>
+    </li>
+        {#if foldername.includes(".zip")}
+    <li>  
+      <label
+        for="extract{foldername}"
+       
+      >
+        Extract
+      </label>
+    </li>
+    {/if}
+  </ul>
+</details>
     <label
       for="upload{foldername}"
       data-tip="Upload File"
@@ -261,6 +343,41 @@
     </div>
   </div>
 </div>
+
+<input
+  type="checkbox"
+  id="rename{foldername}"
+  class="modal-toggle"
+/>
+<div class="modal" style="margin:0rem;">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+    <label
+      for="rename{foldername}"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
+    >
+    <h3 class="text-lg font-bold mb-2">Rename Folder</h3>
+<div class="flex gap-2 w-2/3 items-center mb-5">
+  <div class="bg-neutral rounded-lg text-sm h-8 py-2 px-4">
+    {foldername}
+  </div>
+  <ChevronRight size=32 />
+      <input
+      on:input={checkRenameText}
+      type="text"
+      id="renameInput{uniqueId}"
+      placeholder="newname"
+      class="input input-bordered input-sm w-full"
+    />
+</div>
+    <div class="flex gap-1">
+      <button on:click={rename} id="renameBtn{uniqueId}" class="btn btn-success btn-disabled">
+        Rename</button
+      >
+    </div>
+  </div>
+</div>
+
+
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="upload{foldername}" class="modal-toggle" />
 <div class="modal" style="margin:0rem;">
