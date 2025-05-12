@@ -336,6 +336,16 @@
         Rename
       </label>
     </li>
+        {#if filename.includes(".zip")}
+    <li>  
+      <label
+        for="extract{filename}"
+       
+      >
+        Extract
+      </label>
+    </li>
+    {/if}
   </ul>
 </details>
     <label
