@@ -74,11 +74,11 @@
       baseurl +
         "server/" +
         id +
-        "/folder/" +
+        "/file/" +
         path
           .split("servers/" + id)[1]
           .split("/")
-          .join("*"),
+          .join("*")+"?folder=true",
       {
         method: "DELETE",
         headers: {
