@@ -67,14 +67,16 @@
   function deleteFile() {
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
-
+    //remove any double slashes
+    path = path.replace(/\/\//g, "/");
+    console.log(path)
     fetch(
       baseurl +
         "server/" +
         id +
         "/folder/" +
         path
-          .split("servers/" + id + "//")[1]
+          .split("servers/" + id)[1]
           .split("/")
           .join("*"),
       {
@@ -83,10 +85,7 @@
           "Content-Type": "application/json",
           token: localStorage.getItem("token"),
           username: localStorage.getItem("accountEmail"),
-        },
-        body: JSON.stringify({
-          password: document.getElementById("password" + foldername).value,
-        }),
+        }
       }
     )
       .then((response) => response.json())
