@@ -21,12 +21,15 @@
     Package,
     FileBox,
     Box,
+    MenuIcon,
+    ChevronRight,
   } from "lucide-svelte";
   import { Warning } from "postcss";
   let id;
   let extension = filename.split(".")[filename.split(".").length - 1];
   let clickable = "auto";
   let accountType = "email";
+  let uniqueId = Math.floor(Math.random() * 1000000000);
 
   if (browser) {
     id = localStorage.getItem("serverID");
@@ -142,6 +145,44 @@
       })
       .catch((err) => console.error("Error extracting file:", err));
   }
+
+  function rename() {
+    let baseurl = apiurl;
+    if (usingOcelot) baseurl = getServerNode(id);
+    const renameInput = document.getElementById("renameInput"+uniqueId) as HTMLInputElement;
+    const newName = renameInput.value;
+    //if the new name does not include the extension, add it
+    if (!newName.includes("." + extension)) {
+      renameInput.value = newName + "." + extension;
+    }
+    fetch(
+      baseurl +
+        "server/" +
+        id +
+        "/file/rename/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token"),
+          username: localStorage.getItem("accountEmail"),
+        },
+        body: JSON.stringify({
+          from: url,
+          to: newName,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.msg == "Rename successful.") {
+          document.getElementById("rename" + filename).checked = false;
+          const event = new CustomEvent("refresh");
+          document.dispatchEvent(event);
+        }
+      }); 
+  }
   let downloading = false;
   let downloadProgress = "0/0MB";
   let gradientBackground = "#1fb2a5";
@@ -215,6 +256,27 @@
 
     xhr.send();
   }
+
+  if (browser) {
+    //if the user clicks outside the dropdown, close it
+    document.addEventListener("click", (event) => {
+      const dropdown = document.getElementById("dropdown" + uniqueId);
+      const target = event.target as HTMLElement;
+      if (dropdown && !dropdown.contains(target)) {
+        dropdown.removeAttribute("open");
+      }
+    });
+  }
+
+  function checkRenameText() {
+    const renameInput = document.getElementById("renameInput"+uniqueId) as HTMLInputElement;
+    const renameBtn = document.getElementById("renameBtn"+uniqueId) as HTMLButtonElement;
+    if (renameInput.value.length > 0 && renameInput.value != filename && renameInput.value.includes("." + extension)) {
+      renameBtn.classList.remove("btn-disabled");
+    } else {
+      renameBtn.classList.add("btn-disabled");
+    }
+  }
 </script>
 
 <div class="flex gap-1 justify-between">
@@ -256,12 +318,26 @@
   >
     {fileSizeShort(size)}
     </div>
-    <label
+
+    <details id="dropdown{uniqueId}" class="dropdown dropdown-end">
+  <summary class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center">     <MenuIcon class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" /></summary>
+  <ul class="z-50 menu dropdown-content bg-neutral bg-opacity-75 backdrop-blur rounded-box z-1 w-32 p-1.5 shadow-sm">
+    <li>    <label
       for="delete{filename}"
-      class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
+      
     >
-      <Trash2 class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />
-    </label>
+      Delete
+    </label></li>
+    <li>
+      <label
+        for="rename{filename}"
+       
+      >
+        Rename
+      </label>
+    </li>
+  </ul>
+</details>
     <label
       for="upload"
       data-tip="Upload"
@@ -298,6 +374,39 @@
     <div class="flex gap-1">
       <button on:click={deleteFile} id="delButton" class="btn btn-error">
         {$t("button.delete")}</button
+      >
+    </div>
+  </div>
+</div>
+
+<input
+  type="checkbox"
+  id="rename{filename}"
+  class="modal-toggle"
+/>
+<div class="modal" style="margin:0rem;">
+  <div class="modal-box bg-opacity-95 backdrop-blur relative">
+    <label
+      for="rename{filename}"
+      class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
+    >
+    <h3 class="text-lg font-bold mb-2">Rename File</h3>
+<div class="flex gap-2 w-2/3 items-center mb-5">
+  <div class="bg-neutral rounded-lg text-sm h-8 py-2 px-4">
+    {filename}
+  </div>
+  <ChevronRight size=32 />
+      <input
+      on:input={checkRenameText}
+      type="text"
+      id="renameInput{uniqueId}"
+      placeholder="newname.{extension}"
+      class="input input-bordered input-sm w-full"
+    />
+</div>
+    <div class="flex gap-1">
+      <button on:click={rename} id="renameBtn{uniqueId}" class="btn btn-success btn-disabled">
+        Rename</button
       >
     </div>
   </div>
