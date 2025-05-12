@@ -255,14 +255,7 @@
       >
     </div>
     <div class="flex gap-1">
-      {#if accountType == "email"}
-        <input
-          type="password"
-          id="password{foldername}"
-          class="input input-bordered input-error mr-1"
-          placeholder={$t("typeYourPassword")}
-        />
-      {/if}
+
       <button on:click={deleteFile} id="delButton" class="btn btn-error">
         {$t("button.delete")}</button
       >
