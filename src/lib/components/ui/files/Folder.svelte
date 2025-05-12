@@ -74,13 +74,13 @@
       baseurl +
         "server/" +
         id +
-        "/file/" +
+        "/file/delete/" +
         path
           .split("servers/" + id)[1]
           .split("/")
           .join("*")+"?folder=true",
       {
-        method: "DELETE",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           token: localStorage.getItem("token"),
