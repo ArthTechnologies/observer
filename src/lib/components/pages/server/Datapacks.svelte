@@ -60,7 +60,7 @@
 
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
-    const url = baseurl + "server/" + serverId + "/file/world*datapacks*" + filename;
+    const url = baseurl + "server/" + serverId + "/files/world*datapacks*" + filename;
 
     fetch(url, {
       method: "DELETE",

@@ -95,7 +95,7 @@
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
     const url =
-      baseurl + "server/" + serverId + "/file/" + modtype + "s*" + filename;
+      baseurl + "server/" + serverId + "/files/" + modtype + "s*" + filename;
     fetch(url, {
       method: "DELETE",
       headers: {

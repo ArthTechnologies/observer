@@ -135,7 +135,7 @@ setTimeout(() => {
         apiurl +
           "server/" +
           id +
-          "/file/upload/" +
+          "/files/upload/" +
           uploadpath +
           "?filename=" +
           file.name,

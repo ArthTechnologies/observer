@@ -56,7 +56,7 @@
       apiurl +
         "server/" +
         id +
-        "/file/" +
+        "/files/" +
         document.getElementById("filepath").value,
       {
         method: "POST",

@@ -71,7 +71,7 @@
   function getText() {
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
-    fetch(baseurl + "server/" + id + "/file/" + url, {
+    fetch(baseurl + "server/" + id + "/files/" + url, {
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),
@@ -98,7 +98,7 @@
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
 
-    fetch(baseurl + "server/" + id + "/file/delete/" + url, {
+    fetch(baseurl + "server/" + id + "/files/delete/" + url, {
       method: "POST",
       headers: {
         token: localStorage.getItem("token"),
@@ -159,7 +159,7 @@
       baseurl +
         "server/" +
         id +
-        "/file/rename/",
+        "/files/rename/",
       {
         method: "POST",
         headers: {
@@ -192,10 +192,11 @@
     const xhr = new XMLHttpRequest();
     console.log(url.includes("//"));
     if (url.includes("//")) {
-      url = url.split("//")[1];
+      url = url.split("//").join("/");
+      url = url.split("/").join("*");
     }
     console.log(url);
-    xhr.open("GET", apiurl + "server/" + id + "/file/download/" + url, true);
+    xhr.open("GET", apiurl + "server/" + id + "/files/download/" + url, true);
     xhr.setRequestHeader("token", localStorage.getItem("token"));
     xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
     xhr.responseType = "blob";

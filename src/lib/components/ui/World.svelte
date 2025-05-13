@@ -46,7 +46,7 @@
             areWorldgenMods = true;
           }
         }
-        promise = fetch(apiurl + "server/" + id + "/file/world*datapacks", {
+        promise = fetch(apiurl + "server/" + id + "/files/world*datapacks", {
           method: "GET",
           headers: {
             token: localStorage.getItem("token"),

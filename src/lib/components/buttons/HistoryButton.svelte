@@ -34,7 +34,7 @@
       baseurl +
         "server/" +
         id +
-        "/file/.fileVersions*" +
+        "/files/.fileVersions*" +
         filepath +
         "*" +
         version,

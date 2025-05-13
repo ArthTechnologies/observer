@@ -76,7 +76,7 @@
       baseurl +
         "server/" +
         id +
-        "/file/delete/" +
+        "/files/delete/" +
         path
           .split("servers/" + id)[1]
           .split("/")
@@ -112,7 +112,7 @@
     const xhr = new XMLHttpRequest();
     xhr.open(
       "GET",
-      apiurl + "server/" + id + "/file/download/" + uploadpath,
+      apiurl + "server/" + id + "/files/download/" + uploadpath,
       true
     );
     xhr.setRequestHeader("token", localStorage.getItem("token"));
@@ -207,7 +207,7 @@
       baseurl +
         "server/" +
         id +
-        "/file/rename/",
+        "/files/rename/",
       {
         method: "POST",
         headers: {
