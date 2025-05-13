@@ -134,7 +134,7 @@
 
   function claimSubdomain() {
 
-    let baseUrl = userNode.split("https://")[1].split("/")[0].split(".")[0];
+    let baseUrl = userNode.split("://")[1].split("/")[0].split(".")[0];
     console.log("claiming subdomain" + baseUrl);
     const subdomain2 = document.getElementById("subdomainInput").value;
     fetch(apiurl + "server/" + id + "/claimSubdomain?subdomain=" + subdomain2+"&baseUrl="+baseUrl, {
