@@ -30,6 +30,7 @@
   let clickable = "auto";
   let accountType = "email";
   let uniqueId = Math.floor(Math.random() * 1000000000);
+  let downloadUrl = "";
 
   if (browser) {
     id = localStorage.getItem("serverID");
@@ -53,6 +54,10 @@
       }
     }
   }
+
+    let key = localStorage.getItem("fileAccessKey");
+   
+    downloadUrl = apiurl + "server/" + id + "/files/download/" + url + "?key=" + key + "&username=" + localStorage.getItem("accountEmail");
   switch (extension) {
     case "png":
     case "jpg":
@@ -187,76 +192,6 @@
   let downloadProgress = "0/0MB";
   let gradientBackground = "#1fb2a5";
 
-  function download() {
-    downloading = true;
-    const xhr = new XMLHttpRequest();
-    console.log(url.includes("//"));
-    if (url.includes("//")) {
-      url = url.split("//").join("/");
-      url = url.split("/").join("*");
-    }
-    console.log(url);
-    xhr.open("GET", apiurl + "server/" + id + "/files/download/" + url, true);
-    xhr.setRequestHeader("token", localStorage.getItem("token"));
-    xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
-    xhr.responseType = "blob";
-    let lhref = window.location.href;
-    const downloadBtn = document.getElementById("downloadBtn");
-    xhr.addEventListener("progress", (event) => {
-      if (event.lengthComputable && browser) {
-        const percentComplete = (event.loaded / event.total) * 100;
-
-        // You can update a progress bar or display the percentage to the user
-        if (percentComplete < 100 && window.location.href == lhref) {
-          downloadProgress = downloadProgressShort(event.loaded, event.total);
-
-          downloadBtn.style.width = "200px";
-
-          downloadBtn.classList.add("text-accent-content");
-          downloadBtn.classList.remove("text-gray-200");
-
-          downloadBtn.classList.add("pointer-events-none");
-
-          gradientBackground = "#1fb2a5";
-          downloadBtn.style.background = `linear-gradient(
-  to right,
-  rgba(0, 0, 0, 0.9) 0%,
-  rgba(0, 0, 0, 0.0) ${(event.loaded / event.total) * 100}%,
-  ${gradientBackground} ${(event.loaded / event.total) * 100}%,
-  ${gradientBackground} 100%
-)`;
-        } else if (percentComplete >= 100) {
-          downloadProgress = "0/0MB";
-
-          downloadBtn.style.width = ``;
-          downloadBtn.style.background = ``;
-          downloadBtn.classList.remove("pointer-events-none");
-
-          downloadBtn.classList.remove("text-accent-content");
-        }
-      }
-    });
-
-    xhr.onload = function () {
-      downloading = false;
-      if (xhr.status === 200) {
-        const blob = xhr.response;
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a); // Clean up the temporary <a> element
-        window.URL.revokeObjectURL(url); // Clean up the object URL
-      } else {
-        console.error("Error downloading file. Status:", xhr.status);
-        // Handle the error case
-      }
-    };
-
-    xhr.send();
-  }
 
   if (browser) {
     //if the user clicks outside the dropdown, close it
@@ -489,15 +424,8 @@
     <h3 class="text-lg font-bold mb-5">Download {filename}</h3>
 
     <div class="flex gap-1">
-      <button id="downloadBtn" class="btn btn-accent btn-sm" on:click={download}
-        >{#if !downloading}<Download size="18" />{:else}<div
-            class="animate-spin"
-          >
-            <Loader />
-          </div>{/if}
-        <p class="ml-1.5">
-          {#if downloading}{downloadProgress}{:else}{$t("button.download")}{/if}
-        </p></button
+      <a href={downloadUrl} download id="downloadBtn" class="btn btn-accent btn-sm"
+        >{$t("button.download")}</a
       >
     </div>
   </div>
