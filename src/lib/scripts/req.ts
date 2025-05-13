@@ -110,6 +110,7 @@ export function setInfo(
   desc,
   proxiesEnabled,
   fSecret,
+  javaVersion
 
 ) {
   if(browser) {
@@ -134,6 +135,7 @@ export function setInfo(
       icon: icon,
       proxiesEnabled: proxiesEnabled,
       fSecret: fSecret,
+      javaVersion: javaVersion,
 
     }),
   };

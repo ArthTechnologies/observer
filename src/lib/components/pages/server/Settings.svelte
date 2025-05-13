@@ -24,6 +24,7 @@
   let allowedAccounts = [];
   let userNode;
   let numberIp = "Loading";
+  let javaVersion = "0";
   export let type = "smallBtn";
   if (browser) {
     name = localStorage.getItem("serverName");
@@ -56,6 +57,7 @@
         desc = data.desc;
         fSecret = data.secret;
         allowedAccounts = data.allowedAccounts;
+        javaVersion = data.javaVersion; 
 
         if (document.getElementById("fSecret") != null) {
        
@@ -107,7 +109,7 @@
         icon = "https://servers.arthmc.xyz/images/placeholder.webp";
       }
 
-      setInfo(id, icon, desc, proxiesEnabled, fSecret);
+      setInfo(id, icon, desc, proxiesEnabled, fSecret, javaVersion);
 
       if (localStorage.getItem("serverName") != name) {
         fetch(apiurl + "server/" + id + "/rename?newName=" + name, {
@@ -228,6 +230,16 @@
       bind:value={name}
       type="text"
       id="serverName"
+      class="input input-bordered"
+    />
+        <label for="serverDescription" class="block font-bold my-2"
+      >Java Version
+    </label>
+
+    <input
+      bind:value={javaVersion}
+      type="text"
+      id="javaVersion"
       class="input input-bordered"
     />
     <label for="serverDescription" class="block font-bold mb-2 mt-4"
