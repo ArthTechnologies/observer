@@ -128,7 +128,7 @@
     if (url.startsWith("/")) {
       url = url.substring(1);
     }
-    fetch(`${baseurl}server/${id}/file/extract/${url.split("/").join("*")}`, {
+    fetch(`${baseurl}server/${id}/files/extract/${url.split("/").join("*")}`, {
       method: "POST",
       headers: {
         token: localStorage.getItem("token"),
