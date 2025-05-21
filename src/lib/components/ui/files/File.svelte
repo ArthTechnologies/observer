@@ -57,7 +57,7 @@
 
     let key = localStorage.getItem("fileAccessKey");
    
-    downloadUrl = apiurl + "server/" + id + "/files/download/" + url + "?key=" + key + "&username=" + localStorage.getItem("accountEmail");
+    downloadUrl = apiurl + "server/" + id + "/files/download/" + url + "?key=" + key;
   switch (extension) {
     case "png":
     case "jpg":
