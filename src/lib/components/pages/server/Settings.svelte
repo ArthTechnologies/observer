@@ -43,7 +43,7 @@
   function get() {
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
-    const url = baseurl + "server/" + id + "/getInfo";
+    const url = baseurl + "server/" + id + "/settings";
     fetch(url, {
       method: "GET",
       headers: {
@@ -108,27 +108,10 @@
       if (icon == "") {
         icon = "https://servers.arthmc.xyz/images/placeholder.webp";
       }
+      let newName = name;
+      setInfo(id, icon, desc, proxiesEnabled, fSecret, javaVersion, newName);
 
-      setInfo(id, icon, desc, proxiesEnabled, fSecret, javaVersion);
 
-      if (localStorage.getItem("serverName") != name) {
-        fetch(apiurl + "server/" + id + "/rename?newName=" + name, {
-          method: "POST",
-          headers: {
-            username: localStorage.getItem("accountEmail"),
-            token: localStorage.getItem("token"),
-          },
-        })
-          .then((x) => x.json())
-          .then((x) => {
-            //if successful
-            if (!JSON.stringify(x).includes("ERROR")) {
-              if (document.getElementById("serverName") != null) {
-                document.getElementById("serverName").innerText = name;
-              }
-            }
-          });
-      }
 
       alert("Settings applied.", "success");
     }

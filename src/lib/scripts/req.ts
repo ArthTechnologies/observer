@@ -110,7 +110,8 @@ export function setInfo(
   desc,
   proxiesEnabled,
   fSecret,
-  javaVersion
+  javaVersion,
+  newName,
 
 ) {
   if(browser) {
@@ -122,7 +123,7 @@ export function setInfo(
   if (usingOcelot)
     baseurl =
       getServerNode(id);
-  const url = baseurl + "server/" + id + "/setInfo";
+  const url = baseurl + "server/" + id + "/settings";
   const req = {
     method: "POST",
     headers: {
@@ -136,6 +137,7 @@ export function setInfo(
       proxiesEnabled: proxiesEnabled,
       fSecret: fSecret,
       javaVersion: javaVersion,
+      newName: newName,
 
     }),
   };
