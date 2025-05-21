@@ -31,6 +31,7 @@
   let accountType = "email";
   let uniqueId = Math.floor(Math.random() * 1000000000);
   let downloadUrl = "";
+  let key = "";
 
   if (browser) {
     id = localStorage.getItem("serverID");
@@ -55,9 +56,9 @@
     }
   }
 
-    let key = localStorage.getItem("fileAccessKey");
+     key = localStorage.getItem("fileAccessKey");
    
-    downloadUrl = apiurl + "server/" + id + "/files/download/" + url + "?key=" + key;
+
   switch (extension) {
     case "png":
     case "jpg":
@@ -293,6 +294,16 @@
     </label>
     <label
       for="download{filename}"
+      on:click={() => {
+        downloadUrl =
+          apiurl +
+          "server/" +
+          localStorage.getItem("serverID") +
+          "/files/download/" +
+          url.split("*").join("/") +
+          "?key=" +
+          localStorage.getItem("fileAccessKey");
+      }}
       class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     >
       <Download class="w-[.9rem] h-[.9rem] md:w-[1rem] md:h-[1rem]" />

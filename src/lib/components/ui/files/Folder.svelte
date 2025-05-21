@@ -32,23 +32,22 @@
   if (browser) {
     id = localStorage.getItem("serverID");
     if (path != undefined) {
-      if (path.includes("servers/" + id + "//"))
+      if (path.includes("/" + id + "//"))
         uploadpath = path
-          .split("servers/" + id + "//")[1]
+          .split("/" + id + "//")[1]
           .split("/")
           .join("*");
-      if (path.includes("servers/" + id + "/"))
+      if (path.includes("/" + id + "/"))
         uploadpath = path
-          .split("servers/" + id + "/")[1]
+          .split("/" + id + "/")[1]
           .split("/")
           .join("*");
     }
     
 
     
-    let key = localStorage.getItem("fileAccessKey");
-   
-    downloadUrl = apiurl + "server/" + id + "/files/download/" + uploadpath + "?key=" + key + "&username=" + localStorage.getItem("accountEmail");
+
+  
 
     if (localStorage.getItem("accountEmail").includes("@")) {
       accountType = "email";
@@ -170,6 +169,18 @@
           document.dispatchEvent(event);
         }
       }); 
+  }
+
+  function getDownloadUrl() {
+
+ downloadUrl =
+          apiurl +
+          "server/" +
+          localStorage.getItem("serverID") +
+          "/files/download/" +
+          uploadpath +
+          "?key=" +
+          localStorage.getItem("fileAccessKey");
   }
 </script>
 
@@ -338,9 +349,10 @@
   <div class="modal-box bg-opacity-95 backdrop-blur relative">
     <label
       for="download{foldername}"
+            on:click={getDownloadUrl()}
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
-    <h3 class="text-lg font-bold mb-5">Download /{foldername}</h3>
+    <h3 class="text-lg font-bold mb-5">Download /{ foldername }</h3>
 
     <div class="flex gap-1">
       <a href={downloadUrl} download id="downloadBtn" class="btn btn-accent btn-sm"
