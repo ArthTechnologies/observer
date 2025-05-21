@@ -93,7 +93,7 @@
       apiurl +
         "server/" +
         id +
-        "/files/" +
+        "/files/write/" +
         filepath.split("/").join("*"),
       {
         method: "POST",

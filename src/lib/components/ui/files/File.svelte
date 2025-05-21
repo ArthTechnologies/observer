@@ -76,7 +76,7 @@
   function getText() {
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
-    fetch(baseurl + "server/" + id + "/file/" + url, {
+    fetch(baseurl + "server/" + id + "/files/read/" + url, {
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),
