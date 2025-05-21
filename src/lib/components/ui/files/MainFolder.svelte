@@ -27,9 +27,13 @@
   let folderId;
   let id;
   let accountType;
+  let downloadUrl;
 
   if (browser) {
     id = localStorage.getItem("serverID");
+        let key = localStorage.getItem("fileAccessKey");
+       downloadUrl = apiurl + "server/" + id + "/files/mainfolder?key=" + key;
+       console.log("Download URL: ", downloadUrl);
     if (localStorage.getItem("accountEmail").includes("@")) {
       accountType = "email";
     } else {
@@ -84,63 +88,8 @@
       });
   }
 
-  let downloading = false;
-  let downloadProgress = "0/0MB";
-  let gradientBackground = "#1fb2a5";
-  
-  function download() {
-    downloading = true;
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", apiurl + "server/" + id + "/download/", true);
-    xhr.setRequestHeader("token", localStorage.getItem("token"));
-    xhr.setRequestHeader("username", localStorage.getItem("accountEmail"));
-    xhr.responseType = "blob";
-    const lhref = window.location.href;
-    const downloadBtn = document.getElementById("downloadBtn");
 
-    xhr.addEventListener("progress", (event) => {
-      if (event.lengthComputable && browser) {
-        const percentComplete = (event.loaded / event.total) * 100;
-        if (percentComplete < 100 && window.location.href == lhref) {
-          downloadProgress = downloadProgressShort(event.loaded, event.total);
-          downloadBtn.style.width = "200px";
-          downloadBtn.classList.add("text-accent-content", "pointer-events-none");
-          gradientBackground = "#1fb2a5";
-          downloadBtn.style.background = `linear-gradient(
-            to right,
-            rgba(0, 0, 0, 0.9) 0%,
-            rgba(0, 0, 0, 0.0) ${percentComplete}%,
-            ${gradientBackground} ${percentComplete}%,
-            ${gradientBackground} 100%
-          )`;
-        } else if (percentComplete >= 100) {
-          downloadProgress = "0/0MB";
-          downloadBtn.style.width = ``;
-          downloadBtn.style.background = ``;
-          downloadBtn.classList.remove("pointer-events-none", "text-accent-content");
-        }
-      }
-    });
 
-    xhr.onload = function () {
-      downloading = false;
-      if (xhr.status === 200) {
-        const blob = xhr.response;
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = foldername;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      } else {
-        console.error("Error downloading file. Status:", xhr.status);
-      }
-    };
-
-    xhr.send();
-  }
 </script>
 
 <div class="flex gap-1 justify-between">
@@ -238,26 +187,9 @@
     >
     <h3 class="text-lg font-bold mb-5">Download Main Folder</h3>
     <div class="flex gap-1">
-      <button
-        id="downloadBtn"
-        class="btn btn-accent btn-sm"
-        on:click={download}
+      <a href={downloadUrl} download id="downloadBtn" class="btn btn-accent btn-sm"
+        >{$t("button.download")}</a
       >
-        {#if !downloading}
-          <Download size="18" />
-        {:else}
-          <div class="animate-spin">
-            <Loader />
-          </div>
-        {/if}
-        <p class="ml-1.5">
-          {#if downloading}
-            {downloadProgress}
-          {:else}
-            {$t("button.download")}
-          {/if}
-        </p>
-      </button>
     </div>
   </div>
 </div>
