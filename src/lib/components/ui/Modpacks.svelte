@@ -22,6 +22,7 @@
   let modpackImageUrl = "/images/placeholder.webp";
   let modpackName = "";
   let modpackVersion = "";
+  let modpackVersionName = "";
   onMount(() => {
     if (browser) {
       search("mr");
@@ -54,6 +55,7 @@
               modpackImageUrl = res.logo.thumbnailUrl;
               modpackName = res.name;
               modpackVersion = e.detail.versionId;
+              modpackVersionName = e.detail.versionName;
             });
         } else if (e.detail.platform == "mr") {
           fetch("https://api.modrinth.com/v2/project/" + id, {
@@ -64,6 +66,7 @@
               modpackImageUrl = res.icon_url;
               modpackName = res.title;
               modpackVersion = res.versions[0].version;
+              modpackVersionName = e.detail.versionName;  
             });
         }
         document.getElementById("setModpack").classList.add("hidden");
