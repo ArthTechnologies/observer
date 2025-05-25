@@ -53,7 +53,7 @@
             .then((res) => {
               modpackImageUrl = res.logo.thumbnailUrl;
               modpackName = res.name;
-              modpackVersion = e.detail.versionID;
+              modpackVersion = e.detail.versionId;
             });
         } else if (e.detail.platform == "mr") {
           fetch("https://api.modrinth.com/v2/project/" + id, {

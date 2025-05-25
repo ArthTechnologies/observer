@@ -19,6 +19,7 @@
   export let platform: string = "cf";
   export let alternateFileId: string = "0";
   let modpackId = id;
+  console.log("modpackId", modpackId);
   let uniqueId = Math.random().toString(36).substr(2, 9);
 
   if (type == "release") {
