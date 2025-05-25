@@ -238,7 +238,7 @@
     >
       <p class="truncate w-[9.625rem] text-[.975rem]">{modpackName}</p>
       <p class="text-xs text-gray-600 truncate w-[10.65rem]">
-        {modpackVersion}
+        {modpackVersionName}
       </p>
       <button
         class="btn btn-xs btn-square btn-ghost absolute top-0.5 right-0.5"
