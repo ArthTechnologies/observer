@@ -770,7 +770,7 @@ export function writeTerminal(id: number, cmd: string) {
   if (usingOcelot)
     baseurl =
       getServerNode(id);
-  const url = baseurl + "terminal/" + id + "?cmd=" + cmd;
+  const url = baseurl + "server/" + id + "/terminal?cmd=" + cmd;
   return fetch(url, POST)
     .then((res) => res.text())
     .then((input: string) => {
@@ -791,7 +791,7 @@ export function readTerminal(id: number) {
   if (usingOcelot)
     baseurl =
       getServerNode(id);
-  const url = baseurl + "terminal/" + id;
+  const url = baseurl + "server/" + id + "/terminal";
   return fetch(url, GET)
     .then((res) => res.text())
     .then((input: string) => {
