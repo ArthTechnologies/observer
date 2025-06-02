@@ -272,7 +272,7 @@ Invalid Account
 {/if}
 {:else if typeof server == "string" && server.split(":")[1] == "no valid subscription"}
 <a
-  on:click={() => createServer(parseInt(server.split(":")[0]))}
+  href="/billing"
   id="serverCard{parseInt(server.split(":")[0])}"
   class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-12 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
 >
