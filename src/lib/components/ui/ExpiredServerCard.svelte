@@ -5,7 +5,7 @@
   import { getServer } from "$lib/scripts/req";
   import { t, locale, locales } from "$lib/scripts/i18n";
   import { browser } from "$app/environment";
-  import { ArrowRight, Loader, Plus, PlusIcon } from "lucide-svelte";
+  import { AlertOctagon, ArrowRight, Loader, Plus, PlusIcon } from "lucide-svelte";
   //Status variables
 
   let startcolor = "accent";
@@ -44,7 +44,7 @@
 <div
   
   class="bg-base-300 w-[3.75rem] h-[3.75rem] rounded-lg max-lg:hidden flex justify-center items-center"
-><ArrowRight size=32/></div>
+><AlertOctagon size=32/></div>
 <div class="-mt-1">
   <p class="font-poppins-bold text-gray-200 text-sm md:text-lg truncate max-md:hidden">Expired Server</p>
   <div class="md:hidden flex items-center justify-center"><PlusIcon size=20/></div>
@@ -52,6 +52,9 @@
   <div class="max-md:hidden">
     <p class="font-poppins text-xs mb-0.5 -mt-1">
       Slot {parseInt(id)} will be reset in {daysUntil(timestamp)} days.
+    </p>
+        <p class="font-poppins text-xs mb-0.5 -mt-1">
+      Contact support to renew.
     </p>
   </div>
 </div>
