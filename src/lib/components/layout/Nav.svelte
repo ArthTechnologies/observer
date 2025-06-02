@@ -22,6 +22,7 @@
 
     import SupportModal from "../buttons/SupportModal.svelte";
     import LanguageSwitcherModal from "../buttons/LanguageSwitcherModal.svelte";
+    import ExpiredServerCard from "../ui/ExpiredServerCard.svelte";
 
   // NOTE: the element that is using one of the theme attributes must be in the DOM on mount
   let servers: any[] = [];
@@ -247,7 +248,7 @@
         </div>
       {:then}
         {#each servers as server}
-{#if typeof server == "string"}
+{#if typeof server == "string" && server.split(":")[1] == "not created yet"}
 {#if parseInt(server.split(":")[0]) == -1}
 Invalid Account
 {:else}
@@ -269,6 +270,14 @@ Invalid Account
 </a>
 {/if}
 {/if}
+{:else if typeof server == "string" && server.split(":")[1] == "no valid subscription"}
+<a
+  on:click={() => createServer(parseInt(server.split(":")[0]))}
+  id="serverCard{parseInt(server.split(":")[0])}"
+  class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-12 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
+>
+<ExpiredServerCard id={parseInt(server.split(":")[0])} timestamp={server.split(":")[2]}/>
+</a>
 {:else}
 {#if parseInt(server.id) + 10000 == slug}
 <a
