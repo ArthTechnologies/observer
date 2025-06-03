@@ -31,6 +31,7 @@
   var id = 0;
 
   let devMode = false;
+  let providerMode = true;
 
   let noserverlock = false;
   let amountOfServersForSkeletons = 1;
@@ -43,6 +44,7 @@
     }
   });
   if (browser) {
+    providerMode = localStorage.getItem("providerMode") == "true";
     email = localStorage.getItem("accountEmail");
     amountOfServersForSkeletons = localStorage.getItem("amountOfServers");
     if (localStorage.getItem("devMode") == "true") {
@@ -304,9 +306,11 @@ Invalid Account
     <a on:click={()=>{update(undefined, false)}} href="/account" class="btn btn-ghost btn-sm flex justify-start">
       <User size="18" class="mr-2" />Account</a
     >
+{#if providerMode}
     <a on:click={()=>{update(undefined, false)}} href="/billing" class="btn btn-ghost btn-sm flex justify-start">
       <ShoppingCart size="18" class="mr-2" />Subscriptions</a
     >
+    {/if}
 
     <button onclick="modal_language.showModal()" class="btn btn-ghost btn-sm flex justify-start">
       <Languages size="18" class="mr-2" />Language</button
@@ -334,7 +338,9 @@ Invalid Account
         class="dropdown-content menu bg-base-300 rounded-box z-[1] w-52 p-2 shadow-xl"
       >
         <li><a on:click={()=>{update(undefined, false)}} href="/account">Account</a></li>
+        {#if providerMode}
         <li><a on:click={()=>{update(undefined, false)}} href="/billing">Subscriptions</a></li>
+        {/if}
 <li>        <a onclick="modal_language.showModal()">
   Language</a
  ></li>
