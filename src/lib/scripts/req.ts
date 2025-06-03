@@ -422,8 +422,7 @@ export function getSettings() {
     .then((input: string) => {
       console.log("Response Recieved: " + input);
       if (browser) {
-        localStorage.setItem("enablePay", JSON.parse(input).enablePay);
-        localStorage.setItem("enableAuth", JSON.parse(input).enableAuth);
+        localStorage.setItem("providerMode", JSON.parse(input).providerMode);
         localStorage.setItem("address", JSON.parse(input).address);
         localStorage.setItem("latestVersion", JSON.parse(input).latestVersion);
         localStorage.setItem("enableVirusScan", JSON.parse(input).enableVirusScan);
@@ -431,7 +430,7 @@ export function getSettings() {
         localStorage.setItem("cloudflareVerifySiteKey", JSON.parse(input).cloudflareVerifySiteKey);
         localStorage.setItem("enableDeepL", JSON.parse(input).enableDeepL);
 
-        if (JSON.parse(input).enableAuth == false) {
+        if (JSON.parse(input).providerMode == false) {
           localStorage.setItem("accountEmail", "guest");
           accountEmail.set("guest");
         }

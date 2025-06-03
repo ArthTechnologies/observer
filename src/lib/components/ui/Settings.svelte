@@ -7,10 +7,10 @@
   let stripe = true;
   function readSettings() {
     getSettings().then((res) => {
-      console.log("response:" + res.enablePay);
+      console.log("response:" + res.providerMode);
       //set element "webport"'s placeholder to res.webport
-      //set checkbox "enablepay" to res.enablePay
-      if (res.enablePay == false) {
+      //set checkbox "providerMode" to res.providerMode
+      if (res.providerMode == false) {
         stripe = false;
       }
       if (res.disableAuth == true) {

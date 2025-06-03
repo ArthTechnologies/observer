@@ -88,7 +88,7 @@
         ).then((x) => {
           if (x === true) {
             console.log("redricting...");
-            if (localStorage.getItem("enablePay") == "true") {
+            if (localStorage.getItem("providerMode") == "true") {
 
               //change this to your own stripe checkout link
               if (plan == undefined) {

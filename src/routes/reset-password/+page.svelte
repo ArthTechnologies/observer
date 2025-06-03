@@ -6,12 +6,12 @@
   import { apiurl } from "$lib/scripts/req";
   import { alert } from "$lib/scripts/utils";
     import SignedOutNav from "$lib/components/layout/SignedOutNav.svelte";
-  let enablePay = true;
+  let providerMode = true;
   let backurl = "/login";
   let locations = [];
   if (browser) {
-    if (localStorage.getItem("enablePay") == "false") {
-      enablePay = false;
+    if (localStorage.getItem("providerMode") == "false") {
+      providerMode = false;
     }
 
     fetch("https://ocelot.arthmc.xyz/nodeInfo")
@@ -109,7 +109,7 @@
         <label for="email " class="font-bold">{$t("email")}</label>
         <input id="email" class="input input-bordered" type="text" />
       </div>
-      {#if enablePay}
+      {#if providerMode}
         <div class="flex flex-col mt-2">
           <label for="email " class="font-bold"
             >{$t("account.resetPassword.l.last4")}</label
