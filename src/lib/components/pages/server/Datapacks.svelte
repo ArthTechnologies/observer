@@ -63,7 +63,7 @@
     const url = baseurl + "server/" + serverId + "/files/world*datapacks*" + filename;
 
     fetch(url, {
-      method: "DELETE",
+      method: "POST",
       headers: {
         token: localStorage.getItem("token"),
         username: localStorage.getItem("accountEmail"),
