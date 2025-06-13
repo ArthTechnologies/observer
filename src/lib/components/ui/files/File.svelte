@@ -214,6 +214,20 @@
       renameBtn.classList.add("btn-disabled");
     }
   }
+
+  function setDownloadUrl() {
+    if (url.includes("servers/" + id + "/")) {
+      url = url.split("servers/" + id + "/")[1];
+    }
+    downloadUrl =
+          apiurl +
+          "server/" +
+          localStorage.getItem("serverID") +
+          "/files/download/" +
+          url.split("*").join("/") +
+          "?key=" +
+          localStorage.getItem("fileAccessKey");
+  }
 </script>
 
 <div class="flex gap-1 justify-between">
@@ -295,14 +309,7 @@
     <label
       for="download{filename}"
       on:click={() => {
-        downloadUrl =
-          apiurl +
-          "server/" +
-          localStorage.getItem("serverID") +
-          "/files/download/" +
-          url.split("*").join("/") +
-          "?key=" +
-          localStorage.getItem("fileAccessKey");
+        setDownloadUrl();
       }}
       class="px-1.5 p-1 rounded-lg btn-ghost cursor-pointer gap-1 flex items-center"
     >
