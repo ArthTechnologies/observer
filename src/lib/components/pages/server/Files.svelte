@@ -50,7 +50,7 @@
       .then((response) => response.json())
       .then((data) => {
         ftpPassword = data.token;
-        localStorage.setItem("fileAccessKey", data.token);
+      
       });
 
     document.addEventListener("keydown", function (event) {

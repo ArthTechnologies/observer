@@ -205,6 +205,7 @@
     localStorage.setItem("serverCardRedrict", "true");
     localStorage.setItem("serverDynmap", server.webmap);
     localStorage.setItem("serverVoicechat", server.voicechat);
+    localStorage.setItem("fileAccessKey", server.fileAccessKey);
     if (server.subdomain != undefined) {
       localStorage.setItem("serverSubdomain", server.subdomain);
     } else {
