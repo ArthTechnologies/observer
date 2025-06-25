@@ -304,30 +304,30 @@ Invalid Account
     </div>
   </div>
   <div class="max-md:hidden flex flex-col w-full gap-1">
-    <a on:click={()=>{update(undefined, false)}} href="/account" class="btn btn-ghost btn-sm flex justify-start">
-      <User size="18" class="mr-2" />Account</a
+    <a on:click={()=>{update(undefined, false)}} href="/account" class="btn btn-ghost btn-ms flex justify-start hover:text-primary">
+      <User size="20" />Account</a
     >
 {#if providerMode}
-    <a on:click={()=>{update(undefined, false)}} href="/billing" class="btn btn-ghost btn-sm flex justify-start">
-      <ShoppingCart size="18" class="mr-2" />Subscriptions</a
+    <a on:click={()=>{update(undefined, false)}} href="/billing" class="btn btn-ghost btn-ms flex justify-start hover:text-primary">
+      <ShoppingCart size="20" />Subscriptions</a
     >
     {/if}
 
-    <button onclick="modal_language.showModal()" class="btn btn-ghost btn-sm flex justify-start">
-      <Languages size="18" class="mr-2" />Language</button
+    <button onclick="modal_language.showModal()" class="btn btn-ghost btn-ms flex justify-start hover:text-primary">
+      <Languages size="20" />Language</button
     >
 
 
-    <button onclick="modal_support.showModal()" class="btn btn-ghost btn-sm flex justify-start">
-      <HelpCircle size="18" class="mr-2" />Get Support</button
+    <button onclick="modal_support.showModal()" class="btn btn-ghost btn-ms flex justify-start hover:text-primary">
+      <HelpCircle size="20" />Get Support</button
     >
     {#if devMode}
-    <a href="/dashboard" class="btn btn-ghost btn-sm flex justify-start">
-      <Crown size="18" class="mr-2" />Dashboard</a
+    <a href="/dashboard" class="btn btn-ghost btn-ms flex justify-start hover:text-primary">
+      <Crown size="20" />Dashboard</a
     >
     {/if}
-    <button class="btn btn-ghost btn-sm flex justify-start" on:click={logout}>
-      <LogOut size="18" class="mr-2" />Logout</button
+    <button class="btn btn-ghost btn-ms flex justify-start hover:text-primary" on:click={logout}>
+      <LogOut size="20" />Logout</button
     >
   </div>
   <div class="md:hidden flex gap-1">

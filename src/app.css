@@ -44,6 +44,19 @@ the oklch format. */
     src: url("/fonts/Poppins-Bold.ttf");
   }
 
+  @layer components {
+  .btn-ghost:hover {
+  background-color: color-mix(in srgb, currentColor 10%, transparent);
+  }
+}
+  .btn-ms.btn-ms {
+    height: 40px;
+    min-height: 40px;
+    text-transform: capitalize;
+    font-size: 15.5px;
+    gap: 0.75rem;
+    
+  } 
   .font-poppins {
     font-family: "Poppins";
   }
