@@ -210,8 +210,8 @@
       {/if}
     </p>
     <div class="flex gap-2">
-      <p class="bg-base-300 px-1.5 rounded text-xs font-poppins">{software}</p>
-      <p class="bg-base-300 px-1.5 rounded text-xs font-poppins">{version2}</p>
+      <p class="bg-base-200 px-1.5 rounded text-xs font-poppins">{software}</p>
+      <p class="bg-base-200 px-1.5 rounded text-xs font-poppins">{version2}</p>
     </div>
   </div>
 </div>
