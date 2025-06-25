@@ -230,7 +230,7 @@
 </script>
 
 <div
-  class="shrink-0 md:fixed md:h-screen bg-base-100 px-5 py-3 md:py-5 flex md:flex-col items-center justify-between w-full md:w-[22%]"
+  class="shrink-0 md:fixed md:h-screen bg-base-100 px-5 py-3 md:py-5 flex md:flex-col items-center justify-between w-full md:w-[22%] border-r-4 border-base-300"
 >
   <div class="flex md:flex-col items-center w-full">
     <img src="/favicon.png" class="w-12 md:hidden" />
