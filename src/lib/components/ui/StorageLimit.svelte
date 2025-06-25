@@ -13,9 +13,9 @@
   let first = 0;
   let second = 0;
   let third = 0;
-  let firstColor = "bg-neutral";
-  let secondColor = "bg-slate-500";
-  let thirdColor = "bg-slate-700";
+  let secondColor = "bg-gradient-to-r from-lime-50 to-emerald-100";
+  let firstColor = "bg-gradient-to-r from-orange-500 to-red-500";
+  let thirdColor = "bg-gradient-to-r from-yellow-500 to-amber-500";
   let firstName = "Mods/Plugins";
   let secondName = "Worlds";
   let thirdName = "Misc";
@@ -81,29 +81,50 @@
     }
   });
 </script>
+<div>
+  <div class="flex items-start justify-between gap-2 font-poppins mb-2">
 
+  <p><span class="">Storage:</span>
+  <span class="text-gray-400 font-semibold px-0.5 text-sm text-zinc-200">{storageRatio}</span></p>
+<span class="badge text-xs mt-0.5 hidden">Upgrade for more</span>
+</div>
 <div
   id="ratioVisualizer"
-  class="relative bg-base-300 border-base-100 border-2 rounded-lg px-4 flex items-center w-3/4 h-11 -my-1 font-semibold text-sm uppercase text-gray-200 gap-1.5 justify-center"
+  class="relative bg-base-200 border-base-100 border-0 rounded-lg px-4 flex items-center w-full h-4 -my-1 font-semibold text-sm uppercase text-gray-200 gap-1.5 justify-center"
 >
-  <HardDrive class="z-[5]" size=22 />
-  <span class="z-[5]">{$t("using")} {storageRatio}</span>
+
 
   <div
-    class="absolute left-0 h-full {firstColor} z-[3] rounded-l-[0.4rem] tooltip"
+    class="absolute left-0 h-full {firstColor} z-[3] rounded-l-[0.4rem]"
     style="width: {(first / limit) * 100}%"
-    data-tip={firstName}
+
   ></div>
   <div
-    class="absolute left-0 h-full {secondColor} z-[2] rounded-l-xl tooltip"
+    class="absolute left-0 h-full {secondColor} z-[2] rounded-l-xl"
     style="width: {(second / limit) * 100 + (first / limit) * 100}%;"
-    data-tip={secondName}
+
   ></div>
   <div
-    class="absolute left-0 h-full {thirdColor} z-[1] rounded-l-xl tooltip"
+    class="absolute left-0 h-full {thirdColor} z-[1] rounded-l-xl"
     style="width: {(third / limit) * 100 +
       (second / limit) * 100 +
       (first / limit) * 100}%"
-    data-tip={thirdName}
+
   ></div>
+</div>
+<div class="flex justify-between items-center mt-2">
+  <div class="text-xs flex items-center gap-1 font-poppins font-bold">
+    <div class="w-2 h-2 bg-orange-600 rounded-full"></div>
+    Misc
+  </div>
+  <div class="text-xs flex items-center gap-1 font-poppins font-bold">
+    <div class="w-2 h-2 bg-orange-50 rounded-full"></div>
+    Mods/Plugins
+  </div>
+  <div class="text-xs flex items-center gap-1 font-poppins font-bold">
+    <div class="w-2 h-2 bg-yellow-600 rounded-full"></div>
+    World
+  </div>
+  </div>
+
 </div>

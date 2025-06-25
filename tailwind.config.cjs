@@ -22,7 +22,7 @@ module.exports = {
           "neutral-content": "#A6ADBB",
  "base-100": "#181f2a",
           "base-200": "#1d2532",
-          "base-300": "#212836",
+          "base-300": "#232b39",
           "base-content": "#A6ADBB",
         },
         light: {

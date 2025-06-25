@@ -806,6 +806,10 @@
           >
         </div>
       {/if}
+      <div class=" bg-base-300 w-full shadow-xl rounded-xl px-4 py-3 ">
+        <p class=" font-bold text-gray-100 mb-2">Server Stats</p>
+              <StorageLimit />
+      </div>
       <div class=" bg-base-100 rounded-xl px-4 pt-3 pb-6">
         <p class="text-lg font-poppins-bold">{$t("shortcuts.title")}</p>
         <div class="space-x-1.5 space-y-1.5">
@@ -837,7 +841,7 @@
           >
         </div>
       </div>
-      <StorageLimit />
+
       <div class="flex flex-col gap-2 items-center">
         <div class="flex space-x-2">
           <Versions />
