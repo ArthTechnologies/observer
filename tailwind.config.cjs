@@ -12,9 +12,9 @@ module.exports = {
         dark: {
           ...require("daisyui/src/theming/themes")["dark"],
           "color-scheme": "dark",
-          primary: "#088385",
+          primary: "#ff4c29",
           "primary-content": "#ffffff",
-          secondary: "#cc4304",
+          secondary: "#fb923c",
           "secondary-content": "#ffffff",
           accent: "#1FB2A5",
           "accent-content": "#ffffff",
