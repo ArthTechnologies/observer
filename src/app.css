@@ -48,7 +48,16 @@ the oklch format. */
   .btn-ghost:hover {
   background-color: color-mix(in srgb, currentColor 10%, transparent);
   }
+
+  .tab:hover {
+    background-color: color-mix(in srgb, currentColor 10%, transparent);
+
+  }
+  
+
 }
+
+  
   .btn-ms.btn-ms {
     height: 40px;
     min-height: 40px;
