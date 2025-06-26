@@ -20,9 +20,9 @@ module.exports = {
           "accent-content": "#ffffff",
           neutral: "#13171e",
           "neutral-content": "#A6ADBB",
- "base-100": "#181f2a",
-          "base-200": "#1d2532",
-          "base-300": "#232b39",
+ "base-100": "#172030",
+  "base-200": "#1c2639",
+  "base-300": "#262f43",
           "base-content": "#A6ADBB",
         },
         light: {

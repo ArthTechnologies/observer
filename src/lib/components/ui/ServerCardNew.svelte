@@ -196,7 +196,7 @@
 
 <img
   src="/images/placeholder.webp"
-  class="w-[3.75rem] h-[3.75rem] rounded-lg max-lg:hidden"
+  class="w-[3.5rem] h-[3.5rem] rounded-md max-lg:hidden"
 />
 <div class="-mt-1">
   <p class="font-poppins-bold text-gray-200 text-sm md:text-lg truncate">{name}</p>

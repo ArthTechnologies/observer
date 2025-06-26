@@ -40,8 +40,8 @@
 
 
 <div
-  
-  class="bg-slate-700 bg-opacity-50 w-[3.75rem] h-[3.75rem] rounded-lg max-lg:hidden flex justify-center items-center"
+
+  class="bg-slate-700 bg-opacity-50 w-[3.5rem] h-[3.5rem] rounded-md max-lg:hidden flex justify-center items-center"
 ><Plus size=32/></div>
 <div class="-mt-1">
   <p class="font-poppins-bold text-gray-200 text-sm md:text-lg truncate max-md:hidden">Create Server</p>
