@@ -185,30 +185,3 @@ import { onMount } from "svelte";
 
 </div>
 </div>
-
-<style>
-   .neutralGradientStroke {
-    position: relative;
-
-    z-index: 1;
-  }
-
-  .neutralGradientStroke::before {
-    content: "";
-    position: absolute;
-    top: 0px;
-
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    border-radius: inherit; /* Inherits button's border-radius */
-    padding: 3px; /* Space between button and border */
-    background: linear-gradient(0deg, #2a354e, #ffffff00, #ffffff00, #ffffff00);
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: destination-out;
-    mask-composite: exclude;
-    z-index: -1;
-  }
-</style>
