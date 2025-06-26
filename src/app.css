@@ -43,7 +43,10 @@ the oklch format. */
     font-family: "PoppinsBold";
     src: url("/fonts/Poppins-Bold.ttf");
   }
-
+  @font-face {
+    font-family: "Inter";
+    src: url("/fonts/Inter.ttf");
+  }
   @layer components {
   .btn-ghost:hover {
   background-color: color-mix(in srgb, currentColor 10%, transparent);
@@ -87,4 +90,8 @@ the oklch format. */
 
   .font-poppins-bold {
     font-family: "PoppinsBold";
+  }
+
+  .font-inter {
+    font-family: "Inter";
   }

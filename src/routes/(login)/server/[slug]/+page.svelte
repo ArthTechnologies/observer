@@ -37,6 +37,14 @@
     MemoryStick,
     Users,
     Unplug,
+    PencilIcon,
+    CopyIcon,
+    FileQuestion,
+    ShieldQuestion,
+    Book,
+    BookOpen,
+    CameraIcon,
+    PenLine,
   } from "lucide-svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
   import Versions from "$lib/components/buttons/Versions.svelte";
@@ -52,6 +60,7 @@
   import MemoryChart from "$lib/components/pages/dashboard/MemoryChart.svelte";
   import CpuUsageChart from "$lib/components/pages/dashboard/CpuUsageChart.svelte";
   import Backups from "$lib/components/pages/server/Backups.svelte";
+    import CopyButton from "$lib/components/buttons/CopyButton.svelte";
 
   let tab = "terminal";
   let modded = false;
@@ -583,28 +592,63 @@
     >
       <div class="space-y-5 w-full">
         <div
-          class="rounded-xl bg-base-100 bg-opacity-75 shadow-sm image-full mt-4 md:mt-0 w-full"
+          class=" bg-base-300 w-full shadow-xl rounded-xl px-4 py-3 "
         >
-          <div class="flex items-center w-full md:w-[19.8rem]">
-            <div class="p-3 flex items-center gap-3.5 w-full">
-              <img
-                id="xIcon"
-                src={icon}
-                class="w-[3.5rem] h-[3.5rem] rounded-lg"
-              />
+        <p class=" font-bold font-inter text-gray-100 mb-3">Server Info</p>
+          <div class="flex flex-col items-center w-full md:w-[19.8rem]">
+         
+<div class="flex items-center gap-3.5 w-full">
+  <div class="w-[3.5rem] h-[3.5rem] relative group">
+    <img
+      id="xIcon"
+      src={icon}
+      class="rounded-lg transition-all cursor-pointer"
+    />
+    <div class="absolute top-0 left-0 w-full h-full cursor-pointer bg-black bg-opacity-50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+      <CameraIcon />
+    </div>
+  </div>
 
               <div class="flex flex-col">
                 <div class="text-sm font-light flex font-poppins">
-                  IP Address
+                Name:
                 </div>
                 <div class="font-poppins-bold text-sm md:text-lg -mt-1">
-                  {#if subdomain == undefined}{address}:{port}{:else}
-                    {subdomain}.{address}
-                  {/if}
+                  {name} <button class="btn bg-base-100 bg-opacity-75 btn-xs btn-circle">
+                    <PenLine size=12 /></button>
                 </div>
 
                 <div id="rawDesc" class="hidden"></div>
               </div>
+              
+            </div>
+                  <div class="flex items-center gap-3.5 w-full">
+           
+
+           <div class="flex">
+               <div class="flex flex-col">
+               <span class="text-sm font-light  font-poppins mt-3">
+                  IP Address
+                </span>
+                <div class="flex justify-between">
+                  <div class="font-mono text-sm  text-white  rounded flex gap-1 items-center -mt-1">
+                  {#if subdomain == undefined}{address}:{port}{:else}
+                    {subdomain}.{address}
+                  {/if}
+                  <CopyButton text={subdomain == undefined ? address + ":" + port : subdomain + "." + address} size="16" class="cursor-pointer"
+                  />
+            
+                </div>
+                <button class="btn btn-xs"><BookOpen size=16 class="mr-1.5"/> How to Join</button>
+                </div>
+<div class="divider my-2"></div>
+              <StorageLimit />
+                <div id="rawDesc" class="hidden"></div>
+              </div>
+              
+                  
+           </div>
+              
             </div>
           </div>
         </div>
@@ -807,8 +851,7 @@
         </div>
       {/if}
       <div class=" bg-base-300 w-full shadow-xl rounded-xl px-4 py-3 ">
-        <p class=" font-bold text-gray-100 mb-2">Server Stats</p>
-              <StorageLimit />
+        
       </div>
       <div class=" bg-base-100 rounded-xl px-4 pt-3 pb-6">
         <p class="text-lg font-poppins-bold">{$t("shortcuts.title")}</p>
