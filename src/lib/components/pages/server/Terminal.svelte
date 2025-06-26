@@ -159,7 +159,7 @@ import { onMount } from "svelte";
 </script>
 
 <div class="bg-base-300 rounded-xl px-4 py-3 shadow-xl neutralGradientStroke" id="terminalContainerContainer">
-        <p class=" font-bold font-ubuntu text-gray-100 mb-2">Server Console</p>
+        <p class="font-ubuntu text-gray-200 text-lg ml-1 mb-2">Server Console</p>
   <div  class="relative mb-3 w-full ">
     <FullscreenTerminal />
     <div

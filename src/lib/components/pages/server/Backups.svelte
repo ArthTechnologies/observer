@@ -64,9 +64,9 @@
   }
 </script>
 
-<div class="relative bg-base-100 rounded-xl p-3 w-full space-y-2 min-h-[30rem]">
+<div class="bg-base-300 rounded-xl px-4 py-3 shadow-xl neutralGradientStroke w-full space-y-2 min-h-[30rem]">
   <div class="flex justify-between items-center">
-    <p class="font-poppins-bold text-lg ml-1">Backups</p>
+    <p class="font-ubuntu text-gray-200 text-lg ml-1">Backups</p>
     <div
       class="badge badge-outline absolute top-2 right-2 badge-lg text-sm flex gap-1 items-center"
     >
@@ -79,7 +79,7 @@
       {#each Array.from({ length: 5 }) as _, i}
         <div class="flex flex-col">
           <div
-            class="h-[3rem] bg-base-200 rounded-lg px-3 pt-[1.125rem] pb-[.75rem] flex flex-col justify-between"
+            class="h-[3rem] bg-base-100 rounded-lg px-3 pt-[1.125rem] pb-[.75rem] flex flex-col justify-between"
           >
             <div class="flex space-x-1 items-end">
               <div class="bg-slate-700 rounded-lg w-[5rem] h-4 animate-pulse" />
