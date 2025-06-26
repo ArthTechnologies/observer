@@ -414,28 +414,29 @@
   <!-- Start Top Section-->
   <div class="flex justify-between mb-2 items-center">
     <div>
-      <div class="mb-2">
+      <div class="mb-2 flex items-end gap-1">
         <span
           class="font-poppins-bold text-gray-200 text-3xl mr-0.5"
           id="serverName">{name}</span
         >
         
 
-{#if state == "true" }
-<div class="badge badge-neutral gap-1">
-  
-  <span class="mb-0.5 text-success">●</span> Online
+<div>
+  {#if state == "true" }
+<div class="badge badge-neutral gap-1 font-ubuntu text-[.8rem] flex items-center mb-0.5">
+  <span class="mb-[0.2rem] text-success">●</span> Online
 </div>
 {:else if state == "false"}
-<div class="badge badge-neutral gap-1 ">
-  <span class="mb-0.5 text-error">●</span> Offline
+<div class="badge badge-neutral gap-1 font-ubuntu text-[.8rem] flex items-center mb-0.5">
+  <span class="mb-[0.2rem] text-error">●</span> Offline
 </div>
  
 {:else if state == "starting" || state == "installing" || state == "stopping"}
-<div class="badge badge-neutral bg-gray-900 text-gray-300 skeleton gap-1">
-  <span class="mb-0.5">●</span> Loading
+<div class="badge badge-neutral bg-neutral gap-1 skeleton font-ubuntu text-[.8rem] flex items-center mb-0.5">
+  <span class="mb-[0.2rem]">●</span> Loading
   </div>
   {/if}
+</div>
       </div>
       <div class="flex gap-2">
         {#if state == "true"}
@@ -511,7 +512,7 @@
   >
     <!-- Start Left Side-->
     <div class="flex flex-col space-y-3 w-full">
-      <div role="tablist" class="tabs tabs-boxed bg-base-100  w-fit  p-2 flex flex-wrap p-0 gap-1">
+      <div role="tablist" class="tabs font-ubuntu tabs-boxed bg-base-100  w-fit  p-2 flex flex-wrap p-0 gap-1">
         {#each tabs as label, index}
           {#if label == "mods"}
             <a
@@ -578,7 +579,7 @@
         <div
           class=" bg-base-300 w-full shadow-xl rounded-xl px-4 py-3 neutralGradientStroke"
         >
-        <p class=" font-bold font-inter text-gray-100 mb-3">Server Info</p>
+        <p class=" font-bold font-ubuntu text-gray-100 mb-3">Server Info</p>
           <div class="flex flex-col items-center w-full md:w-[19.8rem]">
          
 <div class="flex items-center gap-3.5 w-full">

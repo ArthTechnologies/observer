@@ -304,21 +304,21 @@ Invalid Account
     </div>
   </div>
   <div class="max-md:hidden flex flex-col w-full gap-1">
-    <a on:click={()=>{update(undefined, false)}} href="/account" class="btn btn-ghost btn-ms flex justify-start hover:text-primary">
+    <a on:click={()=>{update(undefined, false)}} href="/account" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <User size="20" />Account</a
     >
 {#if providerMode}
-    <a on:click={()=>{update(undefined, false)}} href="/billing" class="btn btn-ghost btn-ms flex justify-start hover:text-primary">
+    <a on:click={()=>{update(undefined, false)}} href="/billing" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <ShoppingCart size="20" />Subscriptions</a
     >
     {/if}
 
-    <button onclick="modal_language.showModal()" class="btn btn-ghost btn-ms flex justify-start hover:text-primary">
+    <button onclick="modal_language.showModal()" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <Languages size="20" />Language</button
     >
 
 
-    <button onclick="modal_support.showModal()" class="btn btn-ghost btn-ms flex justify-start hover:text-primary">
+    <button onclick="modal_support.showModal()" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <HelpCircle size="20" />Get Support</button
     >
     {#if devMode}

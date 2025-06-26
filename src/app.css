@@ -84,6 +84,11 @@ the oklch format. */
     src: url("/fonts/Poppins-Bold.ttf");
   }
 
+    @font-face {
+    font-family: "Ubuntu";
+    src: url("/fonts/Ubuntu-Regular.ttf");
+  }
+
   .font-poppins {
     font-family: "Poppins";
   }
@@ -92,8 +97,8 @@ the oklch format. */
     font-family: "PoppinsBold";
   }
 
-  .font-inter {
-    font-family: "Inter";
+  .font-ubuntu {
+    font-family: "Ubuntu";
   }
 
   
