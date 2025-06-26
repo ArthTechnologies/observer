@@ -45,6 +45,16 @@
     BookOpen,
     CameraIcon,
     PenLine,
+    TerminalIcon,
+    Plug,
+    Braces,
+    Box,
+    FilesIcon,
+    FileIcon,
+    DatabaseBackup,
+    Database,
+    CogIcon,
+    SettingsIcon,
   } from "lucide-svelte";
   import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
   import Versions from "$lib/components/buttons/Versions.svelte";
@@ -500,23 +510,38 @@
     class="md:space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center gap-0 justify-between px-5"
   >
     <!-- Start Left Side-->
-    <div class="flex flex-col space-y-5 w-full">
-      <div role="tablist" class="tabs tabs-boxed flex flex-wrap p-0 gap-1">
+    <div class="flex flex-col space-y-3 w-full">
+      <div role="tablist" class="tabs tabs-boxed bg-base-100  w-fit  p-2 flex flex-wrap p-0 gap-1">
         {#each tabs as label, index}
           {#if label == "mods"}
             <a
               role="tab"
-              class="tab px-3.5 {tab === 'plugins' ? 'tab-active' : ''}"
+              class="tab hover:text-primary gap-1.5 px-3.5 {tab === 'plugins' ? 'tab-active' : ''}"
               on:click={() => (tab = "plugins")}
             >
+        <Box size=18/>
               {label[0].toUpperCase() + label.slice(1)}
             </a>
           {:else}
             <a
               role="tab"
-              class="tab px-3.5 {tab === label ? 'tab-active' : ''}"
+              class="tab hover:text-primary gap-1.5 px-3.5 {tab === label ? 'tab-active' : ''}"
               on:click={() => (tab = label)}
             >
+                {#if label == "terminal"}
+               <TerminalIcon size=18/>
+               {:else if label == "plugins"}
+               <Plug size=18 />
+               {:else if label == "datapacks"}
+               <Braces size=18 />
+               {:else if label == "files"}
+               <FileIcon size=18 />
+                {:else if label == "backups"}
+                <Database size=18 />
+                {:else if label == "settings"}
+                <SettingsIcon size=18 />
+               {/if}
+           
               {label[0].toUpperCase() + label.slice(1)}
             </a>
           {/if}
@@ -547,7 +572,7 @@
     <!-- End Left Side-->
     <!-- Start Right Side-->
     <div
-      class="flex flex-col items-center place-content-start mb-20 md:pl-0 mt-[3.25rem] gap-5 w-full md:w-[19.75rem]"
+      class="flex flex-col items-center place-content-start mb-20 md:pl-0 mt-[3.75rem] gap-5 w-full md:w-[19.75rem]"
     >
       <div class="space-y-5 w-full">
         <div
