@@ -158,8 +158,9 @@ import { onMount } from "svelte";
 }
 </script>
 
-
-  <div id="terminalContainerContainer" class="relative mb-1.5 w-full ">
+<div class="bg-base-300 rounded-xl px-4 py-3 shadow-xl neutralGradientStroke" id="terminalContainerContainer">
+        <p class=" font-bold font-ubuntu text-gray-100 mb-2">Server Console</p>
+  <div  class="relative mb-3 w-full ">
     <FullscreenTerminal />
     <div
       id="terminalContainer"
@@ -170,16 +171,44 @@ import { onMount } from "svelte";
       </div>
     </div>
   </div>
-<div class=" w-full flex items-center gap-2">
+<div class=" w-full flex items-center gap-2 relative">
   <input
   on:keypress={writeCmd}
   id="input"
   type="text"
   placeholder={$t("p.enterCommand")}
-  class="input input-secondary bg-base-100 w-full"
+  class="input  bg-base-100 w-full"
 />
-<button class="md:hidden btn btn-secondary btn-square" on:click={()=>send(document.getElementById("input").value)}
-><SendIcon  /></button>
+<button class="btn btn-ghost btn-circle absolute right-0" on:click={()=>send(document.getElementById("input").value)}
+><SendIcon size=20  /></button>
 
 
 </div>
+</div>
+
+<style>
+   .neutralGradientStroke {
+    position: relative;
+
+    z-index: 1;
+  }
+
+  .neutralGradientStroke::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border-radius: inherit; /* Inherits button's border-radius */
+    padding: 3px; /* Space between button and border */
+    background: linear-gradient(0deg, #2a354e, #ffffff00, #ffffff00, #ffffff00);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    z-index: -1;
+  }
+</style>

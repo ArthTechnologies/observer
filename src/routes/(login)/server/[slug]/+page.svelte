@@ -512,7 +512,7 @@
   >
     <!-- Start Left Side-->
     <div class="flex flex-col space-y-3 w-full">
-      <div role="tablist" class="tabs font-ubuntu tabs-boxed bg-base-100  w-fit  p-2 flex flex-wrap p-0 gap-1">
+      <div role="tablist" class="tabs font-ubuntu tabs-boxed bg-base-300  w-fit  p-2 flex flex-wrap p-0 gap-1">
         {#each tabs as label, index}
           {#if label == "mods"}
             <a
