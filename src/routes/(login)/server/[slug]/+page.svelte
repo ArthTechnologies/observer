@@ -144,65 +144,7 @@
       vanilla = true;
     }
   }
-  function alwaysDay() {
-    let input = document.getElementById("alwaysDay").checked;
-    if (input) {
-      getStatus();
-
-      writeTerminal(id, "time set day");
-      writeTerminal(id, "gamerule doDaylightCycle false");
-
-      document.getElementById("alwaysDay").checked = false;
-    } else {
-      getStatus();
-
-      writeTerminal(id, "gamerule doDaylightCycle true");
-
-      document.getElementById("alwaysDay").checked = false;
-
-      //wait 200 ms then read terminal
-      setTimeout(() => {
-        if (tab == "terminal") {
-          readCmd();
-        }
-      }, 200);
-    }
-  }
-
-  function gamemode() {
-    let input = document.getElementById("gamemode").value;
-
-    getStatus();
-
-    writeTerminal(id, "defaultgamemode " + input);
-
-    document.getElementById("gamemode").value = "";
-
-    //wait 200 ms then read terminal
-    setTimeout(() => {
-      if (tab == "terminal") {
-        readCmd();
-      }
-    }, 200);
-  }
-
-  function OpPlayer() {
-    let input = document.getElementById("username").value;
-
-    getStatus();
-
-    writeTerminal(id, "op " + input);
-
-    document.getElementById("username").value = "";
-
-    //wait 200 ms then read terminal
-    setTimeout(() => {
-      if (tab == "terminal") {
-        readCmd();
-      }
-    }, 200);
-  }
-
+ 
   if (browser) {
     email = localStorage.getItem("accountEmail");
     address = localStorage.getItem("address");
@@ -850,40 +792,7 @@
           >
         </div>
       {/if}
-      <div class=" bg-base-300 w-full shadow-xl rounded-xl px-4 py-3 ">
-        
-      </div>
-      <div class=" bg-base-100 rounded-xl px-4 pt-3 pb-6">
-        <p class="text-lg font-poppins-bold">{$t("shortcuts.title")}</p>
-        <div class="space-x-1.5 space-y-1.5">
-          <label class="label" for="username">{$t("shortcuts.l.cheats")}</label>
-
-          <input
-            id="username"
-            class="input input-sm w-1/2 md:w-auto input-bordered"
-            placeholder={$t("shortcuts.p.cheats")}
-            type="text"
-          />
-          <button on:click={OpPlayer} class="btn btn-secondary btn-sm"
-            >{$t("button.send")}</button
-          >
-        </div>
-        <div class="space-x-1.5 space-y-1.5">
-          <label class="label" for="gamemode"
-            >{$t("shortcuts.l.gamemode")}</label
-          >
-
-          <input
-            id="gamemode"
-            class="input input-sm w-1/2 md:w-auto input-bordered"
-            placeholder={$t("shortcuts.p.gamemode")}
-            type="text"
-          />
-          <button on:click={gamemode} class="btn btn-secondary btn-sm"
-            >{$t("button.send")}</button
-          >
-        </div>
-      </div>
+    
 
       <div class="flex flex-col gap-2 items-center">
         <div class="flex space-x-2">
