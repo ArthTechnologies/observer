@@ -488,7 +488,7 @@
       </div>
     </div>
 
-    <div class="flex flex-col gap-1.5">
+    <div class="flex flex-col gap-1.5 hidden md:flex">
       <div
         class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-1 h-fit"
       >
@@ -508,7 +508,7 @@
 
   <!-- Start Bottom Section-->
   <div
-    class="md:space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center gap-0 justify-between px-5"
+    class="md:space-x-7 flex xs:flex-col-reverse max-xl:flex-col max-xl:items-center gap-0 justify-between md:px-5"
   >
     <!-- Start Left Side-->
     <div class="flex flex-col space-y-3 w-full">
