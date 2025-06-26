@@ -586,7 +586,20 @@
 <div class="divider my-2"></div>
               <StorageLimit />
                 <div id="rawDesc" class="hidden"></div>
+                  <div class="flex flex-col gap-2 items-center mt-5">
+        <div class="flex space-x-2 w-full justify-center">
+          <div class="w-[45%]">
+          <Versions />
+          </div>
+          <div class="w-[45%]">
+          <World /></div>
+        </div>
+        <DeleteServer />
+      </div>
               </div>
+
+
+    
               
                   
            </div>
@@ -794,13 +807,6 @@
       {/if}
     
 
-      <div class="flex flex-col gap-2 items-center">
-        <div class="flex space-x-2">
-          <Versions />
-          <World />
-        </div>
-        <DeleteServer />
-      </div>
     </div>
     <!-- End Right Side-->
   </div>

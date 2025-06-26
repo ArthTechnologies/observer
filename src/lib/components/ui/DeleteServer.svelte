@@ -50,8 +50,8 @@
 </script>
 
 <!-- The button to open modal -->
-<label for="delete" class="btn btn-warning w-1/2"
-  ><Trash2 class="mr-1.5" />{$t("button.delete")}</label
+<label for="delete" class="btn btn-error btn-ms w-1/2"
+  ><Trash2 size=20 />{$t("button.delete")}</label
 >
 
 <!-- Put this part before </body> tag -->

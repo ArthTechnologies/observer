@@ -14,7 +14,7 @@ module.exports = {
           "color-scheme": "dark",
           primary: "#ff4c29",
           "primary-content": "#ffffff",
-          secondary: "#fb923c",
+          secondary: "#cc4304",
           "secondary-content": "#ffffff",
           accent: "#1FB2A5",
           "accent-content": "#ffffff",

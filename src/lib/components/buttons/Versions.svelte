@@ -137,9 +137,9 @@
   <label
     for="versionsmodal"
     style="margin:0rem;"
-    class="btn btn-neutral"
+    class="btn btn-outline btn-ms "
     on:click={onclick}
-    ><ArrowDownCircle class="mr-2.5" />
+    ><ArrowDownCircle size=20 />
     {$t("button.versions")}</label
   >
 

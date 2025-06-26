@@ -410,8 +410,8 @@
 </script>
 
 <!-- The button to open modal -->
-<label for="world" class="btn w-1/2 btn-accent" on:click={onclick}
-  ><Map class="mr-1.5" />{$t("button.world")}</label
+<label for="world" class="btn btn-ms btn-secondary w-full" on:click={onclick}
+  ><Map size=20 />{$t("button.world")}</label
 >
 
 <!-- Put this part before </body> tag -->
