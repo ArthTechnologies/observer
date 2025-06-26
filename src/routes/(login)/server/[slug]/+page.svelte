@@ -594,7 +594,7 @@
           <div class="w-[45%]">
           <World /></div>
         </div>
-        <DeleteServer />
+    
       </div>
               </div>
 

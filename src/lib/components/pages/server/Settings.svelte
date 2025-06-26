@@ -10,6 +10,7 @@
   import { ClipboardIcon, ClipboardList, Info, Settings } from "lucide-svelte";
   import { bind, onMount } from "svelte/internal";
   import { alert, handleDesc } from "$lib/scripts/utils";
+    import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   let id;
   let icon = "";
   let iconPreview = "/images/placeholder.webp";
@@ -264,6 +265,10 @@
     <input id="allowAccountInput" type="text" placeholder="Enter Account ID (Ex: 73190d64-95ee-4857-a6e5-0848e9efb29a)" class="input input-bordered input-sm w-full max-w-xs" />
     <button class="btn btn-xs btn-neutral" on:click={allowAccount}>Add</button>
   </div>
+   <div class="w-1/2 mt-4">
+     <DeleteServer
+     />
+   </div>
     <div class="divider mt-3 text-xl font-bold">
       {$t("settings.h.serverInfo")}
     </div>
@@ -375,6 +380,7 @@
         {$t("settings.l.noProxies")}
       </p>
     {/if}
+  
   </div>
 
 
