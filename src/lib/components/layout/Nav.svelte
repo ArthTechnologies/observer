@@ -240,12 +240,12 @@
     <div class="flex md:flex-col gap-3 w-fit md:w-full">
       {#await promise}
         <div
-          class="pointer-events-none flex gap-2.5 items-center p-3 w-full lg:h-[5.25rem] rounded-lg bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
+          class="pointer-events-none flex gap-2.5 items-center p-4 w-full lg:h-[5.5rem] rounded-lg bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
         >
           <ServerSkeleNew />
         </div>
         <div
-          class="pointer-events-none flex gap-2.5 items-center p-3 w-full lg:h-[5.25rem] rounded-lg bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
+          class="pointer-events-none flex gap-2.5 items-center p-4 w-full lg:h-[5.5rem] rounded-lg bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
         >
           <ServerSkeleNew />
         </div>
@@ -259,7 +259,7 @@ Invalid Account
 <a
   on:click={() => createServer(parseInt(server.split(":")[0]))}
   id="serverCard{parseInt(server.split(":")[0])}"
-  class="primaryGradientStroke pointer-events-none flex md:max-lg:px-4 gap-2.5 items-center p-3 w-12 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
+  class="primaryGradientStroke pointer-events-none flex md:max-lg:px-4 gap-2.5 items-center p-4 w-12 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-lg bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
 >
 <UncreatedServerCardNew id={parseInt(server.split(":")[0])}/>
 </a>
@@ -267,7 +267,7 @@ Invalid Account
 <a
   on:click={() => createServer(parseInt(server.split(":")[0]))}
   id="serverCard{parseInt(server.split(":")[0])}"
-  class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-12 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
+  class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-4 w-12 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-lg bg-base-200 cursor-pointer"
 >
 <UncreatedServerCardNew id={parseInt(server.split(":")[0])}/>
 </a>
@@ -277,7 +277,7 @@ Invalid Account
 <a
   href="/billing"
   id="serverCard{parseInt(server.split(":")[0])}"
-  class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-12 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
+  class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-12 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-lg bg-base-200 cursor-pointer"
 >
 <ExpiredServerCard id={parseInt(server.split(":")[0])} timestamp={server.split(":")[2]}/>
 </a>
@@ -285,7 +285,7 @@ Invalid Account
 {#if parseInt(server.id) + 10000 == slug}
 <a
   id="serverCard{10000 + parseInt(server.id)}"
-  class="primaryGradientStroke pointer-events-none flex md:max-lg:px-4 gap-2.5 items-center p-3 w-14 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
+  class="primaryGradientStroke pointer-events-none flex gap-2.5 items-center p-4 w-14 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-xl bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
 >
   <ServerCardNew {...server} />
 </a>
@@ -293,7 +293,7 @@ Invalid Account
 <a
   on:click={() => update(server.id, true)}
   id="serverCard{10000 + parseInt(server.id)}"
-  class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-14 sm:w-32 truncate md:w-full md:h-[5.25rem] rounded-lg bg-base-200 cursor-pointer"
+  class="neutralGradientStroke flex gap-2.5 items-center p-4 w-14 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-xl bg-base-200 cursor-pointer"
 >
   <ServerCardNew {...server} />
 </a>

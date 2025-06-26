@@ -202,16 +202,16 @@
   <p class="font-poppins-bold text-gray-200 text-sm md:text-lg truncate">{name}</p>
   <!-- Only shows in sidebar mode-->
   <div class="max-md:hidden">
-    <p class="font-poppins text-xs mb-0.5 -mt-1">
+    <p class="font-mono text-xs mb-0.5 -mt-1">
       {#if subdomain == undefined}
         {address}:{10000 + parseInt(id)}
       {:else}
         {subdomain}.{address}
       {/if}
     </p>
-    <div class="flex gap-2">
-      <p class="bg-base-200 px-1.5 rounded text-xs font-poppins">{software}</p>
-      <p class="bg-base-200 px-1.5 rounded text-xs font-poppins">{version2}</p>
+    <div class="flex gap-1">
+      <p class="bg-base-100 bg-opacity-80 px-1.5 rounded text-xs font-poppins">{software}</p>
+      <p class="bg-base-100 bg-opacity-80 px-1.5 rounded text-xs font-poppins">{version2}</p>
     </div>
   </div>
 </div>
