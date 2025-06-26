@@ -211,7 +211,7 @@
 </script>
 
 <div class="bg-base-300 rounded-xl px-4 py-3 shadow-xl neutralGradientStroke">
-    <p class=" font-bold font-ubuntu text-gray-100 mb-2">Server Files</p>
+        <p class="font-ubuntu text-gray-200 text-lg ml-1 mb-2">Server Files</p>
   {#if tab == "list"}
   <div class="flex flex-col items-start gap-3 w-full">
     <!-- Search Bar -->
