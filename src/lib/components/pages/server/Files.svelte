@@ -4,13 +4,15 @@
   import Folder from "$lib/components/ui/files/Folder.svelte";
   import TextEditor from "$lib/components/ui/files/TextEditor.svelte";
   import { apiurl, usingOcelot, getServerNode } from "$lib/scripts/req";
-  import { ArrowLeft, ArrowLeftIcon, FlaskConical, HardDriveDownload, Hash, KeyIcon, LinkIcon, UserIcon } from "lucide-svelte";
+  import { ArrowLeft, ArrowLeftIcon, FlaskConical, HardDriveDownload, Hash, KeyIcon, LinkIcon, UserIcon, Search, X } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
   import HistoryButton from "$lib/components/buttons/HistoryButton.svelte";
   import MainFolder from "$lib/components/ui/files/MainFolder.svelte";
     import { alert } from "$lib/scripts/utils";
 
   let files = ["server.properties", ["folder1", ["file1.txt", "file2.txt"]]];
+  let filteredFiles = [];
+  let searchQuery = "";
   let id;
   let backurl = "server";
   let tab = "list";
@@ -80,8 +82,61 @@
       .then((response) => response.json())
       .then((data) => {
         files = data;
+        filteredFiles = data;
         console.log(data);
       });
+  }
+
+  function filterFiles(query) {
+    if (!query.trim()) {
+      filteredFiles = files;
+      return;
+    }
+
+    const searchLower = query.toLowerCase();
+    
+    function searchInFiles(fileList) {
+      const results = [];
+      
+      for (const file of fileList) {
+        if (typeof file === "string") {
+          // It's a file
+          const filename = file.split(":")[0].toLowerCase();
+          if (filename.includes(searchLower)) {
+            results.push(file);
+          }
+        } else {
+          // It's a folder
+          const foldername = file[0].split(":")[0].toLowerCase();
+          const folderContents = searchInFiles(file[1]);
+          
+          // Include folder if name matches or if it contains matching files
+          if (foldername.includes(searchLower) || folderContents.length > 0) {
+            if (folderContents.length > 0) {
+              // Include folder with filtered contents
+              results.push([file[0], folderContents]);
+            } else {
+              // Include empty folder that matches search
+              results.push([file[0], []]);
+            }
+          }
+        }
+      }
+      
+      return results;
+    }
+    
+    filteredFiles = searchInFiles(files);
+  }
+
+  function handleSearchInput(event) {
+    searchQuery = event.target.value;
+    filterFiles(searchQuery);
+  }
+
+  function clearSearch() {
+    searchQuery = "";
+    filteredFiles = files;
   }
 
   function save() {
@@ -151,16 +206,44 @@
     alert("Password copied to clipboard", "success");
   }
 
-
+  // Initialize filtered files when component loads
+  $: filteredFiles = files;
 </script>
 
 <div class="bg-base-300 rounded-xl px-4 py-3 shadow-xl neutralGradientStroke">
     <p class=" font-bold font-ubuntu text-gray-100 mb-2">Server Files</p>
   {#if tab == "list"}
-  <div class="flex flex-col items-start gap-5 w-full">
+  <div class="flex flex-col items-start gap-3 w-full">
+    <!-- Search Bar -->
+    <div class="w-full">
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Search class="h-4 w-4 text-gray-400" />
+        </div>
+        <input
+          type="text"
+          placeholder="Search files and folders..."
+          class="input input-bordered w-full pl-10 pr-10 bg-base-100 h-10 text-[.9rem]"
+          bind:value={searchQuery}
+          on:input={handleSearchInput}
+        />
+        {#if searchQuery}
+          <button
+            class="absolute inset-y-0 right-0 pr-3 flex items-center"
+            on:click={clearSearch}
+          >
+            <X class="h-4 w-4 text-gray-400 hover:text-gray-600 cursor-pointer" />
+          </button>
+        {/if}
+      </div>
+      {#if searchQuery && filteredFiles.length === 0}
+        <p class="text-sm text-gray-500 mt-2 pl-1">No files or folders found matching "{searchQuery}"</p>
+      {/if}
+    </div>
+
     <div class="bg-base-100 rounded-xl md:p-2 w-full" id="filetree">
       <MainFolder />
-      {#each files as file}
+      {#each filteredFiles as file}
         {#if typeof file == "string"}
           <File filename={file.split(":")[0]} url={file.split(":")[1]} size={file.split(":")[2]}/>
         {:else}
@@ -199,7 +282,7 @@
 {/if}
 
 <!-- FTP info -->
-<div class="flex flex-col items-start gap-5 w-full mb-12 mt-2">
+<div class="flex flex-col items-start gap-5 w-full">
   <div class="bg-base-100 rounded-xl px-5 py-3 w-full relative">
     <div class="badge badge-outline absolute top-2 right-2 badge-lg text-sm flex gap-1 items-center"><FlaskConical size="14" class="mt-0.5"/>Beta</div>
     <h1 class="text-xl font-poppins-bold mb-1">SFTP Info</h1>
