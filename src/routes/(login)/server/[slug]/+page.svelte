@@ -409,6 +409,23 @@
           class="font-poppins-bold text-gray-200 text-3xl mr-0.5"
           id="serverName">{name}</span
         >
+        
+
+{#if state == "true" }
+<div class="badge badge-neutral gap-1">
+  
+  <span class="mb-0.5 text-success">●</span> Online
+</div>
+{:else if state == "false"}
+<div class="badge badge-neutral gap-1 ">
+  <span class="mb-0.5 text-error">●</span> Offline
+</div>
+ 
+{:else if state == "starting" || state == "installing" || state == "stopping"}
+<div class="badge badge-neutral bg-gray-900 text-gray-300 skeleton gap-1">
+  <span class="mb-0.5">●</span> Loading
+  </div>
+  {/if}
       </div>
       <div class="flex gap-2">
         {#if state == "true"}
@@ -534,7 +551,7 @@
     >
       <div class="space-y-5 w-full">
         <div
-          class=" bg-base-300 w-full shadow-xl rounded-xl px-4 py-3 "
+          class=" bg-base-300 w-full shadow-xl rounded-xl px-4 py-3 neutralGradientStroke"
         >
         <p class=" font-bold font-inter text-gray-100 mb-3">Server Info</p>
           <div class="flex flex-col items-center w-full md:w-[19.8rem]">
@@ -586,7 +603,7 @@
 <div class="divider my-2"></div>
               <StorageLimit {modded}/>
                 <div id="rawDesc" class="hidden"></div>
-                  <div class="flex flex-col gap-2 items-center mt-5">
+                  <div class="flex flex-col gap-2 items-center mt-4 mb-1.5">
         <div class="flex space-x-2 w-full justify-center">
           <div class="w-[45%]">
           <Versions />
@@ -812,3 +829,31 @@
   </div>
   <!-- End Bottom Section-->
 </div>
+
+
+<style>
+   .neutralGradientStroke {
+    position: relative;
+
+    z-index: 1;
+  }
+
+  .neutralGradientStroke::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border-radius: inherit; /* Inherits button's border-radius */
+    padding: 3px; /* Space between button and border */
+    background: linear-gradient(0deg, #2a354e, #ffffff00, #ffffff00, #ffffff00);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    z-index: -1;
+  }
+</style>
