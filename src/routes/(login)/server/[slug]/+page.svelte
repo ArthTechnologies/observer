@@ -584,7 +584,7 @@
                 <button class="btn btn-xs"><BookOpen size=16 class="mr-1.5"/> How to Join</button>
                 </div>
 <div class="divider my-2"></div>
-              <StorageLimit />
+              <StorageLimit {modded}/>
                 <div id="rawDesc" class="hidden"></div>
                   <div class="flex flex-col gap-2 items-center mt-5">
         <div class="flex space-x-2 w-full justify-center">

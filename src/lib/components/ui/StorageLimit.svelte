@@ -5,6 +5,7 @@
   import { HardDrive } from "lucide-svelte";
   import { t } from "$lib/scripts/i18n";
   import { onMount } from "svelte";
+  export let modded = false;
   let storageRatio = "0/0mB";
   let theme = "dark";
   let res = {};
@@ -13,9 +14,9 @@
   let first = 0;
   let second = 0;
   let third = 0;
-  let secondColor = "bg-gradient-to-r from-lime-50 to-emerald-100";
+  let secondColor = "bg-orange-50/90";
   let firstColor = "bg-gradient-to-r from-orange-500 to-red-500";
-  let thirdColor = "bg-gradient-to-r from-yellow-500 to-amber-500";
+  let thirdColor = "bg-slate-900/90";
   let firstName = "Mods/Plugins";
   let secondName = "Worlds";
   let thirdName = "Misc";
@@ -118,11 +119,15 @@
     Misc
   </div>
   <div class="text-xs flex items-center gap-1 font-poppins font-bold">
-    <div class="w-2 h-2 bg-orange-50 rounded-full"></div>
-    Mods/Plugins
+    <div class="w-2 h-2 bg-orange-50/90 rounded-full"></div>
+    {#if modded}
+      Mods
+    {:else}
+      Plugins
+    {/if}
   </div>
   <div class="text-xs flex items-center gap-1 font-poppins font-bold">
-    <div class="w-2 h-2 bg-yellow-600 rounded-full"></div>
+    <div class="w-2 h-2 bg-slate-900/90 rounded-full"></div>
     World
   </div>
   </div>
