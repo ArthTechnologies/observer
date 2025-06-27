@@ -24,7 +24,7 @@
       src={icon}
       class="rounded-lg transition-all cursor-pointer"
     />
-    <div class="absolute top-0 left-0 w-full h-full cursor-pointer bg-black bg-opacity-50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+    <div class="absolute top-0 left-0 w-full h-full cursor-poiter bg-black bg-opacity-50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-0 transition-opacity">
       <CameraIcon />
     </div>
   </div>
