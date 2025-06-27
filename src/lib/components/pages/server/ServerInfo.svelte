@@ -59,7 +59,7 @@
                   />
             
                 </div>
-                <button class="btn btn-xs  bg-slate-900 bg-opacity-80"><BookOpen size=16 class="mr-1.5"/> How to Join</button>
+                <a href="https://arthmc.xyz/knowledgebase/how-to-join-servers/" target="_blank" class="btn btn-xs  bg-slate-900 bg-opacity-80"><BookOpen size=16 class="mr-1.5"/> How to Join</a>
                 </div>
 <div class="divider my-2"></div>
               <StorageLimit {modded}/>
