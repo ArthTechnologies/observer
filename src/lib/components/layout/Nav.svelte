@@ -267,7 +267,7 @@ Invalid Account
 <a
   on:click={() => createServer(parseInt(server.split(":")[0]))}
   id="serverCard{parseInt(server.split(":")[0])}"
-  class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-4 w-12 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-lg bg-base-200 cursor-pointer"
+  class="neutralGradientStrokeB flex md:max-lg:px-4 gap-2.5 items-center p-4 w-12 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-lg bg-base-200 cursor-pointer"
 >
 <UncreatedServerCardNew id={parseInt(server.split(":")[0])}/>
 </a>
@@ -277,7 +277,7 @@ Invalid Account
 <a
   href="/billing"
   id="serverCard{parseInt(server.split(":")[0])}"
-  class="neutralGradientStroke flex md:max-lg:px-4 gap-2.5 items-center p-3 w-12 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-lg bg-base-200 cursor-pointer"
+  class="neutralGradientStrokeB flex md:max-lg:px-4 gap-2.5 items-center p-3 w-12 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-lg bg-base-200 cursor-pointer"
 >
 <ExpiredServerCard id={parseInt(server.split(":")[0])} timestamp={server.split(":")[2]}/>
 </a>
@@ -293,7 +293,7 @@ Invalid Account
 <a
   on:click={() => update(server.id, true)}
   id="serverCard{10000 + parseInt(server.id)}"
-  class="neutralGradientStroke flex gap-2.5 items-center p-4 w-14 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-xl bg-base-200 cursor-pointer"
+  class="neutralGradientStrokeB flex gap-2.5 items-center p-4 w-14 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-xl bg-base-200 cursor-pointer"
 >
   <ServerCardNew {...server} />
 </a>
@@ -382,13 +382,13 @@ Invalid Account
     z-index: -1;
   }
 
-  .neutralGradientStroke {
+  .neutralGradientStrokeB {
     position: relative;
 
     z-index: 1;
   }
 
-  .neutralGradientStroke:hover::before {
+  .neutralGradientStrokeB:hover::before {
     content: "";
     position: absolute;
     top: 0px;
@@ -397,7 +397,7 @@ Invalid Account
     left: 0px;
     right: 0px;
     border-radius: inherit; /* Inherits button's border-radius */
-    padding: 2.5px; /* Space between button and border */
+    padding: 3px; /* Space between button and border */
     background: linear-gradient(0deg, #2a354e, #ffffff00, #ffffff00, #ffffff00);
     -webkit-mask:
       linear-gradient(#fff 0 0) content-box,
