@@ -109,6 +109,10 @@
                 {player.name}
             </li>
         {/each}
-
+        {#if playersOnline.length === 0 && playersOffline.length === 0}
+            <li class="text-gray-400 bg-base-100 w-full p-2 px-2.5 rounded-xl font-mono text-sm flex items-center">
+                No players have joined yet.
+            </li>
+        {/if}
     </ul>
 </div>
