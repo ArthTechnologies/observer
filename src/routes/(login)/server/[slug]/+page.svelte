@@ -72,6 +72,7 @@
   import Backups from "$lib/components/pages/server/Backups.svelte";
     import CopyButton from "$lib/components/buttons/CopyButton.svelte";
     import ServerInfo from "$lib/components/pages/server/ServerInfo.svelte";
+    import PlayerList from "$lib/components/pages/server/PlayerList.svelte";
 
   let tab = "terminal";
   let modded = false;
@@ -573,6 +574,7 @@
     >
       <div class="space-y-5 w-full">
     <ServerInfo {name} {address} {port} {subdomain} {modded} />
+    <PlayerList {id}/>
       </div>
       <div class="flex w-full">
         <div class="scale-95 w-full -ml-1.5">
