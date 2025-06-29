@@ -53,15 +53,16 @@
                         <div class="w-8 h-8 bg-gray-600 rounded animate-pulse" />
                     {/if}
                     
-                
+              
                  <img
                         src={`https://mc-heads.net/avatar/${player.uuid}`}
                         alt={player.name + "'s head"}
                         class={`w-8 h-8 rounded ${loadingStates[player.uuid] ? 'hidden' : 'block'}`}
                         on:load={() => handleImageLoad(player.uuid)}
-                    />
+                    />   {#if player.name.split("")[0] == "."}
                     <img class="w-4 h-4 rounded absolute -bottom-1 -right-1 shadow-xl/30" src="/images/bedrock.webp" alt="Bedrock" />
-                  
+                   {/if}
+            
                 </div>
                 {player.name}
             </li>
