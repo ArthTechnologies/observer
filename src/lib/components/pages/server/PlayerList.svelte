@@ -45,7 +45,7 @@
 
 <div class="bg-base-300 w-full shadow-xl rounded-xl px-4 py-3 neutralGradientStroke">
     <p class="font-bold font-ubuntu text-gray-100 mb-3">Players</p>
-    <ul>
+    <ul class="flex flex-col gap-1.5">
         {#each players as player (player.uuid)}
             <li class="text-gray-200 bg-base-100 w-full p-2 px-2.5 rounded-xl font-mono flex items-center">
                 <div class="relative mr-2">
@@ -53,7 +53,7 @@
                         <div class="w-8 h-8 bg-gray-600 rounded animate-pulse" />
                     {/if}
                     
-                 {#if player.name.split("")[0] == "."}
+                
                  <img
                         src={`https://mc-heads.net/avatar/${player.uuid}`}
                         alt={player.name + "'s head"}
@@ -61,15 +61,7 @@
                         on:load={() => handleImageLoad(player.uuid)}
                     />
                     <img class="w-4 h-4 rounded absolute -bottom-1 -right-1 shadow-xl/30" src="/images/bedrock.webp" alt="Bedrock" />
-                   
-                 {:else}
-                    <img
-                        src={`https://crafatar.lundhahn.dk/avatars/${player.uuid}?size=64&overlay`}
-                        alt={player.name + "'s head"}
-                        class={`w-8 h-8 rounded ${loadingStates[player.uuid] ? 'hidden' : 'block'}`}
-                        on:load={() => handleImageLoad(player.uuid)}
-                    />
-                    {/if}
+                  
                 </div>
                 {player.name}
             </li>
