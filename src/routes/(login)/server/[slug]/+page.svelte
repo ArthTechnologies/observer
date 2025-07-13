@@ -325,15 +325,14 @@
     document.getElementById("pregenRadius").value = "";
   }
 
-  let ramUsage = "0.000/0GB";
-  let players = 0;
-  let maxPlayers = 20;
+
+
 
   if (browser) {
     fetchRam();
-    fetchPlayers();
+ 
     setInterval(() => {
-      fetchPlayers();
+ 
       fetchRam();
     }, 15000);
 
@@ -370,25 +369,14 @@
             if (currentRam > maxRam) {
               currentRam = maxRam;
             }
-            ramUsage = currentRam + "/" + maxRam + "GB";
+         
           } catch (e) {
             //console.log(e);
           }
         });
     }
 
-    function fetchPlayers() {
-      fetch("https://api.mcsrvstat.us/3/arthmc.xyz:" + port)
-        .then((response) => response.json())
-        .then((data) => {
-          try {
-            players = data.players.online;
-            maxPlayers = data.players.max;
-          } catch (e) {
-            //console.log(e);
-          }
-        });
-    }
+   
   }
 
   let tabs = [
