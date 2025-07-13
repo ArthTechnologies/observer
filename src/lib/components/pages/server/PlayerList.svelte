@@ -32,15 +32,15 @@
                     loadingStates[player.uuid] = !headCache.has(player.uuid);
                 }
             });
+
+            // Build offline players list - check against the new off array, not the old playersOffline
             let off = [];
             for (let i in data.allPlayers) {
-        
                 const player = data.allPlayers[i];
                 // if the player is not online, add them to offline list
                 if (!playersOnline.some(p => p.uuid === player.uuid)) {
-                    
-                    if (!playersOffline.some(p => p.uuid === player.uuid)) {
-                               
+                    // Check if player is already in the new off array (not the old playersOffline)
+                    if (!off.some(p => p.uuid === player.uuid)) {
                         off.push(player);
                     }
                 }
