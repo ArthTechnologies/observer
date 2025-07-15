@@ -17,7 +17,7 @@
     User,
     Crown
   } from "lucide-svelte";
-  import ServerSkeleNew from "../ui/ServerSkeleNew.svelte";
+  import ServerSkele from "../ui/ServerSkele.svelte";
     import UncreatedServerCard from "../ui/UncreatedServerCard.svelte";
 
     import SupportModal from "../buttons/SupportModal.svelte";
@@ -242,12 +242,12 @@
         <div
           class="pointer-events-none flex gap-2.5 items-center p-4 w-full lg:h-[5.5rem] rounded-lg bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
         >
-          <ServerSkeleNew />
+          <ServerSkele />
         </div>
         <div
           class="pointer-events-none flex gap-2.5 items-center p-4 w-full lg:h-[5.5rem] rounded-lg bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
         >
-          <ServerSkeleNew />
+          <ServerSkele />
         </div>
       {:then}
         {#each servers as server}
