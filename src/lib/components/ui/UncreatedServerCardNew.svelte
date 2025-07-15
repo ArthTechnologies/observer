@@ -48,7 +48,7 @@
   <div class="md:hidden flex items-center justify-center"><PlusIcon size=20/></div>
   <!-- Only shows in sidebar mode-->
   <div class="max-md:hidden">
-    <p class="font-poppins text-xs mb-0.5 -mt-1">
+    <p class="font-mono text-xs mb-0.5 -mt-1">
       {address}:{10000 + parseInt(id)}
     </p>
   </div>
