@@ -17,8 +17,7 @@
     User,
     Crown
   } from "lucide-svelte";
-  import ServerSkele from "../ui/ServerSkele.svelte";
-    import UncreatedServerCard from "../ui/UncreatedServerCard.svelte";
+
 
     import SupportModal from "../buttons/SupportModal.svelte";
     import LanguageSwitcherModal from "../buttons/LanguageSwitcherModal.svelte";
