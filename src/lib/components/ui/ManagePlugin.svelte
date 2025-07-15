@@ -166,7 +166,9 @@
             {#if author}<span class="text-sm font-ubuntu ml-1 text-gray-300"> by {author}</span>{/if}</div>
           <div  class="text-xs text-gray-400 font-mono overflow-hidden text-ellipsis w-[100%] h-3">
       
+          {#if desc}
           {desc.length > 80 ? desc.substring(0, 80).trim() + "..." : desc}
+          {/if}
           </div>
         </div>
         
