@@ -10,6 +10,7 @@
   import World from "./World.svelte";
   import { AlertTriangle, Info, Loader, Trash2 } from "lucide-svelte";
   import { getDefaultSettings } from "http2";
+    import { goto } from "$app/navigation";
   let id = -1;
   let accountType = "email";
   let loading = false;
@@ -35,6 +36,7 @@
     deleteServer(id, password).then(() => {
       console.log("deleting4...");
       loading = false;
+      goto("/newserver");  
       if (usingOcelot) {
         fetch(
           apiurl +
