@@ -493,10 +493,10 @@
           {:catch}
             <div class="flex gap-12">
               <div
-                class="w-[12rem] h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"
+                class="w-[12rem] h-[84px] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"
               ></div>
               <div
-                class="w-[12rem] h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#152436] rounded-xl"
+                class="w-[12rem] h-[84px] bg-gradient-to-t from-[#152036] to-[#152436] rounded-xl"
               ></div>
             </div>
           {/await}
