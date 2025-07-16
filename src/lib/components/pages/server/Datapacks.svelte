@@ -75,11 +75,11 @@
 
 
   <div
-    class="bg-base-100 rounded-xl px-4 py-3 shadow-xl neutralGradietStroke w-full space-y-2 min-h-[30rem]"
+    class="bg-base-300 rounded-xl px-4 py-3 shadow-xl neutralGradietStroke w-full space-y-2 min-h-[30rem]"
   >
 
 <div class="flex justify-between items-center">
-   <p class="font-ubuntu text-gray-200 text-lg ml-1">Installed Datapacks</p>
+  <p class="font-ubuntu text-gray-200 text-lg ml-1">Installed Datapacks</p>
   <AddDatapack />
 </div>
 
