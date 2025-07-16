@@ -4,7 +4,7 @@
 
 <div class="flex flex-col">
   <div
-    class="flex items-center justify-between bg-base-300 rounded-lg w-full h-16 pr-3 py-2 pl-2.5 space-x-1"
+    class="flex items-center justify-between bg-base-200 rounded-lg w-full h-16 pr-3 py-2 pl-2.5 space-x-1"
   >
     <div class="flex items-center space-x-1">
       <div class="bg-slate-700 rounded-lg w-[13rem] h-[1.5rem] animate-pulse" />
