@@ -95,9 +95,9 @@
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
     const url =
-      baseurl + "server/" + serverId + "/files/" + modtype + "s*" + filename;
+      baseurl + "server/" + serverId + "/files/delete/" + modtype + "s*" + filename;
     fetch(url, {
-      method: "DELETE",
+      method: "POST",
       headers: {
         token: localStorage.getItem("token"),
         username: localStorage.getItem("accountEmail"),
