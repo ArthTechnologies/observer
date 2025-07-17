@@ -195,12 +195,12 @@
 
 
   <div
-    class="bg-base-300 rounded-xl px-4 py-3 shadow-xl neutralGradietStroke w-full space-y-2 min-h-[30rem]"
+    class="bg-base-300 rounded-xl px-4 py-3 shadow-xl neutralGradietStroke w-full space-y-2 min-h-[30rem] relative"
   >
     <p class="font-ubuntu text-gray-200 text-lg ml-1 mb-2">Settings</p>
     <button
  
-      class="btn btn-neutral btn-sm absolute right-2 top-2"
+      class="btn btn-neutral btn-sm absolute right-2 top-0"
       on:click={set}>{$t("apply")}</button
     >
 
