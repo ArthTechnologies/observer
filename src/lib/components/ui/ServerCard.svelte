@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { src_url_equal } from "svelte/internal";
+  import { onMount, src_url_equal } from "svelte/internal";
   import { changeServerState } from "$lib/scripts/req";
 
   import { getServer } from "$lib/scripts/req";
@@ -35,6 +35,13 @@
 
   export let name: string;
   export let version: string;
+  let version2;
+  if (version.includes("*")) {
+    let array = version.split("*");
+    version2 = array[0] + " " + array[1].charAt(0).toUpperCase() + array[1].slice(1);
+  } else {
+    version2 = version;
+  }
   export let software: string;
   export let state: string;
   export let id: number;
@@ -51,25 +58,8 @@
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  software = uppercaseFirstLetter(software);
+  $: software = uppercaseFirstLetter(software);
 
-  let tname = name.toLowerCase().replace(/ /g, "-");
-  function setName() {
-    if (browser) {
-      localStorage.setItem("serverName", name);
-      localStorage.setItem("serverID", id);
-      localStorage.setItem("serverSoftware", software);
-      localStorage.setItem("serverVersion", version);
-      localStorage.setItem("serverCardRedrict", "true");
-      localStorage.setItem("serverDynmap", dynmap);
-      localStorage.setItem("serverVoicechat", voicechat);
-      if (subdomain != undefined) {
-        localStorage.setItem("serverSubdomain", subdomain);
-      } else {
-        localStorage.removeItem("serverSubdomain");
-      }
-    }
-  }
   function status() {
     if (state == "true") {
       loading = false;
@@ -138,6 +128,7 @@
   }
 </script>
 
+<!--
 <div class="m-3 w-[21rem]">
   <div class="card w-50 bg-neutral shadow-xl image-full">
     <div class="card-body pr-0">
@@ -149,9 +140,9 @@
           {subdomain}.{address}
         {/if}
       </p>
-      <!-- <div class="card-actions justify-beginning" /> -->
+      <div class="card-actions justify-beginning" />
       <div class="card-actions justify-end">
-        <!-- placeholder for now? -->
+        placeholder for now? 
         <div class="grow space-x-1.5 flex">
           <a href="/{softwareType}/{10000 + parseInt(id)}"
             ><button on:click={setName} class="btn btn-primary btn-sm h-9"
@@ -201,11 +192,78 @@
     </div>
   </div>
 </div>
+-->
+
+<img
+  src="/images/placeholder.webp"
+  class="w-[3.5rem] h-[3.5rem] rounded-md max-lg:hidden"
+/>
+<div class="-mt-1">
+  <p class="font-poppins-bold text-gray-200 text-sm md:text-lg truncate">{name}</p>
+  <!-- Only shows in sidebar mode-->
+  <div class="max-md:hidden">
+    <p class="font-mono text-xs mb-0.5 -mt-1">
+      {#if subdomain == undefined}
+        {address}:{10000 + parseInt(id)}
+      {:else}
+        {subdomain}.{address}
+      {/if}
+    </p>
+    <div class="flex gap-1">
+      <p class="bg-base-100 bg-opacity-80 px-1.5 rounded text-xs font-poppins">{software}</p>
+      <p class="bg-base-100 bg-opacity-80 px-1.5 rounded text-xs font-poppins">{version2}</p>
+    </div>
+  </div>
+</div>
 
 <style>
-  .no-hover-effect {
-    /* Add any specific styling to prevent hover effect here */
-    pointer-events: none; /* Disable hover interaction */
-    cursor: default; /* Change cursor to default */
+  .primaryGradientStroke {
+    position: relative;
+
+    z-index: 1;
+  }
+
+  .primaryGradientStroke::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border-radius: inherit; /* Inherits button's border-radius */
+    padding: 2.5px; /* Space between button and border */
+    background: linear-gradient(0deg, #135664, #ffffff00, #ffffff00, #ffffff00);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    z-index: -1;
+  }
+
+  .neutralGradientStroke {
+    position: relative;
+
+    z-index: 1;
+  }
+
+  .neutralGradientStroke:hover::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border-radius: inherit; /* Inherits button's border-radius */
+    padding: 2.5px; /* Space between button and border */
+    background: linear-gradient(0deg, #2a354e, #ffffff00, #ffffff00, #ffffff00);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    z-index: -1;
   }
 </style>

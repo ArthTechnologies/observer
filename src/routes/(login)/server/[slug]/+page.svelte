@@ -67,11 +67,12 @@
   import Plugins from "$lib/components/pages/server/Plugins.svelte";
   import Mods from "$lib/components/pages/server/Mods.svelte";
   import Datapacks from "$lib/components/pages/server/Datapacks.svelte";
-  import MemoryChart from "$lib/components/pages/dashboard/MemoryChart.svelte";
-  import CpuUsageChart from "$lib/components/pages/dashboard/CpuUsageChart.svelte";
+  import MemoryChart from "$lib/components/pages/server/charts/MemoryChart.svelte";
+  import CpuUsageChart from "$lib/components/pages/server/charts/CpuUsageChart.svelte";
   import Backups from "$lib/components/pages/server/Backups.svelte";
     import CopyButton from "$lib/components/buttons/CopyButton.svelte";
     import ServerInfo from "$lib/components/pages/server/ServerInfo.svelte";
+    import PlayerList from "$lib/components/pages/server/PlayerList.svelte";
 
   let tab = "terminal";
   let modded = false;
@@ -324,15 +325,14 @@
     document.getElementById("pregenRadius").value = "";
   }
 
-  let ramUsage = "0.000/0GB";
-  let players = 0;
-  let maxPlayers = 20;
+
+
 
   if (browser) {
     fetchRam();
-    fetchPlayers();
+ 
     setInterval(() => {
-      fetchPlayers();
+ 
       fetchRam();
     }, 15000);
 
@@ -369,25 +369,14 @@
             if (currentRam > maxRam) {
               currentRam = maxRam;
             }
-            ramUsage = currentRam + "/" + maxRam + "GB";
+         
           } catch (e) {
             //console.log(e);
           }
         });
     }
 
-    function fetchPlayers() {
-      fetch("https://api.mcsrvstat.us/3/arthmc.xyz:" + port)
-        .then((response) => response.json())
-        .then((data) => {
-          try {
-            players = data.players.online;
-            maxPlayers = data.players.max;
-          } catch (e) {
-            //console.log(e);
-          }
-        });
-    }
+   
   }
 
   let tabs = [
@@ -484,19 +473,35 @@
       </div>
     </div>
 
-    <div class="flex flex-col gap-1.5 hidden md:flex">
-      <div
-        class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-1 h-fit"
-      >
-        <MemoryStick size="16" />
-        {ramUsage}
-      </div>
-      <div
-        class="flex bg-neutral px-2 p-1.5 rounded-lg items-center text-sm font-bold gap-1 h-fit"
-      >
-        <Users size="16" />
-        {players}/{maxPlayers} Players
-      </div>
+    <div class="flex gap-1.5 hidden md:flex scale-95 w-[20rem]">
+         
+
+          {#await memoryReq}
+            <div class="flex gap-12">
+              <div
+                class="w-[12rem] h-[84px] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"
+              ></div>
+              <div
+                class="w-[12rem] h-[84px] bg-gradient-to-t from-[#152036] to-[#152436] rounded-xl"
+              ></div>
+            </div>
+          {:then}
+            {#if memoryStats != undefined && memoryStats.length > 0}
+              <MemoryChart performance={memoryStats} type="2" />
+              <CpuUsageChart performance={memoryStats} type="2" />
+            {/if}
+          {:catch}
+            <div class="flex gap-12">
+              <div
+                class="w-[12rem] h-[84px] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"
+              ></div>
+              <div
+                class="w-[12rem] h-[84px] bg-gradient-to-t from-[#152036] to-[#152436] rounded-xl"
+              ></div>
+            </div>
+          {/await}
+      
+ 
     </div>
   </div>
   <!-- End Top Section-->
@@ -573,35 +578,10 @@
     >
       <div class="space-y-5 w-full">
     <ServerInfo {name} {address} {port} {subdomain} {modded} />
+
+    <PlayerList {id}/>
       </div>
-      <div class="flex w-full">
-        <div class="scale-95 w-full -ml-1.5">
-          {#await memoryReq}
-            <div class="flex gap-12">
-              <div
-                class="w-[12rem] h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"
-              ></div>
-              <div
-                class="w-[12rem] h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#152436] rounded-xl"
-              ></div>
-            </div>
-          {:then}
-            {#if memoryStats != undefined && memoryStats.length > 0}
-              <MemoryChart performance={memoryStats} type="2" />
-              <CpuUsageChart performance={memoryStats} type="2" />
-            {/if}
-          {:catch}
-            <div class="flex gap-12">
-              <div
-                class="w-[12rem] h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#2c2a27] rounded-xl"
-              ></div>
-              <div
-                class="w-[12rem] h-[8.3rem] bg-gradient-to-t from-[#152036] to-[#152436] rounded-xl"
-              ></div>
-            </div>
-          {/await}
-        </div>
-      </div>
+
 
       {#if dynmap}
         <div

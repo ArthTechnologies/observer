@@ -3,7 +3,7 @@
   import { lrurl } from "$lib/scripts/req";
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
-  import { ChevronDown, ChevronUp, Clock, Trash, Trash2 } from "lucide-svelte";
+  import { BoxIcon, ChevronDown, ChevronUp, Clock, InfoIcon, Trash, Trash2 } from "lucide-svelte";
   import ChooseVersion from "./ChooseVersion.svelte";
   import ChooseModVersion from "./ChooseModVersion.svelte";
   import TranslateableText from "./TranslateableText.svelte";
@@ -145,241 +145,60 @@
 
 <div>
   <div
-    class="px-3 py-2 rounded-t-lg bg-base-300 flex justify-between items-center"
+    class="p-2 rounded-lg bg-base-200 flex justify-between items-center h-16"
   >
     <div class="{prefixToHandleFlexOnSM}flex items-center gap-1 break-all">
-      <div class="flex mr-1 items-center max-{prefixToHandleFlexOnSM}mb-1">
-        {name}
-        {#if platform == "lr"}
-          <img
-            class="ml-1.5 h-6"
-            src="/images/modrinth.svg"
-            width="24"
-            height="24"
-          />
-        {:else if platform == "cf"}
-          <img
-            class="ml-1.5 h-6"
-            src="/images/curseforge.svg"
-            width="24"
-            height="24"
-          />
-        {:else if platform == "gh"}
-          <img
-            class="ml-1.5 h-6"
-            src="/images/github.svg"
-            width="24"
-            height="24"
-          />
-        {:else if platform == "cx"}
-          <img
-            class="ml-1.5 h-6"
-            src="/images/geyser.webp"
-            width="24"
-            height="24"
-          />
+      <div class="flex gap-2 mr-1 items-center max-{prefixToHandleFlexOnSM}mb-1">
+        {#if icon}
+    <img 
+          class="h-12 w-12 bg-base-100 rounded-md"
+          src={icon}
+          alt="Mod Icon"
+         
+        />
+        {:else}
+        <div class="h-12 w-12 flex-shrink-0 bg-base-100 rounded-md flex items-center justify-center">
+          <BoxIcon size=32/>
+        </div>
         {/if}
+        <div class="flex flex-col">
+          <div class=""><span class="font-bold text-gray-200 font-ubuntu">{name}</span>
+            {#if author}<span class="text-sm font-ubuntu ml-1 text-gray-300"> by {author}</span>{/if}</div>
+          <div  class="text-xs text-gray-400 font-mono overflow-hidden text-ellipsis w-[100%] h-3">
+      
+          {#if desc}
+          {desc.length > 80 ? desc.substring(0, 80).trim() + "..." : desc}
+          {/if}
+          </div>
+        </div>
+        
       </div>
 
-      <div class="flex items-center space-x-1">
-        <button
-          on:click={() => {
-            del(filename);
-          }}
-          class="btn btn-xs btn-error btn-square"
-        >
-          <Trash2 size="15" /></button
-        >
-        <button class="btn btn-xs btn-ghost" on:click={toggleDisable}>
+    
+    </div>
+
+    <div class="flex items-center">
+              <button class="btn btn-sm text-xs btn-ghost" on:click={toggleDisable}>
           {disableText}
         </button>
 
-        {#if modtype == "plugin" && (platform == "cf" || platform == "lr")}
-          <ChooseVersion {id} {name} {author} {desc} {icon} buttonType="2" />
-        {:else if modtype == "mod"}
-          <ChooseModVersion
-            {id}
-            {name}
-            {author}
-            {desc}
-            {icon}
-            {platform}
-            {slug}
-            buttonType="2"
-          />
-        {/if}
-      </div>
-    </div>
-
-    <div class="flex items-center space-x-1">
-      <div
-        class="hidden md:flex bg-base-200 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
+      <button
+       class="btn btn-square btn-ghost btn-sm"
+        on:click={() => del(filename)}
+        title={$t("delete")}
       >
-        <Clock size="16" class="mr-1.5" />
-        {time}
-      </div>
-      <button class="btn btn-ghost btn-xs">
-        <label class="swap">
-          <input type="checkbox" on:click={toggleInfo} />
-          <div class="swap-on"><ChevronDown /></div>
-          <div class="swap-off"><ChevronUp /></div>
-        </label>
+        <Trash2 size="16" />
       </button>
+                  <button class="btn btn-square btn-ghost btn-sm"
+        on:click={toggleInfo}
+        title={$t("info")}
+      >
+        <InfoIcon size="16" />
+      </button>
+
+      
+
     </div>
   </div>
-  {#if showInfo === true}
-    <div
-      class="bg-base-200 rounded-b-lg px-1.5 pt-2.5 pb-2.5 space-x-1 relative"
-    >
-      <div class="absolute bottom-2 md:top-2 right-2 text-sm text-[#767c87]">
-        {filename}
-      </div>
-      <div class="px-1.5">
-        {#if platform == "lr"}
-          <div class="flex justify-between place-items-center">
-            <div class="flex space-x-3">
-              <div>
-                <div class="flex space-x-1">
-                  <div>
-                    {#if name == id}
-                      <div
-                        class="h-6 w-16 animate-pulse bg-slate-600 rounded-lg"
-                      />
-                    {:else}
-                      <a
-                        href="https://modrinth.com/plugin/{slug}"
-                        target="_blank"
-                        class="hover:link text-xl font-bold">{name}</a
-                      >
-                    {/if}
 
-                    {$t("by")}
-                    <a
-                      href="https://modrinth.com/user/{author}"
-                      target="_blank"
-                      class="hover:link"
-                      >{author}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
-            >
-              <Clock size="16" class="mr-1.5" />
-              {time}
-            </div>
-          </div>
-        {:else if platform == "cf"}
-          <div class="flex justify-between place-items-center">
-            <div class="flex space-x-3">
-              <div>
-                <div class="flex space-x-1">
-                  <div>
-                    {#if name == id}
-                      <div
-                        class="h-6 w-16 animate-pulse bg-slate-600 rounded-lg"
-                      />
-                    {:else}
-                      <a
-                        href="https://curseforge.com/minecraft/mc-mods/{slug}"
-                        target="_blank"
-                        class="hover:link text-xl font-bold">{name}</a
-                      >
-                    {/if}
-
-                    {$t("by")}
-                    <a
-                      href="https://curseforge.com/members/{author}"
-                      target="_blank"
-                      class="hover:link"
-                      >{author}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
-            >
-              <Clock size="16" class="mr-1.5" />
-              {time}
-            </div>
-          </div>
-        {:else if platform == "gh"}
-          <div class="flex justify-between place-items-center">
-            <div class="flex space-x-3">
-              <div>
-                <div class="flex space-x-1">
-                  <div>
-                    {#if name == id}
-                      <div
-                        class="h-6 w-16 animate-pulse bg-slate-600 rounded-lg"
-                      />
-                    {:else}
-                      <a
-                        href="https://github.com/{id}"
-                        target="_blank"
-                        class="hover:link text-xl font-bold">{name}</a
-                      >
-                    {/if}
-
-                    {$t("by")}
-                    <a
-                      href="https://github.com/{author}"
-                      target="_blank"
-                      class="hover:link"
-                      >{author}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
-            >
-              <Clock size="16" class="mr-1.5" />
-              {time}
-            </div>
-          </div>
-        {:else if platform == "cx"}
-          <div class="flex justify-between place-items-center">
-            <div class="flex space-x-3">
-              <div>
-                <div>
-                  {#if name == "Geyser" || name == "Floodgate"}
-                    <span class="text-xl font-bold">{name}</span>
-
-                    {$t("by")}
-                    <a
-                      href="https://geysermc.org"
-                      target="_blank"
-                      class="hover:link">GeyserMC</a
-                    >
-                  {:else}
-                    <p class="text-xl font-bold">{name}</p>
-                  {/if}
-                </div>
-              </div>
-            </div>
-            <div
-              class="flex md:hidden bg-base-300 px-2 py-1 rounded-md place-items-center text-sm md:w-[13rem] bg-opacity-90 backdrop-blur"
-            >
-              <Clock size="16" class="mr-1.5" />
-              {time}
-            </div>
-          </div>
-        {/if}
-
-        <div class="max-md:mb-5">
-          <TranslateableText text={desc} />
-        </div>
-      </div>
-
-      {#if platform == "lr"}
-        <!-- <ChooseVersionAlt pluginName={name} {id} /> this currently doesnt delete the old plugin, so its not enabled-->
-      {/if}
-    </div>
-  {/if}
 </div>

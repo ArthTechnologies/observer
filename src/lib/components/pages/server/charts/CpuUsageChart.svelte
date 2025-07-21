@@ -33,12 +33,12 @@
 
         // Create the text element for thread label
         let text = document.createElement('p');
-        text.classList.add('text-white', 'text-center', 'font-bold', 'text-lg', 'absolute', 'top-2', 'left-3');
+               text.classList.add('text-center', 'absolute', 'top-1.5', 'left-4' ,'font-mono', 'text-gray-200');
       
         text.innerHTML = `CPU`;
         // Create the text element for the most recent CPU usage value
         let text2 = document.createElement('p');
-        text2.classList.add('text-center', 'absolute', 'top-1.5', 'right-4');
+        text2.classList.add('text-center', 'absolute', 'top-1.5', 'right-5' ,'font-mono');
         text2.innerHTML = `${(threadValues[threadValues.length - 1]).toFixed(2)}%`;
 
                 //append a bar at the top behind the text that bulurs whats behind it.
@@ -97,7 +97,7 @@
                         }
                     }
                 },
-                aspectRatio: 1.2,
+                aspectRatio: 1.7,
             }
         });
     });

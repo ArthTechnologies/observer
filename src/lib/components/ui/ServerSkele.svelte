@@ -1,38 +1,63 @@
-<script lang="ts">
-  import { t } from "$lib/scripts/i18n";
-</script>
-
-<div class="m-3 w-[21rem] mb-[1.25rem]">
-  <div class="card h-40 bg-base-100 image-full">
-    <div class="card-body animate-pulse">
-      <h2 class="card-title">
-        <div class="h-3.5 bg-base-100 rounded w-16 mt-[.45rem]" />
-      </h2>
-
-      <div class="h-2.5 bg-base-100 rounded w-28 mt-[.9rem]" />
-
-      <!-- <div class="card-actions justify-beginning" /> -->
-      <div class="card-actions mt-[.4rem]">
-        <!-- placeholder for now? -->
-        <div class="grow space-x-1.5 flex">
-          <button
-            type="submit"
-            class="btn bg-base-100 btn-sm h-9 w-[3.75rem] pointer-events-none"
-          />
-          <button
-            type="submit"
-            class="btn bg-base-100 btn-sm h-9 pointer-events-none"
-            ><p class="invisible">{$t("button.start")}</p></button
-          >
-          <button
-            type="submit"
-            class="btn bg-base-100 btn-sm h-9 pointer-events-none"
-            ><p class="invisible">{$t("button.stop")}</p></button
-          >
-        </div>
-
-        <div class="badge w-24 bg-base-100 right-4 top-4 absolute" />
-      </div>
-    </div>
+<div
+  class="w-[3.75rem] h-[3.75rem] rounded-lg bg-gray-800 skeleton max-md:hidden"
+/>
+<div class="-mt-1">
+  <div class="w-24 h-5 rounded bg-gray-800 skeleton" />
+  <div class="w-12 h-3 rounded bg-gray-800 skeleton my-1 max-md:hidden" />
+  <div class="flex gap-2 max-md:hidden">
+    <div class="w-[3.75rem] h-2 rounded bg-gray-800 skeleton" />
+    <p class="bg-gray-800 px-1.5 rounded text-xs skeleton"></p>
   </div>
 </div>
+
+<style>
+  .primaryGradientStroke {
+    position: relative;
+
+    z-index: 1;
+  }
+
+  .primaryGradientStroke::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border-radius: inherit; /* Inherits button's border-radius */
+    padding: 2.5px; /* Space between button and border */
+    background: linear-gradient(0deg, #135664, #ffffff00, #ffffff00, #ffffff00);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    z-index: -1;
+  }
+
+  .neutralGradientStroke {
+    position: relative;
+
+    z-index: 1;
+  }
+
+  .neutralGradientStroke:hover::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border-radius: inherit; /* Inherits button's border-radius */
+    padding: 2.5px; /* Space between button and border */
+    background: linear-gradient(0deg, #2a354e, #ffffff00, #ffffff00, #ffffff00);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    z-index: -1;
+  }
+</style>

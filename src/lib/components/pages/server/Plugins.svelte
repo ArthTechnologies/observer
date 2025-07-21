@@ -33,6 +33,9 @@
           res = response;
           for (let i in res.mods) {
             res.mods[i].time = new Date(res.mods[i].date).toLocaleString();
+            if (res.mods[i].platform == "lr") {
+              res.mods[i].icon_url = "https://cdn.modrinth.com/data/"+res.mods[i].id+"/icon.png";
+            }
             //this helps sort this alphabetically
             for (let j in res.mods) {
               if (res.mods[i].name < res.mods[j].name) {
@@ -129,6 +132,7 @@
               date={mod.date}
               modtype="plugin"
               disabled={mod.filename.includes(".disabled")}
+              icon={mod.icon_url}
             />
           {:else}
             <div class="px-3 py-2 rounded-lg bg-base-300 flex justify-between">

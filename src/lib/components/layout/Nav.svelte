@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ServerCardNew from "$lib/components/ui/ServerCardNew.svelte";
+  import ServerCard from "$lib/components/ui/ServerCard.svelte";
   import UncreatedServerCard from "$lib/components/ui/UncreatedServerCard.svelte";
   import ServerSkele from "$lib/components/ui/ServerSkele.svelte";
   import { t, locale, locales } from "$lib/scripts/i18n";
@@ -17,8 +17,7 @@
     User,
     Crown
   } from "lucide-svelte";
-  import ServerSkeleNew from "../ui/ServerSkeleNew.svelte";
-    import UncreatedServerCardNew from "../ui/UncreatedServerCardNew.svelte";
+
 
     import SupportModal from "../buttons/SupportModal.svelte";
     import LanguageSwitcherModal from "../buttons/LanguageSwitcherModal.svelte";
@@ -242,12 +241,12 @@
         <div
           class="pointer-events-none flex gap-2.5 items-center p-4 w-full lg:h-[5.5rem] rounded-lg bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
         >
-          <ServerSkeleNew />
+          <ServerSkele />
         </div>
         <div
           class="pointer-events-none flex gap-2.5 items-center p-4 w-full lg:h-[5.5rem] rounded-lg bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
         >
-          <ServerSkeleNew />
+          <ServerSkele />
         </div>
       {:then}
         {#each servers as server}
@@ -261,7 +260,7 @@ Invalid Account
   id="serverCard{parseInt(server.split(":")[0])}"
   class="primaryGradientStroke pointer-events-none flex md:max-lg:px-4 gap-2.5 items-center p-4 w-12 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-lg bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
 >
-<UncreatedServerCardNew id={parseInt(server.split(":")[0])}/>
+<UncreatedServerCard id={parseInt(server.split(":")[0])}/>
 </a>
 {:else}
 <a
@@ -269,7 +268,7 @@ Invalid Account
   id="serverCard{parseInt(server.split(":")[0])}"
   class="neutralGradientStrokeB flex md:max-lg:px-4 gap-2.5 items-center p-4 w-12 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-lg bg-base-200 cursor-pointer"
 >
-<UncreatedServerCardNew id={parseInt(server.split(":")[0])}/>
+<UncreatedServerCard id={parseInt(server.split(":")[0])}/>
 </a>
 {/if}
 {/if}
@@ -287,7 +286,7 @@ Invalid Account
   id="serverCard{10000 + parseInt(server.id)}"
   class="primaryGradientStroke pointer-events-none flex gap-2.5 items-center p-4 w-14 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-xl bg-gradient-to-b from-base-300 to-[#2a2a36] cursor-pointer"
 >
-  <ServerCardNew {...server} />
+  <ServerCard {...server} />
 </a>
 {:else}
 <a
@@ -295,7 +294,7 @@ Invalid Account
   id="serverCard{10000 + parseInt(server.id)}"
   class="neutralGradientStrokeB flex gap-2.5 items-center p-4 w-14 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-xl bg-base-200 cursor-pointer"
 >
-  <ServerCardNew {...server} />
+  <ServerCard {...server} />
 </a>
 {/if}
 {/if}

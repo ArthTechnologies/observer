@@ -194,11 +194,13 @@
 
 
 
-  <div class="bg-base-100 rounded-xl p-3 w-full relative">
-
+  <div
+    class="bg-base-300 rounded-xl px-4 py-3 shadow-xl neutralGradietStroke w-full space-y-2 min-h-[30rem] relative"
+  >
+    <p class="font-ubuntu text-gray-200 text-lg ml-1 mb-2">Settings</p>
     <button
  
-      class="btn btn-neutral btn-sm absolute right-2 top-2"
+      class="btn btn-neutral btn-sm absolute right-2 top-0"
       on:click={set}>{$t("apply")}</button
     >
 
@@ -287,7 +289,7 @@
             >
               {$t("bold")}
             </div>
-            <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§l</div>
+            <div class="bg-base-100 rounded-r pl-1.5 p-0.5 w-8">§l</div>
           </div>
           <div class="flex">
             <div
@@ -295,7 +297,7 @@
             >
               {$t("italic")}
             </div>
-            <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§o</div>
+            <div class="bg-base-100 rounded-r pl-1.5 p-0.5 w-8">§o</div>
           </div>
           <div class="flex">
             <div
@@ -303,7 +305,7 @@
             >
               {$t("glitchEffect")}
             </div>
-            <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§k</div>
+            <div class="bg-base-100 rounded-r pl-1.5 p-0.5 w-8">§k</div>
           </div>
         </div>
         <div class="flex space-x-1">
@@ -313,7 +315,7 @@
             >
               {$t("reset")}
             </div>
-            <div class="bg-base-300 rounded-r pl-1.5 p-0.5 w-8">§r</div>
+            <div class="bg-base-100 rounded-r pl-1.5 p-0.5 w-8">§r</div>
           </div>
           <div class="flex">
             <button class="btn btn-xs btn-ghost" on:click={copyChar}>
