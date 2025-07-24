@@ -45,6 +45,7 @@
   if (browser) {
     providerMode = localStorage.getItem("providerMode") == "true";
     email = localStorage.getItem("accountEmail");
+    if (localStorage.getItem("token") == undefined) goto("/login");
     amountOfServersForSkeletons = localStorage.getItem("amountOfServers");
     if (localStorage.getItem("devMode") == "true") {
       console.log("dev mode");  
