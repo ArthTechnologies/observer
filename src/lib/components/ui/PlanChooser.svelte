@@ -65,6 +65,10 @@
           plusPlanPrice = 13.99;
           premiumPlanPrice = 23.49;
           billingCycle = $t("perQuarter");
+          document.getElementById("billQuarterly").selected = true;
+        } else {
+          document.getElementById("billMonthly").selected = true;
+          billingCycle = $t("perMonth");
         }
        
 
@@ -107,7 +111,7 @@
   function updateBillPeriod() {
     let dropdown = document.getElementById("billPeriod")?.value;
     if (dropdown == $t("billMonthly")) {
-      localStorage.setItem("quarterlyy", "false");
+      localStorage.setItem("quarterly", "false");
     } else if (dropdown == $t("billQuarterly")) {
       localStorage.setItem("quarterly", "true");
     }
@@ -199,8 +203,8 @@ function selectPlus() {
       on:change={updateBillPeriod}
       class="select select-sm select-ghost"
     >
-      <option selected>{$t("billMonthly")}</option>
-      <option>{$t("billQuarterly")}</option>
+      <option id ="billMonthly">{$t("billMonthly")}</option>
+      <option id ="billQuarterly">{$t("billQuarterly")}</option>
     </select>
   </div>
 
