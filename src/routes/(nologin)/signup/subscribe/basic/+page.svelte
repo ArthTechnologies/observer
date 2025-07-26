@@ -48,7 +48,7 @@
       }
       let priceId;
 
-      let billQuarterly = localStorage.getItem("billQuarterly");
+      let billQuarterly = localStorage.getItem("quarterly");
       if (billQuarterly == "true") {
         priceId = "price_1R2G07JYPXquzaSz2ABwCb0U";
       } else {

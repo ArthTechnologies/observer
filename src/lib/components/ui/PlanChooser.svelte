@@ -107,9 +107,9 @@
   function updateBillPeriod() {
     let dropdown = document.getElementById("billPeriod")?.value;
     if (dropdown == $t("billMonthly")) {
-      localStorage.setItem("billQuarterly", "false");
+      localStorage.setItem("quarterlyy", "false");
     } else if (dropdown == $t("billQuarterly")) {
-      localStorage.setItem("billQuarterly", "true");
+      localStorage.setItem("quarterly", "true");
     }
     location.reload();
   }
