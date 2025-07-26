@@ -34,7 +34,13 @@
 
   if (browser) {
     refreshApiUrl();
-    plan = document.location.search.split("plan=")[1];
+    if (localStorage.getItem("plan") == "plus") {
+      plan = "plus";
+    } else if (localStorage.getItem("plan") == "premium") {
+      plan = "premium";
+    } else if (localStorage.getItem("plan") == "basic") {
+      plan = "basic";
+    } 
     let intervalId = setInterval(() => {
       if (localStorage.getItem("enableCloudflareVerify") != undefined) {
         cloudflareVerify = JSON.parse(
