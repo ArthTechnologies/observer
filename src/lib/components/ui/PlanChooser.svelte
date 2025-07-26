@@ -58,7 +58,7 @@
   if (browser) {
     onMount(() => {
       if (localStorage.getItem("address") == "arthmc.xyz") {
-        if (localStorage.getItem("billQuarterly") == "true") {
+        if (localStorage.getItem("quarterly") == "true") {
           document.getElementById("billPeriod").selectedIndex = 1;
 
           basicPlanPrice = 9.99;
@@ -66,6 +66,7 @@
           premiumPlanPrice = 23.49;
           billingCycle = $t("perQuarter");
         }
+       
 
         let currency = localStorage.getItem("currency");
         if (currency == "mxn") {
@@ -220,7 +221,7 @@ function selectPlus() {
 
 
         <div class="flex gap-2">
-          <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">$3.99</p>
+          <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">$3.99/mo</p>
           <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">4GB RAM</p>
 
         </div>
@@ -239,7 +240,7 @@ function selectPlus() {
 
 
           <div class="flex gap-2">
-            <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">$5.99</p>
+            <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">$5.99/mo</p>
             <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">6GB RAM</p>
 
           </div>
@@ -258,7 +259,7 @@ function selectPlus() {
   
   
             <div class="flex gap-2">
-              <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">$7.99</p>
+              <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">$7.99/mo</p>
               <p class="bg-base-300 bg-opacity-80 px-1.5 rounded text-xs font-poppins">8GB RAM</p>
   
             </div>
