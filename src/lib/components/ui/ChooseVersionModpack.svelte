@@ -165,7 +165,7 @@
                 date: version.date_published,
                 type: version.version_type,
                 url: version.files[0].url,
-                modpackId: id,
+                id: id,
                 versionId: version.id,
                 alreadyInstalled:
                   version.id == localStorage.getItem("modpackVersionID") &&
