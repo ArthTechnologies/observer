@@ -92,6 +92,7 @@
             if (data.msg.includes("Success")) {
               document.getElementById("xIcon").src = e2;
               document.getElementById("oldImg").src = e2;
+              document.getElementById("navIcon"+id).src = icon;
 
               alert("Image uploaded successfully", "success");
             } else {
