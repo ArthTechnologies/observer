@@ -1,18 +1,19 @@
 <script>
     import { browser } from "$app/environment";
     import { t } from "$lib/scripts/i18n";
-    import { apiurl, usingOcelot } from "$lib/scripts/req";
+    import { apiurl, getServerNode, usingOcelot } from "$lib/scripts/req";
     import { BoxIcon, Trash2 } from "lucide-svelte";
+    import ManagePluginSkele from "./ManagePluginSkele.svelte";
+    import { alert } from "$lib/scripts/utils";
  export let filename;
  export let modtype;
+ let state = "normal";
  let serverId = "";
  if (browser) {
     serverId = localStorage.getItem("serverID");
  }
   export function del(filename) {
-    //tell upstream component to refresh
-    const event = new CustomEvent("refresh");
-    document.dispatchEvent(event);
+   state="skeleton";
 
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
@@ -24,9 +25,21 @@
         token: localStorage.getItem("token"),
         username: localStorage.getItem("accountEmail"),
       },
+    }).then((response) => {
+      if (response.error != undefined) {
+        alert(response.error, "error");
+      } else {
+
+        alert("File successfully deleted", "success");
+        state = "deleted";
+      }
+      skeleton=false;
     });
   }
 </script>
+{#if state == "skeleton"}
+  <ManagePluginSkele />
+{:else if state == "normal"}
   <div
     class="p-2 rounded-lg bg-base-200 flex justify-between items-center h-16"
   >
@@ -69,3 +82,4 @@
 
     </div>
   </div></div>
+  {/if}

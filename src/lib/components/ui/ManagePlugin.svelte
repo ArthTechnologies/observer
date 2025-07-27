@@ -7,6 +7,8 @@
   import ChooseVersion from "./ChooseVersion.svelte";
   import ChooseModVersion from "./ChooseModVersion.svelte";
   import TranslateableText from "./TranslateableText.svelte";
+    import ManagePluginSkele from "./ManagePluginSkele.svelte";
+    import { alert } from "$lib/scripts/utils";
 
   export let name;
   export let id;
@@ -19,6 +21,7 @@
   export let icon = "";
   export let slug = id;
   export let author = "";
+  let state = "normal";
   let showInfo = true;
   let disableText = $t("disable");
   if (disabled) {
@@ -96,9 +99,7 @@
   }
 
   export function del(filename) {
-    //tell upstream component to refresh
-    const event = new CustomEvent("refresh");
-    document.dispatchEvent(event);
+   state="skeleton";
 
     let baseurl = apiurl;
     if (usingOcelot) baseurl = getServerNode(id);
@@ -110,6 +111,15 @@
         token: localStorage.getItem("token"),
         username: localStorage.getItem("accountEmail"),
       },
+    }).then((response) => {
+      if (response.error != undefined) {
+        alert(response.error, "error");
+      } else {
+
+        alert("File successfully deleted", "success");
+        state = "deleted";
+      }
+      skeleton=false;
     });
   }
 
@@ -151,6 +161,9 @@
   }
 </script>
 
+{#if state == "skeleton"}
+  <ManagePluginSkele />
+{:else if state == "normal"}
 <div>
   <div
     class="p-2 rounded-lg bg-base-200 flex justify-between items-center h-16"
@@ -210,3 +223,4 @@
   </div>
 
 </div>
+{/if}
