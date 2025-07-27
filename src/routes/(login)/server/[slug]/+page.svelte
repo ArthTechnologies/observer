@@ -104,10 +104,7 @@
   let memoryReq = null;
 
   if (browser) {
-    if (localStorage.getItem("updateAlert") != "bluemap") {
-      localStorage.setItem("updateAlert", "bluemap");
-      alert("Update: BlueMap (3D Webmap) support has been added.", "info");
-    }
+
 
     name = localStorage.getItem("serverName");
     if (localStorage.getItem("serverCardRedrict") != "true") {
