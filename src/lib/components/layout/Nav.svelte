@@ -39,6 +39,7 @@
   let email: string = "";
   onMount(() => {
     if (browser) {
+
       update(undefined, false);
     }
   });
@@ -57,12 +58,8 @@
   let promise;
 
   if (browser) {
-     console.log(window.location.pathname)
-     if (window.location.pathname.includes("server")) {
-      slug == window.location.pathname.split("/")[2];
-     } else if (window.location.pathname.includes("newserver")) {
-      slug == window.location.pathname.split("?id=")[1];
-     }
+     
+
      loadServers();
      window.addEventListener("redrict", loadServers);
   }
@@ -161,26 +158,34 @@
     });
   }
 
+   function getSlug() {
+           if (window.location.pathname.includes("/server")) {
+      slug = parseInt(window.location.pathname.split("/")[2]);
+     } else if (window.location.pathname.includes("/newserver")) {
+      console.log("TTTTTTT" + window.location.search.split("?id=")[1]);
+      slug = parseInt(window.location.search.split("?id=")[1]);
+      console.log("slug is " + slug);
+     }
+   }
   let noserver = false;
 
   if (id == 0 && noserverlock) {
     noserver = true;
   }
 
-  function update(id, redirect) {
+  function update(redirect) {
     console.log("updating");
-    if (id == undefined) {
+  
+      getSlug();
       setTimeout(() => {
-        slug = window.location.pathname.split("/")[2];
-      }, 10);
-      setTimeout(() => {
-        slug = window.location.pathname.split("/")[2];
+        getSlug();
       }, 50);
       setTimeout(() => {
-        slug = window.location.pathname.split("/")[2];
+        getSlug();
+   
       }, 250);
-    } else {
-      slug = 10000 + parseInt(id);
+
+      
 
       for (let i = 0; i < servers.length; i++) {
         if (parseInt(servers[i].id) + 10000 == slug) {
@@ -192,7 +197,7 @@
           }
         }
       }
-    }
+    
   }
 
   function select(server) {

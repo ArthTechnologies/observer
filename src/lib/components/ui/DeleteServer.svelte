@@ -11,6 +11,7 @@
   import { AlertTriangle, Info, Loader, Trash2 } from "lucide-svelte";
   import { getDefaultSettings } from "http2";
     import { goto } from "$app/navigation";
+    import { alert } from "$lib/scripts/utils";
   let id = -1;
   let accountType = "email";
   let loading = false;
@@ -36,17 +37,10 @@
     deleteServer(id, password).then(() => {
       console.log("deleting4...");
       loading = false;
-      goto("/newserver");  
-      if (usingOcelot) {
-        fetch(
-          apiurl +
-            "node?url=" +
-            JSON.parse(localStorage.getItem("serverNodes"))[id.toString()],
-          {
-            method: "POST",
-          }
-        );
-      }
+      alert("Server successfully deleted", "success");
+      goto("/newserver?id="+id, { replaceState: true });
+     
+
     });
   }
 </script>
