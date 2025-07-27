@@ -46,10 +46,15 @@
     fetch(lrurl + "project/" + id)
       .then((response) => response.json())
       .then((data) => {
+
         desc = data.description;
         slug = data.slug;
         name = data.title;
         icon = data.icon_url;
+                if (data.description.includes("rate-limit")) {
+          name = filename;
+          desc = "Unable to fetch data from Modrinth."
+        }
       });
 
     fetch(lrurl + "project/" + id + "/members")
