@@ -142,7 +142,7 @@
           localStorage.setItem("modpackVersionID", response.modpack.versionID);
           if (response.modpack.platform == "mr") {
             fetch(
-              "https://api.modrinth.com/api/v2/mod/" +
+              "https://api.modrinth.com/api/v2/project/" +
                 response.modpack.projectID
             )
               .then((response) => response.json())
