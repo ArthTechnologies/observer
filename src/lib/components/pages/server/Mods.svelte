@@ -40,6 +40,7 @@
       promise = getMods(id, "mods").then((response) => {
         res = response;
 
+
         let mrRequestIds = [];
         let cfPromiseList = ["haventStartedYet"];
         for (let i in res.mods) {
@@ -48,6 +49,7 @@
 
           if (res.mods[i].platform == "mr") {
             mrRequestIds.push(res.mods[i].id);
+            
           } else if (res.mods[i].platform == "cf") {
             cfPromiseList.push(res.mods[i].id);
 
@@ -59,14 +61,28 @@
                 cfPromiseList.splice(cfPromiseList.indexOf(res.mods[i].id), 1);
 
                 if (cfPromiseList.length == 0) {
+                  
                   //sort alphabetically
                   for (let i in res.mods) {
                     for (let j in res.mods) {
+                                              let Iname;
+                        if (res.mods[i].name != undefined) {
+                          Iname = res.mods[i].name;
+                        } else {
+                          Iname = res.mods[i].filename;
+                        }
+                        let Jname;
+                        if (res.mods[j].name != undefined) {
+                          Jname = res.mods[j].name;
+                        } else {
+                          Jname = res.mods[j].filename;
+                        }
                       if (
-                        res.mods[j].name != "CFMod" &&
-                        res.mods[j].name != res.mods[j].id
+                        (Jname != "CFMod") &&
+                        (res.mods[j].id == undefined || Jname != res.mods[j].id)
                       ) {
-                        if (res.mods[i].name.toLowerCase() < res.mods[j].name.toLowerCase()) {
+
+                        if (Iname.toLowerCase() < Jname.toLowerCase()) {
                           let temp = res.mods[i];
                           res.mods[i] = res.mods[j];
                           res.mods[j] = temp;
@@ -81,20 +97,8 @@
                 res.mods[i].author = data.authors[0].name;
                 res.mods[i].icon = data.logo.thumbnailUrl;
               });
-          } else {
-            //sort alphabetically
-            for (let i in res.mods) {
-              for (let j in res.mods) {
-               
-                  if (res.mods[i].filename.toLowerCase() < res.mods[j].filename.toLowerCase()) {
-                    let temp = res.mods[i];
-                    res.mods[i] = res.mods[j];
-                    res.mods[j] = temp;
-                  }
-                
-              }
-            }
           }
+          sortMods();
         }
         if (mrRequestIds.length > 0) {
           fetch(
@@ -128,6 +132,9 @@
                   }
                 }
               }
+   
+        sortMods();
+        
             });
         }
 
@@ -180,6 +187,37 @@
     }
   }
   search();
+
+  function sortMods() {
+                                   //sort alphabetically
+                  for (let i in res.mods) {
+                    for (let j in res.mods) {
+                                              let Iname;
+                        if (res.mods[i].name != undefined) {
+                          Iname = res.mods[i].name;
+                        } else {
+                          Iname = res.mods[i].filename;
+                        }
+                        let Jname;
+                        if (res.mods[j].name != undefined) {
+                          Jname = res.mods[j].name;
+                        } else {
+                          Jname = res.mods[j].filename;
+                        }
+                      if (
+                        (Jname != "CFMod") &&
+                        (res.mods[j].id == undefined || Jname != res.mods[j].id)
+                      ) {
+
+                        if (Iname.toLowerCase() < Jname.toLowerCase()) {
+                          let temp = res.mods[i];
+                          res.mods[i] = res.mods[j];
+                          res.mods[j] = temp;
+                        }
+                      }
+                    }
+                  }
+  }
   function del(filename) {
     //tell upstream component to refresh
     const event = new CustomEvent("refresh");
@@ -201,6 +239,7 @@
       },
     });
   }
+ 
 </script>
 
 <div class="bg-base-300 rounded-xl px-4 py-3 shadow-xl neutralGradietStroke w-full space-y-2 min-h-[30rem]">
