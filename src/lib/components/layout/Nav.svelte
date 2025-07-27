@@ -39,7 +39,8 @@
   let email: string = "";
   onMount(() => {
     if (browser) {
-      update(undefined, false);
+
+      update( false);
     }
   });
   if (browser) {
@@ -57,14 +58,14 @@
   let promise;
 
   if (browser) {
-     console.log(window.location.pathname)
-     if (window.location.pathname.includes("server")) {
-      slug == window.location.pathname.split("/")[2];
-     } else if (window.location.pathname.includes("newserver")) {
-      slug == window.location.pathname.split("?id=")[1];
-     }
+     
+
      loadServers();
      window.addEventListener("redrict", loadServers);
+     window.addEventListener("redrict", () => {
+       update(true)
+     });
+   
   }
 
   function loadServers() {
@@ -142,7 +143,7 @@
              
                       goto("/server/" + (10000 + parseInt(servers[0].id)));
                     }
-                    update(servers[0].id, false);
+                    update( false);
                   }
                 }
               });
@@ -161,26 +162,34 @@
     });
   }
 
+   function getSlug() {
+           if (window.location.pathname.includes("/server")) {
+      slug = parseInt(window.location.pathname.split("/")[2]);
+     } else if (window.location.pathname.includes("/newserver")) {
+      console.log("TTTTTTT" + window.location.search.split("?id=")[1]);
+      slug = parseInt(window.location.search.split("?id=")[1]);
+      console.log("slug is " + slug);
+     }
+   }
   let noserver = false;
 
   if (id == 0 && noserverlock) {
     noserver = true;
   }
 
-  function update(id, redirect) {
+  function update(redirect) {
     console.log("updating");
-    if (id == undefined) {
+  
+      getSlug();
       setTimeout(() => {
-        slug = window.location.pathname.split("/")[2];
-      }, 10);
-      setTimeout(() => {
-        slug = window.location.pathname.split("/")[2];
+        getSlug();
       }, 50);
       setTimeout(() => {
-        slug = window.location.pathname.split("/")[2];
+        getSlug();
+   
       }, 250);
-    } else {
-      slug = 10000 + parseInt(id);
+
+      
 
       for (let i = 0; i < servers.length; i++) {
         if (parseInt(servers[i].id) + 10000 == slug) {
@@ -192,7 +201,7 @@
           }
         }
       }
-    }
+    
   }
 
   function select(server) {
@@ -291,7 +300,7 @@ Invalid Account
 </a>
 {:else}
 <a
-  on:click={() => update(server.id, true)}
+  on:click={() => update( true)}
   id="serverCard{10000 + parseInt(server.id)}"
   class="neutralGradientStrokeB flex gap-2.5 items-center p-4 w-14 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-xl bg-base-200 cursor-pointer"
 >
@@ -304,11 +313,11 @@ Invalid Account
     </div>
   </div>
   <div class="max-md:hidden flex flex-col w-full gap-1">
-    <a on:click={()=>{update(undefined, false)}} href="/account" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
+    <a on:click={()=>{update( false)}} href="/account" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <User size="20" />Account</a
     >
 {#if providerMode}
-    <a on:click={()=>{update(undefined, false)}} href="/billing" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
+    <a on:click={()=>{update( false)}} href="/billing" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <ShoppingCart size="20" />Subscriptions</a
     >
     {/if}
@@ -338,9 +347,9 @@ Invalid Account
         tabindex="0"
         class="dropdown-content menu bg-base-300 rounded-box z-[1] w-52 p-2 shadow-xl"
       >
-        <li><a on:click={()=>{update(undefined, false)}} href="/account">Account</a></li>
+        <li><a on:click={()=>{update( false)}} href="/account">Account</a></li>
         {#if providerMode}
-        <li><a on:click={()=>{update(undefined, false)}} href="/billing">Subscriptions</a></li>
+        <li><a on:click={()=>{update( false)}} href="/billing">Subscriptions</a></li>
         {/if}
 <li>        <a onclick="modal_language.showModal()">
   Language</a

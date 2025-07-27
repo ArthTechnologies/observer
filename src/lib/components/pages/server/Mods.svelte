@@ -284,7 +284,9 @@
 
     <div class="space-y-2">
       {#await promise}
-        <ManagePluginSkele />
+        {#each Array(8) as _}
+          <ManagePluginSkele />
+        {/each}
       {:then}
         {#each res.mods as mod}
           {#if mod.name != "CFMod" && (mod.name != mod.id || mod.id == undefined)}
