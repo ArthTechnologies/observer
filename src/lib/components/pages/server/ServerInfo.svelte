@@ -1,4 +1,5 @@
 <script>
+    import { browser } from "$app/environment";
     import CopyButton from "$lib/components/buttons/CopyButton.svelte";
     import Versions from "$lib/components/buttons/Versions.svelte";
     import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
@@ -15,6 +16,25 @@
     export let modded = false;
     let e2;
     let state = 0;
+
+    if (browser) {
+      fetch(apiurl + "server/" + localStorage.getItem("serverID")+ "/settings/icon",
+        {
+          method: "GET",
+          headers: {
+            token: localStorage.getItem("token"),
+            username: localStorage.getItem("accountEmail"),
+          },
+        })
+        .then((response) => response.blob())
+        .then((blob) => {
+          if (blob.size > 0) {
+            icon = URL.createObjectURL(blob);
+          } else {
+            icon = "/images/placeholder.webp";
+          }
+        });
+    }
 
     function handle() {
       console.log("uploading image...");
