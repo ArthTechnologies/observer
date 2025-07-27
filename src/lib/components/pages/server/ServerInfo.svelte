@@ -69,6 +69,8 @@
           .then((data) => {
             if (data.msg.includes("Success")) {
               document.getElementById("xIcon").src = e2;
+              document.getElementById("oldImg").src = e2;
+
               alert("Image uploaded successfully", "success");
             } else {
               alert(data.error, "error");
@@ -99,7 +101,7 @@
     >Upload Image</h3>
    <input id="upload" type="file" on:change={handle} class=" mt-5 file-input file-input-bordered w-full max-w-xs" />
     <div class="flex gap-3 mt-5 items-center">
-      <img src={icon} class="rounded-lg w-16 h-16" />
+      <img id="oldImg" src={icon} class="rounded-lg w-16 h-16" />
       <ChevronRight size="32" />
          <img src={icon} id ="newImg" class="rounded-lg w-16 h-16" />
       
