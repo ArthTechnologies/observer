@@ -40,7 +40,7 @@
   onMount(() => {
     if (browser) {
 
-      update(undefined, false);
+      update( false);
     }
   });
   if (browser) {
@@ -62,6 +62,10 @@
 
      loadServers();
      window.addEventListener("redrict", loadServers);
+     window.addEventListener("redrict", () => {
+       update(true)
+     });
+   
   }
 
   function loadServers() {
@@ -139,7 +143,7 @@
              
                       goto("/server/" + (10000 + parseInt(servers[0].id)));
                     }
-                    update(servers[0].id, false);
+                    update( false);
                   }
                 }
               });
@@ -296,7 +300,7 @@ Invalid Account
 </a>
 {:else}
 <a
-  on:click={() => update(server.id, true)}
+  on:click={() => update( true)}
   id="serverCard{10000 + parseInt(server.id)}"
   class="neutralGradientStrokeB flex gap-2.5 items-center p-4 w-14 sm:w-32 truncate md:w-full md:h-[5.5rem] rounded-xl bg-base-200 cursor-pointer"
 >
@@ -309,11 +313,11 @@ Invalid Account
     </div>
   </div>
   <div class="max-md:hidden flex flex-col w-full gap-1">
-    <a on:click={()=>{update(undefined, false)}} href="/account" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
+    <a on:click={()=>{update( false)}} href="/account" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <User size="20" />Account</a
     >
 {#if providerMode}
-    <a on:click={()=>{update(undefined, false)}} href="/billing" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
+    <a on:click={()=>{update( false)}} href="/billing" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <ShoppingCart size="20" />Subscriptions</a
     >
     {/if}
@@ -343,9 +347,9 @@ Invalid Account
         tabindex="0"
         class="dropdown-content menu bg-base-300 rounded-box z-[1] w-52 p-2 shadow-xl"
       >
-        <li><a on:click={()=>{update(undefined, false)}} href="/account">Account</a></li>
+        <li><a on:click={()=>{update( false)}} href="/account">Account</a></li>
         {#if providerMode}
-        <li><a on:click={()=>{update(undefined, false)}} href="/billing">Subscriptions</a></li>
+        <li><a on:click={()=>{update( false)}} href="/billing">Subscriptions</a></li>
         {/if}
 <li>        <a onclick="modal_language.showModal()">
   Language</a
