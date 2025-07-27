@@ -9,11 +9,12 @@
 
   import { t } from "$lib/scripts/i18n";
 
-  import { ChevronDown, ChevronUp, Clock, Trash2 } from "lucide-svelte";
+  import { BoxIcon, ChevronDown, ChevronUp, Clock, Trash2 } from "lucide-svelte";
     import ManagePluginSkele from "$lib/components/ui/ManagePluginSkele.svelte";
     import ManagePlugin from "$lib/components/ui/ManagePlugin.svelte";
     import AddMod from "./AddMod.svelte";
     import ChooseVersionModpack from "$lib/components/ui/ChooseVersionModpack.svelte";
+    import ManageUnknownPlugin from "$lib/components/ui/ManageUnknownPlugin.svelte";
 
   let promise;
   let res = { mods: [], modpack: {} };
@@ -263,27 +264,10 @@
                 author={mod.author}
               />
             {:else}
-              <div
-                class="px-3 py-2 rounded-lg bg-base-300 flex justify-between"
-              >
-                <div class="flex items-center space-x-1 break-all">
-                  <p>{mod.filename}</p>
-                  <button
-                    on:click={() => {
-                      del(mod.filename);
-                    }}
-                    class="btn btn-xs btn-error mt-0.5 btn-square"
-                  >
-                    <Trash2 size="15" /></button
-                  >
-                </div>
-                <div
-                  class="bg-base-200 flex px-2 py-1 rounded-md place-items-center text-sm w-[13rem]"
-                >
-                  <Clock size="16" class="mr-1.5" />
-                  {mod.time}
-                </div>
-              </div>
+<ManageUnknownPlugin
+filename={mod.filename}
+modtype="mod"
+/>
             {/if}
           {:else}
             <ManagePluginSkele />

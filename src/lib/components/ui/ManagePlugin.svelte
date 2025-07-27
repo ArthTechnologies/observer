@@ -60,7 +60,10 @@
     fetch(lrurl + "project/" + id + "/members")
       .then((response) => response.json())
       .then((data) => {
-        author = data[0].user.username;
+        if (data[0] != undefined) {author = data[0].user.username;
+        } else {
+          author = "Undefined";
+        }
       });
   } else if (platform == "cf") {
     fetch(apiurl + "curseforge/" + id)
