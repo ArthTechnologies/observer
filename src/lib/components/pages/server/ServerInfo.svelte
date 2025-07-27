@@ -18,6 +18,7 @@
     let state = 0;
 
     if (browser) {
+      let id = localStorage.getItem("serverID");
       fetch(apiurl + "server/" + localStorage.getItem("serverID")+ "/settings/icon",
         {
           method: "GET",
@@ -30,6 +31,7 @@
         .then((blob) => {
           if (blob.size > 0) {
             icon = URL.createObjectURL(blob);
+            document.getElementById("navIcon"+id).src = icon;
           } else {
             icon = "/images/placeholder.webp";
           }

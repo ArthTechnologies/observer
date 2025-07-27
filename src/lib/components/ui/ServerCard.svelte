@@ -196,6 +196,7 @@
 
 <img
   src="/images/placeholder.webp"
+  id="navIcon{id}"
   class="w-[3.5rem] h-[3.5rem] rounded-md max-lg:hidden"
 />
 <div class="-mt-1">
