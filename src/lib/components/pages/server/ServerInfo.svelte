@@ -14,6 +14,7 @@
     export let port = 25565;
     export let subdomain = undefined;
     export let modded = false;
+    export let geyser = false;
     let e2;
     let state = 0;
 
@@ -106,7 +107,7 @@
           class=" bg-base-300 w-full shadow-xl rounded-xl px-4 py-3 neutralGradientStroke"
         >
         <p class=" font-bold font-ubuntu text-gray-100 mb-3">Server Info</p>
-          <div class="flex flex-col items-center w-full md:w-[19.8rem]">
+          <div class="flex flex-col items-center w-full md:w-[17.5rem]">
          
 <div class="flex items-center gap-3.5 w-full">
   <div class="w-[3.5rem] h-[3.5rem] relative group">
@@ -179,10 +180,10 @@
                   <div class="flex items-center gap-3.5 w-full">
            
 
-           <div class="flex">
-               <div class="flex flex-col">
+           <div class="flex w-full">
+               <div class="flex flex-col w-full">
                <span class="text-sm font-light  font-poppins mt-3">
-                  IP Address
+                  Java Address
                 </span>
                 <div class="flex justify-between">
                   <div class="font-mono text-sm  text-white  rounded flex gap-1 items-center -mt-1">
@@ -193,8 +194,40 @@
                   />
             
                 </div>
-                <a href="https://arthmc.xyz/knowledgebase/how-to-join-servers/" target="_blank" class="btn btn-xs  bg-slate-900 bg-opacity-80"><BookOpen size=16 class="mr-1.5"/> How to Join</a>
+
                 </div>
+ {#if geyser}
+                  <div class="flex gap-3">
+                   <div class="flex flex-col">
+                <span class="text-sm font-light  font-poppins mt-1">
+                  Bedrock Address
+                </span>
+                <div class="flex justify-between">
+                  <div class="font-mono text-sm  text-white  rounded flex gap-1 items-center -mt-1">
+{subdomain == undefined ? address : subdomain + "." + address}
+                  <CopyButton text={subdomain == undefined ? address + ":" + port : subdomain + "." + address} size="16" class="cursor-pointer"
+                  />
+            
+                </div>
+              
+                </div>
+         </div>
+                        <div class="flex flex-col">
+                <span class="text-sm font-light  font-poppins mt-1">
+                  Port
+                </span>
+                <div class="flex justify-between">
+                  <div class="font-mono text-sm  text-white  rounded flex gap-1 items-center -mt-1">
+{subdomain == undefined ? port : 19132}
+                  <CopyButton text={subdomain == undefined ? address + ":" + port : subdomain + "." + address} size="16" class="cursor-pointer"
+                  />
+            
+                </div>
+              
+                </div>
+         </div>
+  </div>
+  {/if}
 <div class="divider my-2"></div>
               <StorageLimit {modded}/>
                 <div id="rawDesc" class="hidden"></div>

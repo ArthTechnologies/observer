@@ -90,7 +90,7 @@
   let state = "false";
 
   let secret = "";
-  let difference = -1;
+  let geyser = false;
   let baseurl = apiurl;
   let dynmap = false;
   let bluemap = false;
@@ -221,6 +221,7 @@
           "serverVoicechat",
           response.specialPlugins.includes("voicechat")
         );
+        geyser = response.specialPlugins.includes("geyser");
       }
 
       if (response.specialPlugins.includes("dynmap") && dynmap == false) {
@@ -574,7 +575,7 @@
       class="flex flex-col items-center place-content-start mb-20 md:pl-0 mt-[3.75rem] gap-5 w-full md:w-[19.75rem]"
     >
       <div class="space-y-5 w-full">
-    <ServerInfo {name} {address} {port} {subdomain} {modded} />
+    <ServerInfo {name} {address} {port} {subdomain} {modded} {geyser} />
 
     <PlayerList {id}/>
       </div>
