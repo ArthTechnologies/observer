@@ -62,8 +62,37 @@
 
      loadServers();
      window.addEventListener("redrict", loadServers);
-  }
+     window.addEventListener("refreshIcons", refreshIcons)
 
+  }
+  function refreshIcons() {
+    if (browser) {
+      console.log("refreshing icons" + servers);
+      for (let i = 0; i < servers.length; i++) {
+        let id = servers[i].id;
+
+
+      fetch(apiurl + "server/" + id + "/settings/icon",
+        {
+          method: "GET",
+          headers: {
+            token: localStorage.getItem("token"),
+            username: localStorage.getItem("accountEmail"),
+          },
+        })
+        .then((response) => response.blob())
+        .then((blob) => {
+          if (blob.size > 0) {
+            let icon = URL.createObjectURL(blob);
+            document.getElementById("navIcon" + id).src = icon;
+
+          } else {
+            icon = "/images/placeholder.webp";
+          }
+        });
+    }
+  }
+  }
   function loadServers() {
 
     promise = getServers(email).then((response) => {
@@ -76,6 +105,7 @@
           id = response.amount;
         }
         servers = response;
+        refreshIcons();
         if (
           servers.length == 0
         ) {
@@ -210,7 +240,7 @@
 
   function select(server) {
     console.log("server");
-
+    
     localStorage.setItem("serverName", server.name);
     localStorage.setItem("serverID", server.id);
     localStorage.setItem("serverSoftware", server.software);
