@@ -7,12 +7,37 @@
     import { MapPin, ShoppingCart, User } from "lucide-svelte";
     let nodeInfo = [];
     let selectedNode = "";
+    let pings = [];
 
     if (browser) {
         fetch('https://ocelot.arthmc.xyz/nodeInfo')
             .then(response => response.json())
             .then(data => {
                 nodeInfo = data;
+                for (let i in nodeInfo) {
+                    let ping = "Pinging...";
+                    pings.push(ping);
+                    // send a request to the base url of each node and calculate latency
+                       let start = performance.now();
+                    fetch(nodeInfo[i][0],
+                        {
+                            method: "GET",
+                            mode: "no-cors",
+                        })
+                        .then(response => {
+                        
+                             
+                                return response.text().then(() => {
+                                    let end = performance.now();
+                                    pings[i] = Math.round(end - start) + "ms";
+                                });
+                       
+                        })
+                        .catch(() => {
+                            pings[i] = "Offline";
+                        });
+
+                }
             });
     }
 </script>
@@ -60,7 +85,7 @@ class="relative bg-base-100 rounded-xl shadow-xl  flex flex-col items-center h-[
             <p class="text-[1.4rem] font-poppins-bold mb-2 mt-12 px-5 md:px-8 xl:px-12 text-center ">Pick a location</p>
     
             <div class="flex flex-col gap-2 w-3/4">
-              {#each nodeInfo as node}
+              {#each nodeInfo as node, i}
               <div class="flex gap-2.5 bg-neutral bg-opacity-75 px-2 p-1 rounded-xl items-center">
                 {#if parseInt(node[1]) >= parseInt(node[2])}
                 <input type="radio" name="radio-2" class="radio pointer-events-none opacity-50" />
@@ -89,7 +114,8 @@ class="relative bg-base-100 rounded-xl shadow-xl  flex flex-col items-center h-[
                     &#127465;&#127466;
                     {/if}</span>  {node[0].split("https://")[1].split(".")[0]}</p>
                    <div class="flex gap-2">
-                      
+                      <div class="bg-base-100
+                        rounded-full text-xs px-1.5">{pings[i]}</div>
                       {#if parseInt(node[1]) >= parseInt(node[2])}
                       <div class="bg-error text-black border border-black rounded-lg md:rounded-full text-xs px-1.5">At Capacity</div>
                       {:else if parseInt(node[2]) - parseInt(node[1]) < 5 }
