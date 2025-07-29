@@ -40,6 +40,19 @@
                 }
             });
     }
+
+    function prettyText(text) {
+        // Replace hyphens with spaces and capitalize both letters of the first word, first letter of following words
+       let words = text.split("-");
+        for (let i = 0; i < words.length; i++) {
+            if (i === 0) {
+                words[i] = words[i].toUpperCase();
+            } else {
+                words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase();
+            }
+        }
+        return words.join(" ");
+    }
 </script>
 <div
 style="background-size: cover;"
@@ -112,7 +125,7 @@ class="relative bg-base-100 rounded-xl shadow-xl  flex flex-col items-center h-[
                     &#127482;&#127480;
                     {:else if node[0].includes("germany")}
                     &#127465;&#127466;
-                    {/if}</span>  {node[0].split("https://")[1].split(".")[0]}</p>
+                    {/if}</span>  {prettyText(node[0].split("https://")[1].split(".")[0])}</p>
                    <div class="flex gap-2">
                       <div class="bg-base-100
                         rounded-full text-xs px-1.5">{pings[i]}</div>
