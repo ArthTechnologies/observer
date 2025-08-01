@@ -2,9 +2,9 @@
     import { browser } from "$app/environment";
     import CancelPlan from "$lib/components/pages/billing/CancelPlan.svelte";
     import { apiurl } from "$lib/scripts/req";
-    import { AlarmClock, ArrowDownUp, Clock, CurrencyIcon, RefreshCcw, X } from "lucide-svelte";
+    import { AlarmClock, ArrowDownUp, Clock, CurrencyIcon, PlusIcon, RefreshCcw, X } from "lucide-svelte";
     
-    let customerId = "cus_RneEzRLkIZYXHx";
+    let customerId = "";
     let subscriptions = [];
     let loading = true;
     let error = null;
@@ -61,17 +61,7 @@
         return statusMap[status] || 'badge-neutral';
     }
     
-    function handleReactivate(subscription) {
-        // Placeholder for reactivation logic
-        console.log('Reactivating subscription:', subscription);
-        // You can implement the actual API call here
-    }
-    
-    function handleCancel(subscription) {
-        // Placeholder for cancellation logic
-        console.log('Canceling subscription:', subscription);
-        // You can implement the actual API call here
-    }
+
 
     function getPlanName(productId) {
         if (productId == "prod_QmZfw9v9Y1lf8L") return "Premium Plan"
@@ -197,17 +187,8 @@ function oneWeekBefore(unixTimestamp) {
                                     
                                     <!-- Actions -->
                                     <div class="flex flex-col sm:flex-row gap-2 lg:flex-col">
-                                        {#if subscription.status === 'canceled'}
-                                            <button 
-                                                class="btn btn-success btn-sm"
-                                                on:click={() => handleReactivate(subscription)}
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                                </svg>
-                                                Reactivate
-                                            </button>
-                                        {:else if subscription.status === 'active' || subscription.status === "past_due"}
+                   
+                                        {#if subscription.status === 'active' || subscription.status === "past_due"}
                                         <div class="flex gap-2">    
                                         <button 
                                                 class="btn btn-sm btn-neutral"
@@ -230,6 +211,7 @@ function oneWeekBefore(unixTimestamp) {
                     {/each}
                 </div>
             {/if}
+                    <a target="_blank" rel=noreferrer href="/signup/subscribe/premium" class="btn btn-primary mt-5 btn-ms"><PlusIcon/>New Subscription</a>
         {/if}
 
         <!-- Refresh Button -->
@@ -246,5 +228,6 @@ function oneWeekBefore(unixTimestamp) {
                 </button>
             </div>
         {/if}
+
     </div>
 </div>
