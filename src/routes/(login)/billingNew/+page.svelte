@@ -4,12 +4,13 @@
     import { apiurl } from "$lib/scripts/req";
     import { AlarmClock, ArrowDownUp, Clock, CurrencyIcon, PlusIcon, RefreshCcw, X } from "lucide-svelte";
     
-    let customerId = "";
+    let email = "";
     let subscriptions = [];
     let loading = true;
     let error = null;
     
     if (browser) {
+        email = localStorage.getItem("email");
         getSubscriptions();
         document.addEventListener("refresh", getSubscriptions)
     }
@@ -18,7 +19,7 @@
         loading = true;
         error = null;
         
-        fetch(apiurl + "x/lapis/subs/" + customerId, {
+        fetch(apiurl + "x/lapis/subs/" + email, {
             method: "GET",
             headers: {
                 username: localStorage.getItem("accountEmail"),
@@ -66,6 +67,7 @@
     function getPlanName(productId) {
         if (productId == "prod_QmZfw9v9Y1lf8L") return "Premium Plan"
         if (productId == "prod_P9uYKnDHhdpfIi") return "Basic Plan"
+        if (productId == "prod_P9uPHrP7gvFUEX") return "Plus Plan"
     }
 
 function oneWeekBefore(unixTimestamp) {
