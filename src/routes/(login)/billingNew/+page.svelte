@@ -4,13 +4,14 @@
     import { apiurl } from "$lib/scripts/req";
     import { AlarmClock, ArrowDownUp, Clock, CurrencyIcon, RefreshCcw, X } from "lucide-svelte";
     
-    let customerId = "";
+    let customerId = "cus_RneEzRLkIZYXHx";
     let subscriptions = [];
     let loading = true;
     let error = null;
     
     if (browser) {
         getSubscriptions();
+        document.addEventListener("refresh", getSubscriptions)
     }
     
     function getSubscriptions() {
