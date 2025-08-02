@@ -64,10 +64,17 @@
     
 
 
-    function getPlanName(productId) {
-        if (productId == "prod_QmZfw9v9Y1lf8L") return "Premium Plan"
-        if (productId == "prod_P9uYKnDHhdpfIi") return "Basic Plan"
-        if (productId == "prod_P9uPHrP7gvFUEX") return "Plus Plan"
+    function getPlanName(priceId) {
+        if (priceId == "price_1RqfTEJYPXquzaSzw5syXRoh") return "Basic Plan (Quarterly)"
+        if (priceId == "price_1R2FxgJYPXquzaSzQyzJBmsx") return "Basic Plan"
+
+        if (priceId == "price_1RqfVEJYPXquzaSzUvlz5wcL") return "Plus Plan (Quarterly)"
+        if (priceId == "price_1R2G3zJYPXquzaSzRRkaQC4J") return "Plus Plan"
+
+        if (priceId == "price_1RqfUeJYPXquzaSzRvqDjfVQ") return "Premium Plan (Quarterly)"
+        if (priceId == "price_1RrQfbJYPXquzaSzycdO5k05") return "Premium Plan"
+        return "";
+       
     }
 
 function oneWeekBefore(unixTimestamp) {
@@ -129,7 +136,7 @@ function oneWeekBefore(unixTimestamp) {
                                     <div class="flex-1">
                                         <div class="flex items-center gap-3 mb-3">
                                             <h2 class="card-title text-xl">
-                                                Arth Hosting: {getPlanName(subscription.product_id)}
+                                                Arth Hosting: {getPlanName(subscription.price_id)}
                                             </h2>
                                             <div class="badge {getStatusBadge(subscription.status)} badge-lg">
                                                 {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
