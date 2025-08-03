@@ -8,7 +8,7 @@
 
     function cancel() {
         loading=true;
-        fetch(apiurl+"x/lapis/cancel/"+subscription.id+"?mode=stripe", {
+        fetch(apiurl+"x/stripe/cancel/"+subscription.id+"?mode=stripe", {
       method: "POST",
       headers: {
         username: localStorage.getItem("accountEmail"),
@@ -30,6 +30,8 @@
 
         
     }
+
+
     
 </script>
    <label for="delete" class="btn btn-error btn-sm" 
@@ -45,7 +47,7 @@
       for="delete"
       class="btn btn-neutral btn-sm btn-circle absolute right-2 top-2">✕</label
     >
-    <h3 class="text-lg font-bold">{$t("server.delete.title")}</h3>
+    <h3 class="text-lg font-bold">Change Plan</h3>
     <div
       class="bg-warning w-86  rounded-lg text-black p-2 flex items-center space-x-2 mt-2"
     >

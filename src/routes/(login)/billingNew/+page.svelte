@@ -1,6 +1,7 @@
 <script>
     import { browser } from "$app/environment";
     import CancelPlan from "$lib/components/pages/billing/CancelPlan.svelte";
+    import ChangePlan from "$lib/components/pages/billing/ChangePlan.svelte";
     import { apiurl } from "$lib/scripts/req";
     import { AlarmClock, ArrowDownUp, Clock, CurrencyIcon, PlusIcon, RefreshCcw, X } from "lucide-svelte";
     
@@ -19,7 +20,7 @@
         loading = true;
         error = null;
         
-        fetch(apiurl + "x/lapis/subs/" + email, {
+        fetch(apiurl + "x/stripe/subs/" + email, {
             method: "GET",
             headers: {
                 username: localStorage.getItem("accountEmail"),
@@ -198,14 +199,9 @@ function oneWeekBefore(unixTimestamp) {
                                     <div class="flex flex-col sm:flex-row gap-2 lg:flex-col">
                    
                                         {#if subscription.status === 'active' || subscription.status === "past_due"}
-                                        <div class="flex gap-2">    
-                                        <button 
-                                                class="btn btn-sm btn-neutral"
-                                            
-                                            >
-                                                     <ArrowDownUp size=16 class="mr-1.5"/>
-                                                Change Plan
-                                            </button>
+                                        <div class="flex gap-2">  
+                                                   <ChangePlan {subscription}/>  
+                               
                  <CancelPlan {subscription}/>
                                              
                                           
