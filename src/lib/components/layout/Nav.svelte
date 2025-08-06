@@ -15,7 +15,13 @@
     Menu,
     ShoppingCart,
     User,
-    Crown
+    Crown,
+
+    Currency,
+
+    DollarSign
+
+
   } from "lucide-svelte";
 
 
@@ -348,10 +354,16 @@ Invalid Account
     </div>
   </div>
   <div class="max-md:hidden flex flex-col w-full gap-1">
+    {#if providerMode}
+        <a on:click={()=>{update(undefined, false)}} href="/referrals" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
+      <DollarSign size="20" />Get 50% off next month</a
+    >
+    {/if}
     <a on:click={()=>{update(undefined, false)}} href="/account" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <User size="20" />Account</a
     >
 {#if providerMode}
+
     <a on:click={()=>{update(undefined, false)}} href="/billing" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <ShoppingCart size="20" />Subscriptions</a
     >
