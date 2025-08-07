@@ -8,8 +8,22 @@
     let coupon;
     let newCoupon;
     let used = false;
+    let price = "...";
+    let halfOff = "...";
     if (browser) {
         email = localStorage.getItem("email");
+        fetch(apiurl+"referrals/price?email="+email+"&mode=stripe", {
+        method: "GET",
+        headers: {
+          username: localStorage.getItem("accountEmail"),
+          token: localStorage.getItem("token"),
+        },
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            price = json.price;
+            halfOff = json.half_off;
+          });
         coupon = "coupon_" + email.split('')[3]+ email.split('')[2] + email.split('')[4] + email.split('')[1] + email.split('')[5];
         fetch(apiurl+"referrals/referred_coupon?email="+email, {
       method: "GET",
@@ -26,7 +40,7 @@
       });
     
 
-            fetch(apiurl+"referrals/referrer_coupon/"+coupon, {
+            fetch(apiurl+"referrals/referrer_coupon/"+coupon+"?email="+email, {
       method: "GET",
       headers: {
         username: localStorage.getItem("accountEmail"),
@@ -60,13 +74,13 @@
       <!-- row 1 -->
       <tr>
         <td>Current charge</td>
-        <td>$7.99</td>
+        <td>{price}</td>
       </tr>
 
       <!-- row 3 -->
       <tr>
         <td>Charge if you refer 1 person</td>
-        <td class="font-bold">$4.99</td>
+        <td class="font-bold">{halfOff}</td>
       </tr>
           
     </tbody>
@@ -78,7 +92,7 @@
                                         Step 1
                                     </p>
                                        <p class="">
-                                        Have a friend signup with the code <code>arthref_{email.split('')[3]+ email.split('')[2] + email.split('')[4] + email.split('')[1] + email.split('')[5]}</code>
+                                        Have a friend signup with the code <code>arthref_{email.split('')[3]+ email.split('')[2] + email.split('')[4] + email.split('')[1] + email.split('')[5]}</code>. They will get a 50% discount as well.
                                     </p>
                                               <p class="text-xl font-bold text-white">
                                         Step 2
@@ -87,7 +101,7 @@
                                     {#if !used}
                                         It looks like your friend hasn't paid for a subscription using your code yet. Come back to this page once they have.
                                        {:else}
-                                        It looks like your friend has used the code! You can now use the code <code>{newCoupon}</code> to get 50% off your next month.
+                                        It looks like your friend has used the code! Your discount has been applied to your latest subscription.
                                         {/if}
                                     </p>
                                     </div>
