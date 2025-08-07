@@ -3,12 +3,14 @@
     import { t } from "$lib/scripts/i18n";
     import { apiurl } from "$lib/scripts/req";
     import { alert } from "$lib/scripts/utils";
+    import { now } from "svelte/internal";
     let email = "xxxxx";
     let coupon;
+    let newCoupon;
     let used = false;
     if (browser) {
         email = localStorage.getItem("email");
-        coupon = "arthref_" + email.split('')[3]+ email.split('')[2] + email.split('')[4] + email.split('')[1] + email.split('')[5];
+        coupon = "coupon_" + email.split('')[3]+ email.split('')[2] + email.split('')[4] + email.split('')[1] + email.split('')[5];
         fetch(apiurl+"referrals/referred_coupon?email="+email, {
       method: "GET",
       headers: {
@@ -33,7 +35,11 @@
     })
       .then((res) => res.json())
       .then((json) => {
-        used = json.used});
+        used = json.used
+        if (used) {
+            newCoupon = json.coupon;
+        }
+    });
       }
 
 </script>
@@ -80,6 +86,8 @@
                                        <p class="">
                                     {#if !used}
                                         It looks like your friend hasn't paid for a subscription using your code yet. Come back to this page once they have.
+                                       {:else}
+                                        It looks like your friend has used the code! You can now use the code <code>{newCoupon}</code> to get 50% off your next month.
                                         {/if}
                                     </p>
                                     </div>
