@@ -356,7 +356,7 @@ Invalid Account
   <div class="max-md:hidden flex flex-col w-full gap-1">
     {#if providerMode}
         <a on:click={()=>{update(undefined, false)}} href="/referrals" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary" style="gap: 0.4rem;">
-   Get <span class="text-[#edcfb0]">50%</span> off next month</a
+   Get <span class="text-[#edcfb0]">40%</span> off next month</a
     >
     {/if}
     <a on:click={()=>{update(undefined, false)}} href="/account" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
