@@ -34,11 +34,15 @@
       password = document.getElementById("password").value;
     }
     console.log("deleting2...");
-    deleteServer(id, password).then(() => {
+    deleteServer(id, password).then((x) => {
+      if (x) {
       console.log("deleting4...");
       loading = false;
       alert("Server successfully deleted", "success");
       goto("/newserver?id="+id, { replaceState: true });
+      } else {
+        alert("Error deleting server", "error");
+      }
      
 
     });

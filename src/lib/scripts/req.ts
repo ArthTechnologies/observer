@@ -745,7 +745,7 @@ export function deleteServer(id: number, password: string) {
       console.error(input);
       if (input.indexOf("Invalid credentials") > -1) {
         alert("Wrong password")
-        return "wrong password";
+        return false;
       }else {
         console.log("redring1...")
         localStorage.setItem(
@@ -757,7 +757,7 @@ export function deleteServer(id: number, password: string) {
                       //this tells the navbar to update the icon that is highligted
                       window.dispatchEvent(new Event("redrict"));
         //return input as json
-        return JSON.parse(input);
+        return true;
       }
     });
 }
