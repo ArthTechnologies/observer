@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, src_url_equal } from "svelte/internal";
+
   import { changeServerState } from "$lib/scripts/req";
 
   import { getServer } from "$lib/scripts/req";

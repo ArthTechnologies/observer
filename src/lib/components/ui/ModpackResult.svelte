@@ -4,7 +4,7 @@
   import ChooseVersionModpack from "$lib/components/ui/ChooseVersionModpack.svelte";
   import { browser } from "$app/environment";
   import { t } from "$lib/scripts/i18n";
-  import { AlertCircle, Download } from "lucide-svelte";
+  import { AlertCircle, BadgeCheck, Download } from "lucide-svelte";
   import TranslateableText from "./TranslateableText.svelte";
   export let name: string;
   export let author: string;
@@ -16,6 +16,12 @@
   export let platform: string;
 
   export let slug: string;
+  let verified = false;
+  switch (name) {
+    case "The Pixelmon Modpack":
+      verified = true;
+    break;
+  }
   console.log(client);
   switch (client) {
     case "required":
@@ -91,6 +97,13 @@
               target="_blank"
               class="hover:link">{author}</a
             >
+          {/if}
+          {#if verified}
+            <div
+              class="badge badge-success w-5 p-0 text-xs ml-2 md:ml-0"
+            >
+              <BadgeCheck size=16 />
+            </div>
           {/if}
         </div>
 
