@@ -32,7 +32,11 @@
   }
   function reset() {
     let email = document.getElementById("email").value;
-    let cc = document.getElementById("cc").value;
+    let day = document.getElementById("day").value;
+    let month = document.getElementById("month").value;
+    let year = document.getElementById("year").value;
+    //turn into unix date
+    let created = new Date(`${year}-${month}-${day}`).getTime() / 1000;
     let password = document.getElementById("password").value;
     let confPassword = document.getElementById("confirmPassword").value;
     const select = document.getElementById("locationSelect");
@@ -46,8 +50,8 @@
           "accounts/email/resetPassword" +
           "?email=" +
           email +
-          "&last4=" +
-          cc,
+          "&created=" +
+          created,
         {
           method: "POST",
           headers: {
@@ -112,9 +116,13 @@
       {#if providerMode}
         <div class="flex flex-col mt-2">
           <label for="email " class="font-bold"
-            >{$t("account.resetPassword.l.last4")}</label
+            >Date when you first subscribed (Look in your emails)</label
           >
-          <input id="cc" class="input input-bordered" type="text" />
+        <div class="flex gap-2 w-32 mt-1">
+            <input id="day" class="input input-bordered w-10" type="text" placeholder="1" />
+            <input id="month" class="input input-bordered w-12" type="text" placeholder="2"/>
+            <input id="year" class="input input-bordered w-20" type="text" placeholder="2030" />
+        </div>
         </div>
       {/if}
 
