@@ -284,13 +284,26 @@
     if (browser) {
       let count = 0;
       let interval = 500;
-      setInterval(function () {
-        count++;
+      let iid = setInterval(function () {
+        tick();
+      }, interval);
+
+      function tick() {
+                count++;
         if (count > 5) {
           interval = 1000;
+          clearInterval(iid);
+          iid = setInterval(function () {
+            tick();
+          }, interval);
         }
+     
         if (count > 20) {
           interval = 2000;
+          clearInterval(iid);
+          iid = setInterval(function () {
+            tick();
+          }, interval);
         }
         let path = decodeURIComponent(window.location.pathname);
         // if there is a / at the end, this removes it
@@ -304,7 +317,7 @@
             readCmd();
           }
         }
-      }, interval);
+      }
     }
     getStatus();
   });
