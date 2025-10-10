@@ -78,8 +78,8 @@ class="relative bg-base-100 rounded-xl shadow-xl  flex flex-col items-center h-[
   </li>
 </ul>
 <!-- Signup Section-->
-<div class="flex z-10 -mt-6">
-    <div class="w-[47.5%] md:w-96 pb-6">
+<div class="w-full flex max-md:flex-col max-md:items-center z-10 -mt-6">
+    <div class="w-[47.5%] md:w-96 pb-6 max-md:hidden">
     
         <p class="text-[1.4rem] font-poppins-bold -mb-3 px-5 md:px-8 xl:px-12 text-center mt-2 invisible">Locations</p>
       
@@ -92,8 +92,8 @@ class="relative bg-base-100 rounded-xl shadow-xl  flex flex-col items-center h-[
         
 
       </div>
-      <div class="max-md:w-[47.5%] flex flex-col justify-between items-center">
-        <div class="w-full md:w-96 rounded-xl flex flex-col items-center">
+      <div class="w-full md:w-96 flex flex-col justify-between items-center">
+        <div class=" w-full rounded-xl flex flex-col items-center">
           
             <p class="text-[1.4rem] font-poppins-bold mb-2 mt-12 px-5 md:px-8 xl:px-12 text-center ">Pick a location</p>
     
@@ -121,7 +121,7 @@ class="relative bg-base-100 rounded-xl shadow-xl  flex flex-col items-center h-[
     </span>
                   <div class="flex flex-col mb-1">
                   
-                   <p class="font-bold">     <span class="md:hidden"> {#if node[0].includes("us")}
+                   <p class="font-bold max-md:text-lg">     <span class="md:hidden"> {#if node[0].includes("us")}
                     &#127482;&#127480;
                     {:else if node[0].includes("germany")}
                     &#127465;&#127466;
