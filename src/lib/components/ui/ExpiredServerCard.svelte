@@ -51,7 +51,11 @@
   <!-- Only shows in sidebar mode-->
   <div class="max-md:hidden">
     <p class="font-poppins text-xs mb-0.5 -mt-1">
-      Slot {parseInt(id)} will be reset in {daysUntil(timestamp)} days.
+      {#if timestamp != -1}
+        Slot {parseInt(id)} will be reset in {daysUntil(timestamp)} days.
+      {:else}
+        Slot {parseInt(id)} has been freed up due to expired subscription.
+      {/if}
     </p>
         <p class="font-poppins text-xs mb-0.5 -mt-1">
       Contact support to renew.
