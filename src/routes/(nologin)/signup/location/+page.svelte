@@ -9,7 +9,15 @@
     let selectedNode = "";
     let pings = [];
 
+    let btest = false;
+
     if (browser) {
+      //50% chance to enable the btest
+      let rand = Math.random();
+      if (rand < 0.5) {
+        btest = true;
+      }
+      localStorage.setItem("btest", btest.toString());
         fetch('https://ocelot.arthmc.xyz/nodeInfo')
             .then(response => response.json())
             .then(data => {

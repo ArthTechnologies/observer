@@ -95,7 +95,15 @@
           if (x === true) {
             console.log("redricting...");
             if (localStorage.getItem("providerMode") == "true") {
-
+              if (localStorage.getItem("btest") == "true") {
+                if (plan != undefined) {
+                  goto("/signup/plans/" + plan);
+                  return;
+                } else {
+                  goto("/signup/plans/");
+                  return;
+                }
+              }
               //change this to your own stripe checkout link
               if (plan == undefined) {
                 goto("/signup/subscribe/basic");

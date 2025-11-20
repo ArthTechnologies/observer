@@ -14,9 +14,20 @@
 
   } from "lucide-svelte";
   import { onMount } from "svelte";
+  export let btest = false;
   let basicClass="neutralGradientStroke bg-base-100";	
   let plusClass="neutralGradientStroke bg-base-100";
   let premiumClass="neutralGradientStroke bg-base-100";
+
+  // Add variable to track selected plan
+  let selectedPlan = "";
+
+  //if btest remove bg-base-100 and set to bg-base-200
+  if (btest) {
+    basicClass="neutralGradientStroke bg-base-200";	
+    plusClass="neutralGradientStroke bg-base-200";
+    premiumClass="neutralGradientStroke bg-base-200";
+  }
 
   let billingCycle = $t("perMonth");
 
@@ -31,10 +42,13 @@
       }
       if (window.location.pathname == "/signup/subscribe/basic") {
         basicClass="primaryGradientStroke bg-gradient-to-b from-base-100 to-[#192a3e]";
+        selectedPlan = "basic";
       } else if (window.location.pathname == "/signup/subscribe/plus") {
         plusClass="primaryGradientStroke bg-gradient-to-b from-base-100 to-[#192a3e]";
+        selectedPlan = "plus";
       } else if (window.location.pathname == "/signup/subscribe/premium") {
         premiumClass="primaryGradientStroke bg-gradient-to-b from-base-100 to-[#192a3e]";
+        selectedPlan = "premium";
       }
       const usd = document.getElementById("usd");
       const mxn = document.getElementById("mxn");
@@ -119,25 +133,48 @@
   }
 
   function selectBasic() {
-    
-    goto("/signup/subscribe/basic");
-    setTimeout(() => {
-      location.reload();
-    }, 300);  
+    if (btest) {
+      // Reset all classes
+      basicClass = "primaryGradientStroke bg-gradient-to-b from-base-200 to-[#192a3e]";
+      plusClass = "neutralGradientStroke bg-base-200";
+      premiumClass = "neutralGradientStroke bg-base-200";
+      selectedPlan = "basic";
+    } else {
+      goto("/signup/subscribe/basic");
+      setTimeout(() => {
+        location.reload();
+      }, 300);
+    }
   }
-function selectPlus() {
-    
-    goto("/signup/subscribe/plus");
-    setTimeout(() => {
-      location.reload();
-    }, 300);  
+
+  function selectPlus() {
+    if (btest) {
+      // Reset all classes
+      basicClass = "neutralGradientStroke bg-base-200";
+      plusClass = "primaryGradientStroke bg-gradient-to-b from-base-200 to-[#192a3e]";
+      premiumClass = "neutralGradientStroke bg-base-200";
+      selectedPlan = "plus";
+    } else {
+      goto("/signup/subscribe/plus");
+      setTimeout(() => {
+        location.reload();
+      }, 300);
+    }
   }
+
   function selectPremium() {
-    
-    goto("/signup/subscribe/premium");
-    setTimeout(() => {
-      location.reload();
-    }, 300);  
+    if (btest) {
+      // Reset all classes
+      basicClass = "neutralGradientStroke bg-base-200";
+      plusClass = "neutralGradientStroke bg-base-200";
+      premiumClass = "primaryGradientStroke bg-gradient-to-b from-base-200 to-[#192a3e]";
+      selectedPlan = "premium";
+    } else {
+      goto("/signup/subscribe/premium");
+      setTimeout(() => {
+        location.reload();
+      }, 300);
+    }
   }
 </script>
 
@@ -152,7 +189,7 @@ function selectPlus() {
   </div>
 </div>
 {/if}
-<div class="min-[1080px]:flex relative bg-base-200 h-full w-full">
+<div class="min-[1080px]:flex relative {btest ? 'bg-base-100' : 'bg-base-200'} h-full w-full" >
 
   <div
     class="absolute top-3 right-3 max-[1080px]:right-16 z-50 flex flex-col gap-1.5 items-end"
@@ -271,15 +308,23 @@ function selectPlus() {
         </div>
         </a>
 </div>
-
-    <div class="mt-12">
+{#if btest}
+  <button 
+    on:click={() => goto('/signup/checkout?plan=' + selectedPlan)}
+    class="btn btn-neutral w-[18.5rem] mt-4"
+    disabled={!selectedPlan}
+  >
+    {$t("checkout") || "Checkout"}
+  </button>
+{/if}
+    <div class="mt-12 {btest ? 'hidden' : ''}">
       <!--
               <img src="/images/sitelogo.svg" width="100px" />-->
       <p>
         <!--Arth Technologies<br />-->© 2022-{new Date().getFullYear()}
         <br />
-        <!---->
         <a
+        
           href="https://arthmc.xyz/"
           target="_blank"
           rel="noopener noreferrer"
@@ -352,4 +397,3 @@ function selectPlus() {
     z-index: -1;
   }
 </style>
-

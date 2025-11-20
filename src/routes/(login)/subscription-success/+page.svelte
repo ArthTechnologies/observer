@@ -6,13 +6,21 @@
 
   onMount(async () => {
     let reservedId = localStorage.getItem("reservedId");
+    let btest = false;
+    btest = localStorage.getItem("btest");
+    fetch("https://ocelot.arthmc.xyz/analytics/sale?btest="+btest, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
     fetch(apiurl + "server/claim/" + reservedId, {
       method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
         if (!data.msg.includes("Success")) {
-          alert(data.msg, "error");
+          //alert(data.msg, "error");
         }
       });
   });
