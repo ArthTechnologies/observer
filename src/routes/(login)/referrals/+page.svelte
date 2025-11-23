@@ -24,7 +24,7 @@
             price = json.price;
             halfOff = json.half_off;
           });
-        coupon = "coupon_" + email.split('')[3]+ email.split('')[2] + email.split('')[4] + email.split('')[1] + email.split('')[5];
+        coupon = "coupon-" + email.split('')[3]+ email.split('')[2] + email.split('')[4] + email.split('')[1] + email.split('')[5];
         fetch(apiurl+"referrals/referred_coupon?email="+email, {
       method: "GET",
       headers: {
@@ -34,7 +34,7 @@
     })
       .then((res) => res.json())
       .then((json) => {
-        if (!json.includes("coupon_")) {
+        if (!json.includes("coupon-")) {
             alert("Issue setting up referral coupons.")
         }
       });
@@ -92,7 +92,7 @@
                                         Step 1
                                     </p>
                                        <p class="">
-                                        Have a friend signup with the code <code>coupon_{email.split('')[3]+ email.split('')[2] + email.split('')[4] + email.split('')[1] + email.split('')[5]}</code>. They will get a 40% discount as well.
+                                        Have a friend signup with the code <code>coupon-{email.split('')[3]+ email.split('')[2] + email.split('')[4] + email.split('')[1] + email.split('')[5]}</code>. They will get a 50% discount as well.
                                     </p>
                                               <p class="text-xl font-bold text-white">
                                         Step 2
