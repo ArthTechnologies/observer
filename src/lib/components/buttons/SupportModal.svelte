@@ -49,15 +49,8 @@
           </p></a
         >
       </div>
-      <h3
-      class=" font-bold bg-base-200  rounded-lg px-4 py-2 flex items-center"
-    >
-      <Mail class="mr-2.5" size=22 /> support@arthmc.xyz
-    </h3>
+      
     </div>
-    <p class="text-sm mt-2">
-      If you'd like to suggest a feature or give feedback don't hesitate to send
-      us an email at <a class="hover:link text-accent">contact@arthmc.xyz</a>.
-    </p>
+ 
   </div>
 </dialog>
