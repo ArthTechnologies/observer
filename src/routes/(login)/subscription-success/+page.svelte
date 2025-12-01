@@ -8,8 +8,9 @@
     let reservedId = localStorage.getItem("reservedId");
     let btest = false;
     btest = localStorage.getItem("btest");
-    let referrer = localStorage.getItem("referrer") || "unknown";
-    fetch("https://ocelot.arthmc.xyz/analytics/sale?btest="+btest+"&referrer="+referrer, {
+    let referrer = localStorage.getItem("referrer") || "none";
+    let campaign_name = localStorage.getItem("campaign_name") || "none";
+    fetch("https://ocelot.arthmc.xyz/analytics/sale?btest="+btest+"&referrer="+referrer+"&campaign_name="+campaign_name, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
