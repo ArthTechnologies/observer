@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { browser } from "$app/environment";
   import {
     apiurl,
@@ -7,39 +7,49 @@
     getServerNode,
   } from "$lib/scripts/req";
   import { t } from "$lib/scripts/i18n";
-  import { ClipboardIcon, ClipboardList, Info, Settings } from "lucide-svelte";
-  import { bind, onMount } from "svelte/internal";
-  import { alert, handleDesc } from "$lib/scripts/utils";
-    import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
-  let id;
+  import { ClipboardList, Info, AlertCircle } from "lucide-svelte";
+  import { onMount } from "svelte";
+  import { alert } from "$lib/scripts/utils";
+  import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
+  import SettingsLayout from "./SettingsLayout.svelte";
+  import SettingsScheduler from "./SettingsScheduler.svelte";
+
+  let id: string;
   let icon = "";
   let iconPreview = "/images/placeholder.webp";
   let desc = "";
   let fSecret = "";
   let proxiesEnabled = false;
+  let activeSection = "general";
 
-  let software;
-  let name;
-  let subdomain;
+  let software: string;
+  let name: string;
+  let subdomain: string;
   let address = "arthmc.xyz";
-  let allowedAccounts = [];
-  let userNode;
+  let allowedAccounts: string[] = [];
+  let userNode: string;
   let numberIp = "Loading";
   let javaVersion = "0";
   export let type = "smallBtn";
+
   if (browser) {
-    name = localStorage.getItem("serverName");
-    id = localStorage.getItem("serverID");
-    software = localStorage.getItem("serverSoftware");
-    address = localStorage.getItem("address");
-    subdomain = localStorage.getItem("serverSubdomain");
-   userNode = localStorage.getItem("userNode");
+    name = localStorage.getItem("serverName") || "";
+    id = localStorage.getItem("serverID") || "";
+    software = localStorage.getItem("serverSoftware") || "";
+    address = localStorage.getItem("address") || "arthmc.xyz";
+    subdomain = localStorage.getItem("serverSubdomain") || "";
+    userNode = localStorage.getItem("userNode") || "";
     get();
-    fetch("https://dns.google/resolve?name="+userNode?.split("://")[1].split("/")[0]+"&type=A")
-      .then((x) => x.json())
-      .then((x) => {
-        numberIp = x.Answer[0].data;
-      });
+    if (userNode) {
+      fetch("https://dns.google/resolve?name="+userNode?.split("://")[1].split("/")[0]+"&type=A")
+        .then((x) => x.json())
+        .then((x) => {
+          if (x.Answer?.[0]) numberIp = x.Answer[0].data;
+        })
+        .catch(() => {
+          numberIp = "Unable to resolve";
+        });
+    }
   }
   function get() {
     let baseurl = apiurl;
@@ -190,203 +200,248 @@
   }
 </script>
 
+<SettingsLayout bind:activeSection>
+  <div slot="general" class="space-y-6">
+    <!-- Header with Apply Button -->
+    <div class="flex items-start justify-between">
+      <div>
+        <h2 class="text-2xl font-bold">{$t("settings.h.general")}</h2>
+        <p class="text-sm text-gray-400 mt-1">Manage your server's basic settings</p>
+      </div>
+      <button
+        class="btn btn-primary btn-sm"
+        on:click={set}
+      >
+        {$t("apply")}
+      </button>
+    </div>
 
-
-
-
-  <div
-    class="bg-base-300 rounded-xl px-4 py-3 shadow-xl neutralGradietStroke w-full space-y-2 min-h-[30rem] relative"
-  >
-    <p class="font-ubuntu text-gray-200 text-lg ml-1 mb-2">Settings</p>
-    <button
- 
-      class="btn btn-neutral btn-sm absolute right-2 top-0"
-      on:click={set}>{$t("apply")}</button
-    >
-
-    <div class="flex p-1 text-sm items-center gap-1.5 mb-1.5">
-      <Info size="16" />
+    <!-- Warning Alert -->
+    <div class="alert alert-info gap-3">
+      <Info size={20} />
       <span>{$t("settings.restartWarning")}</span>
     </div>
-    <label for="serverDescription" class="block font-bold mb-2"
-      >{$t("settings.l.name")}
-    </label>
 
-    <input
-      bind:value={name}
-      type="text"
-      id="serverName"
-      class="input input-bordered"
-    />
-        <label for="serverDescription" class="block font-bold my-2"
-      >Java Version
-    </label>
+    <!-- Basic Settings Section -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold">Basic Information</h3>
 
-    <input
-      bind:value={javaVersion}
-      type="text"
-      id="javaVersion"
-      class="input input-bordered"
-    />
-    <label for="serverDescription" class="block font-bold mb-2 mt-4"
-      >Number IP Address
-    </label>
-    {numberIp}
-    <label for="serverDescription" class="block font-bold mb-2 mt-4"
-      >Subdomain
-    </label>
-
-    <div class="flex gap-2 relative">
-      {#if subdomain != undefined}
-        <div
-          class="h-12 p-6 w-fit rounded-xl bg-base-200 flex items-center justify-center"
-        >
-          {subdomain}
-        </div>
-        <button class="btn btn-error" on:click={deleteSubdomain}>Delete</button>
-      {:else}
-        <label class="input input-bordered flex items-center">
-          <input type="text" class="bg-transparent w-32" id="subdomainInput" />
-          <p class="opacity-80">.{address}</p>
+      <div class="space-y-2">
+        <label for="serverName" class="block text-sm font-semibold">
+          {$t("settings.l.name")}
         </label>
-        <button class="btn btn-neutral" on:click={claimSubdomain}>Claim</button>
-      {/if}
-    </div>
-    <label for="serverDescription" class="block font-bold mb-2 mt-4"
-    >Accounts with Panel Access
-  </label>
-  {#if allowedAccounts != undefined}
-  {#each allowedAccounts as account}
-    <div class="flex items-center gap-2 mt-2">
-      <p class="px-2 pb-0.5 rounded-lg bg-base-200">{account.split(":")[1]}</p>
-      <p class="px-2 pb-0.5 rounded-lg bg-base-300">{account.split(":")[0]}</p>
-    </div>
-  {/each}
-  {/if}
-  <div class="flex items-center gap-2 mt-2">
-    <input id="allowAccountInput" type="text" placeholder="Enter Account ID (Ex: 73190d64-95ee-4857-a6e5-0848e9efb29a)" class="input input-bordered input-sm w-full max-w-xs" />
-    <button class="btn btn-xs btn-neutral" on:click={allowAccount}>Add</button>
-  </div>
-   <div class="w-1/2 mt-4">
-     <DeleteServer
-     />
-   </div>
-    <div class="divider mt-3 text-xl font-bold">
-      {$t("settings.h.serverInfo")}
-    </div>
-    <p class="mb-4">
-      {$t("settings.desc.serverInfo")}
-    </p>
-    <label for="serverDescription" class="block font-bold mb-2"
-      >{$t("description")}
-    </label>
-    {#if software != "Velocity"}
-      <div class="mb-2 space-y-1 text-sm">
-        <div class="flex space-x-1">
-          <div class="flex">
-            <div
-              class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
-            >
-              {$t("bold")}
-            </div>
-            <div class="bg-base-100 rounded-r pl-1.5 p-0.5 w-8">§l</div>
-          </div>
-          <div class="flex">
-            <div
-              class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
-            >
-              {$t("italic")}
-            </div>
-            <div class="bg-base-100 rounded-r pl-1.5 p-0.5 w-8">§o</div>
-          </div>
-          <div class="flex">
-            <div
-              class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
-            >
-              {$t("glitchEffect")}
-            </div>
-            <div class="bg-base-100 rounded-r pl-1.5 p-0.5 w-8">§k</div>
+        <input
+          bind:value={name}
+          type="text"
+          id="serverName"
+          class="input input-bordered w-full"
+          placeholder="Enter server name"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-2">
+          <label for="javaVersion" class="block text-sm font-semibold">
+            Java Version
+          </label>
+          <input
+            bind:value={javaVersion}
+            type="text"
+            id="javaVersion"
+            class="input input-bordered w-full"
+            placeholder="11, 16, 17, 21..."
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold">
+            Server IP Address
+          </label>
+          <div class="input input-bordered flex items-center cursor-text bg-base-200 opacity-75">
+            {numberIp}
           </div>
         </div>
-        <div class="flex space-x-1">
-          <div class="flex">
-            <div
-              class="bg-neutral rounded-l pl-1.5 p-0.5 pr-2.5 font-bold nocopy"
-            >
-              {$t("reset")}
-            </div>
-            <div class="bg-base-100 rounded-r pl-1.5 p-0.5 w-8">§r</div>
+      </div>
+    </div>
+
+    <!-- Subdomain Section -->
+    <div class="divider"></div>
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold">Subdomain Management</h3>
+
+      <div class="flex gap-3">
+        {#if subdomain}
+          <div class="badge badge-lg badge-success">
+            {subdomain}.{address}
           </div>
-          <div class="flex">
-            <button class="btn btn-xs btn-ghost" on:click={copyChar}>
-              <ClipboardList size="16" class="mr-1" />
-              <p id="copyCharText">{$t("button.copyCharacter")}</p>
+          <button class="btn btn-sm btn-error" on:click={deleteSubdomain}>
+            Delete
+          </button>
+        {:else}
+          <label class="input input-bordered flex items-center gap-2 flex-1">
+            <input type="text" class="grow" id="subdomainInput" placeholder="subdomain" />
+            <span class="text-xs text-gray-500">.{address}</span>
+          </label>
+          <button class="btn btn-sm btn-neutral" on:click={claimSubdomain}>
+            Claim
+          </button>
+        {/if}
+      </div>
+    </div>
+
+    <!-- Access Control Section -->
+    <div class="divider"></div>
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold">Panel Access Control</h3>
+
+      <div class="space-y-3">
+        {#if allowedAccounts && allowedAccounts.length > 0}
+          <div class="space-y-2">
+            {#each allowedAccounts as account (account)}
+              <div class="flex items-center gap-2 p-2 bg-base-200 rounded-lg">
+                <div class="badge badge-neutral">{account.split(":")[0]}</div>
+                <span class="flex-1 text-sm">{account.split(":")[1]}</span>
+              </div>
+            {/each}
+          </div>
+        {/if}
+
+        <div class="flex gap-2">
+          <input
+            id="allowAccountInput"
+            type="text"
+            placeholder="Enter Account ID"
+            class="input input-bordered input-sm flex-1"
+          />
+          <button class="btn btn-sm btn-primary" on:click={allowAccount}>
+            Add Access
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Server Info Section -->
+    <div class="space-y-6 mt-8 pt-6 border-t border-base-200">
+      <div>
+        <h2 class="text-xl font-bold mb-2">{$t("settings.h.serverInfo")}</h2>
+        <p class="text-sm text-gray-400">{$t("settings.desc.serverInfo")}</p>
+      </div>
+
+      <!-- Server Description -->
+      <div class="space-y-3">
+        <label for="serverDescription" class="block text-sm font-semibold">
+          {$t("description")}
+        </label>
+
+        {#if software !== "Velocity"}
+          <div class="flex flex-wrap gap-2 p-3 bg-base-200 rounded-lg">
+            <div class="flex items-center gap-1">
+              <span class="text-xs font-bold bg-neutral px-2 py-1 rounded nocopy">§l</span>
+              <span class="text-xs text-gray-400">{$t("bold")}</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="text-xs font-bold bg-neutral px-2 py-1 rounded nocopy">§o</span>
+              <span class="text-xs text-gray-400">{$t("italic")}</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="text-xs font-bold bg-neutral px-2 py-1 rounded nocopy">§k</span>
+              <span class="text-xs text-gray-400">{$t("glitchEffect")}</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="text-xs font-bold bg-neutral px-2 py-1 rounded nocopy">§r</span>
+              <span class="text-xs text-gray-400">{$t("reset")}</span>
+            </div>
+            <button class="btn btn-xs btn-ghost ml-auto" on:click={copyChar}>
+              <ClipboardList size="16" />
+              {$t("button.copyCharacter")}
             </button>
           </div>
+        {/if}
+
+        <textarea
+          class="textarea textarea-bordered w-full h-24"
+          bind:value={desc}
+          id="serverDescription"
+          placeholder="Enter server description..."
+        ></textarea>
+      </div>
+
+      <!-- Server Icon -->
+      <div class="space-y-3">
+        <label for="serverIcon" class="block text-sm font-semibold">
+          {$t("settings.l.icon")}
+          <p class="font-normal text-xs text-gray-400 mt-0.5">{$t("settings.desc.icon")}</p>
+        </label>
+        <div class="flex gap-3 items-end">
+          <input
+            bind:value={icon}
+            type="text"
+            id="serverIcon"
+            class="input input-bordered flex-1"
+            placeholder={$t("settings.p.enterURL")}
+          />
+          <img src={iconPreview} alt="Server icon preview" class="h-12 w-12 rounded-lg object-cover" />
         </div>
       </div>
-    {/if}
-
-    <textarea
-      class="textarea textarea-bordered w-full h-24 text-[.95rem]"
-      bind:value={desc}
-      id="serverDescription"
-    ></textarea>
-
-    <label for="serverIcon" class="block font-bold my-2"
-      >{$t("settings.l.icon")}
-      <p class="font-light">{$t("settings.desc.icon")}</p></label
-    >
-    <div class="flex space-x-2">
-      <input
-        bind:value={icon}
-        type="text"
-        id="serverIcon"
-        class="input input-bordered"
-        placeholder={$t("settings.p.enterURL")}
-      />
-      <img src={iconPreview} class="h-[3rem] w-[3rem] rounded-lg" />
     </div>
-    {#if software == "Paper"}
-      <h3 class="text-2xl font-bold mt-5">
-        {$t("settings.h.advancedSettings")}
-      </h3>
-      <div class="divider mt-5 text-xl font-bold">
-        {$t("settings.h.proxies")}
-      </div>
 
-      <p class="mb-4">{$t("settings.desc.proxies")}</p>
-      <div class=" w-52">
-        <label class="cursor-pointer label">
-          <span class="label-text text-lg"
-            >{$t("settings.l.enableProxies")}</span
-          >
-          <input
-            id="proxiesEnabled"
-            type="checkbox"
-            class="toggle toggle-primary"
-          />
-        </label>
+    <!-- Advanced Settings (Paper only) -->
+    {#if software === "Paper"}
+      <div class="space-y-6 mt-8 pt-6 border-t border-base-200">
+        <div>
+          <h2 class="text-xl font-bold">{$t("settings.h.advancedSettings")}</h2>
+          <p class="text-sm text-gray-400">{$t("settings.desc.proxies")}</p>
+        </div>
+
+        <div class="space-y-4">
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-lg hover:bg-base-200 transition">
+            <input
+              id="proxiesEnabled"
+              type="checkbox"
+              class="toggle toggle-primary"
+              bind:checked={proxiesEnabled}
+            />
+            <span class="text-sm font-semibold">{$t("settings.l.enableProxies")}</span>
+          </label>
+
+          <div class="space-y-2">
+            <label for="fSecret" class="block text-sm font-semibold">
+              {$t("forwardingSecret")}
+            </label>
+            <input
+              bind:value={fSecret}
+              type="text"
+              id="fSecret"
+              class="input input-bordered w-full"
+              placeholder="Enter forwarding secret..."
+            />
+          </div>
+        </div>
       </div>
-      <label for="serverDescription" class="block font-bold my-2"
-        >{$t("forwardingSecret")}
-      </label>
-      <input
-        bind:value={fSecret}
-        type="text"
-        id="fSecret"
-        class="input input-bordered"
-        placeholder={fSecret}
-      />
-    {:else if software != "Velocity"}<p class="my-4">
-        {$t("settings.l.noProxies")}
-      </p>
+    {:else if software !== "Velocity"}
+      <div class="mt-8 pt-6 border-t border-base-200">
+        <p class="text-sm text-gray-400">{$t("settings.l.noProxies")}</p>
+      </div>
     {/if}
-  
+
+    <!-- Danger Zone -->
+    <div class="space-y-6 mt-8 pt-6 border-t-2 border-error/20">
+      <div>
+        <h2 class="text-xl font-bold text-error">Delete Server</h2>
+        <p class="text-sm text-gray-400">This is irreversible</p>
+      </div>
+      <DeleteServer />
+    </div>
   </div>
 
+  <!-- Scheduler Section (Empty placeholder) -->
+  <div slot="scheduler">
+    <SettingsScheduler />
+  </div>
+</SettingsLayout>
 
-<style>
+
+<style lang="scss">
   .nocopy {
     user-select: none;
   }
