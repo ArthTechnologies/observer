@@ -30,6 +30,7 @@
   let userNode: string;
   let numberIp = "Loading";
   let javaVersion = "0";
+  let startupFlags = "";
   export let type = "smallBtn";
 
   if (browser) {
@@ -69,6 +70,7 @@
         fSecret = data.secret;
         allowedAccounts = data.allowedAccounts;
         javaVersion = data.javaVersion;
+        startupFlags = data.startupFlags || "";
 
         if (document.getElementById("fSecret") != null) {
        
@@ -196,6 +198,52 @@
         } else {
           alert("Error: " + x.msg);
         }
+      });
+  }
+
+  function setStartupFlags() {
+    fetch(apiurl + "server/" + id + "/setStartupFlags", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        username: localStorage.getItem("accountEmail"),
+        token: localStorage.getItem("token"),
+      },
+      body: JSON.stringify({ flags: startupFlags }),
+    })
+      .then((x) => x.json())
+      .then((x) => {
+        if (x.msg === "Done") {
+          alert("Startup flags saved successfully", "success");
+        } else {
+          alert("Error: " + x.msg);
+        }
+      })
+      .catch((err) => {
+        alert("Error: " + err);
+      });
+  }
+
+  function setJavaVersion() {
+    fetch(apiurl + "server/" + id + "/settings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        username: localStorage.getItem("accountEmail"),
+        token: localStorage.getItem("token"),
+      },
+      body: JSON.stringify({ javaVersion: parseInt(javaVersion) }),
+    })
+      .then((x) => x.json())
+      .then((x) => {
+        if (x.msg === "Done") {
+          alert("Java version updated. Restart the server for changes to take effect.", "success");
+        } else {
+          alert("Error: " + x.msg);
+        }
+      })
+      .catch((err) => {
+        alert("Error: " + err);
       });
   }
 </script>
@@ -451,12 +499,12 @@
     </div>
   </div>
 
-  <!-- Panel Access Control Section -->
+  <!-- Sub-Users Section -->
   <div slot="access" class="space-y-6">
     <!-- Header -->
     <div>
-      <h2 class="text-2xl font-bold">Panel Access Control</h2>
-      <p class="text-sm text-gray-400 mt-1">Manage who can access and control this server</p>
+      <h2 class="text-2xl font-bold">Sub-Users</h2>
+      <p class="text-sm text-gray-400 mt-1">Grant other players access to manage this server</p>
     </div>
 
     <!-- Allowed Accounts -->
@@ -464,7 +512,7 @@
       <div class="bg-base-200 rounded-lg p-4 space-y-3">
         {#if allowedAccounts && allowedAccounts.length > 0}
           <div class="space-y-2 mb-4">
-            <p class="text-sm font-semibold text-gray-300">Currently Authorized Users</p>
+            <p class="text-sm font-semibold text-gray-300">Current Sub-Users</p>
             {#each allowedAccounts as account (account)}
               <div class="flex items-center justify-between p-3 bg-base-300 rounded-lg">
                 <div class="flex flex-col gap-1">
@@ -482,9 +530,9 @@
 
         <div class="space-y-2">
           <label for="allowAccountInput" class="block text-sm font-semibold">
-            Grant Access
+            Add Sub-User
           </label>
-          <p class="text-xs text-gray-400 mb-2">Enter an account ID to grant them access to this server</p>
+          <p class="text-xs text-gray-400 mb-2">Enter an account ID to add them as a sub-user</p>
           <div class="flex gap-2">
             <input
               id="allowAccountInput"
@@ -493,17 +541,73 @@
               class="input input-bordered input-sm flex-1"
             />
             <button class="btn btn-sm btn-primary" on:click={allowAccount}>
-              Add Access
+              Add Sub-User
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Access Levels Info -->
+    <!-- Sub-Users Info -->
     <div class="alert alert-info gap-3">
       <Info size={20} />
-      <span>Users with access can manage all server settings and operations</span>
+      <span>Sub-users can manage all operations except deleting the server</span>
+    </div>
+  </div>
+
+  <!-- Advanced Section -->
+  <div slot="advanced" class="space-y-6">
+    <!-- Header -->
+    <div>
+      <h2 class="text-2xl font-bold">Advanced Settings</h2>
+      <p class="text-sm text-gray-400 mt-1">Fine-tune your server's Java configuration and startup parameters</p>
+    </div>
+
+    <!-- Java Version -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold">Java Version</h3>
+      <div class="bg-base-200 rounded-lg p-4">
+        <div class="space-y-2">
+          <label for="javaVersionAdvanced" class="block text-sm font-semibold">
+            Java Version
+          </label>
+          <div class="flex gap-2">
+            <input
+              bind:value={javaVersion}
+              type="text"
+              id="javaVersionAdvanced"
+              class="input input-bordered flex-1"
+              placeholder="11, 16, 17, 21..."
+            />
+            <button class="btn btn-primary" on:click={setJavaVersion}>
+              Save
+            </button>
+          </div>
+          <p class="text-xs text-gray-400">Server will restart to apply changes</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Startup Flags -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold">Startup Flags</h3>
+      <div class="bg-base-200 rounded-lg p-4">
+        <div class="space-y-2">
+          <label for="startupFlagsInput" class="block text-sm font-semibold">
+            JVM Startup Flags
+          </label>
+          <textarea
+            bind:value={startupFlags}
+            id="startupFlagsInput"
+            class="textarea textarea-bordered w-full h-32 font-mono text-xs"
+            placeholder="Enter JVM startup flags..."
+          ></textarea>
+          <button class="btn btn-primary w-full" on:click={setStartupFlags}>
+            Save Startup Flags
+          </button>
+          <p class="text-xs text-gray-400">Server will restart to apply changes</p>
+        </div>
+      </div>
     </div>
   </div>
 
