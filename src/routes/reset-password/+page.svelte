@@ -6,12 +6,12 @@
   import { apiurl } from "$lib/scripts/req";
   import { alert } from "$lib/scripts/utils";
     import SignedOutNav from "$lib/components/layout/SignedOutNav.svelte";
-  let providerMode = true;
+  let mode = "solo";
   let backurl = "/login";
   let locations = [];
   if (browser) {
-    if (localStorage.getItem("providerMode") == "false") {
-      providerMode = false;
+    if (localStorage.getItem("mode")) {
+      mode = localStorage.getItem("mode");
     }
 
     fetch("https://ocelot.arthmc.xyz/nodeInfo")
@@ -113,7 +113,7 @@
         <label for="email " class="font-bold">{$t("email")}</label>
         <input id="email" class="input input-bordered" type="text" />
       </div>
-      {#if providerMode}
+      {#if mode !== "solo"}
         <div class="flex flex-col mt-2">
           <label for="email " class="font-bold"
             >Date when you first subscribed (Look in your emails)</label

@@ -35,7 +35,7 @@
         localStorage.setItem("accountEmail", "discord:" + data.username);
         localStorage.setItem("email", data.email.toLowerCase());
         updateReqTemplates();
-        if (localStorage.getItem("providerMode") != "false" && data.firstTime) {
+        if (localStorage.getItem("mode") !== "solo" && data.firstTime) {
           goto("/signup/subscribe/basic");
         } else {
           goto("/");

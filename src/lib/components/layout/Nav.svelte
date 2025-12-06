@@ -36,7 +36,7 @@
   var id = undefined;
 
   let devMode = false;
-  let providerMode = true;
+  let mode = "solo";
 
   let noserverlock = false;
   let amountOfServersForSkeletons = 1;
@@ -50,7 +50,7 @@
     }
   });
   if (browser) {
-    providerMode = localStorage.getItem("providerMode") == "true";
+    mode = localStorage.getItem("mode") || "solo";
     email = localStorage.getItem("accountEmail");
     if (localStorage.getItem("token") == undefined) goto("/login");
     amountOfServersForSkeletons = localStorage.getItem("amountOfServers");
@@ -354,7 +354,7 @@ Invalid Account
     </div>
   </div>
   <div class="max-md:hidden flex flex-col w-full gap-1">
-    {#if providerMode}
+    {#if mode !== "solo"}
         <a on:click={()=>{update(undefined, false)}} href="/referrals" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary" style="gap: 0.4rem;">
    Get <span class="text-[#edcfb0]">50%</span> off next month</a
     >
@@ -362,7 +362,7 @@ Invalid Account
     <a on:click={()=>{update(undefined, false)}} href="/account" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <User size="20" />Account</a
     >
-{#if providerMode}
+{#if mode !== "solo"}
 
     <a on:click={()=>{update(undefined, false)}} href="/billing" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <ShoppingCart size="20" />Subscriptions</a
@@ -395,7 +395,7 @@ Invalid Account
         class="dropdown-content menu bg-base-300 rounded-box z-[1] w-52 p-2 shadow-xl"
       >
         <li><a on:click={()=>{update(undefined, false)}} href="/account">Account</a></li>
-        {#if providerMode}
+        {#if mode !== "solo"}
         <li><a on:click={()=>{update(undefined, false)}} href="/billing">Subscriptions</a></li>
         {/if}
 <li>        <a onclick="modal_language.showModal()">

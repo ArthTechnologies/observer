@@ -13,6 +13,7 @@ export let lrurl = "https://api.modrinth.com/v2/";
 export let stripeKey = "";
 export let usingCurseForge = false;
 export let customerPortalLink = "";
+export let mode = "solo";
 
 
 //set apiurl & usingOcelot to the enviroment variable if it exists
@@ -50,6 +51,9 @@ if (browser) {
     customerPortalLink = env.PUBLIC_CUSTOMER_PORTAL_LINK;
   }
 
+  if (env.PUBLIC_MODE) {
+    mode = env.PUBLIC_MODE;
+  }
 
   //Migration from old email-only account system to new multi-type account system
   if (localStorage.getItem("accountEmail") != null && localStorage.getItem("accountEmail").split(":")[1] == undefined && localStorage.getItem("accountEmail") != "noemail") {
@@ -422,7 +426,8 @@ export function getSettings() {
     .then((input: string) => {
       console.log("Response Recieved: " + input);
       if (browser) {
-        localStorage.setItem("providerMode", JSON.parse(input).providerMode);
+        localStorage.setItem("mode", JSON.parse(input).mode);
+        mode = JSON.parse(input).mode;
         localStorage.setItem("address", JSON.parse(input).address);
         localStorage.setItem("latestVersion", JSON.parse(input).latestVersion);
         localStorage.setItem("enableVirusScan", JSON.parse(input).enableVirusScan);
@@ -430,7 +435,7 @@ export function getSettings() {
         localStorage.setItem("cloudflareVerifySiteKey", JSON.parse(input).cloudflareVerifySiteKey);
         localStorage.setItem("enableDeepL", JSON.parse(input).enableDeepL);
 
-        if (JSON.parse(input).providerMode == false) {
+        if (JSON.parse(input).mode === "solo") {
           localStorage.setItem("accountEmail", "guest");
           accountEmail.set("guest");
         }

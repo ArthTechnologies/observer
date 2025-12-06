@@ -107,7 +107,7 @@
         ).then((x) => {
           if (x === true) {
             console.log("redricting...");
-            if (localStorage.getItem("providerMode") == "true") {
+            if (localStorage.getItem("mode") !== "solo") {
               //change this to your own stripe checkout link
               if (plan == undefined) {
                 goto("/signup/subscribe/basic");

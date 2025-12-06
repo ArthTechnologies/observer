@@ -94,7 +94,7 @@
         ).then((x) => {
           if (x === true) {
             console.log("redricting...");
-            if (localStorage.getItem("providerMode") == "true") {
+            if (localStorage.getItem("mode") !== "solo") {
               if (localStorage.getItem("btest") == "true") {
                 if (plan != undefined) {
                   goto("/signup/plans/" + plan);
