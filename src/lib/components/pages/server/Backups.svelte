@@ -4,10 +4,13 @@
   import { fileSizeShort } from "$lib/scripts/utils";
   import { error } from "console";
   import { Download, FlaskConical, HardDriveDownload, InfoIcon } from "lucide-svelte";
+  import { onMount, onDestroy } from "svelte";
 
   let promise = null;
   let backups = [];
   let isBackingUp = false;
+  let backupProgress = null;
+  let progressPoll = null;
 
   function loadBackups() {
     if (browser) {
@@ -20,7 +23,7 @@
       })
         .then((response) => response.json())
         .then((data) => {
-          backups = data;
+          backups = data.sort((a, b) => b.timestamp - a.timestamp);
           promise = Promise.resolve();
         })
         .catch((error) => {
@@ -30,12 +33,58 @@
     }
   }
 
-  if (browser) {
-    loadBackups();
+  function checkProgress() {
+    if (browser) {
+      fetch(apiurl + "server/" + localStorage.getItem("serverID") + "/backup/progress", {
+        method: "GET",
+        headers: {
+          token: localStorage.getItem("token"),
+          username: localStorage.getItem("accountEmail"),
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          backupProgress = data;
+
+          // If backup completed, reload backups and stop polling
+          if (data.status === "completed") {
+            setTimeout(() => {
+              loadBackups();
+              isBackingUp = false;
+              backupProgress = null;
+              if (progressPoll) clearInterval(progressPoll);
+            }, 1000);
+          }
+          // If backup failed, stop polling
+          else if (data.status === "failed") {
+            isBackingUp = false;
+            if (progressPoll) clearInterval(progressPoll);
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking backup progress:", error);
+        });
+    }
   }
+
+  function startProgressPolling() {
+    progressPoll = setInterval(checkProgress, 1000);
+  }
+
+  onMount(() => {
+    loadBackups();
+    // Check progress on mount
+    checkProgress();
+  });
+
+  onDestroy(() => {
+    if (progressPoll) clearInterval(progressPoll);
+  });
 
   function backup() {
     isBackingUp = true;
+    backupProgress = { status: "in_progress", progress: 0 };
+
     fetch(apiurl + "server/" + localStorage.getItem("serverID") + "/backup", {
       method: "POST",
       headers: {
@@ -46,14 +95,12 @@
       .then((response) => response.json())
       .then((data) => {
         console.log("Backup started:", data);
-        isBackingUp = false;
-        setTimeout(() => {
-          loadBackups();
-        }, 2000);
+        startProgressPolling();
       })
       .catch((error) => {
         console.error("Error starting backup:", error);
         isBackingUp = false;
+        backupProgress = null;
       });
   }
 
@@ -120,6 +167,39 @@
       </div>
     </div>
     <div class="divider my-2"></div>
+
+    <!-- Progress Bar (if backing up) -->
+    {#if backupProgress && backupProgress.status === "in_progress"}
+      <div class="space-y-2">
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-gray-300 font-medium">Backing up...</span>
+          <span class="text-gray-400">{backupProgress.progress || 0}%</span>
+        </div>
+        <progress
+          class="progress progress-primary w-full"
+          value={backupProgress.progress || 0}
+          max="100"
+        />
+        <div class="flex justify-between text-xs text-gray-400">
+          <span>
+            {#if backupProgress.filesProcessed && backupProgress.totalFiles}
+              {backupProgress.filesProcessed.toLocaleString()} / {backupProgress.totalFiles.toLocaleString()} files
+            {/if}
+          </span>
+          <span>
+            {#if backupProgress.startTime}
+              {Math.round((Date.now() - backupProgress.startTime) / 1000)}s elapsed
+            {/if}
+          </span>
+        </div>
+      </div>
+    {/if}
+
+    {#if backupProgress && backupProgress.status === "failed"}
+      <div class="alert alert-error">
+        <span class="text-sm">Backup failed: {backupProgress.error || "Unknown error"}</span>
+      </div>
+    {/if}
   </div>
 
   <!-- Content Section -->
