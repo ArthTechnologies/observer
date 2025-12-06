@@ -287,29 +287,6 @@
         />
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <div class="space-y-2">
-          <label for="javaVersion" class="block text-sm font-semibold">
-            Java Version
-          </label>
-          <input
-            bind:value={javaVersion}
-            type="text"
-            id="javaVersion"
-            class="input input-bordered w-full"
-            placeholder="11, 16, 17, 21..."
-          />
-        </div>
-
-        <div class="space-y-2">
-          <label class="block text-sm font-semibold">
-            Server IP Address
-          </label>
-          <div class="input input-bordered flex items-center cursor-text bg-base-200 opacity-75">
-            {numberIp}
-          </div>
-        </div>
-      </div>
     </div>
 
 
@@ -466,6 +443,22 @@
             </button>
           </div>
         {/if}
+      </div>
+    </div>
+
+    <!-- Server IP Address Section -->
+    <div class="divider"></div>
+    <div class="space-y-4">
+      <div>
+        <h3 class="text-lg font-semibold">Server IP Address</h3>
+        <p class="text-sm text-gray-400 mt-1">Your server's resolved IP address</p>
+      </div>
+
+      <div class="bg-base-200 rounded-lg p-4">
+        <div class="flex items-center justify-between p-3 bg-base-300 rounded-lg">
+          <span class="font-semibold">IP Address</span>
+          <div class="font-mono text-lg font-bold">{numberIp}</div>
+        </div>
       </div>
     </div>
 
