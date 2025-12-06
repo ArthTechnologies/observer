@@ -68,7 +68,7 @@
         desc = data.desc;
         fSecret = data.secret;
         allowedAccounts = data.allowedAccounts;
-        javaVersion = data.javaVersion; 
+        javaVersion = data.javaVersion;
 
         if (document.getElementById("fSecret") != null) {
        
@@ -264,61 +264,6 @@
       </div>
     </div>
 
-    <!-- Subdomain Section -->
-    <div class="divider"></div>
-    <div class="space-y-4">
-      <h3 class="text-lg font-semibold">Subdomain Management</h3>
-
-      <div class="flex gap-3">
-        {#if subdomain}
-          <div class="badge badge-lg badge-success">
-            {subdomain}.{address}
-          </div>
-          <button class="btn btn-sm btn-error" on:click={deleteSubdomain}>
-            Delete
-          </button>
-        {:else}
-          <label class="input input-bordered flex items-center gap-2 flex-1">
-            <input type="text" class="grow" id="subdomainInput" placeholder="subdomain" />
-            <span class="text-xs text-gray-500">.{address}</span>
-          </label>
-          <button class="btn btn-sm btn-neutral" on:click={claimSubdomain}>
-            Claim
-          </button>
-        {/if}
-      </div>
-    </div>
-
-    <!-- Access Control Section -->
-    <div class="divider"></div>
-    <div class="space-y-4">
-      <h3 class="text-lg font-semibold">Panel Access Control</h3>
-
-      <div class="space-y-3">
-        {#if allowedAccounts && allowedAccounts.length > 0}
-          <div class="space-y-2">
-            {#each allowedAccounts as account (account)}
-              <div class="flex items-center gap-2 p-2 bg-base-200 rounded-lg">
-                <div class="badge badge-neutral">{account.split(":")[0]}</div>
-                <span class="flex-1 text-sm">{account.split(":")[1]}</span>
-              </div>
-            {/each}
-          </div>
-        {/if}
-
-        <div class="flex gap-2">
-          <input
-            id="allowAccountInput"
-            type="text"
-            placeholder="Enter Account ID"
-            class="input input-bordered input-sm flex-1"
-          />
-          <button class="btn btn-sm btn-primary" on:click={allowAccount}>
-            Add Access
-          </button>
-        </div>
-      </div>
-    </div>
 
     <!-- Server Info Section -->
     <div class="space-y-6 mt-8 pt-6 border-t border-base-200">
@@ -434,7 +379,135 @@
     </div>
   </div>
 
-  <!-- Scheduler Section (Empty placeholder) -->
+  <!-- Network Section -->
+  <div slot="dns" class="space-y-6">
+    <!-- Header -->
+    <div>
+      <h2 class="text-2xl font-bold">Network</h2>
+      <p class="text-sm text-gray-400 mt-1">Manage your server's network settings and access points</p>
+    </div>
+
+    <!-- Subdomain Management -->
+    <div class="space-y-4">
+      <div>
+        <h3 class="text-lg font-semibold mb-2">Subdomain</h3>
+        <p class="text-sm text-gray-400 mb-4">Claim a subdomain for easy access to your server</p>
+      </div>
+
+      <div class="bg-base-200 rounded-lg p-4 space-y-3">
+        {#if subdomain}
+          <div class="flex items-center justify-between">
+            <div class="space-y-1">
+              <p class="text-sm text-gray-400">Your subdomain</p>
+              <div class="badge badge-lg badge-success">
+                {subdomain}.{address}
+              </div>
+            </div>
+            <button class="btn btn-sm btn-error" on:click={deleteSubdomain}>
+              Delete Subdomain
+            </button>
+          </div>
+        {:else}
+          <div class="flex gap-3 items-center">
+            <label class="input input-bordered flex items-center gap-2 flex-1">
+              <input type="text" class="grow" id="subdomainInput" placeholder="Choose subdomain" />
+              <span class="text-xs text-gray-500">.{address}</span>
+            </label>
+            <button class="btn btn-sm btn-primary" on:click={claimSubdomain}>
+              Claim Subdomain
+            </button>
+          </div>
+        {/if}
+      </div>
+    </div>
+
+    <!-- Ports Section -->
+    <div class="divider"></div>
+    <div class="space-y-4">
+      <div>
+        <h3 class="text-lg font-semibold">Server Ports</h3>
+        <p class="text-sm text-gray-400 mt-1">Your allocated server ports for connections</p>
+      </div>
+
+      <div class="bg-base-200 rounded-lg p-4 space-y-3">
+        <!-- Main Port -->
+        <div class="flex items-center justify-between p-3 bg-base-300 rounded-lg hover:bg-base-300/80 transition">
+          <span class="font-semibold">Main Port</span>
+          <div class="font-mono text-lg font-bold">{parseInt(id) + 10000}</div>
+        </div>
+
+        <!-- Extra Port 1 -->
+        <div class="flex items-center justify-between p-3 bg-base-300 rounded-lg hover:bg-base-300/80 transition">
+          <span class="font-semibold">Extra Port 1</span>
+          <div class="font-mono text-lg font-bold">{parseInt(id) + 10033}</div>
+        </div>
+
+        <!-- Extra Port 2 -->
+        <div class="flex items-center justify-between p-3 bg-base-300 rounded-lg hover:bg-base-300/80 transition">
+          <span class="font-semibold">Extra Port 2</span>
+          <div class="font-mono text-lg font-bold">{parseInt(id) + 10066}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel Access Control Section -->
+  <div slot="access" class="space-y-6">
+    <!-- Header -->
+    <div>
+      <h2 class="text-2xl font-bold">Panel Access Control</h2>
+      <p class="text-sm text-gray-400 mt-1">Manage who can access and control this server</p>
+    </div>
+
+    <!-- Allowed Accounts -->
+    <div class="space-y-4">
+      <div class="bg-base-200 rounded-lg p-4 space-y-3">
+        {#if allowedAccounts && allowedAccounts.length > 0}
+          <div class="space-y-2 mb-4">
+            <p class="text-sm font-semibold text-gray-300">Currently Authorized Users</p>
+            {#each allowedAccounts as account (account)}
+              <div class="flex items-center justify-between p-3 bg-base-300 rounded-lg">
+                <div class="flex flex-col gap-1">
+                  <span class="badge badge-neutral">{account.split(":")[0]}</span>
+                  <span class="text-xs text-gray-400">{account.split(":")[1]}</span>
+                </div>
+                <button class="btn btn-xs btn-error" on:click={() => {/* Remove access functionality */}}>
+                  Remove
+                </button>
+              </div>
+            {/each}
+          </div>
+          <div class="divider my-3"></div>
+        {/if}
+
+        <div class="space-y-2">
+          <label for="allowAccountInput" class="block text-sm font-semibold">
+            Grant Access
+          </label>
+          <p class="text-xs text-gray-400 mb-2">Enter an account ID to grant them access to this server</p>
+          <div class="flex gap-2">
+            <input
+              id="allowAccountInput"
+              type="text"
+              placeholder="Enter Account ID"
+              class="input input-bordered input-sm flex-1"
+            />
+            <button class="btn btn-sm btn-primary" on:click={allowAccount}>
+              Add Access
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Access Levels Info -->
+    <div class="alert alert-info gap-3">
+      <Info size={20} />
+      <span>Users with access can manage all server settings and operations</span>
+    </div>
+  </div>
+
+  <!-- Scheduler Section -->
   <div slot="scheduler">
     <SettingsScheduler />
   </div>

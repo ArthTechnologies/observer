@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { Settings, Clock, Info } from "lucide-svelte";
+  import { Settings, Clock, Globe, Lock } from "lucide-svelte";
 
   export let activeSection = "general";
 
   const sections = [
     { id: "general", label: "General", icon: Settings },
+    { id: "dns", label: "Network", icon: Globe },
+    { id: "access", label: "Panel Access", icon: Lock },
     { id: "scheduler", label: "Scheduler", icon: Clock },
   ];
 </script>
@@ -37,6 +39,10 @@
     <div class="bg-base-300 rounded-xl shadow-lg p-6">
       {#if activeSection === "general"}
         <slot name="general" />
+      {:else if activeSection === "dns"}
+        <slot name="dns" />
+      {:else if activeSection === "access"}
+        <slot name="access" />
       {:else if activeSection === "scheduler"}
         <slot name="scheduler" />
       {/if}
