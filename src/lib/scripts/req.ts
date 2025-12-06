@@ -861,3 +861,160 @@ export function getServerNode(id: number) {
 
 //check if stripe is enabled
 getSettings();
+
+// Scheduler API Functions
+export function getSchedulerTasks(serverId: string) {
+  if (browser) {
+    let baseurl = apiurl;
+    if (usingOcelot) baseurl = getServerNode(parseInt(serverId));
+    const url = baseurl + "server/" + serverId + "/scheduler";
+    return fetch(url, GET)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          console.error("Error fetching tasks:", data.error);
+          return [];
+        }
+        return data.tasks || [];
+      })
+      .catch((err) => {
+        console.error("Error fetching scheduler tasks:", err);
+        return [];
+      });
+  }
+}
+
+export function createSchedulerTask(serverId: string, name: string, type: string, schedule: string, command?: string) {
+  if (browser) {
+    let baseurl = apiurl;
+    if (usingOcelot) baseurl = getServerNode(parseInt(serverId));
+    const url = baseurl + "server/" + serverId + "/scheduler/create";
+
+    const req = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        username: localStorage.getItem("accountEmail"),
+      },
+      body: JSON.stringify({
+        name,
+        type,
+        schedule,
+        command: command || null,
+      }),
+    };
+
+    return fetch(url, req)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          alert("Error creating task: " + data.error, "error");
+          return null;
+        }
+        return data.task;
+      })
+      .catch((err) => {
+        console.error("Error creating task:", err);
+        alert("Failed to create task", "error");
+        return null;
+      });
+  }
+}
+
+export function updateSchedulerTask(serverId: string, taskId: string, updates: any) {
+  if (browser) {
+    let baseurl = apiurl;
+    if (usingOcelot) baseurl = getServerNode(parseInt(serverId));
+    const url = baseurl + "server/" + serverId + "/scheduler/update/" + taskId;
+
+    const req = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        username: localStorage.getItem("accountEmail"),
+      },
+      body: JSON.stringify(updates),
+    };
+
+    return fetch(url, req)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          alert("Error updating task: " + data.error, "error");
+          return null;
+        }
+        return data.task;
+      })
+      .catch((err) => {
+        console.error("Error updating task:", err);
+        alert("Failed to update task", "error");
+        return null;
+      });
+  }
+}
+
+export function deleteSchedulerTask(serverId: string, taskId: string) {
+  if (browser) {
+    let baseurl = apiurl;
+    if (usingOcelot) baseurl = getServerNode(parseInt(serverId));
+    const url = baseurl + "server/" + serverId + "/scheduler/delete/" + taskId;
+
+    const req = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        username: localStorage.getItem("accountEmail"),
+      },
+    };
+
+    return fetch(url, req)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          alert("Error deleting task: " + data.error, "error");
+          return false;
+        }
+        return true;
+      })
+      .catch((err) => {
+        console.error("Error deleting task:", err);
+        alert("Failed to delete task", "error");
+        return false;
+      });
+  }
+}
+
+export function toggleSchedulerTask(serverId: string, taskId: string) {
+  if (browser) {
+    let baseurl = apiurl;
+    if (usingOcelot) baseurl = getServerNode(parseInt(serverId));
+    const url = baseurl + "server/" + serverId + "/scheduler/toggle/" + taskId;
+
+    const req = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+        username: localStorage.getItem("accountEmail"),
+      },
+    };
+
+    return fetch(url, req)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          alert("Error toggling task: " + data.error, "error");
+          return null;
+        }
+        return data.task;
+      })
+      .catch((err) => {
+        console.error("Error toggling task:", err);
+        alert("Failed to toggle task", "error");
+        return null;
+      });
+  }
+}

@@ -205,7 +205,7 @@
     <!-- Header with Apply Button -->
     <div class="flex items-start justify-between">
       <div>
-        <h2 class="text-2xl font-bold">{$t("settings.h.general")}</h2>
+        <h2 class="text-2xl font-bold">General Settings</h2>
         <p class="text-sm text-gray-400 mt-1">Manage your server's basic settings</p>
       </div>
       <button

@@ -301,7 +301,7 @@
   <div class="mt-5 pt-4 border-t border-base-100 text-xs text-gray-400">
     <p class="flex items-center gap-1.5">
       <InfoIcon size={14} />
-      Automatic backups run every 6 hours. 
+      Automatic backups run based on your scheduler, by default every 6 hours. 
     </p>
   </div>
 </div>
