@@ -51,6 +51,7 @@
   });
   if (browser) {
     mode = localStorage.getItem("mode") || "provider";
+    if (mode === "solo") localStorage.setItem("accountId", "noemail")
     email = localStorage.getItem("accountEmail");
     if (localStorage.getItem("token") == undefined) goto("/login");
     amountOfServersForSkeletons = localStorage.getItem("amountOfServers");

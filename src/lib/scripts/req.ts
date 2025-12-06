@@ -437,8 +437,8 @@ export function getSettings() {
         localStorage.setItem("mode", JSON.parse(input).mode);
 
         if (JSON.parse(input).mode === "solo") {
-          localStorage.setItem("accountEmail", "guest");
-          accountEmail.set("guest");
+          localStorage.setItem("accountEmail", "noemail");
+          accountEmail.set("noemail");
         }
       }
 
