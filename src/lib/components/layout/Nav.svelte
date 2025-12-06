@@ -36,7 +36,7 @@
   var id = undefined;
 
   let devMode = false;
-  let mode = "solo";
+  let mode = "provider";
 
   let noserverlock = false;
   let amountOfServersForSkeletons = 1;
@@ -50,7 +50,7 @@
     }
   });
   if (browser) {
-    mode = localStorage.getItem("mode") || "solo";
+    mode = localStorage.getItem("mode") || "provider";
     email = localStorage.getItem("accountEmail");
     if (localStorage.getItem("token") == undefined) goto("/login");
     amountOfServersForSkeletons = localStorage.getItem("amountOfServers");
@@ -358,11 +358,11 @@ Invalid Account
         <a on:click={()=>{update(undefined, false)}} href="/referrals" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary" style="gap: 0.4rem;">
    Get <span class="text-[#edcfb0]">50%</span> off next month</a
     >
-    {/if}
+  
     <a on:click={()=>{update(undefined, false)}} href="/account" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <User size="20" />Account</a
     >
-{#if mode !== "solo"}
+
 
     <a on:click={()=>{update(undefined, false)}} href="/billing" class="font-ubuntu btn btn-ghost btn-ms flex justify-start hover:text-primary">
       <ShoppingCart size="20" />Subscriptions</a

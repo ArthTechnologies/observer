@@ -434,6 +434,7 @@ export function getSettings() {
         localStorage.setItem("enableCloudflareVerify", JSON.parse(input).enableCloudflareVerify);
         localStorage.setItem("cloudflareVerifySiteKey", JSON.parse(input).cloudflareVerifySiteKey);
         localStorage.setItem("enableDeepL", JSON.parse(input).enableDeepL);
+        localStorage.setItem("mode", JSON.parse(input).mode);
 
         if (JSON.parse(input).mode === "solo") {
           localStorage.setItem("accountEmail", "guest");
