@@ -37,6 +37,7 @@
 
   let devMode = false;
   let mode = "provider";
+  let adminAccess = false;
 
   let noserverlock = false;
   let amountOfServersForSkeletons = 1;
@@ -45,6 +46,20 @@
   let email: string = "";
   onMount(() => {
     if (browser) {
+      // Fetch admin access status from info route
+      fetch(apiurl + "info", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token") || "",
+          username: localStorage.getItem("accountEmail") || "",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          adminAccess = data.adminAccess === true;
+        })
+        .catch((err) => console.error("Error fetching admin access:", err));
 
       update(undefined, false);
     }
@@ -56,7 +71,7 @@
     if (localStorage.getItem("token") == undefined) goto("/login");
     amountOfServersForSkeletons = localStorage.getItem("amountOfServers");
     if (localStorage.getItem("devMode") == "true") {
-      console.log("dev mode");  
+      console.log("dev mode");
       devMode = true;
     }
   }
@@ -383,6 +398,11 @@ Invalid Account
       <Crown size="20" />Dashboard</a
     >
     {/if}
+    {#if adminAccess}
+    <a href="/admin" class="btn btn-ghost btn-ms flex justify-start hover:text-primary">
+      <Crown size="20" />Admin</a
+    >
+    {/if}
     <button class="btn btn-ghost btn-ms flex justify-start hover:text-primary" on:click={logout}>
       <LogOut size="20" />Logout</button
     >
@@ -398,6 +418,9 @@ Invalid Account
         <li><a on:click={()=>{update(undefined, false)}} href="/account">Account</a></li>
         {#if mode !== "solo"}
         <li><a on:click={()=>{update(undefined, false)}} href="/billing">Subscriptions</a></li>
+        {/if}
+        {#if adminAccess}
+        <li><a on:click={()=>{update(undefined, false)}} href="/admin">Admin</a></li>
         {/if}
 <li>        <a onclick="modal_language.showModal()">
   Language</a
