@@ -16,7 +16,7 @@
   import Manage from "$lib/components/ui/Manage.svelte";
   import AddMod from "$lib/components/ui/AddMod.svelte";
   import Add from "$lib/components/ui/Add.svelte";
-  import Settings from "$lib/components/pages/server/Settings.svelte";
+  
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
   import FullscreenTerminal from "$lib/components/buttons/FullscreenTerminal.svelte";
@@ -556,7 +556,7 @@
               <HelpCircle size="18" class="md:mr-1" />
               <p class="hidden md:block">How to join</p></a
             >
-            <Settings />
+
           </div>
         </div>
       </div>
@@ -651,7 +651,7 @@
 
       <div class="w-[20rem] flex flex-col items-center">
         <div class="flex space-x-2 mb-2 mt-4">
-          <Settings type="fullBtn" /><StorageLimit />
+      <StorageLimit />
         </div>
         <div class="flex space-x-2">
           <a
