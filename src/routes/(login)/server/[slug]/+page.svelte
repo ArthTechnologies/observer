@@ -17,7 +17,7 @@
   import Manage from "$lib/components/ui/Manage.svelte";
   import AddMod from "$lib/components/ui/AddMod.svelte";
   import Add from "$lib/components/ui/Add.svelte";
-  import Settings from "$lib/components/pages/server/Settings.svelte";
+  import Settings from "./settings/Settings.svelte";
   import DeleteServer from "$lib/components/ui/DeleteServer.svelte";
   import ManageMods from "$lib/components/ui/ManageMods.svelte";
   import Updates from "$lib/components/buttons/Updates.svelte";
@@ -63,13 +63,13 @@
   import { alert } from "$lib/scripts/utils";
   import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
   import Terminal from "$lib/components/pages/server/Terminal.svelte";
-  import Files from "$lib/components/pages/server/Files.svelte";
-  import Plugins from "$lib/components/pages/server/Plugins.svelte";
-  import Mods from "$lib/components/pages/server/Mods.svelte";
-  import Datapacks from "$lib/components/pages/server/Datapacks.svelte";
+  import Files from "./files/Files.svelte";
+  import Plugins from "./plugins/Plugins.svelte";
+  import Mods from "./mods/Mods.svelte";
+  import Datapacks from "./datapacks/Datapacks.svelte";
   import MemoryChart from "$lib/components/pages/server/charts/MemoryChart.svelte";
   import CpuUsageChart from "$lib/components/pages/server/charts/CpuUsageChart.svelte";
-  import Backups from "$lib/components/pages/server/Backups.svelte";
+  import Backups from "./backups/Backups.svelte";
     import CopyButton from "$lib/components/buttons/CopyButton.svelte";
     import ServerInfo from "$lib/components/pages/server/ServerInfo.svelte";
     import PlayerList from "$lib/components/pages/server/PlayerList.svelte";
