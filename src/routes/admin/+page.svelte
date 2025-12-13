@@ -73,6 +73,8 @@
           const data = await dataRes.json();
           subscriptions = data.subscriptions || [];
           servers = data.servers || [];
+          console.log("Subscriptions data:", subscriptions);
+          console.log("Servers data:", servers);
         } else {
           console.error("Subscriptions response not ok:", dataRes.status);
         }
@@ -131,7 +133,7 @@
         </div>
       {:else}
         <div class="grid gap-4">
-          {#each systemTasks as task (task.id)}
+          {#each systemTasks as task, i (task.id || i)}
             <div class="card bg-base-200 shadow-md">
               <div class="card-body">
                 <div class="flex items-start justify-between">
@@ -201,7 +203,7 @@
         </div>
       {:else}
         <div class="grid gap-4">
-          {#each servers as server (server.id)}
+          {#each servers as server, i (server.id || i)}
             {@const subscription = getServerSubscription(server.id)}
             {@const isValid = isSubscriptionValid(subscription)}
             <div class="card bg-base-200 shadow-md">
@@ -241,14 +243,18 @@
                       {#if subscription}
                         {#if subscription.subscriptions && subscription.subscriptions.length > 0}
                           <div>
-                            <span class="font-semibold">Active Subscriptions:</span>
+                            <span class="font-semibold">Subscriptions:</span>
                             <div class="mt-2 space-y-1">
-                              {#each subscription.subscriptions as sub (sub.id)}
+                              {#each subscription.subscriptions as sub, i (sub.start_date || i)}
                                 <div class="text-xs bg-base-300 px-2 py-1 rounded">
-                                  <p class="font-semibold">{sub.productName || "Unknown Product"}</p>
-                                  {#if sub.expiresAt}
+                                  {#if sub.start_date}
                                     <p class="text-gray-400">
-                                      Expires: {new Date(sub.expiresAt).toLocaleDateString()}
+                                      Started: {new Date(sub.start_date * 1000).toLocaleDateString()}
+                                    </p>
+                                  {/if}
+                                  {#if sub.ended_at}
+                                    <p class="text-gray-400">
+                                      Ended: {new Date(sub.ended_at * 1000).toLocaleDateString()}
                                     </p>
                                   {/if}
                                 </div>
