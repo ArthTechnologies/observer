@@ -224,7 +224,7 @@
           "server/" +
           localStorage.getItem("serverID") +
           "/files/download/" +
-          url.split("*").join("/") +
+          url.split("/").join("*") +
           "?key=" +
           localStorage.getItem("fileAccessKey");
   }
