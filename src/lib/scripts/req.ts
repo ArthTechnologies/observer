@@ -1018,3 +1018,21 @@ export function toggleSchedulerTask(serverId: string, taskId: string) {
       });
   }
 }
+
+export function changeSoftware(id: number, software: string, version: string) {
+  if(browser) {
+  let baseurl = apiurl;
+  if (usingOcelot)
+    baseurl = getServerNode(id);
+  const url = baseurl + "server/" + id + "/software?software=" + software + "&version=" + version;
+  return fetch(url, POST)
+    .then((res) => res.text())
+    .then((input: string) => {
+      if (input.indexOf("400") > -1 || input.indexOf("401") > -1) {
+        return "error";
+      } else {
+        return input;
+      }
+    });
+}
+}

@@ -2,6 +2,7 @@
     import { browser } from "$app/environment";
     import CopyButton from "$lib/components/buttons/CopyButton.svelte";
     import Versions from "$lib/components/buttons/Versions.svelte";
+    import Software from "$lib/components/buttons/Software.svelte";
     import StorageLimit from "$lib/components/ui/StorageLimit.svelte";
     import World from "$lib/components/ui/World.svelte";
     import { apiurl } from "$lib/scripts/req";
@@ -239,7 +240,10 @@
           <div class="w-[45%]">
           <World /></div>
         </div>
-    
+        <div class="w-[45%]">
+          <Software />
+        </div>
+
       </div>
               </div>
 
