@@ -251,7 +251,22 @@
       }
     }
 
+    // Sort versions in descending order
+    versionOptions.sort((a, b) => {
+      const versionA = a.split(" ")[0];
+      const versionB = b.split(" ")[0];
+      const partsA = versionA.split(".").map(p => parseInt(p, 10));
+      const partsB = versionB.split(".").map(p => parseInt(p, 10));
 
+      for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
+        const partA = partsA[i] || 0;
+        const partB = partsB[i] || 0;
+        if (partA !== partB) {
+          return partB - partA;
+        }
+      }
+      return 0;
+    });
 
     // Append versions to dropdown
     let versionDropdown = document.getElementById("versionDropdown");
