@@ -6,6 +6,7 @@
   import { browser } from "$app/environment";
   import Modpacks from "$lib/components/ui/Modpacks.svelte";
   import UploadWorld from "$lib/components/ui/UploadWorld.svelte";
+  import SourceModal from "$lib/components/ui/SourceModal.svelte";
 
   import { alert } from "$lib/scripts/utils";
 
@@ -18,6 +19,7 @@
   let modpacks = false;
   let modpackURL = "";
   let latestVersion = "1.20.1";
+  let showSourceModal = false;
   let worldgenMods = [
     { name: "terralith", tooltip: "Terralith - Overworld Evolved" },
     { name: "incendium", tooltip: "Incendium - Nether Expansion" },
@@ -88,6 +90,13 @@
 
   if (browser) {
     let email = localStorage.getItem("accountEmail");
+
+    // Check if coming from subscription-success page
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("fromSubscription") === "true") {
+      showSourceModal = true;
+    }
+
     if (document.location.href.includes("?id=")) {
       id = parseInt(document.location.href.split("?id=")[1].split("&")[0]);
     } else {
@@ -168,6 +177,38 @@
       });
   }
 
+  function handleSourceModalSubmit(event: any) {
+    const { source, youtuberName, other } = event.detail;
+
+    // Store the source information for analytics if needed
+    localStorage.setItem("userSource", source);
+    if (youtuberName) {
+      localStorage.setItem("youtuberName", youtuberName);
+    }
+    if (other) {
+      localStorage.setItem("otherSource", other);
+    }
+
+    // Build the referrer string based on source
+    let referrer = source;
+    if (source === "youtube" && youtuberName) {
+      referrer = `youtube:${youtuberName}`;
+    } else if (source === "other" && other) {
+      referrer = `other:${other}`;
+    }
+
+    // Send analytics to ocelot
+    fetch("https://ocelot.arthmc.xyz/analytics/sale?referrer=" + encodeURIComponent(referrer), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    }).catch((err) => console.error("Analytics error:", err));
+
+    // Close the modal and allow normal flow
+    showSourceModal = false;
+  }
+
   function send() {
     let addons = [];
     let cmd = [];
@@ -218,7 +259,7 @@
           goto("/server/"+(10000 + id));
           setTimeout(() => {
       location.reload();
-    }, 300); 
+    }, 300);
           //this tells the navbar to update the icon that is highligted
           window.dispatchEvent(new Event("redrict"));
         } else {
@@ -469,3 +510,7 @@
     </div>
   </div>
 </div>
+
+{#if showSourceModal}
+  <SourceModal on:submit={handleSourceModalSubmit} />
+{/if}
