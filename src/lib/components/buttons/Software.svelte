@@ -20,8 +20,20 @@
   const modLoaders = ["forge", "fabric", "quilt", "neoforge"];
   const allSoftwares = ["paper", "forge", "neoforge", "fabric", "quilt", "vanilla", "snapshot", "velocity"];
 
+  function parseJarFileName(filename: string): { software: string; version: string; variant: string } | null {
+    const match = filename.match(/^([a-zA-Z]+)-(\d+(?:\.\d+)*)-(\w+)\.(jar|zip)$/);
+    if (match) {
+      return {
+        software: match[1],
+        version: match[2],
+        variant: match[3],
+      };
+    }
+    return null;
+  }
+
   function getBaseVersion(version: string): string {
-    return version.split("*")[0];
+    return version; // Versions are already clean without variants
   }
 
   function getWarnings(current: string, newSoft: string): { types: number[]; messages: string[]; canProceed: boolean } {
@@ -101,34 +113,32 @@
 
     // First pass: find all versions for each software that match current base version
     for (let i in jarsList) {
-      let jarFile = jarsList[i];
-      let [software, version] = jarFile.split("-");
+      const jarFile = jarsList[i];
+      const parsed = parseJarFileName(jarFile);
 
-      if (!software || !version) continue;
+      if (!parsed) continue;
 
-      // Clean up version string
-      version = version.split(".jar")[0].split(".zip")[0];
-      const versionBase = getBaseVersion(version);
+      const versionBase = getBaseVersion(parsed.version);
 
       // Check if this is a runnable software and if version matches
-      if (allSoftwares.includes(software) && software !== currentSoftware.toLowerCase()) {
+      if (allSoftwares.includes(parsed.software) && parsed.software !== currentSoftware.toLowerCase()) {
         if (versionBase === currentBaseVersion) {
-          softwaresWithVersions.add(software);
+          softwaresWithVersions.add(parsed.software);
 
-          if (!optionsMap.has(software)) {
-            optionsMap.set(software, []);
+          if (!optionsMap.has(parsed.software)) {
+            optionsMap.set(parsed.software, []);
           }
 
           const entry = {
-            software: software,
-            version: version,
-            display: software.charAt(0).toUpperCase() + software.slice(1) + " (" + version + ")",
+            software: parsed.software,
+            version: parsed.version,
+            display: parsed.software.charAt(0).toUpperCase() + parsed.software.slice(1) + " (" + parsed.version + ")",
             hasVersion: true,
           };
 
           // Check if this version already exists
-          const existing = optionsMap.get(software);
-          if (!existing?.find((e) => e.version === version)) {
+          const existing = optionsMap.get(parsed.software);
+          if (!existing?.find((e) => e.version === parsed.version)) {
             existing?.push(entry);
           }
         }

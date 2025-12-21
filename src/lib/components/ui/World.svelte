@@ -42,7 +42,11 @@
       .then((data) => {
         let worldgenMods = ["terralith", "incendium", "nullscape", "structory"];
         for (let i in worldgenMods) {
-          if (data.includes(worldgenMods[i] + "-" + serverVersion + ".zip")) {
+          // Check if any variant of this mod exists for the current version
+          const modExists = data.some(jar =>
+            jar.startsWith(worldgenMods[i] + "-" + serverVersion + "-")
+          );
+          if (modExists) {
             areWorldgenMods = true;
           }
         }
@@ -397,11 +401,11 @@
       .then((data) => {
         let worldgenMods = ["terralith", "incendium", "nullscape", "structory"];
         for (let i in worldgenMods) {
-          if (
-            JSON.stringify(
-              data.includes(worldgenMods[i] + "-" + serverVersion + ".zip")
-            )
-          ) {
+          // Check if any variant of this mod exists for the current version
+          const modExists = data.some(jar =>
+            jar.startsWith(worldgenMods[i] + "-" + serverVersion + "-")
+          );
+          if (modExists) {
             areWorldgenMods = true;
           }
         }

@@ -27,7 +27,64 @@
   let worldgen = null;
   let jarsList = [];
   let id = -1;
+  let showGeyserBar = false;
 
+  function parseJarFileName(filename) {
+    // Format: software-version-variant.jar
+    const match = filename.match(/^([a-zA-Z]+)-(\d+(?:\.\d+)*)-(\w+)\.(jar|zip)$/);
+    if (match) {
+      return {
+        software: match[1],
+        version: match[2],
+        variant: match[3],
+      };
+    }
+    return null;
+  }
+
+  function formatVersionDisplay(version, variant) {
+    // Don't show "release" variant in UI
+    if (variant === "release") {
+      return version;
+    }
+    return `${version} ${variant.charAt(0).toUpperCase() + variant.slice(1)}`;
+  }
+
+  function getLatestVersionForSoftware(softwareName, jars) {
+    let CVS = softwareName.split(" - ")[0].toLowerCase();
+    let versionOptions = [];
+
+    for (let i in jars) {
+      let parsed = parseJarFileName(jars[i]);
+      if (parsed && parsed.software === CVS) {
+        versionOptions.push({
+          version: parsed.version,
+          variant: parsed.variant,
+          display: formatVersionDisplay(parsed.version, parsed.variant),
+        });
+      }
+    }
+
+    // Sort versions in descending order
+    versionOptions.sort((a, b) => {
+      const partsA = a.version.split(".").map(p => parseInt(p, 10));
+      const partsB = b.version.split(".").map(p => parseInt(p, 10));
+
+      for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
+        const partA = partsA[i] || 0;
+        const partB = partsB[i] || 0;
+        if (partA !== partB) {
+          return partB - partA;
+        }
+      }
+      return 0;
+    });
+
+    return versionOptions.length > 0 ? versionOptions[0].version : "1.20.1";
+  }
+
+  $: latestVersion = getLatestVersionForSoftware(software, jarsList);
+  $: showGeyserBar = software.split(" - ")[0] === "Paper" && version.split(" ")[0] === latestVersion;
 
   if (browser) {
     let email = localStorage.getItem("accountEmail");
@@ -58,9 +115,6 @@
       }
     }, 100);
 
-    latestVersion = localStorage.getItem("latestVersion");
-    version = latestVersion;
-
     fetch(apiurl + "info/jars", {
       method: "GET",
       headers: {
@@ -74,6 +128,7 @@
         console.log(res);
         jarsList = res;
         findVersions();
+        version = getLatestVersionForSoftware(software, jarsList);
         checkV();
       });
 
@@ -182,8 +237,7 @@
   }
   function checkV() {
     if (browser) {
-      version = document.getElementById("versionDropdown").value.trim().split(" ").join("*").toLowerCase();
-
+      version = document.getElementById("versionDropdown").value.trim().toLowerCase();
       console.log("version selected: " + version);
     }
 
@@ -194,9 +248,12 @@
       worldgenMods.forEach((item) => {
         let checkbox = document.getElementById(item);
         if (checkbox != null) {
-          if (jarsList.includes(item + "-" + version.split("*")[0] + ".zip")
-        || jarsList.includes(item + "-" + version.split("*")[0] + "*beta.zip")
-      || jarsList.includes(item + "-" + version.split("*")[0] + "*alpha.zip")) {
+          // Check if any variant of this mod exists for the selected version
+          const modExists = jarsList.some(jar =>
+            jar.startsWith(item + "-" + version + "-")
+          );
+
+          if (modExists) {
             worldgenModsAvailable = true;
             checkbox.disabled = false;
           } else {
@@ -230,33 +287,20 @@
     let versionOptions = [];
 
     for (let i in jarsList) {
-      let filename = jarsList[i];
-      let software2 = filename.split("-")[0];
-      let version = filename.split("-")[1];
-      let channel = "";
-      if (filename.split("-")[2] != undefined) {
-        channel = filename.split("-")[2].split(".")[0];
-        if (channel == "release") {
-          channel = "";
-        }
-      } else {
-        version = version.split(".jar")[0].split(".zip")[0];
-      }
-      if (version.includes("*")) {
-        let versionComponents = version.split("*");
-      version = versionComponents[0] + " " + versionComponents[1].charAt(0).toUpperCase() + versionComponents[1].slice(1);
-      }
-      if (software2 == CVS) {
-        versionOptions.push((version + " " + channel.substring(0, 1).toUpperCase() + channel.substring(1)).trim());
+      let parsed = parseJarFileName(jarsList[i]);
+      if (parsed && parsed.software === CVS) {
+        versionOptions.push({
+          version: parsed.version,
+          variant: parsed.variant,
+          display: formatVersionDisplay(parsed.version, parsed.variant),
+        });
       }
     }
 
     // Sort versions in descending order
     versionOptions.sort((a, b) => {
-      const versionA = a.split(" ")[0];
-      const versionB = b.split(" ")[0];
-      const partsA = versionA.split(".").map(p => parseInt(p, 10));
-      const partsB = versionB.split(".").map(p => parseInt(p, 10));
+      const partsA = a.version.split(".").map(p => parseInt(p, 10));
+      const partsB = b.version.split(".").map(p => parseInt(p, 10));
 
       for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
         const partA = partsA[i] || 0;
@@ -275,12 +319,12 @@
 
     versionOptions.forEach((item) => {
       let option = document.createElement("option");
-      option.value = item;
-      option.text = item;
+      option.value = item.version;
+      option.text = item.display;
       versionDropdown.add(option);
 
       if (i === 0) {
-        version = item;
+        version = item.display;
       }
       i++;
     });
@@ -363,6 +407,17 @@
             <option>1.16.5</option>
             <option>1.12.2</option>
           </select>
+
+          {#if showGeyserBar}
+            <div class="alert alert-success mt-3 py-2 px-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <div class="flex-1">
+                <p class="text-sm font-medium">Geyser will be automatically installed on this version</p>
+              </div>
+            </div>
+          {/if}
 
           <label class="label" for="1">{$t("newserver.l.name")}</label>
           <input

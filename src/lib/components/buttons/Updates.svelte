@@ -39,8 +39,12 @@
       .then((x) => {
         let worldgenModsAvailable = 0;
         for (let i in x) {
-          let software = x[i].split("-")[0];
-          let version = x[i].split("-")[1].split(".jar")[0].split("*")[0].split(".zip")[0];
+          const match = x[i].match(/^([a-zA-Z]+)-(\d+(?:\.\d+)*)-(\w+)\.(jar|zip)$/);
+          if (!match) continue;
+
+          const software = match[1];
+          const version = match[2];
+
           if (software == serverSoftware.toLowerCase()) {
             if (version != serverVersion) {
               let versionPart1 = version.split(".")[0];
@@ -49,7 +53,7 @@
               let serverVersionPart1 = serverVersion.split(".")[0];
               let serverVersionPart2 = serverVersion.split(".")[1];
               let serverVersionPart3 = serverVersion.split(".")[2];
-              
+
               let part1diff = versionPart1 - serverVersionPart1;
               let part2diff = versionPart2 - serverVersionPart2;
               let part3diff = versionPart3 - serverVersionPart3;
@@ -66,7 +70,6 @@
           //Worldgen Check
           if (areWorldgenMods) {
             serverAddons.forEach((item) => {
-              console.log(item + " " + software + version);
               if (software == item.toLowerCase()) {
                 if (version == serverVersion) {
                   worldgenModsAvailable++;
@@ -84,12 +87,7 @@
 
         console.log(x);
         if (
-          x.includes(
-            serverSoftware.toLowerCase() +
-              "-" +
-              latestUpdate.toLowerCase() +
-              ".jar"
-          )
+          x.some(jar => jar.startsWith(serverSoftware.toLowerCase() + "-" + latestUpdate + "-"))
         ) {
           jarAvailable = true;
         }

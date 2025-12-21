@@ -44,7 +44,7 @@
 
   }
   export function checkV() {
-     version = document.getElementById("versionDropdown").value;
+    version = document.getElementById("versionDropdown").value;
     if (localStorage.getItem("serverAddons") != null) {
       serverAddons = localStorage.getItem("serverAddons").split(",");
     }
@@ -55,31 +55,14 @@
     updateReady = false;
     if (areWorldgenMods) {
       serverAddons.forEach((item) => {
-        let worldgenMods = [];
-        for (let i in jarsList) {
-          let software = jarsList[i].split("-")[0];
-          let version2 = jarsList[i].split("-")[1];
-          if (software == item.toLowerCase()) {
-            if (version == version2) {
-              worldgenMods.push(software);
-            }
-          }
+        // Check if any variant of this mod exists for the selected version
+        const modExists = jarsList.some(jar =>
+          jar.startsWith(item.toLowerCase() + "-" + version + "-")
+        );
+
+        if (modExists) {
+          updateReady = true;
         }
-          let readyWorldgenMods = 0;
-          worldgenMods.forEach((x) => {
-            if (x.version == version) {
-              readyWorldgenMods++;
-              /* This doesnt work for some reason if you add the grayscale class to every image by default.
-          document
-            .getElementById(item + "Versions")
-            .classList.remove("grayscale");
-            */
-            }
-          });
-          if (readyWorldgenMods == worldgenMods.length) {
-            updateReady = true;
-          }
-        
       });
     } else {
       updateReady = true;
@@ -95,22 +78,22 @@
       .then((x) => {
         jarsList = x;
         for (let i in jarsList) {
-      let software = jarsList[i].split("-")[0];
-      let version = jarsList[i].split("-")[1].split(".jar")[0];
-      let version2 = version;
-      if (version.includes("*")) {
-        let array = version.split("*");
-        version2 = array[0] + " " + array[1].charAt(0).toUpperCase() + array[1].slice(1);
-      }
-      if (software == serverSoftware.toLowerCase()) {
-        if (version != serverVersion) {
-          html += "<option value=" + version2 + ">" + version2 + "</option>";
-        }
-      }
-      document.getElementById("versionDropdown").innerHTML = html;
-      checkV();
-    }
+          const match = jarsList[i].match(/^([a-zA-Z]+)-(\d+(?:\.\d+)*)-(\w+)\.(jar|zip)$/);
+          if (!match) continue;
 
+          const software = match[1];
+          const version = match[2];
+          const variant = match[3];
+
+          if (software == serverSoftware.toLowerCase()) {
+            if (version != serverVersion) {
+              const displayText = variant === "release" ? version : `${version} ${variant.charAt(0).toUpperCase() + variant.slice(1)}`;
+              html += "<option value=" + version + ">" + displayText + "</option>";
+            }
+          }
+        }
+        document.getElementById("versionDropdown").innerHTML = html;
+        checkV();
       });
     }
     /*fetch("https://api.jarsmc.xyz/jars/")
