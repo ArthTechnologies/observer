@@ -25,7 +25,7 @@
   if (browser) {
     let accountId = localStorage.getItem("accountId");
     if (accountId?.includes("acc_")) accountId = accountId.split("acc_")[1];  
-    username = accountId.slice(0,6)+"."+localStorage.getItem("serverID")
+    username = accountId.slice(-6)+"."+localStorage.getItem("serverID")
     if (window.location.href.includes("proxy")) {
       backurl = "proxy";
     }
