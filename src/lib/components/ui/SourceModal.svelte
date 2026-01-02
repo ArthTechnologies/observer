@@ -28,6 +28,12 @@
       width: "normal",
     },
     {
+      id: "google_ad",
+      label: "Google Ad",
+      icon: "google",
+      width: "normal",
+    },
+    {
       id: "friend",
       label: "Friend",
       icon: "friend",
@@ -60,6 +66,9 @@
   function handleSubmit() {
     if (!selectedSource) return;
 
+    // Make "Other" field required
+    if (selectedSource === "other" && !otherSpecification.trim()) return;
+
     const data = {
       source: selectedSource,
       youtuberName: selectedSource === "youtube" ? youtuberName : undefined,
@@ -90,13 +99,13 @@
 </script>
 
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-base-100 rounded-2xl p-8 max-w-2xl w-full mx-4 shadow-2xl">
+  <div class="bg-base-100 rounded-2xl p-8 max-w-4xl w-full mx-4 shadow-2xl">
     <h2 class="text-3xl font-bold mb-2 text-center">Your server is ready!</h2>
     <p class="text-base-content/70 text-center mb-8">
       Before we create your server, tell us where you heard about Arth Hosting
     </p>
 
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
       {#each sources as source}
         {#if source.width === "normal"}
           <button
@@ -179,8 +188,8 @@
     <button
       type="button"
       on:click={handleSubmit}
-      disabled={!selectedSource}
-      class="w-full btn btn-primary btn-lg {!selectedSource ? 'btn-disabled' : ''}"
+      disabled={!selectedSource || (selectedSource === "other" && !otherSpecification.trim())}
+      class="w-full btn btn-primary btn-lg {(!selectedSource || (selectedSource === "other" && !otherSpecification.trim())) ? 'btn-disabled' : ''}"
     >
       Create Server
     </button>
